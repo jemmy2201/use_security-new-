@@ -1,0 +1,85 @@
+.container {
+  width: 1440px;
+  height: 727px;
+  flex-shrink: 0;
+  background: url('/images/home_background.png');
+}
+
+.overlay {
+  width: 1440px;
+  height: 727px;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.70);
+
+}
+
+
+
+/* Body.module.css */
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 904px;
+  margin: 0 auto; /* This centers the container horizontally */
+  height: 75vh; /* Optional: If you want to center vertically relative to the viewport height */
+  justify-content: center; /* Centers the content vertically */
+}
+
+.bodyp {
+  width: 640px;
+  color: #F5F6F7;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 50px;
+}
+
+.services {
+  display: flex;
+  padding: 40px;
+  align-items: flex-start;
+  gap: 40px;
+  align-self: stretch;
+  background: #FFF;
+}
+
+.servicesblock {
+  display: flex;
+  width: 176px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.servicesblockheader {
+  color: #000;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.servicesblockbody {
+  color: #546E7A;
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+.servicesfindoutmore {
+  color: #CC0C00;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  text-decoration-line: underline;
+}
+

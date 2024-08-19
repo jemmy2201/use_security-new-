@@ -1,0 +1,279 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model activation_phones {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  activation String    @db.VarChar(255)
+  status     String    @db.VarChar(255)
+  nric       String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model booking_schedules {
+  id                     BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  app_type               String    @db.VarChar(255)
+  card_id                String?   @db.VarChar(255)
+  grade_id               String?   @db.VarChar(255)
+  declaration_date       String?   @db.VarChar(255)
+  trans_date             String?   @db.VarChar(255)
+  expired_date           String?   @db.VarChar(255)
+  appointment_date       String?   @db.VarChar(255)
+  time_start_appointment String?   @db.VarChar(255)
+  time_end_appointment   String?   @db.VarChar(255)
+  gst_id                 String?   @db.VarChar(255)
+  transaction_amount_id  String?   @db.VarChar(255)
+  grand_total            String?   @db.VarChar(255)
+  Status_app             String?   @db.VarChar(255)
+  Status_draft           String?   @db.VarChar(255)
+  paymentby              String?   @db.VarChar(255)
+  status_payment         String?   @db.VarChar(255)
+  receiptNo              String?   @unique(map: "booking_schedules_receiptno_unique") @db.VarChar(255)
+  nric                   String    @db.VarChar(255)
+  passid                 String    @unique(map: "passid_UNIQUE") @db.VarChar(255)
+  resubmission_date      String?   @db.VarChar(255)
+  created_at             DateTime? @db.Timestamp(0)
+  updated_at             DateTime? @db.Timestamp(0)
+  array_grade            String?   @db.VarChar(255)
+  bsoc                   String?   @db.VarChar(255)
+  ssoc                   String?   @db.VarChar(255)
+  sssc                   String?   @db.VarChar(255)
+  netstxnref             String?   @db.VarChar(255)
+  txnrand                String?   @db.VarChar(255)
+  stagerespcode          String?   @db.VarChar(255)
+  netsTxnStatus          String?   @db.VarChar(255)
+  licence_status         String?   @db.VarChar(255)
+  card_issue             String?   @default("N") @db.VarChar(255)
+  data_barcode_paynow    String?   @db.LongText
+  Import_Status          String?   @db.VarChar(1)
+  TaxReceipt             String?   @db.VarChar(20)
+  TR_RTT                 String?   @db.VarChar(3)
+  TR_CSSPB               String?   @db.VarChar(3)
+  TR_CCTC                String?   @db.VarChar(3)
+  TR_HCTA                String?   @db.VarChar(3)
+  TR_X_RAY               String?   @db.VarChar(3)
+  TR_AVSO                String?   @db.VarChar(3)
+  QRstring               String?   @db.VarChar(255)
+  union_member           Int?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model dateholidays {
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  date         String?   @db.VarChar(255)
+  name_holiday String?   @db.VarChar(255)
+  time_work    String?   @db.VarChar(255)
+  created_at   DateTime? @db.Timestamp(0)
+  updated_at   DateTime? @db.Timestamp(0)
+}
+
+model failed_jobs {
+  id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  connection String   @db.Text
+  queue      String   @db.Text
+  payload    String   @db.LongText
+  exception  String   @db.LongText
+  failed_at  DateTime @default(now()) @db.Timestamp(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model grades {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  card_id     String?   @db.VarChar(255)
+  name        String    @db.VarChar(255)
+  type        String?   @db.VarChar(255)
+  bsoc        String    @db.VarChar(255)
+  ssoc        String    @db.VarChar(255)
+  sssc        String    @db.VarChar(255)
+  created_by  String?   @db.VarChar(255)
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+  delete_soft String?   @db.VarChar(255)
+  short_value String?   @db.VarChar(20)
+}
+
+model gsts {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  create_date String    @db.VarChar(255)
+  amount_gst  String    @db.VarChar(255)
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model maintenance {
+  id              BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  maintenace_flag Int       @default(0)
+  created_at      DateTime? @db.Timestamp(0)
+  updated_at      DateTime? @db.Timestamp(0)
+}
+
+model migrations {
+  id        Int    @id @default(autoincrement()) @db.UnsignedInt
+  migration String @db.VarChar(255)
+  batch     Int
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model password_resets {
+  email      String    @db.VarChar(255)
+  token      String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+
+  @@index([email], map: "password_resets_email_index")
+  @@ignore
+}
+
+model schedule_limits {
+  id                  BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  date_schedule_limit DateTime? @db.Timestamp(0)
+  start_at            String?   @db.VarChar(255)
+  end_at              String?   @db.VarChar(255)
+  amount              String?   @db.VarChar(255)
+  status              String?   @db.VarChar(255)
+  created_at          DateTime? @db.Timestamp(0)
+  updated_at          DateTime? @db.Timestamp(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sertifikats {
+  id                     BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  app_type               String?   @db.VarChar(255)
+  card_id                String?   @db.VarChar(255)
+  grade_id               String?   @db.VarChar(255)
+  declaration_date       String?   @db.VarChar(255)
+  trans_date             String?   @db.VarChar(255)
+  expired_date           String?   @db.VarChar(255)
+  appointment_date       String?   @db.VarChar(255)
+  time_start_appointment String?   @db.VarChar(255)
+  time_end_appointment   String?   @db.VarChar(255)
+  gst                    String?   @db.VarChar(255)
+  grand_gst              String?   @db.VarChar(255)
+  transaction_amount     String?   @db.VarChar(255)
+  grand_total            String?   @db.VarChar(255)
+  Status_app             String?   @db.VarChar(255)
+  paymentby              String?   @db.VarChar(255)
+  status_payment         String?   @db.VarChar(255)
+  receiptNo              String?   @db.VarChar(255)
+  nric                   String    @db.VarChar(255)
+  passid                 String?   @db.VarChar(255)
+  passexpirydate         String?   @db.VarChar(255)
+  resubmission_date      String?   @db.VarChar(255)
+  created_at             DateTime? @db.Timestamp(0)
+  updated_at             DateTime? @db.Timestamp(0)
+  array_grade            String?   @db.VarChar(255)
+  bsoc                   String?   @db.VarChar(255)
+  ssoc                   String?   @db.VarChar(255)
+  sssc                   String?   @db.VarChar(255)
+  netstxnref             String?   @db.VarChar(255)
+  txnrand                String?   @db.VarChar(255)
+  stagerespcode          String?   @db.VarChar(255)
+  netsTxnStatus          String?   @db.VarChar(255)
+  TR_RTT                 String?   @db.VarChar(3)
+  TR_CSSPB               String?   @db.VarChar(3)
+  TR_CCTC                String?   @db.VarChar(3)
+  TR_HCTA                String?   @db.VarChar(3)
+  TR_X_RAY               String?   @db.VarChar(3)
+  TR_AVSO                String?   @db.VarChar(3)
+}
+
+model so_update_info {
+  id             BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  NRIC           String?   @db.VarChar(255)
+  PassID         String?   @unique(map: "so_update_info_passid_unique") @db.VarChar(255)
+  Name           String?   @db.VarChar(255)
+  Grade          String?   @db.VarChar(255)
+  New_Grade      String?   @db.VarChar(255)
+  TR_RTT         String?   @db.VarChar(255)
+  TR_CSSPB       String?   @db.VarChar(255)
+  TR_CCTC        String?   @db.VarChar(255)
+  TR_HCTA        String?   @db.VarChar(255)
+  TR_X_RAY       String?   @db.VarChar(255)
+  SKILL_BFM      String?   @db.VarChar(255)
+  SKILL_BSS      String?   @db.VarChar(255)
+  SKILL_FSM      String?   @db.VarChar(255)
+  SKILL_CERT     String?   @db.VarChar(255)
+  SKILL_COSEM    String?   @db.VarChar(255)
+  Date_Submitted String?   @db.VarChar(255)
+  created_at     DateTime? @db.Timestamp(0)
+  updated_at     DateTime? @db.Timestamp(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model t_grades {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name       String?   @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model tbl_receipt_nos {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  receiptNo  String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model transaction_amounts {
+  id                 BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  app_type           String?   @db.VarChar(255)
+  card_type          String?   @db.VarChar(255)
+  grade_id           String?   @db.VarChar(255)
+  grade_type         String?   @db.VarChar(255)
+  transaction_amount String?   @db.VarChar(255)
+  created_at         DateTime? @db.Timestamp(0)
+  updated_at         DateTime? @db.Timestamp(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model users {
+  id                 BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name               String    @db.VarChar(255)
+  email              String?   @unique(map: "users_email_unique") @db.VarChar(255)
+  email_verified_at  DateTime? @db.Timestamp(0)
+  password           String?   @db.VarChar(255)
+  nric               String?   @db.VarChar(255)
+  passportexpirydate String?   @db.VarChar(255)
+  passportnumber     String?   @db.VarChar(255)
+  mobileno           String?   @db.VarChar(255)
+  homeno             String?   @db.VarChar(255)
+  photo              String?   @db.VarChar(255)
+  time_login_at      DateTime? @db.Date
+  role               String?   @db.VarChar(255)
+  web                String?   @db.VarChar(255)
+  remember_token     String?   @db.VarChar(100)
+  created_at         DateTime? @db.Timestamp(0)
+  updated_at         DateTime? @db.Timestamp(0)
+  wpexpirydate       String?   @db.VarChar(255)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model users_idx {
+  id                BigInt?   @db.UnsignedBigInt
+  name              String?   @db.VarChar(255)
+  email             String?   @db.VarChar(255)
+  email_verified_at DateTime? @db.Timestamp(0)
+  password          String?   @db.VarChar(255)
+  nric              String?   @db.VarChar(255)
+  passid            String?   @db.VarChar(255)
+  passexpirydate    String?   @db.VarChar(255)
+  mobileno          String?   @db.VarChar(255)
+  homeno            String?   @db.VarChar(255)
+  photo             String?   @db.VarChar(255)
+  time_login_at     DateTime? @db.Date
+  role              String?   @db.VarChar(255)
+  remember_token    String?   @db.VarChar(100)
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+  App_Type          String?   @db.VarChar(255)
+  Grade_ID          String?   @db.VarChar(255)
+  Card_ID           String?   @db.VarChar(255)
+
+  @@ignore
+}
