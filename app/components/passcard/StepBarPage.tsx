@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState } from 'react';
-import StepBar from './components/StepBar';
-import Header from './components/Header'; // Import the Header component
-import Footer from './components/Footer'; // Import the Footer component
+import StepBar from './StepBar';
+import Header from '../Header'; // Import the Header component
+import Footer from './Footer'; // Import the Footer component
 
 // Import the step components
-import StepOne from './components/StepOne';
-import StepTwo from './components/StepTwo';
-import StepThree from './components/StepThree';
-import StepFour from './components/StepFour';
-import StepFive from './components/StepFive';
+import StepOne from './StepOne';
+import StepTwo from './StepTwo';
+import StepThree from './StepThree';
+import StepFour from './StepFour';
+import StepFive from './StepFive';
 
 // Define the steps array with imported components and labels
 const steps = [

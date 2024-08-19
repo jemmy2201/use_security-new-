@@ -4,9 +4,9 @@ export const TWO_YEARS = 2;
 export const THREE_YEARS = 3;
 
 // applicationTypes
-export const NEWS = 1;
-export const REPLACEMENT = 2;
-export const RENEWAL = 3;
+export const NEW = "1";
+export const REPLACEMENT = "2";
+export const RENEWAL = "3";
 
 // cardTypes
 export const SO_APP = 1;
@@ -15,13 +15,13 @@ export const PI_APP = 3;
 
 
 // status_app
-export const DRAFT = 0;
+export const DRAFT = "0";
 export const PROCESSING = 1;
-export const READY_FOR_ID_CARD_PRINTING = 2;
-export const ID_CARD_READY_FOR_COLLECTION = 3;
-export const RESUBMISSION = 4;
-export const RESUBMITTED = 5;
-export const COMPLETED = 6;
+export const READY_FOR_ID_CARD_PRINTING = "2";
+export const ID_CARD_READY_FOR_COLLECTION = "3";
+export const RESUBMISSION = "4";
+export const RESUBMITTED = "5";
+export const COMPLETED = "6";
 
 // statusDraft
 export const DRAFT_BOOK_APPOINTMENT = 0;

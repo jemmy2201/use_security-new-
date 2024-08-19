@@ -1,6 +1,7 @@
-import React from 'react';
-import styles from './StepBar.module.css'; // Import CSS module for styling
+"use client";
 
+import React from 'react';
+import styleBarModule from './StepBar.module.css'
 // Define the type for the step content
 interface Step {
     content: JSX.Element;
@@ -14,24 +15,24 @@ interface StepBarProps {
 }
 
 const StepBar: React.FC<StepBarProps> = ({ steps, activeStep }) => (
-    <div className={styles.stepBarContainer}>
-        <ul className={styles.stepList}>
+    <div className={styleBarModule.stepBarContainer}>
+        <ul className={styleBarModule.stepList}>
             {steps.map((step, index) => {
                 const [number, ...textArray] = step.label.split(' '); // Split label into number and text
                 const text = textArray.join(' '); // Join text parts into a single string
                 return (
                     <li
                         key={index}
-                        className={`${styles.stepItem} ${index === activeStep ? styles.active : ''}`}
+                        className={`${styleBarModule.stepItem} ${index === activeStep ? styleBarModule.active : ''}`}
                     >
-                        <div className={styles.stepNumber}>{number}</div>
-                        <div className={styles.stepText}>{text}</div>
-                        {index < steps.length - 1 && <div className={styles.connectorLine}></div>}
+                        <div className={styleBarModule.stepNumber}>{number}</div>
+                        <div className={styleBarModule.stepText}>{text}</div>
+                        {index < steps.length - 1 && <div className={styleBarModule.connectorLine}></div>}
                     </li>
                 );
             })}
         </ul>
-        <div className={styles.stepContent}>
+        <div className={styleBarModule.stepContent}>
             {steps[activeStep].content}
         </div>
     </div>

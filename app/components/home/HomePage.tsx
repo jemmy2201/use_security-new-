@@ -38,11 +38,6 @@ const HomePage: React.FC = () => {
         }
       };
 
-
-    // const handleLoginClick = () => {
-    //     router.push('/dashboard'); // Navigate to the dashboard route
-    // };
-
     return (<div className={styles.container}>
         <div className={styles.overlay}>
             <div className={styles.content}>
