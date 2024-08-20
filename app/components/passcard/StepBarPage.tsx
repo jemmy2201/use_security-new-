@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import StepBar from './StepBar';
-import Header from '../Header'; // Import the Header component
-import Footer from './Footer'; // Import the Footer component
+import Header from '../Header'; 
+import Footer from './Footer'; 
 
 // Import the step components
 import StepOne from './StepOne';
@@ -11,6 +11,7 @@ import StepTwo from './StepTwo';
 import StepThree from './StepThree';
 import StepFour from './StepFour';
 import StepFive from './StepFive';
+
 
 // Define the steps array with imported components and labels
 const steps = [

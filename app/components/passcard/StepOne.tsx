@@ -33,10 +33,6 @@ const StepOne: React.FC = () => {
         setContactNumber(event.target.value);
     };
 
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value);
-    };
-
     return (
         <div className={styleBarModule.stepContentDiv}>
 

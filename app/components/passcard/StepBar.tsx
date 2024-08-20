@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import styleBarModule from './StepBar.module.css'
+import styleBarModule from './StepBar.module.css';
 // Define the type for the step content
 interface Step {
     content: JSX.Element;
