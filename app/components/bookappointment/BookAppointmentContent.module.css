@@ -1,0 +1,170 @@
+.bookAppointmentContainer {
+  display: flex;
+  padding: 0px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  background: #FFF;
+  justify-content: center;
+}
+
+.bookAppointmentDetailsContainer {
+  display: flex;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.bookAppointmentDetailsContainerSide {
+  display: flex;
+  padding: 0px;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.applicantDetailsHeaderCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.applicantDetailsHeaderCardContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  flex: 1 0 0;
+  color: #000;
+  font-family: Poppins;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 42px;
+  /* 150% */
+}
+
+.applicantDetailsHeaderCardContentDetail {
+  color: #000;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 150% */
+}
+
+.bookAppointmentBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 80px;
+}
+
+.bookAppointmentBoxLine {
+  display: flex;
+  height: 0px;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+}
+
+.customhr {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #000, transparent);
+  margin: 20px 0;
+  /* Adds space above and below the line */
+}
+
+.montoFri {
+  color: #000;
+
+  /* Regular Bold */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  /* 150% */
+}
+
+.montoFriTimings {
+  color: #000;
+  width: 400px;
+  /* Regular */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 150% */
+}
+
+.collectionText {
+  width: 400px;
+  color: #000;
+  /* Regular Bold */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  /* 150% */
+}
+
+.DivStyle {
+  display: flex;
+}
+
+.DivDateContainer {
+  display: flex;
+  width: 400px;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  border-right: 1px solid grey;
+}
+
+.DivDateOfAppintment {
+  color: #000;
+  align-self: stretch;
+  width: 200px;
+  /* Regular Bold */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  /* 150% */
+}
+
+.DivDate {
+  display: flex;
+  padding: 12px 16px;
+  width: 200px;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+  border-radius: 4px;
+  border: 1px solid #546E7A;
+  background: #FFF;
+}
+
+.timeSlotLayout {
+  display: flex;
+  padding: 12px 16px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+  border-radius: 8px;
+  border: 1px solid #546E7A;
+  background:  #FFF;
+}
+
+.timeSlotText{
+  display: flex;
+align-items: flex-start;
+}

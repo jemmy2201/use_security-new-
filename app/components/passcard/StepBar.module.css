@@ -17,12 +17,10 @@
 .stepItem {
     display: flex;
     flex-direction: column;
-    /* Stack the circle and text vertically */
     align-items: center;
     cursor: pointer;
     position: relative;
     margin: 0 30px;
-    /* Space out the steps */
 }
 
 .stepNumber {
@@ -33,12 +31,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: hsla(0, 17%, 94%, 0.911);
+    color: 0, 17%, 94%, 0.911;
     font-weight: bold;
     position: relative;
-    /* Ensure the step number is positioned relative to the connector line */
     z-index: 2;
-    /* Ensure steps are above connectors */
 }
 
 .stepText {
@@ -94,16 +90,21 @@
     align-self: stretch;
 }
 
-.stepContentEmail {
+
+.createNewPassCard {
     display: flex;
-    width: 572px;
-    flex-direction: column;
-    align-items: flex-start;
+    width: 1224px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    color: #000;
 }
 
-.stepContentEmailLabel {
-    display: flex;
-    padding: 0px 1px;
-    align-items: flex-start;
-    align-self: stretch;
+.createNewPassCardText {
+    color: #000;
+    font-family: Poppins;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 50px;
 }

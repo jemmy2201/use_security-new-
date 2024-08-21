@@ -1,10 +1,11 @@
 "use client";
 import React from 'react';
+import styleBarModule from './StepBar.module.css';
+import BookAppointmentPageLink from '../bookappointment/BookAppointmentPage'
 
 const StepFive: React.FC = () => (
-    <div>
-        <h2>Step 5</h2>
-        <p>This is the content for Step 5.</p>
+    <div className={styleBarModule.stepContentDiv}>
+        <BookAppointmentPageLink></BookAppointmentPageLink>
     </div>
 );
 

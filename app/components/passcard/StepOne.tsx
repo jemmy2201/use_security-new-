@@ -1,78 +1,12 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import styleBarModule from './StepBar.module.css';
-import { users as users } from '@prisma/client';
-
+import PersonalDetailsPageLink from '../personaldetails/PersonalDetailsPage'
 const StepOne: React.FC = () => {
-    // State variables to store the input values
-    const [contactNumber, setContactNumber] = useState('');
-    const [email, setEmail] = useState('');
-
-
-    const [loading, setLoading] = useState<boolean>(false);
-    const [users, setUsers] = useState<users>();
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        // Retrieve data from localStorage
-        const storedData = localStorage.getItem('users');
-        if (storedData) {
-            try {
-                const parsedData: users = JSON.parse(storedData);
-                setUsers(parsedData);
-            } catch (err) {
-                setError('Failed to parse user data');
-            }
-        } else {
-            setError('No user data found');
-        }
-    }, []);
-
-    // Handlers for input changes
-    const handleContactNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setContactNumber(event.target.value);
-    };
 
     return (
         <div className={styleBarModule.stepContentDiv}>
-
-            <div>
-                <label>Full name:</label><br></br>
-                <input
-                    type="text"
-                    id="contactNumber"
-                    value={users?.name}
-                />
-            </div>
-
-            <div>
-                <label>NRIC/FIN No.:</label><br></br>
-                <input
-                    type="text"
-                    id="nric"
-                    value={users?.nric ?? ''}
-                />
-            </div>
-
-            <div>
-                <label>Mobile number:</label><br></br>
-                <input
-                    type="text"
-                    id="contactNumber"
-                    value={users?.mobileno ?? ''}
-                    onChange={handleContactNumberChange}
-                />
-            </div>
-
-            <div>
-                <label>Email Address:</label><br></br>
-                <input
-                    type="text"
-                    id="email"
-                    value={users?.email ?? ''}
-                    className={styleBarModule.stepContentEmailLabel}
-                />
-            </div>
+            <PersonalDetailsPageLink></PersonalDetailsPageLink>
         </div>
     );
 };

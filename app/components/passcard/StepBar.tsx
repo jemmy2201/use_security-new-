@@ -16,24 +16,29 @@ interface StepBarProps {
 
 const StepBar: React.FC<StepBarProps> = ({ steps, activeStep }) => (
     <div className={styleBarModule.stepBarContainer}>
-        <ul className={styleBarModule.stepList}>
-            {steps.map((step, index) => {
-                const [number, ...textArray] = step.label.split(' '); // Split label into number and text
-                const text = textArray.join(' '); // Join text parts into a single string
-                return (
-                    <li
-                        key={index}
-                        className={`${styleBarModule.stepItem} ${index === activeStep ? styleBarModule.active : ''}`}
-                    >
-                        <div className={styleBarModule.stepNumber}>{number}</div>
-                        <div className={styleBarModule.stepText}>{text}</div>
-                        {index < steps.length - 1 && <div className={styleBarModule.connectorLine}></div>}
-                    </li>
-                );
-            })}
-        </ul>
-        <div className={styleBarModule.stepContent}>
-            {steps[activeStep].content}
+        <div className={styleBarModule.createNewPassCard}>
+                <h2 className={styleBarModule.createNewPassCardText}>Create new pass card</h2>
+        </div>
+        <div>
+            <ul className={styleBarModule.stepList}>
+                {steps.map((step, index) => {
+                    const [number, ...textArray] = step.label.split(' '); // Split label into number and text
+                    const text = textArray.join(' '); // Join text parts into a single string
+                    return (
+                        <li
+                            key={index}
+                            className={`${styleBarModule.stepItem} ${index === activeStep ? styleBarModule.active : ''}`}
+                        >
+                            <div className={styleBarModule.stepNumber}>{number}</div>
+                            <div className={styleBarModule.stepText}>{text}</div>
+                            {index < steps.length - 1 && <div className={styleBarModule.connectorLine}></div>}
+                        </li>
+                    );
+                })}
+            </ul>
+            <div className={styleBarModule.stepContent}>
+                {steps[activeStep].content}
+            </div>
         </div>
     </div>
 );

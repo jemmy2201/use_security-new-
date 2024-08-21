@@ -1,0 +1,52 @@
+.paymentContainer {
+  display: flex;
+  padding: 0px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  background: #FFF;
+  justify-content: center;
+}
+
+.paymentContainerHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+
+
+
+.content {
+  display: flex;
+  width: 1224px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.applicantDetails {
+  display: flex;
+  width: 1224px;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+
+.stepContentEmail {
+  display: flex;
+  width: 572px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.stepContentEmailLabel {
+  display: flex;
+  padding: 0px 1px;
+  align-items: flex-start;
+  align-self: stretch;
+}

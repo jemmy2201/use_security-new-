@@ -2,15 +2,33 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import applicantDetailsstyles from './ApplicantDetailsStyle.module.css';
-import headerstyles from './HeaderStyle.module.css';
-import footerstyles from './FooterStyle.module.css';
 import applicantDetailsContentstyles from './ApplicantDetailsContent.module.css';
 import { booking_schedules as bookingDetail } from '@prisma/client';
 import { users as users } from '@prisma/client';
-i
+import ImageProcessingPage from './ImageProcessing'
+
+type CheckboxState = {
+    [key: string]: boolean;
+};
 
 const ApplicantDetailsPage: React.FC = () => {
+
+    // Initialize the state for checkboxes
+    const [checkboxes, setCheckboxes] = useState<CheckboxState>({
+        checkbox1: false,
+        checkbox2: false,
+        checkbox3: false,
+        checkbox4: false,
+    });
+
+    // Handle change event for checkboxes
+    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, checked } = event.target;
+        setCheckboxes(prevState => ({
+            ...prevState,
+            [name]: checked,
+        }));
+    };
 
     const [loading, setLoading] = useState<boolean>(false);
     const [bookingSchedules, setBookingSchedules] = useState<bookingDetail[]>([]);
@@ -18,58 +36,165 @@ const ApplicantDetailsPage: React.FC = () => {
     const router = useRouter();
 
 
+    const [selectedOption, setSelectedOption] = useState<string>('SO');
 
+    const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedOption(event.target.value);
+    };
 
-    return (<div className={applicantDetailsstyles.container}>
-        <div className={applicantDetailsstyles.overlay}>
-            <div className={applicantDetailsstyles.content}>
-                <div className={headerstyles.header}>
-                    <div className={headerstyles.logo}>
-                        <img src="/images/logo.png" alt="Logo" />
-                    </div>
-                    <div className={headerstyles.headercontainer}>
-                        <span className={headerstyles.contactus}>
-                            <p>Contact Us</p>
-                        </span>
-                        <span className={headerstyles.logoutButton}>
-                            <button>Log out</button>
-                        </span>
-                    </div>
-                </div>
+    return (
 
-                <div className={applicantDetailsContentstyles.content}>
-                    <div className={applicantDetailsContentstyles.content}>
-                        <div>
-                            
+        <div className={applicantDetailsContentstyles.paymentContainer}>
+            <form>
+                <div className={applicantDetailsContentstyles.applicantDetails}>
+                    <div className={applicantDetailsContentstyles.applicantDetailsHeaderCard}>
+                        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContent}>
+                            Applicant Details
+                        </div>
+                        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
+                            Please select the pass card type you would like to apply for.
                         </div>
                     </div>
 
-                    <div className={applicantDetailsContentstyles.uploadPhoto}>
-
+                    <div className={applicantDetailsContentstyles.options}>
+                        <div className={applicantDetailsContentstyles.optionsHeader}>
+                            <div className={applicantDetailsContentstyles.optionsHeaderText}>
+                                Type of application
+                            </div>
+                            <div>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        value="SO"
+                                        checked={selectedOption === 'SO'}
+                                        onChange={handleOptionChange}
+                                    />
+                                    Security Officer (SO)
+                                </label>
+                                <br />
+                                <label>
+                                    <input
+                                        type="radio"
+                                        value="AVSO"
+                                        checked={selectedOption === 'AVSO'}
+                                        onChange={handleOptionChange}
+                                    />
+                                    Aviation Security Officer (AVSO)
+                                </label>
+                                <br />
+                                <label>
+                                    <input
+                                        type="radio"
+                                        value="PI"
+                                        checked={selectedOption === 'PI'}
+                                        onChange={handleOptionChange}
+                                    />
+                                    Private Investigator (PI)
+                                </label>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <div className={applicantDetailsContentstyles.trainingRecord}>
-
+                <div className={applicantDetailsContentstyles.applicantDetails}>
+                    <div className={applicantDetailsContentstyles.applicantDetailsHeaderCard}>
+                        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContent}>
+                            Photo
+                        </div>
+                        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
+                            This photo will be used for your pass card. Please upload a photo that was taken within the last 3 months.
+                        </div>
+                        <ImageProcessingPage></ImageProcessingPage>
                     </div>
-
                 </div>
 
 
-                <div className={footerstyles.footer}>
-                    <div className={footerstyles.cta}>
-                        <div className={footerstyles.text}>Privacy Notice</div>
-                        <div className={footerstyles.text}>|</div>
-                        <div className={footerstyles.text}>Terms & Conditions</div>
-                        <div className={footerstyles.text}>|</div>
-                        <div className={footerstyles.text}>FAQs</div>
-                    </div>
-                    <div className={footerstyles.copyright}>
-                        <div className={footerstyles.text}>Copyright © 2024 Union of Security Employees (USE). All rights reserved.</div>
+
+                <div className={applicantDetailsContentstyles.applicantDetails}>
+                    <div className={applicantDetailsContentstyles.applicantDetailsHeaderCard}>
+                        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContent}>
+                            Training records
+                        </div>
+
+                        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
+                            Types of trainings
+                        </div>
+                        <div>
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                                <input
+                                    type="checkbox"
+                                    name="checkbox1"
+                                    checked={checkboxes.checkbox1}
+                                    onChange={handleCheckboxChange}
+                                    className={applicantDetailsContentstyles.checkboxes}
+                                />
+                                Recognise Terrorist Threat (RTT)
+                            </label>
+                        </div>
+                        <div>
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                                <input
+                                    type="checkbox"
+                                    name="checkbox2"
+                                    checked={checkboxes.checkbox2}
+                                    onChange={handleCheckboxChange}
+                                    className={applicantDetailsContentstyles.checkboxes}
+                                />
+                                Recognise Terrorist Threat (RTT)
+                            </label>
+                        </div>
+                        <div>
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                                <input
+                                    type="checkbox"
+                                    name="checkbox3"
+                                    checked={checkboxes.checkbox3}
+                                    onChange={handleCheckboxChange}
+                                    className={applicantDetailsContentstyles.checkboxes}
+                                />
+                                Recognise Terrorist Threat (RTT)
+                            </label>
+                        </div>
+                        <div>
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                                <input
+                                    type="checkbox"
+                                    name="checkbox4"
+                                    checked={checkboxes.checkbox4}
+                                    onChange={handleCheckboxChange}
+                                    className={applicantDetailsContentstyles.checkboxes}
+                                />
+                                Recognise Terrorist Threat (RTT)
+                            </label>
+                        </div>
+                        <div>
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                                <input
+                                    type="checkbox"
+                                    name="checkbox5"
+                                    checked={checkboxes.checkbox5}
+                                    onChange={handleCheckboxChange}
+                                    className={applicantDetailsContentstyles.checkboxes}
+                                />
+                                Conduct Screening using X-ray Machine (X-RAY)
+                            </label>
+                        </div>
+                        <div>
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                                <input
+                                    type="checkbox"
+                                    name="checkbox6"
+                                    checked={checkboxes.checkbox6}
+                                    onChange={handleCheckboxChange}
+                                    className={applicantDetailsContentstyles.checkboxes}
+                                />
+                                Airport Screener Deployment (For AVSO Only)
+                            </label>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
-    </div>
     );
 };
 
