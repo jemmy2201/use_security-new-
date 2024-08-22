@@ -7,6 +7,7 @@ import { booking_schedules as bookingDetail } from '@prisma/client';
 import { users as users } from '@prisma/client';
 import ImageProcessingPage from './ImageProcessing'
 import bookingDetailData from '../../types/bookingDetailDataObject'
+import { useFormContext } from '.././FormContext';
 
 type CheckboxState = {
     [key: string]: boolean;
@@ -14,12 +15,27 @@ type CheckboxState = {
 
 const ApplicantDetailsPage: React.FC = () => {
 
+    const { formData, setFormData } = useFormContext();
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log('id', event.target.id );
+        console.log('value', event.target.value );
+        console.log('name', event.target.name );
+        const { id, value } = event.target;
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [id]: value,
+        }));
+    };
+
     // Initialize the state for checkboxes
     const [checkboxes, setCheckboxes] = useState<CheckboxState>({
-        checkbox1: false,
-        checkbox2: false,
-        checkbox3: false,
-        checkbox4: false,
+        trRtt: false,
+        trCsspb: false,
+        trCctc: false,
+        trHcta: false,
+        trXray: false,
+        trAvso: false,
     });
 
     // Handle change event for checkboxes
@@ -29,6 +45,12 @@ const ApplicantDetailsPage: React.FC = () => {
             ...prevState,
             [name]: checked,
         }));
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: checked,
+        }));
+        console.log('value', event.target.value );
+        console.log('name', event.target.name );
     };
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -37,38 +59,38 @@ const ApplicantDetailsPage: React.FC = () => {
     const router = useRouter();
     const [applicationType, setApplicationType] = useState('');
 
-    const [bookingDetailData, setBookingDetailData] = useState<bookingDetailData>({
-        id: '',
-        nric: '',
-        trXray: '',
-        trAvso: '',
-        
-    });
-
     const [selectedOption, setSelectedOption] = useState<string>('SO');
 
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log('target id',event.target.id)
+        console.log('target value',event.target.value)
         setSelectedOption(event.target.value);
-        setBookingDetailData({ ...bookingDetailData, appType: event.target.value });
         setApplicationType(event.target.value);
-        localStorage.setItem('applicantDetails: bookingDetailData', JSON.stringify(bookingDetailData));
+        const { id, value } = event.target;
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [id]: value,
+        }));
+        
     };
 
-    useEffect(() => {
-        const storedBookingDetailData = localStorage.getItem('bookingDetailData');
-        if (storedBookingDetailData) {
-            try {
-                const parsedBookingDetailData: bookingDetailData = JSON.parse(storedBookingDetailData);
-                console.log('applicantDetails: storedBookingDetail data', parsedBookingDetailData);
-                setBookingDetailData(parsedBookingDetailData);
-            } catch (err) {
-                setError('Failed to parse BookingDetail data');
-            }
-        } else {
-            setError('No BookingDetail data found');
-        }
-    }, []);
 
+    useEffect(() => {
+        // Set the selected option from formData if available
+        if (formData.applicationType) {
+            setSelectedOption(formData.applicationType);
+
+            setCheckboxes({
+                trRtt: formData?.trRtt || false,  // Set checkbox state based on formData
+                trCsspb: formData?.trCsspb || false,
+                trCctc: formData?.trCctc || false,
+                trHcta: formData?.trHcta || false,
+                trXray: formData?.trXray || false,
+                trAvso: formData?.trAvso || false,
+            });
+        }
+
+    }, []); // Empty dependency array ensures this runs only once
 
     return (
 
@@ -94,6 +116,7 @@ const ApplicantDetailsPage: React.FC = () => {
                                     <input
                                         type="radio"
                                         value="SO"
+                                        id = "applicationType"
                                         checked={selectedOption === 'SO'}
                                         onChange={handleOptionChange}
                                     />
@@ -104,6 +127,7 @@ const ApplicantDetailsPage: React.FC = () => {
                                     <input
                                         type="radio"
                                         value="AVSO"
+                                        id = "applicationType"
                                         checked={selectedOption === 'AVSO'}
                                         onChange={handleOptionChange}
                                     />
@@ -114,6 +138,7 @@ const ApplicantDetailsPage: React.FC = () => {
                                     <input
                                         type="radio"
                                         value="PI"
+                                        id = "applicationType"
                                         checked={selectedOption === 'PI'}
                                         onChange={handleOptionChange}
                                     />
@@ -151,8 +176,8 @@ const ApplicantDetailsPage: React.FC = () => {
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <input
                                     type="checkbox"
-                                    name="checkbox1"
-                                    checked={checkboxes.checkbox1}
+                                    name="trRtt"
+                                    checked={checkboxes.trRtt}
                                     onChange={handleCheckboxChange}
                                     className={applicantDetailsContentstyles.checkboxes}
                                 />
@@ -163,44 +188,44 @@ const ApplicantDetailsPage: React.FC = () => {
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <input
                                     type="checkbox"
-                                    name="checkbox2"
-                                    checked={checkboxes.checkbox2}
+                                    name="trCsspb"
+                                    checked={checkboxes.trCsspb}
                                     onChange={handleCheckboxChange}
                                     className={applicantDetailsContentstyles.checkboxes}
                                 />
-                                Recognise Terrorist Threat (RTT)
+                                Conduct Security Screening of Person and Bag (CSSPB)
                             </label>
                         </div>
                         <div>
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <input
                                     type="checkbox"
-                                    name="checkbox3"
-                                    checked={checkboxes.checkbox3}
+                                    name="trCctc"
+                                    checked={checkboxes.trCctc}
                                     onChange={handleCheckboxChange}
                                     className={applicantDetailsContentstyles.checkboxes}
                                 />
-                                Recognise Terrorist Threat (RTT)
+                                Conduct Crowd and Traffic Control (CCTC)
                             </label>
                         </div>
                         <div>
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <input
                                     type="checkbox"
-                                    name="checkbox4"
-                                    checked={checkboxes.checkbox4}
+                                    name="trHcta"
+                                    checked={checkboxes.trHcta}
                                     onChange={handleCheckboxChange}
                                     className={applicantDetailsContentstyles.checkboxes}
                                 />
-                                Recognise Terrorist Threat (RTT)
+                                Handle Counter Terrorist Activities (HCTA)
                             </label>
                         </div>
                         <div>
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <input
                                     type="checkbox"
-                                    name="checkbox5"
-                                    checked={checkboxes.checkbox5}
+                                    name="trXray"
+                                    checked={checkboxes.trXray}
                                     onChange={handleCheckboxChange}
                                     className={applicantDetailsContentstyles.checkboxes}
                                 />
@@ -211,8 +236,8 @@ const ApplicantDetailsPage: React.FC = () => {
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <input
                                     type="checkbox"
-                                    name="checkbox6"
-                                    checked={checkboxes.checkbox6}
+                                    name="trAvso"
+                                    checked={checkboxes.trAvso}
                                     onChange={handleCheckboxChange}
                                     className={applicantDetailsContentstyles.checkboxes}
                                 />

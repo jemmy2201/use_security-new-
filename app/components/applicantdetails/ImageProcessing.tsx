@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as faceapi from 'face-api.js';
+import { useFormContext } from '.././FormContext';
 
 const ImageProcessing = () => {
+
+  const { formData, setFormData } = useFormContext();
   const [image, setImage] = useState<string | null>(null);
   const [faceDetected, setFaceDetected] = useState<boolean>(false);
   const [bgColorMatch, setBgColorMatch] = useState<boolean>(false);
@@ -28,7 +31,10 @@ const ImageProcessing = () => {
     if (file) {
       const img = URL.createObjectURL(file);
       setImage(img);
-
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        ['image']: img,
+      }));
       const imageElement = new Image();
       imageElement.src = img;
       imageElement.onload = async () => {
@@ -52,7 +58,10 @@ const ImageProcessing = () => {
           // Resize image
           const resizedImage = resizeImage(imageElement, 200, 200);
           setImage(resizedImage);
-
+          setFormData(prevFormData => ({
+            ...prevFormData,
+            ['image']: img,
+          }));
           // Call API with processed image data
           await sendImageToAPI(resizedImage, isFaceDetected, isBgColorMatch, isSpectacleDetected, bc);
         } catch (error) {
@@ -184,7 +193,7 @@ const ImageProcessing = () => {
   return (
     <div>
       <input type="file" accept="image/*" onChange={handleImageUpload} />
-      {image && <img src={image} alt="Processed" />}
+      {formData.image && <img src={formData.image} alt="Processed" />}
       {faceDetected ? (
         <p>Face detected</p>
       ) : (

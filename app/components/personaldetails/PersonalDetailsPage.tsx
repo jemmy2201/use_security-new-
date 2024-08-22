@@ -5,73 +5,52 @@ import { useRouter } from 'next/navigation';
 import { booking_schedules as bookingDetail } from '@prisma/client';
 import { users as users } from '@prisma/client';
 import personalDetailsContentstyles from './PersonalDetailsContent.module.css';
-import bookingDetailData from '../../types/bookingDetailDataObject'
-
+import { useFormContext } from '.././FormContext';
 
 const PersonalDetailsPage: React.FC = () => {
 
-    const [contactNumber, setContactNumber] = useState('');
-    const [email, setEmail] = useState('');
-    const [bookingSchedules, setBookingSchedules] = useState<bookingDetail[]>([]);
-    const router = useRouter();
+    const { formData, setFormData } = useFormContext();
 
-    const [bookingDetailData, setBookingDetailData] = useState<bookingDetailData>({
-        id: '',
-        nric: '',
-        trXray: '',
-        trAvso: '',
-    });
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = event.target;
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [id]: value,
+        }));
+    };
 
     const [loading, setLoading] = useState<boolean>(false);
+
+    const router = useRouter();
+
     const [users, setUsers] = useState<users>();
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const storedData = localStorage.getItem('users');
-        if (storedData) {
-            try {
-                const parsedData: users = JSON.parse(storedData);
-                setUsers(parsedData);
-                setContactNumber(parsedData?.mobileno ?? '');
-                setEmail(parsedData?.email ?? '');
-            } catch (err) {
-                setError('Failed to parse user data');
-            }
-        } else {
-            setError('No user data found');
-        }
-        const storedBookingDetailData = localStorage.getItem('bookingDetailData');
-        if (storedBookingDetailData) {
-            try {
-                const parsedBookingDetailData: bookingDetailData = JSON.parse(storedBookingDetailData);
-                console.log('personal details: storedBookingDetail data', parsedBookingDetailData);
-                setContactNumber(parsedBookingDetailData?.mobileno ?? '');
-                setEmail(parsedBookingDetailData?.email ?? '');
-            } catch (err) {
-                setError('Failed to parse BookingDetail data');
-            }
-        } else {
-            setError('No BookingDetail data found');
-        }
-    }, []);
+        if (!formData.email && !formData.mobileno) { 
+            const storedData = localStorage.getItem('users');
+            if (storedData) {
+                try {
+                    const parsedData: users = JSON.parse(storedData);
+                    setUsers(parsedData);
+                    // Initialize formData only if it's empty
+                    setFormData({
+                        email: parsedData?.email ?? '',
+                        mobileno: parsedData?.mobileno ?? '',
+                        name: parsedData?.name ?? '',
+                        nric: parsedData?.nric ?? '',
+                    });
 
-    // Handlers for input changes
-    const handleContactNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        if (/^\d*$/.test(value)) {
-            setBookingDetailData({ ...bookingDetailData, mobileno: event.target.value });
-            setContactNumber(event.target.value);
-            localStorage.setItem('bookingDetailData', JSON.stringify(bookingDetailData));
+                    console.log('Parsed data:', parsedData);
+                } catch (err) {
+                    setError('Failed to parse user data');
+                }
+            } else {
+                setError('No user data found');
+            }
         }
-    };
+    }, []); // Empty dependency array ensures this runs only once
 
-    // Handlers for input changes
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setBookingDetailData({ ...bookingDetailData, email: event.target.value });
-        setEmail(event.target.value);
-        localStorage.setItem('bookingDetailData', JSON.stringify(bookingDetailData));
-    };
 
 
     return (
@@ -82,7 +61,7 @@ const PersonalDetailsPage: React.FC = () => {
                 <input
                     type="text"
                     id="name"
-                    value={users?.name}
+                    value={formData.name || ''}
                 />
             </div>
 
@@ -91,31 +70,32 @@ const PersonalDetailsPage: React.FC = () => {
                 <input
                     type="text"
                     id="nric"
-                    value={users?.nric ?? ''}
+                    value={formData.nric || ''}
                 />
             </div>
 
             <div>
                 <label>Mobile number:</label><br></br>
                 <input
-                    type="text"
-                    id="contactNumber"
-                    value={contactNumber}
-                    onChange={handleContactNumberChange}
+                    type="number"
+                    id="mobileno"
+                    value={formData.mobileno || ''}
+                    onChange={handleChange}
                     className={personalDetailsContentstyles.mobileNoFieldBox}
                 />
             </div>
 
             <div>
-                <label>Email Address:</label><br></br>
+                <label>Email Address:</label><br />
                 <input
                     type="text"
                     id="email"
-                    value={email}
-                    onChange={handleEmailChange}
+                    value={formData.email || ''}
+                    onChange={handleChange}
                     className={personalDetailsContentstyles.mobileNoFieldBox}
                 />
             </div>
+
 
         </div>
     );

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import StepBar from './StepBar';
-import Footer from './Footer'; 
+import Footer from './Footer';
 
 // Import the step components
 import StepOne from './StepOne';
@@ -14,6 +14,7 @@ import StepFive from './StepFive';
 import FooterPageLink from '../footer/FooterPage'
 import HeaderPageLink from '../header/HeaderPage'
 
+import { FormProvider } from '../FormContext';
 
 // Define the steps array with imported components and labels
 const steps = [
@@ -46,16 +47,18 @@ const StepBarHomePage: React.FC = () => {
     return (
         <div>
             <HeaderPageLink></HeaderPageLink>
-            <main style={{ padding: '20px', minHeight: '70vh' }}>
-                <StepBar steps={steps} activeStep={activeStep} />
-            </main>
-            <Footer 
+            <FormProvider>
+                <main style={{ padding: '20px', minHeight: '70vh' }}>
+                    <StepBar steps={steps} activeStep={activeStep} />
+                </main>
+            </FormProvider>
+            <Footer
                 onNext={handleNext}
                 onBack={handleBack}
                 onSaveDraft={handleSaveDraft}
                 hasNext={activeStep < steps.length - 1}
                 hasBack={activeStep > 0}
-            /> 
+            />
             <FooterPageLink></FooterPageLink>
         </div>
     );
