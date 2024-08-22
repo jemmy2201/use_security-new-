@@ -73,7 +73,6 @@ const DashBoardPage: React.FC = () => {
         const storedData = localStorage.getItem('bookingSchedules');
         if (storedData) {
             try {
-
                 const parsedData: bookingDetail[] = JSON.parse(storedData);
                 setBookingSchedules(parsedData);
 
@@ -87,76 +86,71 @@ const DashBoardPage: React.FC = () => {
 
 
     return (<div className={styles.container}>
-        <div className={styles.overlay}>
-            <div className={styles.content}>
-                <div >
-                    <HeaderPageLink />
+        <div className={styles.content}>
+            <div >
+                <HeaderPageLink />
+            </div>
+
+            <div className={dashBoardContentstyles.content}>
+
+                <div className={dashBoardContentstyles.tableHeader}>
+                    <span className={dashBoardContentstyles.tableContent} style={{ textAlign: 'right' }}>
+                        My Applications
+                    </span>
+                    <span className={dashBoardContentstyles.primaryButton}>
+                        <button className={dashBoardContentstyles.primaryButtonText} style={{ textAlign: 'left' }} onClick={handleNewPasscardClick}>
+                            Create new pass card
+                        </button>
+                    </span>
                 </div>
 
-                <div className={dashBoardContentstyles.content}>
-                    <table className={dashBoardContentstyles.tableHeader}>
-                        <thead>
+
+                <table className={dashBoardContentstyles.dashBoardTable}>
+                    <thead className={dashBoardContentstyles.dashBoardTableHeader}>
+
+
+                        <tr>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Application type</th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Pass card type</th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Grade</th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Application date</th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Training Status</th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Application Status</th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody className={dashBoardContentstyles.dashBoardTableHeader}>
+                        {bookingSchedules.map((booking) => (
                             <tr>
-                                <th className={dashBoardContentstyles.tableContent} style={{ textAlign: 'right' }}>
-                                    My Applications
-                                </th>
-                                <th className={dashBoardContentstyles.primaryButton}>
-                                    <button className={dashBoardContentstyles.primaryButtonText} style={{ textAlign: 'left' }} onClick={handleNewPasscardClick}>
-                                        Create new pass card
-                                    </button>
-                                </th>
+                                <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.app_type}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
+                                <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.card_id}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
+                                <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.grade_id}>{booking.grade_id}</td>
+                                <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.trans_date}>{booking.trans_date}</td>
+                                <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.TR_AVSO}>{booking.TR_AVSO}</td>
+                                <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.Status_app}>{statusTypeMap[booking.Status_app || ''] || 'Unknown'}</td>
+                                <td className={dashBoardContentstyles.dashBoardTableHeaderContentData}>
+                                    <a href="/edit" onClick={(e) => {
+                                        e.preventDefault(); handleNewPasscardClick();
+                                    }}
+                                        style={{ color: 'blue', marginRight: '10px' }}>
+                                        Edit
+                                    </a>
+                                    <a href="/edit" onClick={(e) => {
+                                        e.preventDefault(); handleNewPasscardClick();
+                                    }}
+                                        style={{ color: 'blue', marginRight: '0px' }}>
+                                        Delete
+                                    </a>
+                                </td>
                             </tr>
-                        </thead>
-
-                    </table>
-
-                    <table className={dashBoardContentstyles.dashBoardTable}>
-                        <thead className={dashBoardContentstyles.dashBoardTableHeader}>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
 
-                            <tr>
-                                <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Application type</th>
-                                <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Pass card type</th>
-                                <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Grade</th>
-                                <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Application date</th>
-                                <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Training Status</th>
-                                <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Application Status</th>
-                                <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {bookingSchedules.map((booking) => (
-                                <tr>
-                                    <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.app_type}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
-                                    <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.card_id}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
-                                    <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.grade_id}>{booking.grade_id}</td>
-                                    <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.trans_date}>{booking.trans_date}</td>
-                                    <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.TR_AVSO}>{booking.TR_AVSO}</td>
-                                    <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.Status_app}>{statusTypeMap[booking.Status_app || ''] || 'Unknown'}</td>
-                                    <td className={dashBoardContentstyles.dashBoardTableHeaderContentData}>
-                                        <a href="/edit" onClick={(e) => {
-                                            e.preventDefault(); handleNewPasscardClick();
-                                        }}
-                                            style={{ color: 'blue', marginRight: '10px' }}>
-                                            Edit
-                                        </a>
-                                        <a href="/edit" onClick={(e) => {
-                                            e.preventDefault(); handleNewPasscardClick();
-                                        }}
-                                            style={{ color: 'blue', marginRight: '0px' }}>
-                                            Delete
-                                        </a>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <div >
-                    <FooterPageLink />
-                </div>
+            <div >
+                <FooterPageLink />
             </div>
         </div>
     </div>
