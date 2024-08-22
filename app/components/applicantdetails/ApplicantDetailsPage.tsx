@@ -6,6 +6,7 @@ import applicantDetailsContentstyles from './ApplicantDetailsContent.module.css'
 import { booking_schedules as bookingDetail } from '@prisma/client';
 import { users as users } from '@prisma/client';
 import ImageProcessingPage from './ImageProcessing'
+import bookingDetailData from '../../types/bookingDetailDataObject'
 
 type CheckboxState = {
     [key: string]: boolean;
@@ -34,13 +35,40 @@ const ApplicantDetailsPage: React.FC = () => {
     const [bookingSchedules, setBookingSchedules] = useState<bookingDetail[]>([]);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+    const [applicationType, setApplicationType] = useState('');
 
+    const [bookingDetailData, setBookingDetailData] = useState<bookingDetailData>({
+        id: '',
+        nric: '',
+        trXray: '',
+        trAvso: '',
+        
+    });
 
     const [selectedOption, setSelectedOption] = useState<string>('SO');
 
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedOption(event.target.value);
+        setBookingDetailData({ ...bookingDetailData, appType: event.target.value });
+        setApplicationType(event.target.value);
+        localStorage.setItem('applicantDetails: bookingDetailData', JSON.stringify(bookingDetailData));
     };
+
+    useEffect(() => {
+        const storedBookingDetailData = localStorage.getItem('bookingDetailData');
+        if (storedBookingDetailData) {
+            try {
+                const parsedBookingDetailData: bookingDetailData = JSON.parse(storedBookingDetailData);
+                console.log('applicantDetails: storedBookingDetail data', parsedBookingDetailData);
+                setBookingDetailData(parsedBookingDetailData);
+            } catch (err) {
+                setError('Failed to parse BookingDetail data');
+            }
+        } else {
+            setError('No BookingDetail data found');
+        }
+    }, []);
+
 
     return (
 

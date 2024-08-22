@@ -153,6 +153,8 @@
 }
 
 .timeSlotLayout {
+  margin: 15px;
+  width: 300px;
   display: flex;
   padding: 12px 16px;
   flex-direction: column;
