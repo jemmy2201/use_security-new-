@@ -4,9 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import applicantDetailsContentstyles from './ApplicantDetailsContent.module.css';
 import { booking_schedules as bookingDetail } from '@prisma/client';
-import { users as users } from '@prisma/client';
 import ImageProcessingPage from './ImageProcessing'
-import bookingDetailData from '../../types/bookingDetailDataObject'
 import { useFormContext } from '.././FormContext';
 
 type CheckboxState = {
@@ -79,7 +77,7 @@ const ApplicantDetailsPage: React.FC = () => {
         // Set the selected option from formData if available
         if (formData.applicationType) {
             setSelectedOption(formData.applicationType);
-
+            console.log('form data', formData);
             setCheckboxes({
                 trRtt: formData?.trRtt || false,  // Set checkbox state based on formData
                 trCsspb: formData?.trCsspb || false,

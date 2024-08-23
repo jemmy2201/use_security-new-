@@ -90,6 +90,14 @@
     align-self: stretch;
 }
 
+.footerContentDiv{
+    display: flex;
+width: 1224px;
+flex-direction: column;
+align-items: flex-start;
+gap: 40px;
+}
+
 
 .createNewPassCard {
     display: flex;

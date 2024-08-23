@@ -36,6 +36,7 @@ const PersonalDetailsPage: React.FC = () => {
                     // Initialize formData only if it's empty
                     setFormData({
                         email: parsedData?.email ?? '',
+                        originalMobileno: parsedData?.mobileno ?? '',
                         mobileno: parsedData?.mobileno ?? '',
                         name: parsedData?.name ?? '',
                         nric: parsedData?.nric ?? '',

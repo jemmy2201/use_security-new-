@@ -5,6 +5,7 @@ interface FormData {
     name?: string;
     nric?: string;
     email?: string;
+    originalMobileno?:string;
     mobileno?:string;
     applicationType?:string;
     trRtt?: string;

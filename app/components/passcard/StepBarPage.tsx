@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StepBar from './StepBar';
 import Footer from './Footer';
 
@@ -46,20 +46,21 @@ const StepBarHomePage: React.FC = () => {
 
     return (
         <div>
-            <HeaderPageLink></HeaderPageLink>
             <FormProvider>
+                <HeaderPageLink></HeaderPageLink>
                 <main style={{ padding: '20px', minHeight: '70vh' }}>
                     <StepBar steps={steps} activeStep={activeStep} />
                 </main>
+                <Footer
+                    onNext={handleNext}
+                    onBack={handleBack}
+                    onSaveDraft={handleSaveDraft}
+                    hasNext={activeStep < steps.length - 1}
+                    hasBack={activeStep > 0}
+                    activeStep={activeStep}
+                />
+                <FooterPageLink></FooterPageLink>
             </FormProvider>
-            <Footer
-                onNext={handleNext}
-                onBack={handleBack}
-                onSaveDraft={handleSaveDraft}
-                hasNext={activeStep < steps.length - 1}
-                hasBack={activeStep > 0}
-            />
-            <FooterPageLink></FooterPageLink>
         </div>
     );
 };
