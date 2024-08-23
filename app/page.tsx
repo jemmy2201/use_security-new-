@@ -8,7 +8,7 @@ const UseHomePage: React.FC = () => {
     return (
         <div>
             <FormProvider>
-            <HomePage /> 
+                <HomePage />
             </FormProvider>
         </div>
     );
