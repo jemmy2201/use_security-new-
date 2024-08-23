@@ -5,7 +5,6 @@ export function encryptDecrypt(input: string, action = 'decrypt') {
     const secretKey = process.env.SECRET_KEY;
     const secretIv = process.env.SECRET_IV;
 
-
     if (!secretKey || !secretIv) {
         throw new Error("Environment variables SECRET_KEY and SECRET_IV must be set");
     }

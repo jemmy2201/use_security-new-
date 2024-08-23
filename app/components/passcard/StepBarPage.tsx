@@ -10,11 +10,12 @@ import StepTwo from './StepTwo';
 import StepThree from './StepThree';
 import StepFour from './StepFour';
 import StepFive from './StepFive';
+import OtpPopup from './OtpPopup';
 
 import FooterPageLink from '../footer/FooterPage'
 import HeaderPageLink from '../header/HeaderPage'
-
-import { FormProvider } from '../FormContext';
+import { useFormContext } from '.././FormContext';
+import stepBarModuleStyle from './StepBar.module.css';
 
 // Define the steps array with imported components and labels
 const steps = [
@@ -27,13 +28,32 @@ const steps = [
 
 const StepBarHomePage: React.FC = () => {
     const [activeStep, setActiveStep] = useState<number>(0);
+    const { formData, setFormData } = useFormContext();
+    const [isOtpPopupOpen, setIsOtpPopupOpen] = useState<boolean>(false); // State for OTP popup
+    const [isOtpVerified, setIsOtpVerified] = useState<boolean>(false);
 
     const handleNext = () => {
-        if (activeStep < steps.length - 1) {
-            setActiveStep(prevStep => prevStep + 1);
+
+        if (formData.originalMobileno === formData.mobileno || isOtpVerified) {
+            console.log('same mobile');
+            if (activeStep < steps.length - 1) {
+                setActiveStep(prevStep => prevStep + 1);
+            }
+        } else {
+            console.log('mobile changed');
+            setIsOtpPopupOpen(true); // Open OTP popup when the mobile number changes
         }
     };
 
+    const handleOtpSubmit = () => {
+        // Logic to handle OTP submission
+        setIsOtpPopupOpen(false);
+        setIsOtpVerified(true); // Close OTP popup after OTP is verified
+    };
+
+    const handleOtpCancel = () => {
+        setIsOtpPopupOpen(false); // Close OTP popup if user cancels
+    };
     const handleBack = () => {
         if (activeStep > 0) {
             setActiveStep(prevStep => prevStep - 1);
@@ -46,21 +66,24 @@ const StepBarHomePage: React.FC = () => {
 
     return (
         <div>
-            <FormProvider>
-                <HeaderPageLink></HeaderPageLink>
-                <main style={{ padding: '20px', minHeight: '70vh' }}>
-                    <StepBar steps={steps} activeStep={activeStep} />
-                </main>
-                <Footer
-                    onNext={handleNext}
-                    onBack={handleBack}
-                    onSaveDraft={handleSaveDraft}
-                    hasNext={activeStep < steps.length - 1}
-                    hasBack={activeStep > 0}
-                    activeStep={activeStep}
-                />
-                <FooterPageLink></FooterPageLink>
-            </FormProvider>
+            <HeaderPageLink></HeaderPageLink>
+            <main style={{ padding: '20px', minHeight: '70vh' }}>
+                <StepBar steps={steps} activeStep={activeStep} />
+            </main>
+            <Footer
+                onNext={handleNext}
+                onBack={handleBack}
+                onSaveDraft={handleSaveDraft}
+                hasNext={activeStep < steps.length - 1}
+                hasBack={activeStep > 0}
+                activeStep={activeStep}
+            />
+            <FooterPageLink></FooterPageLink>
+            <OtpPopup
+                isOpen={isOtpPopupOpen}
+                onClose={handleOtpCancel}
+                onSubmit={handleOtpSubmit}
+            />
         </div>
     );
 };
