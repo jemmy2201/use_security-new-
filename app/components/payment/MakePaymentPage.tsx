@@ -3,17 +3,17 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import makePaymentContentstyles from './MakePaymentContent.module.css';
-import { booking_schedules as bookingDetail } from '@prisma/client';
-import { users as users } from '@prisma/client';
 import { loadStripe } from '@stripe/stripe-js';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
+type MakePaymentPageProps = {
+    onSuccess: () => void; // Callback prop to handle success
+};
 
-const MakePaymentPage: React.FC = () => {
+const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [bookingSchedules, setBookingSchedules] = useState<bookingDetail[]>([]);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
@@ -31,10 +31,17 @@ const MakePaymentPage: React.FC = () => {
             const stripe = await stripePromise;
 
             if (stripe) {
-                await stripe.redirectToCheckout({ sessionId });
+                // Redirect to Stripe Checkout
+                const { error } = await stripe.redirectToCheckout({ sessionId });
+                if (!error) {
+                    // Optionally, handle success callback if needed after redirection
+                } else {
+                    console.error('Stripe error:', error);
+                }
             }
         } catch (error) {
             console.error('Error:', error);
+            setError('An error occurred while processing the payment.');
         }
         setLoading(false);
     };
@@ -70,9 +77,14 @@ const MakePaymentPage: React.FC = () => {
                 </div>
             </div>
             <div>
-                <button onClick={handleCheckout} disabled={loading}>
-                    {loading ? 'Processing...' : 'Checkout'}
-                </button>
+                <div>
+                    <button onClick={handleCheckout} disabled={loading}>
+                        {loading ? 'Processing...' : 'Checkout'}
+                    </button>
+                </div>
+                {error && <p className={makePaymentContentstyles.error}>{error}</p>}
+
+
             </div>
         </div>
     );

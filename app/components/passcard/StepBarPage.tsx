@@ -16,6 +16,7 @@ import FooterPageLink from '../footer/FooterPage'
 import HeaderPageLink from '../header/HeaderPage'
 import { useFormContext } from '.././FormContext';
 import stepBarModuleStyle from './StepBar.module.css';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 // Define the steps array with imported components and labels
 const steps = [
@@ -31,6 +32,23 @@ const StepBarHomePage: React.FC = () => {
     const { formData, setFormData } = useFormContext();
     const [isOtpPopupOpen, setIsOtpPopupOpen] = useState<boolean>(false); // State for OTP popup
     const [isOtpVerified, setIsOtpVerified] = useState<boolean>(false);
+
+    const [isPaymentSuccessful, setIsPaymentSuccessful] = useState<boolean>(false);
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const sessionId = searchParams.get('session_id');
+        if (sessionId) {
+            // Handle success
+            setIsPaymentSuccessful(true);
+            setActiveStep(3);
+        }
+    }, [searchParams]);
+
+    const handlePaymentSuccess = () => {
+        setIsPaymentSuccessful(true);
+    };
 
     const handleNext = () => {
 

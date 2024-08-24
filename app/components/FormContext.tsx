@@ -15,6 +15,9 @@ interface FormData {
     trXray?: string;
     trAvso?: string;
     image?: string;
+    paymentProcessing?: boolean;
+    paymentSuccess?: boolean;
+    paymentFailure?: boolean;
     [key: string]: any;
 }
 
