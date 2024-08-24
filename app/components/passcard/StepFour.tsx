@@ -1,10 +1,15 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import MakePaymentPageLink from '../payment/MakePaymentPage';
+import SuccessPaymentPageLink from '../payment/SuccessPaymentPage';
+import {} from '../payment/SuccessPaymentPage';
 import styleBarModule from './StepBar.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useFormContext } from '.././FormContext';
 
 const StepFour: React.FC = () => {
+    const { formData, setFormData } = useFormContext();
+
     const [isPaymentSuccessful, setIsPaymentSuccessful] = useState<boolean>(false);
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -18,16 +23,18 @@ const StepFour: React.FC = () => {
     }, [searchParams]);
 
     const handlePaymentSuccess = () => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            ['paymentProcessed']: true,
+            ['paymentSuccess']: true,
+        }));
         setIsPaymentSuccessful(true);
     };
 
     return (
         <div className={styleBarModule.stepContentDiv}>
             {isPaymentSuccessful ? (
-                <div>
-                    <h1>Payment Successful!</h1>
-                    <p>Thank you for your purchase. Your payment was successful.</p>
-                </div>
+                <SuccessPaymentPageLink onSuccess={handlePaymentSuccess} />
             ) : (
                 <MakePaymentPageLink onSuccess={handlePaymentSuccess} />
             )}
