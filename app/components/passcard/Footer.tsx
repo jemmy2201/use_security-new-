@@ -43,7 +43,7 @@ const Footer: React.FC<FooterProps> = ({ onNext, onBack, onSaveDraft, hasNext, h
                             >
                                 {activeStep === 0 ? 'Continue to application details' : ''}
                                 {activeStep === 1 ? 'Continue to review details' : ''}
-                                {activeStep === 2 ? 'Continue to make payment' : ''}
+                                {activeStep === 2 ? 'Proceed to pay' : ''}
                                 {activeStep === 3 ? 'Continue to book appointment' : ''}
                                 {activeStep === 4 ? 'Go to dashboard' : ''}
                             </button>
