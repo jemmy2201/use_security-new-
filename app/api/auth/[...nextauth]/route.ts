@@ -13,6 +13,7 @@ const SingPassProvider: OAuthConfig<any> = {
     params: {
       scope: 'openid',
       response_type: 'code',
+      redirect_uri: `https://www.idx-id2021.com/afterlogin`,
     },
   },
   idToken: true,
