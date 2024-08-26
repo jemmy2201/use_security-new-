@@ -18,6 +18,8 @@ interface FormData {
     paymentProcessed?: boolean;
     paymentSuccess?: boolean;
     paymentFailure?: boolean;
+    isOtpVerified?: boolean;
+    verifiedMobileNo?: string;
     [key: string]: any;
 }
 

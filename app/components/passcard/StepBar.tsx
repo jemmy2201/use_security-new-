@@ -17,7 +17,7 @@ interface StepBarProps {
 const StepBar: React.FC<StepBarProps> = ({ steps, activeStep }) => (
     <div className={styleBarModule.stepBarContainer}>
         <div className={styleBarModule.createNewPassCard}>
-                <h2 className={styleBarModule.createNewPassCardText}>Create new pass card</h2>
+                <div className={styleBarModule.createNewPassCardText}>Create new pass card</div>
         </div>
         <div>
             <ul className={styleBarModule.stepList}>

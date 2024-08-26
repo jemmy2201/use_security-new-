@@ -1,13 +1,75 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import OtpModuleStyle from './OtpPopup.module.css';
+import { useFormContext } from '.././FormContext';
 
 interface OtpPopupProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: () => void;
 }
 
-const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose, onSubmit }) => {
+const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
+    const [otp, setOtp] = useState(['', '', '', '']);
+    const [errorMessage, setErrorMessage] = useState(''); // State for error message
+    const { formData, setFormData } = useFormContext();
+
+    // Create references for each OTP input field
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+    // Function to handle OTP input changes
+    const handleOtpChange = (index: number, value: string) => {
+        if (value.length > 1) return; // Restrict input to a single character
+        const newOtp = [...otp];
+        newOtp[index] = value;
+        setOtp(newOtp);
+
+        // Move focus to the next input field
+        if (value && index < otp.length - 1) {
+            inputRefs.current[index + 1]?.focus();
+        }
+    };
+
+    // Function to handle form submission
+    const handleSubmit = async () => {
+        const otpValue = otp.join(''); // Combine the OTP values into a single string
+        try {
+            const response = await fetch('/api/verify-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ otp: otpValue }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('OTP verified successfully:', data);
+                // Handle success
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    isOtpVerified: true,
+                    verifiedMobileNo: formData.mobileno,
+                }));
+                setErrorMessage(''); // Clear any previous error messages
+                onClose();
+            } else {
+                console.error('Failed to verify OTP');
+                setErrorMessage('Wrong OTP. Please try again.'); // Set error message
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+            setErrorMessage('An error occurred. Please try again later.'); // Set error message
+        }
+    };
+
+    // Reset OTP fields and error message when the popup opens
+    useEffect(() => {
+        if (isOpen) {
+            setOtp(['', '', '', '']);
+            setErrorMessage(''); // Clear error message on open
+            inputRefs.current[0]?.focus(); // Focus on the first input field when popup opens
+        }
+    }, [isOpen]);
+
     if (!isOpen) return null; // Don't render the popup if it's not open
 
     return (
@@ -32,14 +94,28 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose, onSubmit }) => {
                     </div>
                     <div className={OtpModuleStyle.otpBox}>
                         <div className={OtpModuleStyle.otpField}>
-                            <input type="text" className={OtpModuleStyle.otpNumber} />
-                            <input type="text" className={OtpModuleStyle.otpNumber} />
-                            <input type="text" className={OtpModuleStyle.otpNumber} />
-                            <input type="text" className={OtpModuleStyle.otpNumber} />
+                            {otp.map((value, index) => (
+                                <input
+                                    key={index}
+                                    type="text"
+                                    className={OtpModuleStyle.otpNumber}
+                                    value={value}
+                                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                                    ref={(el) => inputRefs.current[index] = el} // Assign ref to each input
+                                />
+                            ))}
                         </div>
+
+                        {errorMessage && (
+                            <div className={OtpModuleStyle.errorMessage}>
+                                {errorMessage}
+                            </div>
+                        )}
                     </div>
 
-                    <div >
+
+
+                    <div>
                         <span className={OtpModuleStyle.otpText}>
                             Didn’t get the code?
                         </span>
@@ -49,14 +125,10 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose, onSubmit }) => {
                     </div>
 
                     <div className={OtpModuleStyle.optButtonBox}>
-
-                        <button onClick={onSubmit} className={OtpModuleStyle.cancelButton}>Cancel</button>
-                        <button onClick={onClose} className={OtpModuleStyle.validateButton}>Validate</button>
+                        <button onClick={onClose} className={OtpModuleStyle.cancelButton}>Cancel</button>
+                        <button onClick={handleSubmit} className={OtpModuleStyle.validateButton}>Validate</button>
                     </div>
-
-
                 </div>
-
             </div>
         </div>
     );

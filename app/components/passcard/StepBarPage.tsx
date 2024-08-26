@@ -37,7 +37,6 @@ const StepBarHomePage: React.FC = () => {
     const [activeStep, setActiveStep] = useState<number>(0);
     const { formData, setFormData } = useFormContext();
     const [isOtpPopupOpen, setIsOtpPopupOpen] = useState<boolean>(false); // State for OTP popup
-    const [isOtpVerified, setIsOtpVerified] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -73,8 +72,10 @@ const StepBarHomePage: React.FC = () => {
         if (activeStep == 3 && !formData.paymentProcessed) {
             handleCheckout();
         } else {
-            if (formData.originalMobileno === formData.mobileno || isOtpVerified) {
+            if (formData.originalMobileno === formData.mobileno 
+                || (formData.isOtpVerified && formData.mobileno==formData.verifiedMobileNo)) {
                 console.log('same mobile');
+                setIsOtpPopupOpen(false);
                 if (activeStep < steps.length - 1) {
                     setActiveStep(prevStep => prevStep + 1);
                 }
@@ -116,15 +117,6 @@ const StepBarHomePage: React.FC = () => {
         setLoading(false);
     };
 
-    const handleOtpSubmit = () => {
-        // Logic to handle OTP submission
-        setIsOtpPopupOpen(false);
-        setIsOtpVerified(true); // Close OTP popup after OTP is verified
-    };
-
-    const handleOtpCancel = () => {
-        setIsOtpPopupOpen(false); // Close OTP popup if user cancels
-    };
     const handleBack = () => {
         if (activeStep > 0) {
             setActiveStep(prevStep => prevStep - 1);
@@ -135,10 +127,15 @@ const StepBarHomePage: React.FC = () => {
         console.log("Draft saved!");
     };
 
+
+    const handleOtpCancel = () => {
+        setIsOtpPopupOpen(false); // Close OTP popup if user cancels
+    };
+
     return (
         <div>
             <HeaderPageLink></HeaderPageLink>
-            <main style={{ padding: '20px', minHeight: '70vh' }}>
+            <main style={{ padding: '20px', minHeight: '70vh', background: '#F5F6F7' }}>
                 <StepBar steps={steps} activeStep={activeStep} />
             </main>
             <Footer
@@ -153,7 +150,6 @@ const StepBarHomePage: React.FC = () => {
             <OtpPopup
                 isOpen={isOtpPopupOpen}
                 onClose={handleOtpCancel}
-                onSubmit={handleOtpSubmit}
             />
         </div>
     );

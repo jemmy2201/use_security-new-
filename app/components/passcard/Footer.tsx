@@ -21,8 +21,7 @@ const Footer: React.FC<FooterProps> =
 
         return (
             <footer>
-                <div className={styleBarModule.footerContentDiv}>
-                    <div className={stepBarFooterStyle.container}>
+                <div style={{background: '#F5F6F7' }}>
                         <div className={stepBarFooterStyle.buttonBox}>
                             <span className={stepBarFooterStyle.saveDraft}>
                                 <button
@@ -57,7 +56,7 @@ const Footer: React.FC<FooterProps> =
                                 </div>
                             </span>
                         </div>
-                    </div>
+                    
                 </div>
             </footer>
         );

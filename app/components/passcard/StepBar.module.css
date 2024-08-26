@@ -88,28 +88,30 @@
     align-items: flex-start;
     gap: 8px;
     align-self: stretch;
+    background: #FFF;
 }
 
-.footerContentDiv{
+.footerContentDiv {
     display: flex;
-width: 1224px;
-flex-direction: column;
-align-items: flex-start;
-gap: 40px;
-}
+    width: 1224px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
 
+}
 
 .createNewPassCard {
     display: flex;
-    width: 1224px;
+    width: 100%;
     height: 50px;
-    justify-content: center;
-    align-items: center;
+    padding-bottom: 5%;
+    padding-left: 23%;
     color: #000;
 }
 
 .createNewPassCardText {
     color: #000;
+    justify-content: center;
     font-family: Poppins;
     font-size: 35px;
     font-style: normal;
@@ -138,3 +140,13 @@ gap: 40px;
 .otp-popup button {
     margin-right: 10px;
 }
+
+.paymentContainer {
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    background: #FFF;
+    justify-content: center;
+  }

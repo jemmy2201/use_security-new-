@@ -1,7 +1,9 @@
 .buttonBox {
     display: flex;
-    justify-content: center;
-    gap: 30px;
+    justify-content: left;
+    padding-left: 21%;
+    gap: 10px;
+    padding-bottom: 4%;
 }
 
 .saveDraft {

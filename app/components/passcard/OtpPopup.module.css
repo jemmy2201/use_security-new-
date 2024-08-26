@@ -133,3 +133,11 @@
     line-height: 24px;
     text-decoration-line: underline;
 }
+
+.errorMessage {
+    color: #CC0C00;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+}

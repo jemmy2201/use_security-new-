@@ -27,7 +27,7 @@ const PersonalDetailsPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!formData.email && !formData.mobileno) { 
+        if (!formData.email && !formData.mobileno) {
             const storedData = localStorage.getItem('users');
             if (storedData) {
                 try {
@@ -57,46 +57,75 @@ const PersonalDetailsPage: React.FC = () => {
     return (
 
         <div className={personalDetailsContentstyles.paymentContainer}>
-            <div>
-                <label>Full name:</label><br></br>
-                <input
-                    type="text"
-                    id="name"
-                    value={formData.name || ''}
-                />
+            <div className={personalDetailsContentstyles.personalDetails}>
+                Personal details
+            </div>
+            <div style={{ display: 'flex' }}>
+                <span className={personalDetailsContentstyles.personalDetailsNameBox}>
+                    <div className={personalDetailsContentstyles.personalDetailsNameText}>
+                        <label>Full name:</label>
+
+                    </div>
+                    <div className={personalDetailsContentstyles.personalDetailsNameTextValue}>
+                        <input
+                            type="text"
+                            id="name"
+                            value={formData.name || ''}
+                        />
+                    </div>
+                    <div className={personalDetailsContentstyles.personalDetailsNameText}>
+                        <label>Mobile number:</label>
+
+                    </div>
+                    <div className={personalDetailsContentstyles.personalDetailsMobileNoInput}>
+                        <input
+                            type="number"
+                            id="mobileno"
+                            value={formData.mobileno || ''}
+                            onChange={handleChange}
+                            className={personalDetailsContentstyles.mobileNoFieldBox}
+                        />
+                    </div>
+                </span>
+
+                <span className={personalDetailsContentstyles.personalDetailsNameBox}>
+                    <div className={personalDetailsContentstyles.personalDetailsEmailText}>
+                        <label>NRIC/FIN No.:</label>
+
+                    </div>
+                    <div className={personalDetailsContentstyles.personalDetailsNricText}>
+                        <input
+                            type="text"
+                            id="nric"
+                            value={formData.nric || ''}
+                        />
+                    </div>
+                    <div className={personalDetailsContentstyles.personalDetailsEmailText}>
+                        <label>Email Address:</label>
+                    </div>
+                    <div className={personalDetailsContentstyles.personalDetailsEmailInputBox}>
+                        <input
+                            type="text"
+                            id="email"
+                            value={formData.email || ''}
+                            onChange={handleChange}
+                            className={personalDetailsContentstyles.mobileNoFieldBox}
+                        />
+                    </div>
+                </span>
             </div>
 
-            <div>
-                <label>NRIC/FIN No.:</label><br></br>
-                <input
-                    type="text"
-                    id="nric"
-                    value={formData.nric || ''}
-                />
-            </div>
 
-            <div>
-                <label>Mobile number:</label><br></br>
-                <input
-                    type="number"
-                    id="mobileno"
-                    value={formData.mobileno || ''}
-                    onChange={handleChange}
-                    className={personalDetailsContentstyles.mobileNoFieldBox}
-                />
-            </div>
 
-            <div>
-                <label>Email Address:</label><br />
-                <input
-                    type="text"
-                    id="email"
-                    value={formData.email || ''}
-                    onChange={handleChange}
-                    className={personalDetailsContentstyles.mobileNoFieldBox}
-                />
-            </div>
+            <div style={{ display: 'flex' }}>
+                <span className={personalDetailsContentstyles.personalDetailsMobileNoBox}>
 
+                </span>
+
+                <span className={personalDetailsContentstyles.personalDetailsMobileNoBox}>
+
+                </span>
+            </div>
 
         </div>
     );
