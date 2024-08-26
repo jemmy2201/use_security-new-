@@ -8,12 +8,22 @@
 .paymentContainer {
   display: flex;
   padding: 0px;
+  width: 145%;
   flex-direction: column;
   align-items: flex-start;
-  gap: 20px;
   background: #FFF;
   justify-content: center;
 }
+
+.paymentContainerBackground {
+  display: flex;
+  padding: 3%;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #F5F6F7;
+  justify-content: center;
+}
+
 
 .applicantDetails {
   display: flex;
@@ -128,4 +138,199 @@
   align-items: flex-start;
   gap: 8px;
   align-self: stretch;
+}
+
+.photoHrLine {
+  display: flex;
+  height: 1px;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  width: 155%;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+}
+
+.uploadPhotoWarningBox {
+  display: flex;
+  padding: 12px 16px;
+  width: 155%;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  border-radius: 4px;
+  background: #B3E5FC;
+}
+
+.uploadPhotoBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  align-self: stretch;
+}
+
+.uploadPhotoContainer {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-right: 1px solid grey;
+  gap: 16px;
+}
+
+.uploadPhotoContainerBox {
+  width: 90%;
+  height: 200px;
+  flex-shrink: 0;
+  border: 2px dashed #CFD8DC;
+  background: #F5F6F7;
+}
+
+.chooseFileText {
+  color: #546E7A;
+  font-family: "SF Pro Text";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px;
+  /* 150% */
+}
+
+.inputTypeFile {
+  color: #000;
+  text-align: center;
+  font-family: "Roboto Mono";
+  font-size: 96px;
+  font-style: normal;
+  font-weight: 100;
+  line-height: normal;
+  letter-spacing: 0.2px;
+}
+
+.fileUploadWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.inputTypeFile {
+  display: none;
+  /* Hide the actual file input */
+}
+
+.customFileUpload {
+  display: inline-block;
+  cursor: pointer;
+  background-color: #007bff;
+  /* Change to your desired color */
+  color: white;
+  /* Text color */
+  padding: 10px 20px;
+  /* Button padding */
+  border-radius: 5px;
+  /* Rounded corners */
+  font-size: 16px;
+  /* Font size */
+  text-align: center;
+  /* Center text */
+}
+
+.customFileUpload:hover {
+  background-color: #0056b3;
+  /* Change to your desired hover color */
+}
+
+.chooseFileButton {
+  display: flex;
+  padding: 16px 20px;
+  align-items: flex-start;
+  gap: 8px;
+  border-radius: 28px;
+  background: #CC0C00;
+}
+
+.chooseFileButtonText {
+  color: #FFF;
+
+  /* Regular Bold */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  /* 150% */
+}
+
+.photoUploadError {
+  padding: 12px 16px;
+  width: 172%;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  background: #FFCDD2;
+}
+
+.photoUploadErrorBox {
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: 4px;
+  color: #000;
+
+  /* Regular */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 150% */
+}
+
+.photosDosDontContainer {
+  display: flex;
+  width: 250px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  color: #000;
+  font-family: "SF Pro Text";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  /* 150% */
+}
+
+.photosDosDontContainerPicsBox {
+  display: flex;
+  gap: 24px;
+}
+
+.picBox {
+  display: flex;
+  width: 80px;
+  height: 120px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.picFrame {
+  display: flex;
+  width: 75px;
+  height: 120px;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+}
+
+.flexContainer {
+  display: flex;
+  /* Enables Flexbox layout */
+  /* Align items in a row (default) */
+  justify-content: space-between;
+  /* Distribute space between items */
+  /* Center items vertically */
+  /* Full viewport height */
+  /* Light gray background */
+  /* Add padding inside the container */
 }

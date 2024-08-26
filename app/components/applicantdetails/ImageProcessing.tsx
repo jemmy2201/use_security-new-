@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as faceapi from 'face-api.js';
 import { useFormContext } from '.././FormContext';
+import applicantDetailsContentstyles from './ApplicantDetailsContent.module.css';
 
 const ImageProcessing = () => {
 
@@ -192,30 +193,165 @@ const ImageProcessing = () => {
 
   return (
     <div>
-      <input type="file" accept="image/*" onChange={handleImageUpload} />
-      {formData.image && <img src={formData.image} alt="Processed" />}
-      {faceDetected ? (
-        <p>Face detected</p>
+      <div className={applicantDetailsContentstyles.uploadPhotoWarningBox}>
+        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
+          Please upload a photo that was taken within the last 3 months.
+        </div>
+      </div>
+
+      <div className={applicantDetailsContentstyles.photoHrLine}>
+        <hr className={applicantDetailsContentstyles.photoHrLine}></hr>
+      </div>
+      {formData.image && (!faceDetected || !bgColorMatch) ? (
+        <div className={applicantDetailsContentstyles.photoUploadError}>
+          <div className={applicantDetailsContentstyles.photoUploadErrorBox}>
+            <div>
+              Your photo has been rejected for the following reasons:
+            </div>
+            {faceDetected ? (
+              <p></p>
+            ) : (
+              <div> .  The face is not clearly visible</div>
+            )}
+            {bgColorMatch ? (
+              <p></p>
+            ) : (
+              <div> .  The background is not white</div>
+            )}
+
+            {spectacleDetected ? (
+              <p>Eyewear has been detected</p>
+            ) : (
+              <p></p>
+            )}
+          </div>
+        </div>
       ) : (
-        <p>Error: Face Not detected</p>
-      )}
-      {bgColorMatch ? (
-        <p>Background color matches</p>
-      ) : (
-        <p>Error: Background color must be white</p>
+        <p></p>
       )}
 
-      {spectacleDetected ? (
-        <p>Error: Spectacle Detected</p>
-      ) : (
-        <p>Spectacle Not Detected</p>
-      )}
+      <div className={applicantDetailsContentstyles.flexContainer}>
+        <span className={applicantDetailsContentstyles.uploadPhotoContainer}>
+          <div className={applicantDetailsContentstyles.uploadPhotoContainerBox}>
+            {formData.image && <img src={formData.image} alt="Processed" />}
+          </div>
 
-      {brightnessContrast && (
+          <div className={applicantDetailsContentstyles.chooseFileText}>
+            Maximum file size: 5 MB <br></br>
+            Supported file types: JPG / PNG
+          </div>
+          <div className={applicantDetailsContentstyles.fileUploadWrapper}>
+            <label htmlFor="file-upload" className={applicantDetailsContentstyles.chooseFileButton}>
+              <div className={applicantDetailsContentstyles.chooseFileButtonText}>
+                Choose photo
+              </div>
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              style={{ display: 'none' }} // Hide the actual file input
+            />
+          </div>
+        </span>
+        <span className={applicantDetailsContentstyles.photosDosDontContainer}>
+          <div className={applicantDetailsContentstyles.photosDosDontContainerPicsBox}>
+            <span className={applicantDetailsContentstyles.picBox}>
+              <div className={applicantDetailsContentstyles.picFrame}>
+                <img src='/images/clear_pic.jpeg'></img>
+              </div>
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
+                  <g clip-path="url(#clip0_923_17105)">
+                    <path d="M24 4.5C12.96 4.5 4 13.46 4 24.5C4 35.54 12.96 44.5 24 44.5C35.04 44.5 44 35.54 44 24.5C44 13.46 35.04 4.5 24 4.5ZM33.62 18.68L22.62 33.68C22.26 34.18 21.7 34.48 21.08 34.5C21.06 34.5 21.02 34.5 21 34.5C20.42 34.5 19.88 34.26 19.5 33.82L12.5 25.82C11.78 24.98 11.86 23.72 12.68 23C13.52 22.28 14.78 22.36 15.5 23.18L20.86 29.3L30.38 16.32C31.04 15.44 32.28 15.24 33.18 15.9C34.08 16.54 34.26 17.8 33.62 18.68Z" fill="#00695C" />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_923_17105">
+                      <rect width="48" height="48" fill="white" transform="translate(0 0.5)" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+            </span>
+            <span className={applicantDetailsContentstyles.picBox}>
+              <div className={applicantDetailsContentstyles.picFrame}>
+                <img src='/images/clear_pic.jpeg'></img>
+              </div>
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
+                  <g clip-path="url(#clip0_923_17105)">
+                    <path d="M24 4.5C12.96 4.5 4 13.46 4 24.5C4 35.54 12.96 44.5 24 44.5C35.04 44.5 44 35.54 44 24.5C44 13.46 35.04 4.5 24 4.5ZM33.62 18.68L22.62 33.68C22.26 34.18 21.7 34.48 21.08 34.5C21.06 34.5 21.02 34.5 21 34.5C20.42 34.5 19.88 34.26 19.5 33.82L12.5 25.82C11.78 24.98 11.86 23.72 12.68 23C13.52 22.28 14.78 22.36 15.5 23.18L20.86 29.3L30.38 16.32C31.04 15.44 32.28 15.24 33.18 15.9C34.08 16.54 34.26 17.8 33.62 18.68Z" fill="#00695C" />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_923_17105">
+                      <rect width="48" height="48" fill="white" transform="translate(0 0.5)" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+            </span>
+            <span className={applicantDetailsContentstyles.picBox}>
+              <div className={applicantDetailsContentstyles.picFrame}>
+                <img src='/images/clear_pic.jpeg'></img>
+              </div>
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
+                  <g clip-path="url(#clip0_923_17105)">
+                    <path d="M24 4.5C12.96 4.5 4 13.46 4 24.5C4 35.54 12.96 44.5 24 44.5C35.04 44.5 44 35.54 44 24.5C44 13.46 35.04 4.5 24 4.5ZM33.62 18.68L22.62 33.68C22.26 34.18 21.7 34.48 21.08 34.5C21.06 34.5 21.02 34.5 21 34.5C20.42 34.5 19.88 34.26 19.5 33.82L12.5 25.82C11.78 24.98 11.86 23.72 12.68 23C13.52 22.28 14.78 22.36 15.5 23.18L20.86 29.3L30.38 16.32C31.04 15.44 32.28 15.24 33.18 15.9C34.08 16.54 34.26 17.8 33.62 18.68Z" fill="#00695C" />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_923_17105">
+                      <rect width="48" height="48" fill="white" transform="translate(0 0.5)" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+            </span>
+            <span className={applicantDetailsContentstyles.picBox}>
+              <div className={applicantDetailsContentstyles.picFrame}>
+                <img src='/images/clear_pic.jpeg'></img>
+
+              </div>
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
+                  <g clip-path="url(#clip0_923_17105)">
+                    <path d="M24 4.5C12.96 4.5 4 13.46 4 24.5C4 35.54 12.96 44.5 24 44.5C35.04 44.5 44 35.54 44 24.5C44 13.46 35.04 4.5 24 4.5ZM33.62 18.68L22.62 33.68C22.26 34.18 21.7 34.48 21.08 34.5C21.06 34.5 21.02 34.5 21 34.5C20.42 34.5 19.88 34.26 19.5 33.82L12.5 25.82C11.78 24.98 11.86 23.72 12.68 23C13.52 22.28 14.78 22.36 15.5 23.18L20.86 29.3L30.38 16.32C31.04 15.44 32.28 15.24 33.18 15.9C34.08 16.54 34.26 17.8 33.62 18.68Z" fill="#00695C" />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_923_17105">
+                      <rect width="48" height="48" fill="white" transform="translate(0 0.5)" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+            </span>
+            <span className={applicantDetailsContentstyles.picBox}>
+              <div className={applicantDetailsContentstyles.picFrame}>
+                <img src='/images/clear_pic.jpeg'></img>
+              </div>
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
+                  <g clip-path="url(#clip0_923_17105)">
+                    <path d="M24 4.5C12.96 4.5 4 13.46 4 24.5C4 35.54 12.96 44.5 24 44.5C35.04 44.5 44 35.54 44 24.5C44 13.46 35.04 4.5 24 4.5ZM33.62 18.68L22.62 33.68C22.26 34.18 21.7 34.48 21.08 34.5C21.06 34.5 21.02 34.5 21 34.5C20.42 34.5 19.88 34.26 19.5 33.82L12.5 25.82C11.78 24.98 11.86 23.72 12.68 23C13.52 22.28 14.78 22.36 15.5 23.18L20.86 29.3L30.38 16.32C31.04 15.44 32.28 15.24 33.18 15.9C34.08 16.54 34.26 17.8 33.62 18.68Z" fill="#00695C" />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_923_17105">
+                      <rect width="48" height="48" fill="white" transform="translate(0 0.5)" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+            </span>
+          </div>
+        </span>
+      </div>
+      {/* {brightnessContrast && (
         <p>
           Brightness: {brightnessContrast.brightness}, Contrast: {brightnessContrast.contrast}
         </p>
-      )}
+      )} */}
+
     </div>
   );
 };
