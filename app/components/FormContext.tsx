@@ -20,6 +20,8 @@ interface FormData {
     paymentFailure?: boolean;
     isOtpVerified?: boolean;
     verifiedMobileNo?: string;
+    isFaceDetected?: boolean;
+    isBgColorMatch?: boolean;
     [key: string]: any;
 }
 

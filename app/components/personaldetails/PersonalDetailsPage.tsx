@@ -85,6 +85,7 @@ const PersonalDetailsPage: React.FC = () => {
                                 value={formData.mobileno || ''}
                                 onChange={handleChange}
                                 className={personalDetailsContentstyles.mobileNoFieldBox}
+                                required placeholder="Enter your mobile number"
                             />
                         </div>
                     </span>
@@ -111,6 +112,7 @@ const PersonalDetailsPage: React.FC = () => {
                                 value={formData.email || ''}
                                 onChange={handleChange}
                                 className={personalDetailsContentstyles.mobileNoFieldBox}
+                                required placeholder="Enter your email"
                             />
                         </div>
                     </span>

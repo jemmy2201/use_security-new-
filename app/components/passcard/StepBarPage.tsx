@@ -69,6 +69,36 @@ const StepBarHomePage: React.FC = () => {
 
     const handleNext = () => {
 
+        if(activeStep==0){
+            if (!formData.email) {
+                alert('Email is required.');
+                return;
+            }
+            if (!formData.mobileno) {
+                alert('Mobile number is required.');
+                return;
+            }
+        }
+
+        if(activeStep==1){
+            if (!formData.applicationType) {
+                alert('Application type is required.');
+                return;
+            }
+            if (!formData.image) {
+                alert('Photo is required.');
+                return;
+            }
+            if (!formData.isFaceDetected || !formData.isBgColorMatch) {
+                alert('There is problem with photo. Please upload again correct photo.');
+                return;
+            }
+            if(!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta && !formData.trRtt && !formData.trXray ){
+                alert('Training record is required');
+                return;   
+            }
+        }
+
         if (activeStep == 3 && !formData.paymentProcessed) {
             handleCheckout();
         } else {

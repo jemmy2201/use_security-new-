@@ -62,6 +62,8 @@ const ImageProcessing = () => {
           setFormData(prevFormData => ({
             ...prevFormData,
             ['image']: img,
+            ['isFaceDetected']: isFaceDetected,
+            ['isBgColorMatch']: isBgColorMatch,
           }));
           // Call API with processed image data
           await sendImageToAPI(resizedImage, isFaceDetected, isBgColorMatch, isSpectacleDetected, bc);
