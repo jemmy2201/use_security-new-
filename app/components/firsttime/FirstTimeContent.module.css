@@ -1,0 +1,81 @@
+.content {
+  display: flex;
+  width: 100%;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-center;
+  gap: 40px;
+  background: #FFF;
+}
+
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+}
+
+.tableContent {
+  color: #000;
+  font-family: Poppins;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 50px;
+}
+
+.primaryButton {
+  display: flex;
+  padding: 16px 24px;
+  align-items: flex-left;
+  gap: 8px;
+  border-radius: 28px;
+  background: #CC0C00;
+}
+
+.primaryButtonText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.dashBoardTable {
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  align-self: stretch;
+  border: 1px solid var(--Light-Gray, #CFD8DC);
+  background: #FFF;
+}
+
+.dashBoardTableHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.dashBoardTableHeaderContent {
+  width: 160px;
+  color: #000;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.dashBoardTableHeaderContentData {
+  width: 160px;
+  color: #000;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  align-items: center;
+  text-align: center;
+}

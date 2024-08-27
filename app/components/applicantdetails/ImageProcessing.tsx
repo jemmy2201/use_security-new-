@@ -66,7 +66,7 @@ const ImageProcessing = () => {
             ['isBgColorMatch']: isBgColorMatch,
           }));
           // Call API with processed image data
-          await sendImageToAPI(resizedImage, isFaceDetected, isBgColorMatch, isSpectacleDetected, bc);
+          await sendImageToAPI(resizedImage, formData.nric ? formData.nric : '', formData.applicationType ? formData.applicationType : '');
         } catch (error) {
           console.error('Error processing image:', error);
         }
@@ -176,16 +176,13 @@ const ImageProcessing = () => {
     return image.src;
   };
 
-  const sendImageToAPI = async (image: string, faceDetected: boolean, bgColorMatch: boolean, spectacleDetected: boolean, bc: { brightness: number; contrast: number }) => {
+  const sendImageToAPI = async (image: string, nric: string, applicationType: string) => {
     try {
-      // const response = await axios.post('https://your-api-endpoint.com/upload', {
-      //   image, // Base64 image string
-      //   faceDetected,
-      //   bgColorMatch,
-      //   spectacleDetected,
-      //   brightness: bc.brightness,
-      //   contrast: bc.contrast,
-      // });
+      const response = await axios.post('/api/handleAppDtlWithImage', {
+        image, // Base64 image string
+        nric,
+        applicationType,
+      });
 
       // console.log('API Response:', response.data);
     } catch (error) {

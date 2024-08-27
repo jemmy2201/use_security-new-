@@ -121,6 +121,21 @@ const ReviewDetailsPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
+                <div className={reviewDetailsContentstyles.paymentContainerBackground}>
+
+                </div>
+                <div className={reviewDetailsContentstyles.paymentContainer}>
+                    <div className={reviewDetailsContentstyles.applicantDetails}>
+                        <div className={reviewDetailsContentstyles.applicantDetailsHeaderCard}>
+                            <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContent}>
+                                Declaration
+                            </div>
+
+                            <div className={reviewDetailsContentstyles.optionsHeaderText}>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     );

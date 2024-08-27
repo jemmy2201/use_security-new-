@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import {encryptDecrypt} from '../../utils/encryptDecrypt'
+import { encryptDecrypt } from '../../utils/encryptDecrypt'
 
 const prisma = new PrismaClient();
 
@@ -12,11 +12,24 @@ export async function GET(request: Request) {
     // Find records with optional filters
     const schedules = await prisma.booking_schedules.findMany({
       where: {
-        ...(nric && { nric: nric }), // This conditionally adds the `name` filter if `name` is provided
+        ...(nric && { nric: nric }), // Conditionally add the `nric` filter if provided
+        AND: [
+          {
+            Status_app: {
+              not: null, // Exclude null values
+            },
+          },
+          {
+            Status_app: {
+              not: '', // Exclude empty strings
+            },
+          },
+        ],
       },
     });
+    
 
-
+    console.log('schedules', schedules.length);
     // Custom replacer function to convert BigInt to string
     const replacer = (key: string, value: any) => {
       if (typeof value === 'bigint') {

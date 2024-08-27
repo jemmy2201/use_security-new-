@@ -1,51 +1,61 @@
-// File: /app/api/upload/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
-import { IncomingMessage } from 'http';
+import { PrismaClient } from '@prisma/client';
 
-// Configure formidable
-const form = new formidable.IncomingForm();
+const prisma = new PrismaClient();
 
-// Convert NextRequest to IncomingMessage
-function toIncomingMessage(req: NextRequest): IncomingMessage {
-    return req as unknown as IncomingMessage;
-}
+type ImageRequestBody = {
+  image: string;
+  nric: string;
+  applicationType: string;
+};
 
 export async function POST(req: NextRequest) {
-    return new Promise((resolve, reject) => {
-        form.parse(toIncomingMessage(req), async (err, fields, files) => {
-            if (err) {
-                return reject(NextResponse.json({ error: 'Failed to parse form data' }, { status: 400 }));
-            }
+  try {
+    const { image, nric, applicationType }: ImageRequestBody = await req.json();
+    console.log('fileName', applicationType);
+    // Validate input
+    if (!image || applicationType === undefined || nric === undefined ) {
+      return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });
+    }
+    
+    let appType='';
+    if(applicationType=='SO'){
+        appType='1';
+    }
 
-            // Extract file and other form data
-            const file = files.file ? (files.file as formidable.File[])[0] : null; // Check if file exists
-            const info = fields.info ? (fields.info as string[]) : []; // Extract info if available
+    // Save image to the server (if needed)
+    const base64Data = image.replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(base64Data, 'base64');
 
-            if (!file) {
-                return reject(NextResponse.json({ error: 'No file uploaded' }, { status: 400 }));
-            }
-
-            try {
-                // Ensure the directory exists
-                const uploadDir = path.join(process.cwd(), 'public/uploads');
-                if (!fs.existsSync(uploadDir)) {
-                    fs.mkdirSync(uploadDir, { recursive: true });
-                }
-
-                // Save file to disk
-                const filePath = path.join(uploadDir, file.originalFilename || 'unknown');
-                fs.renameSync(file.filepath, filePath);
-
-                // Here you can save the `info` and `filePath` to your database
-                // For example: await prisma.data.create({ data: { info: info.join(','), filePath } });
-
-                return resolve(NextResponse.json({ message: 'File and data saved successfully' }));
-            } catch (error) {
-                return reject(NextResponse.json({ error: 'Failed to save file or data' }, { status: 500 }));
-            }
-        });
+    // Define a path to save the image
+    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+    const statusApp = '0';
+    const schedule = await prisma.booking_schedules.findFirst({
+        where: {
+            ...(nric && { nric }),  // Conditionally adds the `nric` filter if `nric` is provided
+            app_type: appType,       // Fixed filter for app_type
+            Status_app: statusApp,   // Fixed filter for status_app
+        },
     });
+
+    const fileName = schedule?.passid + nric.slice(-4);
+    const filePath = path.join(uploadsDir, fileName+'.png');
+    fs.writeFileSync(filePath, buffer);
+
+    // Respond with a success message and save the additional data if needed
+    return NextResponse.json({
+      message: 'Image uploaded successfully',
+      data: {
+        fileName,
+      },
+    }, { status: 200 });
+  } catch (error) {
+    console.error('Error handling upload:', error);
+    return NextResponse.json({ error: 'Error handling the upload' }, { status: 500 });
+  }
 }

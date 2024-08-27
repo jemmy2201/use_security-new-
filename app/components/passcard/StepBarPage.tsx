@@ -189,12 +189,12 @@ const StepBarHomePage: React.FC = () => {
                     body: JSON.stringify({
                         nric: formData.nric,
                         applicationType: formData.applicationType,
-                        trRtt: formData.trRtt?'YES':'',
-                        trCsspb: formData.trCsspb?'YES':'',
-                        trCctc: formData.trCctc?'YES':'',
-                        trHcta: formData.trHcta?'YES':'',
-                        trXray: formData.trXray?'YES':'',
-                        trAvso: formData.trAvso?'YES':'',
+                        trRtt: formData.trRtt ? 'YES' : '',
+                        trCsspb: formData.trCsspb ? 'YES' : '',
+                        trCctc: formData.trCctc ? 'YES' : '',
+                        trHcta: formData.trHcta ? 'YES' : '',
+                        trXray: formData.trXray ? 'YES' : '',
+                        trAvso: formData.trAvso ? 'YES' : '',
                     }),
                 });
 

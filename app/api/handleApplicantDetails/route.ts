@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
             where: {
                 ...(nric && { nric }),  // Conditionally adds the `nric` filter if `nric` is provided
                 app_type: appType,       // Fixed filter for app_type
-                Status_app: statusApp,   // Fixed filter for status_app
+                
             },
         });
 

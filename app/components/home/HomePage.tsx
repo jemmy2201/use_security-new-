@@ -23,13 +23,19 @@ const HomePage: React.FC = () => {
             }
             const data: bookingDetail[] = await response.json();
 
-            localStorage.setItem('bookingSchedules', JSON.stringify(data));
+            if (data.length === 0) {
+                console.log('No booking details found.');
+                // Handle the case when there are no booking details
+                router.push('/firsttime');
+            } else {
+                localStorage.setItem('bookingSchedules', JSON.stringify(data));
+                // Process the data or store it in state/context
+                console.log('data from api', data);
+                // Navigate to the dashboard with query parameters or state
+                router.push('/dashboard');
+            }
 
-            // Process the data or store it in state/context
-            console.log('data from api', data);
 
-            // Navigate to the dashboard with query parameters or state
-            router.push('/dashboard');
 
         } catch (err) {
             setError('Failed to fetch users');
@@ -84,7 +90,7 @@ const HomePage: React.FC = () => {
                         </div>
                         <div className={styles.services2}>
 
-                        <span className={styles.servicesblock}>
+                            <span className={styles.servicesblock}>
                                 <div className={styles.servicesblockheader}>
                                     Renew pass card
                                 </div>

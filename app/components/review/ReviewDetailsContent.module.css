@@ -133,3 +133,10 @@
   background: #F5F6F7;
   justify-content: center;
 }
+
+.declareTextBox{
+  display: flex;
+align-items: flex-start;
+gap: 8px;
+align-self: stretch;
+}

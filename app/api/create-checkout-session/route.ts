@@ -16,15 +16,15 @@ const stripe = new Stripe(getStripeKey(), {
 export async function POST() {
   try {
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
+      payment_method_types: ['card', 'paynow'],
       line_items: [
         {
           price_data: {
-            currency: 'usd',
+            currency: 'sgd',
             product_data: {
-              name: 'Your Product Name',
+              name: 'USE Card',
             },
-            unit_amount: 2000, // Amount in cents (e.g., 20 USD)
+            unit_amount: 2250, 
           },
           quantity: 1,
         },

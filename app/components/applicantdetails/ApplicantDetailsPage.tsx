@@ -109,7 +109,7 @@ const ApplicantDetailsPage: React.FC = () => {
                                 <div className={applicantDetailsContentstyles.optionsHeaderText}>
                                     Type of application
                                 </div>
-                                <div>
+                                <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
                                     <label>
                                         <input
                                             type="radio"
