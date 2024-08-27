@@ -69,7 +69,7 @@ const StepBarHomePage: React.FC = () => {
 
     const handleNext = () => {
 
-        if(activeStep==0){
+        if (activeStep == 0) {
             if (!formData.email) {
                 alert('Email is required.');
                 return;
@@ -80,7 +80,7 @@ const StepBarHomePage: React.FC = () => {
             }
         }
 
-        if(activeStep==1){
+        if (activeStep == 1) {
             if (!formData.applicationType) {
                 alert('Application type is required.');
                 return;
@@ -93,17 +93,17 @@ const StepBarHomePage: React.FC = () => {
                 alert('There is problem with photo. Please upload again correct photo.');
                 return;
             }
-            if(!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta && !formData.trRtt && !formData.trXray ){
+            if (!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta && !formData.trRtt && !formData.trXray) {
                 alert('Training record is required');
-                return;   
+                return;
             }
         }
 
         if (activeStep == 3 && !formData.paymentProcessed) {
             handleCheckout();
         } else {
-            if (formData.originalMobileno === formData.mobileno 
-                || (formData.isOtpVerified && formData.mobileno==formData.verifiedMobileNo)) {
+            if (formData.originalMobileno === formData.mobileno
+                || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
                 console.log('same mobile');
                 setIsOtpPopupOpen(false);
                 if (activeStep < steps.length - 1) {
@@ -153,8 +153,60 @@ const StepBarHomePage: React.FC = () => {
         }
     };
 
-    const handleSaveDraft = () => {
-        console.log("Draft saved!");
+    const handleSaveDraft = async () => {
+        if (activeStep == 0) {
+            try {
+                const response = await fetch('/api/handleUser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nric: formData.nric,
+                        mobileno: formData.mobileno,
+                        email: formData.email,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Personal Details: Failed to save draft');
+                }
+
+                const result = await response.json();
+                console.log("Personal Details: Draft saved successfully:", result);
+            } catch (error) {
+                console.error("Personal Details: Error saving draft:", error);
+            }
+        }
+
+        if (activeStep == 1) {
+            try {
+                const response = await fetch('/api/handleApplicantDetails', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nric: formData.nric,
+                        applicationType: formData.applicationType,
+                        trRtt: formData.trRtt?'YES':'',
+                        trCsspb: formData.trCsspb?'YES':'',
+                        trCctc: formData.trCctc?'YES':'',
+                        trHcta: formData.trHcta?'YES':'',
+                        trXray: formData.trXray?'YES':'',
+                        trAvso: formData.trAvso?'YES':'',
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Applicant Details: Failed to save draft');
+                }
+                const result = await response.json();
+                console.log("Applicant Details: Draft saved successfully:", result);
+            } catch (error) {
+                console.error("Applicant Details: Error saving draft:", error);
+            }
+        }
     };
 
 

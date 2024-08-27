@@ -2,12 +2,13 @@ import React, { createContext, useState, ReactNode, useContext } from 'react';
 
 // Define the shape of the form data
 interface FormData {
+    id?: string;
     name?: string;
     nric?: string;
     email?: string;
-    originalMobileno?:string;
-    mobileno?:string;
-    applicationType?:string;
+    originalMobileno?: string;
+    mobileno?: string;
+    applicationType?: string;
     trRtt?: string;
     trCsspb?: string;
     trCctc?: string;
@@ -29,6 +30,8 @@ interface FormData {
 interface FormContextProps {
     formData: FormData;
     setFormData: React.Dispatch<React.SetStateAction<FormData>>;
+    errors: { [key: string]: string };
+    setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
 }
 
 // Create the context with the correct type
@@ -37,9 +40,10 @@ const FormContext = createContext<FormContextProps | undefined>(undefined);
 // Provider component
 const FormProvider = ({ children }: { children: ReactNode }) => {
     const [formData, setFormData] = useState<FormData>({});
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
     return (
-        <FormContext.Provider value={{ formData, setFormData }}>
+        <FormContext.Provider value={{ formData, setFormData, errors, setErrors }}>
             {children}
         </FormContext.Provider>
     );
