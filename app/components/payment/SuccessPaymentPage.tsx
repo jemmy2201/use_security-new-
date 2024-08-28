@@ -17,41 +17,54 @@ const SuccessPaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
     const router = useRouter();
     return (
 
-        <div className={makePaymentContentstyles.paymentContainer}>
-            <div className={makePaymentContentstyles.paymentContainerHeader}>
-                <div className={makePaymentContentstyles.paymentContainerHeaderText}>
-                    Payment Summary
+        <form>
+            <div className={makePaymentContentstyles.paymentContainer}>
+                <div className={makePaymentContentstyles.applicantDetails}>
+                    <div className={makePaymentContentstyles.applicantDetailsHeaderCard}>
+                        <div className={makePaymentContentstyles.applicantDetailsHeaderCardContent}>
+                            Payment Successful
+                        </div>
+
+                        <div className={makePaymentContentstyles.applicantDetailsHeaderCardContentDetail}>
+                            Thank you for your payment
+                        </div>
+                    </div>
+                    <div className={makePaymentContentstyles.applicantDetailsHeaderCardContent}>
+                        Payment Summary
+                    </div>
+                    <div className={makePaymentContentstyles.flexContainer}>
+                        <span className={makePaymentContentstyles.paymentContainerAmtHeader}>
+                            <div className={makePaymentContentstyles.optionsHeaderText}>
+                                Amount payable (inclusive of GST)
+                            </div>
+
+                            <div className={makePaymentContentstyles.applicantDetailsHeaderCardContentDetail}>
+                                S$22.50
+                            </div>
+                        </span>
+                        <span className={makePaymentContentstyles.paymentContainerAmtHeader}>
+                            <div className={makePaymentContentstyles.optionsHeaderText}>
+                                Type of application
+                            </div>
+
+                            <div className={makePaymentContentstyles.applicantDetailsHeaderCardContentDetail}>
+                                New - Security Officer (SO)
+                            </div>
+                        </span>
+                    </div>
+                    <div className={makePaymentContentstyles.flexContainer}>
+                        <span className={makePaymentContentstyles.paymentContainerAmtHeader}>
+                            <div className={makePaymentContentstyles.optionsHeaderText}>
+                                Transaction Reference Number
+                            </div>
+                            <div className={makePaymentContentstyles.applicantDetailsHeaderCardContentDetail}>
+                                XXXXX
+                            </div>
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div className={makePaymentContentstyles.paymentContainerAmtHeader}>
-                <div className={makePaymentContentstyles.paymentContainerAmtHeaderText}>
-                    Amount paid (inclusive of GST)
-                </div>
-
-                <div className={makePaymentContentstyles.paymentContainerAmtHeaderDetailText}>
-                    S$22.50
-                </div>
-            </div>
-            <div className={makePaymentContentstyles.paymentContainerAmtHeader}>
-                <div className={makePaymentContentstyles.paymentContainerAmtHeaderText}>
-                    Transaction reference no.
-                </div>
-
-                <div className={makePaymentContentstyles.paymentContainerAmtHeaderDetailText}>
-                    XXXXXXXXX
-                </div>
-            </div>
-            <div className={makePaymentContentstyles.paymentContainerAmtHeader}>
-                <div className={makePaymentContentstyles.paymentContainerAmtHeaderText}>
-                    Type of application
-                </div>
-
-                <div className={makePaymentContentstyles.paymentContainerAmtHeaderDetailText}>
-                    New - Security Officer (SO)
-                </div>
-            </div>
-
-        </div>
+        </form>
     );
 };
 

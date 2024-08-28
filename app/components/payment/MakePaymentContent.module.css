@@ -1,72 +1,3 @@
-.paymentContainer {
-  display: flex;
-  padding: 0px;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
-  background: #FFF;
-  justify-content: center;
-}
-
-.paymentContainerHeader {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 8px;
-  align-self: stretch;
-}
-
-.paymentContainerHeaderText {
-  color: #000;
-  font-family: Poppins;
-  font-size: 28px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 42px;
-}
-
-.paymentContainerHeaderDetailText {
-  color: #000;
-  font-family: Roboto;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
-}
-
-.paymentContainerAmtHeader {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  align-self: stretch;
-}
-
-.paymentContainerAmtHeaderText {
-  color: #000;
-
-  /* Regular Bold */
-  font-family: Roboto;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
-  /* 150% */
-}
-
-.paymentContainerAmtHeaderDetailText {
-  color: #000;
-
-  /* Regular */
-  font-family: Roboto;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
-  /* 150% */
-}
-
 .content {
   display: flex;
   flex-direction: column;
@@ -74,13 +5,34 @@
   gap: 40px;
 }
 
+.paymentContainer {
+  display: flex;
+  padding: 0px;
+  width: 140%;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #FFF;
+  justify-content: center;
+}
+
+.paymentContainerBackground {
+  display: flex;
+  padding: 3%;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #F5F6F7;
+  justify-content: center;
+}
+
+
 .applicantDetails {
   display: flex;
-  width: 1224px;
   padding: 40px;
   flex-direction: column;
   align-items: flex-start;
   gap: 40px;
+  align-self: stretch;
+  background: #FFF;
 }
 
 .applicantDetailsHeader {
@@ -93,7 +45,6 @@
 
 .applicantDetailsHeaderCard {
   display: flex;
-  width: 1144px;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
@@ -125,3 +76,204 @@
   /* 150% */
 }
 
+.options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.optionsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.optionsHeaderText {
+  color: #000;
+
+  /* Regular Bold */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  /* 150% */
+}
+
+.uploadPhoto {
+  display: flex;
+  width: 1224px;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  background: #FFF;
+}
+
+.trainingRecord {
+  display: flex;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  align-self: stretch;
+  background: #FFF;
+}
+
+.checkboxesText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1 0 0;
+}
+
+.checkboxes {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.photoHrLine {
+  display: flex;
+  height: 1px;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  width: 155%;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+}
+
+.uploadPhotoWarningBox {
+  display: flex;
+  padding: 12px 16px;
+  width: 155%;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  border-radius: 4px;
+  background: #B3E5FC;
+}
+
+.uploadPhotoBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  align-self: stretch;
+}
+
+.uploadPhotoContainer {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-right: 25px;
+  border-right: 1px solid grey;
+  gap: 16px;
+}
+
+.uploadPhotoContainerBox {
+  width: 200px;
+  height: 257px;
+  flex-shrink: 0;
+  border: 2px dashed #CFD8DC;
+  background: #F5F6F7;
+}
+
+.chooseFileText {
+  color: #546E7A;
+  font-family: "SF Pro Text";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px;
+  /* 150% */
+}
+
+.inputTypeFile {
+  color: #000;
+  text-align: center;
+  font-family: "Roboto Mono";
+  font-size: 96px;
+  font-style: normal;
+  font-weight: 100;
+  line-height: normal;
+  letter-spacing: 0.2px;
+}
+
+.fileUploadWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.inputTypeFile {
+  display: none;
+  /* Hide the actual file input */
+}
+
+.customFileUpload {
+  display: inline-block;
+  cursor: pointer;
+  background-color: #007bff;
+  /* Change to your desired color */
+  color: white;
+  /* Text color */
+  padding: 10px 20px;
+  /* Button padding */
+  border-radius: 5px;
+  /* Rounded corners */
+  font-size: 16px;
+  /* Font size */
+  text-align: center;
+  /* Center text */
+}
+
+.customFileUpload:hover {
+  background-color: #0056b3;
+  /* Change to your desired hover color */
+}
+
+.chooseFileButton {
+  display: flex;
+  padding: 16px 20px;
+  align-items: flex-start;
+  gap: 8px;
+  border-radius: 28px;
+  background: #CC0C00;
+}
+
+
+.flexContainer {
+  display: flex;
+  /* Enables Flexbox layout */
+  /* Align items in a row (default) */
+  justify-content: space-between;
+
+}
+
+.trainingOptionText {
+  display: flex;
+  color: #000;
+  /* Regular */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 150% */
+}
+
+.trainingOptionBox {
+  padding-right: 10px;
+}
+
+.paymentContainerAmtHeader {
+  padding-right: 30px;
+}

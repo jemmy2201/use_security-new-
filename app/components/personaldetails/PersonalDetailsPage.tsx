@@ -61,75 +61,88 @@ const PersonalDetailsPage: React.FC = () => {
     return (
 
 
-        <div className={personalDetailsContentstyles.paymentContainer}>
-            <div className={personalDetailsContentstyles.applicantDetails}>
+        <form>
+            <div className={personalDetailsContentstyles.paymentContainer}>
+                <div className={personalDetailsContentstyles.applicantDetails}>
+                    <div className={personalDetailsContentstyles.applicantDetailsHeaderCard}>
+                        <div className={personalDetailsContentstyles.applicantDetailsHeaderCardContent}>
+                            Personal details
+                        </div>
 
-                <div className={personalDetailsContentstyles.applicantDetailsHeaderCard}>
-                    <div className={personalDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                        Personal details
                     </div>
 
-                </div>
+                    <div className={personalDetailsContentstyles.flexContainer}>
+                        <span>
+                            <div className={personalDetailsContentstyles.paymentContainerAmtHeader}>
+                                <div className={personalDetailsContentstyles.optionsHeaderText}>
+                                    <label>Full name:</label>
 
-                <div style={{ display: 'flex' }}>
-                    <span className={personalDetailsContentstyles.personalDetailsNameBox}>
-                        <div className={personalDetailsContentstyles.personalDetailsNameText}>
-                            <label>Full name:</label>
+                                </div>
+                                <div className={personalDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        value={formData.name || ''}
+                                    />
+                                </div>
+                            </div>
+                            <div className={personalDetailsContentstyles.spanLeftGap}>
 
-                        </div>
-                        <div className={personalDetailsContentstyles.personalDetailsNameTextValue}>
-                            <input
-                                type="text"
-                                id="name"
-                                value={formData.name || ''}
-                            />
-                        </div>
-                        <div className={personalDetailsContentstyles.personalDetailsNameText}>
-                            <label>Mobile number:</label>
+                            </div>
+                            <div className={personalDetailsContentstyles.paymentContainerAmtHeader}>
+                                <div className={personalDetailsContentstyles.optionsHeaderText}>
+                                    <label>Mobile number:</label>
+                                </div>
+                                <div>
+                                    <input
+                                        type="number"
+                                        id="mobileno"
+                                        value={formData.mobileno || ''}
+                                        onChange={handleChange}
+                                        className={personalDetailsContentstyles.mobileNoFieldBox}
+                                        required placeholder="Enter your mobile number"
+                                    />
+                                </div>
+                            </div>
 
-                        </div>
-                        <div className={personalDetailsContentstyles.personalDetailsMobileNoInput}>
-                            <input
-                                type="number"
-                                id="mobileno"
-                                value={formData.mobileno || ''}
-                                onChange={handleChange}
-                                className={personalDetailsContentstyles.mobileNoFieldBox}
-                                required placeholder="Enter your mobile number"
-                            />
-                        </div>
-                    </span>
+                        </span>
+                        <span>
+                            <div className={personalDetailsContentstyles.paymentContainerAmtHeader}>
+                                <div className={personalDetailsContentstyles.optionsHeaderText}>
+                                    <label>NRIC/FIN No.:</label>
+                                </div>
+                                <div className={personalDetailsContentstyles.personalDetailsNricText}>
+                                    <input
+                                        type="text"
+                                        id="nric"
+                                        value={formData.nric || ''}
+                                    />
+                                </div>
+                            </div>
+                            <div className={personalDetailsContentstyles.spanLeftGap}>
 
-                    <span className={personalDetailsContentstyles.personalDetailsNameBox}>
-                        <div className={personalDetailsContentstyles.personalDetailsEmailText}>
-                            <label>NRIC/FIN No.:</label>
+                            </div>
+                            <div className={personalDetailsContentstyles.paymentContainerAmtHeader}>
+                                <div className={personalDetailsContentstyles.optionsHeaderText}>
+                                    <label>Email Address:</label>
+                                </div>
 
-                        </div>
-                        <div className={personalDetailsContentstyles.personalDetailsNricText}>
-                            <input
-                                type="text"
-                                id="nric"
-                                value={formData.nric || ''}
-                            />
-                        </div>
-                        <div className={personalDetailsContentstyles.personalDetailsEmailText}>
-                            <label>Email Address:</label>
-                        </div>
-                        <div className={personalDetailsContentstyles.personalDetailsEmailInputBox}>
-                            <input
-                                type="text"
-                                id="email"
-                                value={formData.email || ''}
-                                onChange={handleChange}
-                                className={personalDetailsContentstyles.mobileNoFieldBox}
-                                required placeholder="Enter your email"
-                            />
-                        </div>
-                    </span>
+                                <div>
+                                    <input
+                                        type="text"
+                                        id="email"
+                                        value={formData.email || ''}
+                                        onChange={handleChange}
+                                        className={personalDetailsContentstyles.mobileNoFieldBox}
+                                        required placeholder="Enter your email"
+                                    />
+                                </div>
+                            </div>
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
-
+        </form>
     );
 };
 

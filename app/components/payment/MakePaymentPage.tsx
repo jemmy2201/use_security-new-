@@ -48,45 +48,50 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
 
     return (
 
-        <div className={makePaymentContentstyles.paymentContainer}>
-            <div className={makePaymentContentstyles.paymentContainerHeader}>
-                <div className={makePaymentContentstyles.paymentContainerHeaderText}>
-                    Payment Details
-                </div>
+        <form>
+            <div className={makePaymentContentstyles.paymentContainer}>
+                <div className={makePaymentContentstyles.applicantDetails}>
+                    <div className={makePaymentContentstyles.applicantDetailsHeaderCard}>
+                        <div className={makePaymentContentstyles.applicantDetailsHeaderCardContent}>
+                            Payment Details
+                        </div>
 
-                <div className={makePaymentContentstyles.paymentContainerHeaderDetailText}>
-                    All transactions are secure and encrypted. Please note that there will no cancellations or refunds upon completion of payment.
+                        <div className={makePaymentContentstyles.applicantDetailsHeaderCardContentDetail}>
+                            All transactions are secure and encrypted.
+                        </div>
+                        <div className={makePaymentContentstyles.applicantDetailsHeaderCardContentDetail}>
+                            Please note that there will no cancellations or refunds upon completion of payment.
+                        </div>
+                    </div>
+                    <div className={makePaymentContentstyles.flexContainer}>
+                        <span className={makePaymentContentstyles.paymentContainerAmtHeader}>
+                            <div className={makePaymentContentstyles.optionsHeaderText}>
+                                Amount payable (inclusive of GST)
+                            </div>
+
+                            <div className={makePaymentContentstyles.applicantDetailsHeaderCardContentDetail}>
+                                S$22.50
+                            </div>
+                        </span>
+                        <span className={makePaymentContentstyles.paymentContainerAmtHeader}>
+                            <div className={makePaymentContentstyles.optionsHeaderText}>
+                                Type of application
+                            </div>
+
+                            <div className={makePaymentContentstyles.applicantDetailsHeaderCardContentDetail}>
+                                New - Security Officer (SO)
+                            </div>
+                        </span>
+                    </div>
+                    <div>
+ 
+                        {error && <p className={makePaymentContentstyles.error}>{error}</p>}
+
+
+                    </div>
                 </div>
             </div>
-            <div className={makePaymentContentstyles.paymentContainerAmtHeader}>
-                <div className={makePaymentContentstyles.paymentContainerAmtHeaderText}>
-                    Amount payable (inclusive of GST)
-                </div>
-
-                <div className={makePaymentContentstyles.paymentContainerAmtHeaderDetailText}>
-                    S$22.50
-                </div>
-            </div>
-            <div className={makePaymentContentstyles.paymentContainerAmtHeader}>
-                <div className={makePaymentContentstyles.paymentContainerAmtHeaderText}>
-                    Type of application
-                </div>
-
-                <div className={makePaymentContentstyles.paymentContainerAmtHeaderDetailText}>
-                    New - Security Officer (SO)
-                </div>
-            </div>
-            <div>
-                <div>
-                    <button onClick={handleCheckout} disabled={loading}>
-                        {loading ? 'Processing...' : 'Checkout'}
-                    </button>
-                </div>
-                {error && <p className={makePaymentContentstyles.error}>{error}</p>}
-
-
-            </div>
-        </div>
+        </form>
     );
 };
 
