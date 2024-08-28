@@ -89,7 +89,7 @@ const DashBoardPage: React.FC = () => {
             const dataBookingSchedule: users = await responseBookingSchedule.json();
             localStorage.setItem('bookingSchedule', JSON.stringify(dataBookingSchedule));
             // Process the data or store it in state/context
-            console.log('data from api', dataBookingSchedule);
+            console.log('booking data from api', dataBookingSchedule);
 
             // Navigate to the dashboard with query parameters or state
             router.push('/passcard');

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import styles from './HomeStyle.module.css';
 import headerstyles from './HeaderStyle.module.css';
 import footerstyles from './FooterStyle.module.css';
+
 //import bookingDetail from '../../types/BookingDetail';
 import { booking_schedules as bookingDetail } from '@prisma/client';
 
@@ -63,53 +64,55 @@ const HomePage: React.FC = () => {
                 </div>
 
                 <div className={styles.body}>
-                    <div className={styles.bodyp}>USE Pass Card Portal</div>
+                    <div className={styles.bodyp}><h1>Welcome to USE Pass Card Portal</h1></div>
                     <div className={styles.services}>
                         <div className={styles.services2}>
                             <span className={styles.servicesblock}>
                                 <div className={styles.servicesblockheader}>
-                                    Apply new pass card
+                                    <h1>Apply new pass card</h1>
                                 </div>
                                 <div className={styles.servicesblockbody}>
-                                    Quickly apply for your new pass card online.
+                                    <h2>Quickly apply for your new pass card online.</h2>
                                 </div>
                                 <div className={styles.servicesfindoutmore}>
-                                    Find out more
+                                    <h2>Find out more</h2>
                                 </div>
                             </span>
                             <span className={styles.servicesblock}>
                                 <div className={styles.servicesblockheader}>
-                                    Replace pass card
+                                    <h1>Replace pass card</h1>
                                 </div>
                                 <div className={styles.servicesblockbody}>
-                                    For lost or stolen cards, request for a replacement.                    </div>
+                                    <h2>For lost or stolen cards, request for a replacement. </h2>
+
+                                </div>
                                 <div className={styles.servicesfindoutmore}>
-                                    Find out more
+                                    <h2>Find out more</h2>
                                 </div>
                             </span>
                         </div>
                         <div className={styles.services2}>
-
                             <span className={styles.servicesblock}>
                                 <div className={styles.servicesblockheader}>
-                                    Renew pass card
+                                    <h1>Renew pass card</h1>
                                 </div>
                                 <div className={styles.servicesblockbody}>
-                                    Renew your pass card before it expires.
+                                    <h2>Renew your pass card before it expires.</h2>
                                 </div>
                                 <div className={styles.servicesfindoutmore}>
-                                    Find out more
+                                    <h2>Find out more</h2>
                                 </div>
                             </span>
 
                             <span className={styles.servicesblock}>
                                 <div className={styles.servicesblockheader}>
-                                    Update pass card
+                                    <h1>Update pass card</h1>
                                 </div>
                                 <div className={styles.servicesblockbody}>
-                                    Update your pass card details instantly.                    </div>
+                                    <h2>Update your pass card details instantly.</h2>                  
+                                </div>
                                 <div className={styles.servicesfindoutmore}>
-                                    Find out more
+                                    <h2>  Find out more</h2>
                                 </div>
                             </span>
                         </div>

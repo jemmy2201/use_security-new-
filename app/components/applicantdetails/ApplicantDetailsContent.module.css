@@ -227,6 +227,10 @@
   /* Hide the actual file input */
 }
 
+.inputRadioSpace{
+  margin-right: 2px;
+}
+
 .customFileUpload {
   display: inline-block;
   cursor: pointer;

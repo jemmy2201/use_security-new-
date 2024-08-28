@@ -51,6 +51,8 @@ const PersonalDetailsPage: React.FC = () => {
             } else {
                 setError('No user data found');
             }
+
+            
         }
     }, []); // Empty dependency array ensures this runs only once
 

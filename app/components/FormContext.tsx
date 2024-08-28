@@ -28,6 +28,7 @@ interface FormData {
     isFaceDetected?: boolean;
     isBgColorMatch?: boolean;
     isTermsAndConditionSigned?: boolean;
+    imageUrl?: string;
     [key: string]: any;
 }
 
