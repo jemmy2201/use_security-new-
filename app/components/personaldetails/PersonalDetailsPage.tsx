@@ -31,9 +31,6 @@ const PersonalDetailsPage: React.FC = () => {
             const storedData = localStorage.getItem('users');
             if (storedData) {
                 try {
-
-
-
                     const parsedData: users = JSON.parse(storedData);
                     setUsers(parsedData);
                     // Initialize formData only if it's empty
@@ -43,6 +40,7 @@ const PersonalDetailsPage: React.FC = () => {
                         mobileno: parsedData?.mobileno ?? '',
                         name: parsedData?.name ?? '',
                         nric: parsedData?.nric ?? '',
+                        nricText: 'SXXXXXXXA',
                     });
 
                     console.log('Parsed data:', parsedData);
@@ -115,7 +113,7 @@ const PersonalDetailsPage: React.FC = () => {
                                     <input
                                         type="text"
                                         id="nric"
-                                        value={formData.nric || ''}
+                                        value={formData.nricText || ''}
                                     />
                                 </div>
                             </div>

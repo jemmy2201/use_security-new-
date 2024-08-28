@@ -5,6 +5,7 @@ interface FormData {
     id?: string;
     name?: string;
     nric?: string;
+    nricText?: string;
     email?: string;
     originalMobileno?: string;
     mobileno?: string;

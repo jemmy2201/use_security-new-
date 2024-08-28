@@ -8,7 +8,13 @@
   --background-end-rgb: 255, 255, 255;
 }
 
+h1, h2 {
+  font-family: 'Poppins', sans-serif;
+}
 
+body, p, span, div {
+  font-family: 'Roboto', sans-serif;
+}
 
 body {
   color: rgb(var(--foreground-rgb));

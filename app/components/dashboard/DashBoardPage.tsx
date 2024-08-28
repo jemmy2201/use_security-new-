@@ -9,9 +9,9 @@ import { users as users } from '@prisma/client';
 import { NEW, REPLACEMENT, RENEWAL } from '../../constant/constant';
 import { SO_APP, AVSO_APP, PI_APP } from '../../constant/constant';
 import { DRAFT, PROCESSING, READY_FOR_ID_CARD_PRINTING, ID_CARD_READY_FOR_COLLECTION, RESUBMISSION, RESUBMITTED, COMPLETED } from '../../constant/constant';
-import FooterPageLink from '../footer/FooterPage'
-import HeaderPageLink from '../header/HeaderPage'
-
+import FooterPageLink from '../footer/FooterPage';
+import HeaderPageLink from '../header/HeaderPage';
+import encryptDecrypt from '@/app/utils/encryptDecrypt';
 
 const cardTypeMap: { [key: string]: string } = {
     [SO_APP]: 'Security Officer (SO)',

@@ -53,7 +53,7 @@ const ReviewDetailsPage: React.FC = () => {
                                 NRIC / FIN No.
                             </div>
                             <div>
-                                {formData.nric}
+                                {formData.nricText}
                             </div>
                         </div>
                         <div>

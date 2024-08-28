@@ -29,7 +29,7 @@ const HomePage: React.FC = () => {
                             <p>Contact Us</p>
                         </span>
                         <span className={headerstyles.loginButton}>
-                            <button onClick={handleLoginClick}>Log in with Singpass</button>
+                            <button onClick={handleLoginClick}>Log in with singpass</button>
                         </span>
                     </div>
                 </div>

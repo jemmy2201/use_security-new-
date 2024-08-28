@@ -51,6 +51,7 @@ const Footer: React.FC<FooterProps> =
                                         {activeStep === 2 ? 'Continue to make payment' : ''}
                                         {activeStep === 3 && !formData.paymentProcessed? 'Proceed to pay' : ''}
                                         {activeStep === 3 && formData.paymentProcessed ? 'Continue to book appointment' : ''}
+                                        {activeStep === 4 ? 'Confirm appointment' : ''}
                                         {activeStep === 5 ? 'Go to dashboard' : ''}
                                     </button>
                                 </div>
