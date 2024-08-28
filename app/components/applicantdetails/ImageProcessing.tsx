@@ -57,7 +57,7 @@ const ImageProcessing = () => {
           setBrightnessContrast(bc);
 
           // Resize image
-          const resizedImage = resizeImage(imageElement, 200, 200);
+          const resizedImage = resizeImage(imageElement, 200, 257);
           setImage(resizedImage);
           setFormData(prevFormData => ({
             ...prevFormData,
@@ -201,18 +201,18 @@ const ImageProcessing = () => {
       <div className={applicantDetailsContentstyles.photoHrLine}>
         <hr className={applicantDetailsContentstyles.photoHrLine}></hr>
       </div>
-      {formData.image && (!faceDetected || !bgColorMatch) ? (
+      {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch) ? (
         <div className={applicantDetailsContentstyles.photoUploadError}>
           <div className={applicantDetailsContentstyles.photoUploadErrorBox}>
             <div>
               Your photo has been rejected for the following reasons:
             </div>
-            {faceDetected ? (
+            {formData.isFaceDetected ? (
               <p></p>
             ) : (
               <div> .  The face is not clearly visible</div>
             )}
-            {bgColorMatch ? (
+            {formData.isBgColorMatch ? (
               <p></p>
             ) : (
               <div> .  The background is not white</div>
@@ -307,38 +307,39 @@ const ImageProcessing = () => {
                 </svg>
               </div>
             </span>
+          </div>
+          <div className={applicantDetailsContentstyles.photosDosDontContainerPicsBox}>
             <span className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <img src='/images/clear_pic.jpeg'></img>
+                <img src='/images/specs.jpg'></img>
 
               </div>
               <div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
-                  <g clip-path="url(#clip0_923_17105)">
-                    <path d="M24 4.5C12.96 4.5 4 13.46 4 24.5C4 35.54 12.96 44.5 24 44.5C35.04 44.5 44 35.54 44 24.5C44 13.46 35.04 4.5 24 4.5ZM33.62 18.68L22.62 33.68C22.26 34.18 21.7 34.48 21.08 34.5C21.06 34.5 21.02 34.5 21 34.5C20.42 34.5 19.88 34.26 19.5 33.82L12.5 25.82C11.78 24.98 11.86 23.72 12.68 23C13.52 22.28 14.78 22.36 15.5 23.18L20.86 29.3L30.38 16.32C31.04 15.44 32.28 15.24 33.18 15.9C34.08 16.54 34.26 17.8 33.62 18.68Z" fill="#00695C" />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_923_17105">
-                      <rect width="48" height="48" fill="white" transform="translate(0 0.5)" />
-                    </clipPath>
-                  </defs>
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                  <circle cx="24" cy="24" r="20" fill="#CC0C00" />
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M18.4142 15.5858C17.6332 14.8047 16.3668 14.8047 15.5858 15.5858C14.8047 16.3668 14.8047 17.6332 15.5858 18.4142L21.2429 24.0713L15.5862 29.7279C14.8052 30.509 14.8052 31.7753 15.5862 32.5563C16.3673 33.3374 17.6336 33.3374 18.4147 32.5563L24.0713 26.8997L29.7279 32.5563C30.509 33.3374 31.7753 33.3374 32.5563 32.5563C33.3374 31.7753 33.3374 30.509 32.5563 29.7279L26.8997 24.0713L32.5568 18.4142C33.3378 17.6332 33.3378 16.3668 32.5568 15.5858C31.7757 14.8047 30.5094 14.8047 29.7284 15.5858L24.0713 21.2429L18.4142 15.5858Z" fill="white" />
                 </svg>
               </div>
             </span>
             <span className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <img src='/images/clear_pic.jpeg'></img>
+                <img src='/images/no_face.png'></img>
               </div>
               <div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
-                  <g clip-path="url(#clip0_923_17105)">
-                    <path d="M24 4.5C12.96 4.5 4 13.46 4 24.5C4 35.54 12.96 44.5 24 44.5C35.04 44.5 44 35.54 44 24.5C44 13.46 35.04 4.5 24 4.5ZM33.62 18.68L22.62 33.68C22.26 34.18 21.7 34.48 21.08 34.5C21.06 34.5 21.02 34.5 21 34.5C20.42 34.5 19.88 34.26 19.5 33.82L12.5 25.82C11.78 24.98 11.86 23.72 12.68 23C13.52 22.28 14.78 22.36 15.5 23.18L20.86 29.3L30.38 16.32C31.04 15.44 32.28 15.24 33.18 15.9C34.08 16.54 34.26 17.8 33.62 18.68Z" fill="#00695C" />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_923_17105">
-                      <rect width="48" height="48" fill="white" transform="translate(0 0.5)" />
-                    </clipPath>
-                  </defs>
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                  <circle cx="24" cy="24" r="20" fill="#CC0C00" />
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M18.4142 15.5858C17.6332 14.8047 16.3668 14.8047 15.5858 15.5858C14.8047 16.3668 14.8047 17.6332 15.5858 18.4142L21.2429 24.0713L15.5862 29.7279C14.8052 30.509 14.8052 31.7753 15.5862 32.5563C16.3673 33.3374 17.6336 33.3374 18.4147 32.5563L24.0713 26.8997L29.7279 32.5563C30.509 33.3374 31.7753 33.3374 32.5563 32.5563C33.3374 31.7753 33.3374 30.509 32.5563 29.7279L26.8997 24.0713L32.5568 18.4142C33.3378 17.6332 33.3378 16.3668 32.5568 15.5858C31.7757 14.8047 30.5094 14.8047 29.7284 15.5858L24.0713 21.2429L18.4142 15.5858Z" fill="white" />
+                </svg>
+              </div>
+            </span>
+            <span className={applicantDetailsContentstyles.picBox}>
+              <div className={applicantDetailsContentstyles.picFrame}>
+                <img src='/images/noface.jpeg'></img>
+              </div>
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                  <circle cx="24" cy="24" r="20" fill="#CC0C00" />
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M18.4142 15.5858C17.6332 14.8047 16.3668 14.8047 15.5858 15.5858C14.8047 16.3668 14.8047 17.6332 15.5858 18.4142L21.2429 24.0713L15.5862 29.7279C14.8052 30.509 14.8052 31.7753 15.5862 32.5563C16.3673 33.3374 17.6336 33.3374 18.4147 32.5563L24.0713 26.8997L29.7279 32.5563C30.509 33.3374 31.7753 33.3374 32.5563 32.5563C33.3374 31.7753 33.3374 30.509 32.5563 29.7279L26.8997 24.0713L32.5568 18.4142C33.3378 17.6332 33.3378 16.3668 32.5568 15.5858C31.7757 14.8047 30.5094 14.8047 29.7284 15.5858L24.0713 21.2429L18.4142 15.5858Z" fill="white" />
                 </svg>
               </div>
             </span>

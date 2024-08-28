@@ -11,7 +11,6 @@
     margin: 0;
     position: relative;
     align-items: center;
-    /* Center the steps and connectors vertically */
 }
 
 .stepItem {
@@ -20,14 +19,14 @@
     align-items: center;
     cursor: pointer;
     position: relative;
-    margin: 0 30px;
+    margin: 0 40px;
 }
 
 .stepNumber {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: #626875;
+    background-color: #CFD8DC;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,7 +52,7 @@
 }
 
 .connectorLine {
-    width: 180px;
+    width: 200px;
     /* Adjust width as needed */
     height: 2px;
     background-color: #ddd;
@@ -69,7 +68,7 @@
 }
 
 .stepItem.active .stepNumber {
-    background-color: #f9060a;
+    background-color: #546E7A;
     color: white;
 }
 

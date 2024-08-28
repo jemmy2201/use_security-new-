@@ -68,6 +68,39 @@ const DashBoardPage: React.FC = () => {
         }
     };
 
+    const handleEditPasscardClick = async (id: bigint) => {
+        setLoading(true);
+        setError(null);
+        console.log('id', id);
+        try {
+            const response = await fetch('/api/myinfo');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data: users = await response.json();
+            localStorage.setItem('users', JSON.stringify(data));
+            // Process the data or store it in state/context
+            console.log('data from api', data);
+
+            const responseBookingSchedule = await fetch('/api/getBookingSchedule');
+            if (!responseBookingSchedule.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const dataBookingSchedule: users = await responseBookingSchedule.json();
+            localStorage.setItem('bookingSchedule', JSON.stringify(dataBookingSchedule));
+            // Process the data or store it in state/context
+            console.log('data from api', dataBookingSchedule);
+
+            // Navigate to the dashboard with query parameters or state
+            router.push('/passcard');
+
+        } catch (err) {
+            setError('Failed to fetch user details');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         // Retrieve data from localStorage
         const storedData = localStorage.getItem('bookingSchedules');
@@ -130,10 +163,10 @@ const DashBoardPage: React.FC = () => {
                                 <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.Status_app}>{statusTypeMap[booking.Status_app || ''] || 'Unknown'}</td>
                                 <td className={dashBoardContentstyles.dashBoardTableHeaderContentData}>
                                     <a href="/edit" onClick={(e) => {
-                                        e.preventDefault(); handleNewPasscardClick();
+                                        e.preventDefault(); handleEditPasscardClick(booking.id);
                                     }}
                                         style={{ color: 'blue', marginRight: '10px' }}>
-                                        Edit
+                                        Continue
                                     </a>
                                     <a href="/edit" onClick={(e) => {
                                         e.preventDefault(); handleNewPasscardClick();

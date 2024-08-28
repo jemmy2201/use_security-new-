@@ -15,6 +15,9 @@ interface FormData {
     trHcta?: string;
     trXray?: string;
     trAvso?: string;
+    trNota?: string;
+    trObse?: string;
+    trSsm?: string;
     image?: string;
     paymentProcessed?: boolean;
     paymentSuccess?: boolean;
@@ -23,6 +26,7 @@ interface FormData {
     verifiedMobileNo?: string;
     isFaceDetected?: boolean;
     isBgColorMatch?: boolean;
+    isTermsAndConditionSigned?: boolean;
     [key: string]: any;
 }
 

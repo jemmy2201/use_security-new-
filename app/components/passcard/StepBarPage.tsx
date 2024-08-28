@@ -18,6 +18,7 @@ import { useFormContext } from '.././FormContext';
 import stepBarModuleStyle from './StepBar.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
+import { booking_schedules } from '@prisma/client';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -95,6 +96,13 @@ const StepBarHomePage: React.FC = () => {
             }
             if (!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta && !formData.trRtt && !formData.trXray) {
                 alert('Training record is required');
+                return;
+            }
+        }
+
+        if (activeStep == 2) {
+            if (!formData.isTermsAndConditionSigned) {
+                alert('Please tick the declaration');
                 return;
             }
         }

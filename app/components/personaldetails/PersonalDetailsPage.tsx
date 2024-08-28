@@ -6,7 +6,7 @@ import { booking_schedules as bookingDetail } from '@prisma/client';
 import { users as users } from '@prisma/client';
 import personalDetailsContentstyles from './PersonalDetailsContent.module.css';
 import { useFormContext } from '.././FormContext';
-
+import { booking_schedules } from '@prisma/client';
 const PersonalDetailsPage: React.FC = () => {
 
     const { formData, setFormData } = useFormContext();
@@ -31,6 +31,9 @@ const PersonalDetailsPage: React.FC = () => {
             const storedData = localStorage.getItem('users');
             if (storedData) {
                 try {
+
+
+
                     const parsedData: users = JSON.parse(storedData);
                     setUsers(parsedData);
                     // Initialize formData only if it's empty
@@ -43,6 +46,7 @@ const PersonalDetailsPage: React.FC = () => {
                     });
 
                     console.log('Parsed data:', parsedData);
+
                 } catch (err) {
                     setError('Failed to parse user data');
                 }
@@ -56,11 +60,17 @@ const PersonalDetailsPage: React.FC = () => {
 
     return (
 
-        <div>
-            <div className={personalDetailsContentstyles.paymentContainer}>
-                <div className={personalDetailsContentstyles.personalDetails}>
-                    Personal details
+
+        <div className={personalDetailsContentstyles.paymentContainer}>
+            <div className={personalDetailsContentstyles.applicantDetails}>
+
+                <div className={personalDetailsContentstyles.applicantDetailsHeaderCard}>
+                    <div className={personalDetailsContentstyles.applicantDetailsHeaderCardContent}>
+                        Personal details
+                    </div>
+
                 </div>
+
                 <div style={{ display: 'flex' }}>
                     <span className={personalDetailsContentstyles.personalDetailsNameBox}>
                         <div className={personalDetailsContentstyles.personalDetailsNameText}>
@@ -117,9 +127,9 @@ const PersonalDetailsPage: React.FC = () => {
                         </div>
                     </span>
                 </div>
-
             </div>
         </div>
+
     );
 };
 

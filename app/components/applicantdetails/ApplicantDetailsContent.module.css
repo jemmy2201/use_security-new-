@@ -8,7 +8,7 @@
 .paymentContainer {
   display: flex;
   padding: 0px;
-  width: 145%;
+  width: 110%;
   flex-direction: column;
   align-items: flex-start;
   background: #FFF;
@@ -174,13 +174,14 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding-right: 25px;
   border-right: 1px solid grey;
   gap: 16px;
 }
 
 .uploadPhotoContainerBox {
-  width: 90%;
-  height: 200px;
+  width: 200px;
+  height: 257px;
   flex-shrink: 0;
   border: 2px dashed #CFD8DC;
   background: #F5F6F7;
@@ -261,8 +262,7 @@
 }
 
 .photoUploadError {
-  padding: 12px 16px;
-  width: 172%;
+  width: 155%;
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
@@ -287,7 +287,7 @@
 
 .photosDosDontContainer {
   display: flex;
-  width: 250px;
+  width: 50%;
   flex-direction: column;
   align-items: flex-start;
   gap: 24px;
@@ -302,7 +302,9 @@
 
 .photosDosDontContainerPicsBox {
   display: flex;
-  gap: 24px;
+  gap: 35%;
+  padding-bottom: 10%;
+  padding-left: 5%;
 }
 
 .picBox {
@@ -321,6 +323,7 @@
   flex-direction: column;
   align-items: center;
   gap: 80px;
+  border: 2px dashed #CFD8DC;
 }
 
 .flexContainer {
@@ -328,9 +331,26 @@
   /* Enables Flexbox layout */
   /* Align items in a row (default) */
   justify-content: space-between;
+  padding-top: 10px;
   /* Distribute space between items */
   /* Center items vertically */
   /* Full viewport height */
   /* Light gray background */
   /* Add padding inside the container */
+}
+
+.trainingOptionText {
+  display: flex;
+  color: #000;
+  /* Regular */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 150% */
+}
+
+.trainingOptionBox {
+  padding-right: 10px;
 }
