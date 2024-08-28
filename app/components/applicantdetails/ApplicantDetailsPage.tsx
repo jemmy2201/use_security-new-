@@ -107,6 +107,7 @@ const ApplicantDetailsPage: React.FC = () => {
                     trHcta: parsedBookingData.TR_HCTA || false,
                     trRtt: parsedBookingData.TR_RTT || false,
                     trXray: parsedBookingData.TR_X_RAY || false,
+                    imageUrl: '/uploads/10005GSOdz09.png',
                 }));
                 setCheckboxes({
                     trRtt: parsedBookingData?.TR_RTT || false,
@@ -132,33 +133,31 @@ const ApplicantDetailsPage: React.FC = () => {
                 <div className={applicantDetailsContentstyles.applicantDetails}>
                     <div className={applicantDetailsContentstyles.applicantDetailsHeaderCard}>
                         <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                            Applicant Details
+                            <h1>Applicant Details</h1>
                         </div>
                         <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
-                            Please select the pass card type you would like to apply for.
+                            <h1>Please select the pass card type you would like to apply for.</h1>
                         </div>
                     </div>
 
                     <div className={applicantDetailsContentstyles.options}>
                         <div className={applicantDetailsContentstyles.optionsHeader}>
                             <div className={applicantDetailsContentstyles.optionsHeaderText}>
-                                Type of application
+                                <h1>Type of application</h1>
                             </div>
                             <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
-                                <label>
+                                
+                                <label><h1>
                                     <input
                                         type="radio"
                                         value="SO"
                                         id="applicationType"
                                         checked={selectedOption === 'SO'}
                                         onChange={handleOptionChange}
-                                        className={applicantDetailsContentstyles.inputRadioSpace}
                                     />
-
-                                    Security Officer (SO)
+                                    Security Officer (SO)</h1>
                                 </label>
-                                <br />
-                                <label>
+                                <label><h2>
                                     <input
                                         type="radio"
                                         value="AVSO"
@@ -166,10 +165,9 @@ const ApplicantDetailsPage: React.FC = () => {
                                         checked={selectedOption === 'AVSO'}
                                         onChange={handleOptionChange}
                                     />
-                                    Aviation Security Officer (AVSO)
+                                    Aviation Security Officer (AVSO)</h2>
                                 </label>
-                                <br />
-                                <label>
+                                <label><h1>
                                     <input
                                         type="radio"
                                         value="PI"
@@ -177,7 +175,7 @@ const ApplicantDetailsPage: React.FC = () => {
                                         checked={selectedOption === 'PI'}
                                         onChange={handleOptionChange}
                                     />
-                                    Private Investigator (PI)
+                                    Private Investigator (PI)</h1>
                                 </label>
                             </div>
                         </div>
@@ -192,10 +190,10 @@ const ApplicantDetailsPage: React.FC = () => {
                 <div className={applicantDetailsContentstyles.applicantDetails}>
                     <div className={applicantDetailsContentstyles.applicantDetailsHeaderCard}>
                         <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                            Photo
+                            <h1>Photo</h1>
                         </div>
                         <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
-                            This photo will be used for your pass card.
+                            <h1>This photo will be used for your pass card.</h1>
                         </div>
                         <div className={applicantDetailsContentstyles.uploadPhotoBox}>
                             <ImageProcessingPage></ImageProcessingPage>
@@ -213,78 +211,74 @@ const ApplicantDetailsPage: React.FC = () => {
                 <div className={applicantDetailsContentstyles.applicantDetails}>
                     <div className={applicantDetailsContentstyles.applicantDetailsHeaderCard}>
                         <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                            Training records
+                            <h1>Training records</h1>
                         </div>
 
                         <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
-                            Types of trainings
+                            <h1>Types of trainings</h1>
                         </div>
                         <div className={applicantDetailsContentstyles.trainingOptionText}>
                             <span className={applicantDetailsContentstyles.trainingOptionBox}>
                                 <div>
 
                                     <label className={applicantDetailsContentstyles.checkboxes}>
+                                        <h1>
                                         <input
                                             type="checkbox"
                                             name="trAvso"
                                             checked={checkboxes.trAvso}
                                             onChange={handleCheckboxChange}
-                                            className={applicantDetailsContentstyles.checkboxes}
                                         />
-                                        Airport Screener Deployment
+                                        Airport Screener Deployment</h1>
                                     </label>
 
                                 </div>
                                 <div>
 
                                     <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <input
+                                        <h1><input
                                             type="checkbox"
                                             name="trCctc"
                                             checked={checkboxes.trCctc}
                                             onChange={handleCheckboxChange}
-                                            className={applicantDetailsContentstyles.checkboxes}
                                         />
-                                        Conduct Crowd and Traffic Control (CCTC)
+                                        Conduct Crowd and Traffic Control (CCTC)</h1>
                                     </label>
 
                                 </div>
                                 <div>
 
                                     <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <input
+                                        <h1><input
                                             type="checkbox"
                                             name="trCsspb"
                                             checked={checkboxes.trCsspb}
                                             onChange={handleCheckboxChange}
-                                            className={applicantDetailsContentstyles.checkboxes}
                                         />
-                                        Conduct Security Screening of Person and Bag (CSSPB)
+                                        Conduct Security Screening of Person and Bag (CSSPB)</h1>
                                     </label>
 
                                 </div>
                                 <div>
                                     <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <input
+                                        <h1><input
                                             type="checkbox"
                                             name="trXray"
                                             checked={checkboxes.trXray}
                                             onChange={handleCheckboxChange}
-                                            className={applicantDetailsContentstyles.checkboxes}
                                         />
-                                        Conduct Screening using X-ray Machine (X-RAY)
+                                        Conduct Screening using X-ray Machine (X-RAY)</h1>
                                     </label>
                                 </div>
                                 <div>
                                     <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <input
+                                        <h1><input
                                             type="checkbox"
                                             name="trNota"
                                             checked={checkboxes.trNota}
                                             onChange={handleCheckboxChange}
-                                            className={applicantDetailsContentstyles.checkboxes}
                                         />
-                                        None of the above (SO)
+                                        None of the above (SO)</h1>
                                     </label>
                                 </div>
                             </span>
@@ -292,55 +286,51 @@ const ApplicantDetailsPage: React.FC = () => {
                                 <div>
 
                                     <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <input
+                                        <h1><input
                                             type="checkbox"
                                             name="trHcta"
                                             checked={checkboxes.trHcta}
                                             onChange={handleCheckboxChange}
-                                            className={applicantDetailsContentstyles.checkboxes}
                                         />
-                                        Handle Counter Terrorist Activities (HCTA)
+                                        Handle Counter Terrorist Activities (HCTA)</h1>
                                     </label>
 
                                 </div>
                                 <div>
 
                                     <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <input
+                                        <h1><input
                                             type="checkbox"
                                             name="trObsa"
                                             checked={checkboxes.trObsa}
                                             onChange={handleCheckboxChange}
-                                            className={applicantDetailsContentstyles.checkboxes}
                                         />
-                                        Operate Basic Security Equipment
+                                        Operate Basic Security Equipment</h1>
                                     </label>
 
                                 </div>
                                 <div>
 
                                     <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <input
+                                        <h1><input
                                             type="checkbox"
                                             name="trSsm"
                                             checked={checkboxes.trSsm}
                                             onChange={handleCheckboxChange}
-                                            className={applicantDetailsContentstyles.checkboxes}
                                         />
-                                        Security Surveillance Management
+                                        Security Surveillance Management</h1>
                                     </label>
 
                                 </div>
                                 <div>
                                     <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <input
+                                       <h1> <input
                                             type="checkbox"
                                             name="trRtt"
                                             checked={checkboxes.trRtt}
                                             onChange={handleCheckboxChange}
-                                            className={applicantDetailsContentstyles.checkboxes}
                                         />
-                                        Recognise Terrorist Threat (RTT)
+                                        Recognise Terrorist Threat (RTT)</h1>
                                     </label>
                                 </div>
                             </span>

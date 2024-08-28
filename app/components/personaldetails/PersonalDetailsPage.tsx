@@ -66,7 +66,7 @@ const PersonalDetailsPage: React.FC = () => {
                 <div className={personalDetailsContentstyles.applicantDetails}>
                     <div className={personalDetailsContentstyles.applicantDetailsHeaderCard}>
                         <div className={personalDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                            Personal details
+                            <h1>Personal details</h1>
                         </div>
 
                     </div>
@@ -75,7 +75,7 @@ const PersonalDetailsPage: React.FC = () => {
                         <span>
                             <div className={personalDetailsContentstyles.paymentContainerAmtHeader}>
                                 <div className={personalDetailsContentstyles.optionsHeaderText}>
-                                    <label>Full name:</label>
+                                    <label><h1>Full name:</h1></label>
 
                                 </div>
                                 <div className={personalDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
@@ -91,7 +91,7 @@ const PersonalDetailsPage: React.FC = () => {
                             </div>
                             <div className={personalDetailsContentstyles.paymentContainerAmtHeader}>
                                 <div className={personalDetailsContentstyles.optionsHeaderText}>
-                                    <label>Mobile number:</label>
+                                    <label><h1>Mobile number:</h1></label>
                                 </div>
                                 <div>
                                     <input
@@ -109,7 +109,7 @@ const PersonalDetailsPage: React.FC = () => {
                         <span>
                             <div className={personalDetailsContentstyles.paymentContainerAmtHeader}>
                                 <div className={personalDetailsContentstyles.optionsHeaderText}>
-                                    <label>NRIC/FIN No.:</label>
+                                    <label><h1>NRIC/FIN No.:</h1></label>
                                 </div>
                                 <div className={personalDetailsContentstyles.personalDetailsNricText}>
                                     <input
@@ -124,7 +124,7 @@ const PersonalDetailsPage: React.FC = () => {
                             </div>
                             <div className={personalDetailsContentstyles.paymentContainerAmtHeader}>
                                 <div className={personalDetailsContentstyles.optionsHeaderText}>
-                                    <label>Email Address:</label>
+                                    <label><h1>Email Address:</h1></label>
                                 </div>
 
                                 <div>

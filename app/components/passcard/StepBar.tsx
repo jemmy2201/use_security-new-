@@ -17,7 +17,7 @@ interface StepBarProps {
 const StepBar: React.FC<StepBarProps> = ({ steps, activeStep }) => (
     <div className={styleBarModule.stepBarContainer}>
         <div className={styleBarModule.createNewPassCard}>
-                <div className={styleBarModule.createNewPassCardText}>Apply for new pass card</div>
+                <div className={styleBarModule.createNewPassCardText}><h1>Apply for new pass card</h1></div>
         </div>
         <div>
             <ul className={styleBarModule.stepList}>
@@ -30,7 +30,7 @@ const StepBar: React.FC<StepBarProps> = ({ steps, activeStep }) => (
                             className={`${styleBarModule.stepItem} ${index === activeStep ? styleBarModule.active : ''}`}
                         >
                             <div className={styleBarModule.stepNumber}>{number}</div>
-                            <div className={styleBarModule.stepText}>{text}</div>
+                            <div className={styleBarModule.stepText}><h1>{text}</h1></div>
                             {index < steps.length - 1 && <div className={styleBarModule.connectorLine}></div>}
                         </li>
                     );

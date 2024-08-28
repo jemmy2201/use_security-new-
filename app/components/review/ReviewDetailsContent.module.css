@@ -77,6 +77,10 @@
   /* 150% */
 }
 
+.divGap {
+  padding-bottom: 30px;
+}
+
 .uploadPhoto {
   display: flex;
   width: 122px;
@@ -116,7 +120,7 @@
 .paymentContainer {
   display: flex;
   padding: 0px;
-  width: 110%;
+  width: 100%;
   flex-direction: column;
   align-items: flex-start;
   background: #FFF;
@@ -150,4 +154,9 @@
   font-weight: 400;
   line-height: 24px;
   /* 150% */
+}
+
+.alignFles{
+  display: flex;
+  gap: 180px;
 }

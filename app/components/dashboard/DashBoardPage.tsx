@@ -128,11 +128,11 @@ const DashBoardPage: React.FC = () => {
 
                 <div className={dashBoardContentstyles.tableHeader}>
                     <span className={dashBoardContentstyles.tableContent} style={{ textAlign: 'right' }}>
-                        My Applications
+                        <h1>My applications</h1>
                     </span>
                     <span className={dashBoardContentstyles.primaryButton}>
                         <button className={dashBoardContentstyles.primaryButtonText} style={{ textAlign: 'left' }} onClick={handleNewPasscardClick}>
-                            Create new pass card
+                            <h2>Create new pass card</h2>
                         </button>
                     </span>
                 </div>
@@ -143,13 +143,12 @@ const DashBoardPage: React.FC = () => {
 
 
                         <tr>
-                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Application type</th>
-                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Pass card type</th>
-                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Grade</th>
-                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Application date</th>
-                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Training Status</th>
-                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Application Status</th>
-                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}>Actions</th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Application type</h2></th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Pass card type</h2></th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Grade</h2></th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Application date</h2></th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Application Status</h2></th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Actions</h2></th>
                         </tr>
                     </thead>
                     <tbody className={dashBoardContentstyles.dashBoardTableHeader}>

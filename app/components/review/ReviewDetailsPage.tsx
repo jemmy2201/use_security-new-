@@ -32,103 +32,105 @@ const ReviewDetailsPage: React.FC = () => {
 
     return (
 
-            <form>
-                <div className={reviewDetailsContentstyles.paymentContainer}>
-                    <div className={reviewDetailsContentstyles.applicantDetails}>
-                        <div className={reviewDetailsContentstyles.applicantDetailsHeaderCard}>
-                            <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                                Personal Details
-                            </div>
-                        </div>
-                        <div>
-                            <div className={reviewDetailsContentstyles.optionsHeaderText}>
-                                Full name
-                            </div>
-                            <div>
-                                {formData.name}
-                            </div>
-                        </div>
-                        <div>
-                            <div className={reviewDetailsContentstyles.optionsHeaderText}>
-                                NRIC / FIN No.
-                            </div>
-                            <div>
-                                {formData.nricText}
-                            </div>
-                        </div>
-                        <div>
-                            <div className={reviewDetailsContentstyles.optionsHeaderText}>
-                                Mobile number
-                            </div>
-                            <div>
-                                {formData.mobileno}
-                            </div>
-                        </div>
-                        <div>
-                            <div className={reviewDetailsContentstyles.optionsHeaderText}>
-                                Email address
-                            </div>
-                            <div>
-                                {formData.email}
-                            </div>
+        <form>
+            <div className={reviewDetailsContentstyles.paymentContainer}>
+                <div className={reviewDetailsContentstyles.applicantDetails}>
+                    <div className={reviewDetailsContentstyles.applicantDetailsHeaderCard}>
+                        <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContent}>
+                            <h1>Personal Details</h1>
                         </div>
                     </div>
-                </div>
-                <div className={reviewDetailsContentstyles.paymentContainerBackground}>
-
-                </div>
-                <div className={reviewDetailsContentstyles.paymentContainer}>
-
-                    <div className={reviewDetailsContentstyles.applicantDetails}>
-                        <div className={reviewDetailsContentstyles.applicantDetailsHeaderCard}>
-                            <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                                Applicant Details
+                    <div className={reviewDetailsContentstyles.alignFles}>
+                        <span>
+                            <div className={reviewDetailsContentstyles.optionsHeaderText}>
+                                <h1> Full name</h1>
                             </div>
-                            <div className={reviewDetailsContentstyles.options}>
-                                <div className={reviewDetailsContentstyles.optionsHeader}>
-                                    <div className={reviewDetailsContentstyles.optionsHeaderText}>
-                                        Type of application
-                                    </div>
-                                    <div>
-                                        {formData.applicationType == "SO" ? <div>Security Officer (SO)</div> : ""}
-                                        {formData.applicationType == "AVSO" ? <div>Aviation Security Officer (AVSO)</div> : ""}
-                                        {formData.applicationType == "PI" ? <div>Private Investigator (PI)</div> : ""}
+                            <div>
+                                <h1> {formData.name} </h1>
+                            </div>
+                            <div className={reviewDetailsContentstyles.divGap}> </div>
+                            <div className={reviewDetailsContentstyles.optionsHeaderText}>
+                                <h2>  Mobile number</h2>
+                            </div>
+                            <div>
+                                <h2>  {formData.mobileno}</h2>
+                            </div>
+                        </span>
+                        <span>
+                            <div className={reviewDetailsContentstyles.optionsHeaderText}>
+                                <h1>  NRIC / FIN No.</h1>
+                            </div>
+                            <div>
+                                <h1> {formData.nricText}</h1>
+                            </div>
+                            <div className={reviewDetailsContentstyles.divGap}> </div>
+                            <div className={reviewDetailsContentstyles.optionsHeaderText}>
+                                <h2>  Email address</h2>
+                            </div>
+                            <div>
+                                <h2>  {formData.email}</h2>
+                            </div>
+                        </span>
+                    </div>
 
-                                    </div>
+
+                </div>
+            </div>
+            <div className={reviewDetailsContentstyles.paymentContainerBackground}>
+
+            </div>
+            <div className={reviewDetailsContentstyles.paymentContainer}>
+
+                <div className={reviewDetailsContentstyles.applicantDetails}>
+                    <div className={reviewDetailsContentstyles.applicantDetailsHeaderCard}>
+                        <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContent}>
+                            <h1>  Applicant Details</h1>
+                        </div>
+                        <div className={reviewDetailsContentstyles.options}>
+                            <div className={reviewDetailsContentstyles.optionsHeader}>
+                                <div className={reviewDetailsContentstyles.optionsHeaderText}>
+                                    <h1> Type of application</h1>
+                                </div>
+                                <div><h1>
+                                    {formData.applicationType == "SO" ? <div>Security Officer (SO)</div> : ""}
+                                    {formData.applicationType == "AVSO" ? <div>Aviation Security Officer (AVSO)</div> : ""}
+                                    {formData.applicationType == "PI" ? <div>Private Investigator (PI)</div> : ""}
+                                </h1>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className={reviewDetailsContentstyles.paymentContainerBackground}>
+            </div>
+            <div className={reviewDetailsContentstyles.paymentContainerBackground}>
 
-                </div>
-                <div className={reviewDetailsContentstyles.paymentContainer}>
+            </div>
+            <div className={reviewDetailsContentstyles.paymentContainer}>
 
-                    <div className={reviewDetailsContentstyles.applicantDetails}>
-                        <div className={reviewDetailsContentstyles.applicantDetailsHeaderCard}>
-                            <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                                Photo
-                            </div>
-                            <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
-                                Please make sure your photo meets our photo guidelines to prevent your application from being rejected.                        </div>
-                            <img src={formData.image} alt="Processed" />
+                <div className={reviewDetailsContentstyles.applicantDetails}>
+                    <div className={reviewDetailsContentstyles.applicantDetailsHeaderCard}>
+                        <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContent}>
+                            <h1>   Photo</h1>
                         </div>
+                        <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
+                            <h1>  Please make sure your photo meets our photo guidelines to prevent your application from being rejected.  </h1>                      </div>
+                        <img src={formData.image} alt="Processed" />
                     </div>
                 </div>
-                <div className={reviewDetailsContentstyles.paymentContainerBackground}>
+            </div>
+            <div className={reviewDetailsContentstyles.paymentContainerBackground}>
 
-                </div>
-                <div className={reviewDetailsContentstyles.paymentContainer}>
-                    <div className={reviewDetailsContentstyles.applicantDetails}>
-                        <div className={reviewDetailsContentstyles.applicantDetailsHeaderCard}>
-                            <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                                Training records
-                            </div>
+            </div>
+            <div className={reviewDetailsContentstyles.paymentContainer}>
+                <div className={reviewDetailsContentstyles.applicantDetails}>
+                    <div className={reviewDetailsContentstyles.applicantDetailsHeaderCard}>
+                        <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContent}>
+                            <h1>  Training records</h1>
+                        </div>
 
-                            <div className={reviewDetailsContentstyles.optionsHeaderText}>
-                                Types of trainings
-                            </div>
+                        <div className={reviewDetailsContentstyles.optionsHeaderText}>
+                            Types of trainings
+                        </div><h1>
                             {formData.trAvso ? <div>Airport Screener Deployment</div> : ""}
                             {formData.trCctc ? <div>Conduct Crowd and Traffic Control (CCTC)</div> : ""}
                             {formData.trCsspb ? <div>Conduct Security Screening of Person and Bag (CSSPB)</div> : ""}
@@ -138,36 +140,37 @@ const ReviewDetailsPage: React.FC = () => {
                             {formData.trObsa ? <div>Operate Basic Security Equipment</div> : ""}
                             {formData.trSsm ? <div>Security Surveillance Management</div> : ""}
                             {formData.trRtt ? <div>Recognise Terrorist Threat (RTT)</div> : ""}
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div className={reviewDetailsContentstyles.paymentContainerBackground}>
+
+            </div>
+            <div className={reviewDetailsContentstyles.paymentContainer}>
+                <div className={reviewDetailsContentstyles.applicantDetails}>
+                    <div className={reviewDetailsContentstyles.applicantDetailsHeaderCard}>
+                        <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContent}>
+                            <h1>  Declaration</h1>
+                        </div>
+
+                        <div className={reviewDetailsContentstyles.optionsHeaderText} onClick={handleCheckboxToggle} style={{ cursor: 'pointer' }}>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <rect x="0.5" y="0.5" width="23" height="23" rx="3.5" fill={isChecked ? "#546E7A" : "white"} stroke="#546E7A" />
+                                    {isChecked && (
+                                        <path d="M6 12l4 4 8-8" stroke="white" strokeWidth="2" fill="none" />
+                                    )}
+                                </svg>
+                            </span>
+                            <span className={reviewDetailsContentstyles.declareText}>
+                                <h1> I hereby certify that the information and photograph provided are accurate and complete. <br></br>I acknowledge that should any of this information be found to be false, misleading, or misrepresentative, <br></br>I may be held legally responsible.</h1>
+                            </span>
                         </div>
                     </div>
                 </div>
-                <div className={reviewDetailsContentstyles.paymentContainerBackground}>
-
-                </div>
-                <div className={reviewDetailsContentstyles.paymentContainer}>
-                    <div className={reviewDetailsContentstyles.applicantDetails}>
-                        <div className={reviewDetailsContentstyles.applicantDetailsHeaderCard}>
-                            <div className={reviewDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                                Declaration
-                            </div>
-
-                            <div className={reviewDetailsContentstyles.optionsHeaderText} onClick={handleCheckboxToggle} style={{ cursor: 'pointer' }}>
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <rect x="0.5" y="0.5" width="23" height="23" rx="3.5" fill={isChecked ? "#546E7A" : "white"} stroke="#546E7A" />
-                                        {isChecked && (
-                                            <path d="M6 12l4 4 8-8" stroke="white" strokeWidth="2" fill="none" />
-                                        )}
-                                    </svg>
-                                </span>
-                                <span className={reviewDetailsContentstyles.declareText}>
-                                    I hereby certify that the information and photograph provided are accurate and complete. <br></br>I acknowledge that should any of this information be found to be false, misleading, or misrepresentative, <br></br>I may be held legally responsible.
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            </div>
+        </form>
     );
 };
 

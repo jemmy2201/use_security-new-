@@ -64,6 +64,7 @@ const ImageProcessing = () => {
             ['image']: img,
             ['isFaceDetected']: isFaceDetected,
             ['isBgColorMatch']: isBgColorMatch,
+            ['imageUrl']: '',
           }));
           // Call API with processed image data
           await sendImageToAPI(resizedImage, formData.nric ? formData.nric : '', formData.applicationType ? formData.applicationType : '');
@@ -194,7 +195,7 @@ const ImageProcessing = () => {
     <div>
       <div className={applicantDetailsContentstyles.uploadPhotoWarningBox}>
         <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
-          Please upload a photo that was taken within the last 3 months.
+          <h1>Please upload a photo that was taken within the last 3 months.</h1>
         </div>
       </div>
 
@@ -205,7 +206,7 @@ const ImageProcessing = () => {
         <div className={applicantDetailsContentstyles.photoUploadError}>
           <div className={applicantDetailsContentstyles.photoUploadErrorBox}>
             <div>
-              Your photo has been rejected for the following reasons:
+              <h1>Your photo has been rejected for the following reasons:</h1>
             </div>
             {formData.isFaceDetected ? (
               <p></p>
@@ -233,16 +234,17 @@ const ImageProcessing = () => {
         <span className={applicantDetailsContentstyles.uploadPhotoContainer}>
           <div className={applicantDetailsContentstyles.uploadPhotoContainerBox}>
             {formData.image && <img src={formData.image} alt="Processed" />}
+            {formData.imageUrl && <img src={formData.imageUrl} alt="Processed" />}
           </div>
 
           <div className={applicantDetailsContentstyles.chooseFileText}>
-            Maximum file size: 5 MB <br></br>
-            Supported file types: JPG / PNG
+            <h1>Maximum file size: 5 MB <br></br>
+            Supported file types: JPG / PNG</h1>
           </div>
           <div className={applicantDetailsContentstyles.fileUploadWrapper}>
             <label htmlFor="file-upload" className={applicantDetailsContentstyles.chooseFileButton}>
               <div className={applicantDetailsContentstyles.chooseFileButtonText}>
-                Choose photo
+                <h1>Choose photo</h1>
               </div>
             </label>
             <input

@@ -53,20 +53,20 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
                 <div className={makePaymentContentstyles.applicantDetails}>
                     <div className={makePaymentContentstyles.applicantDetailsHeaderCard}>
                         <div className={makePaymentContentstyles.applicantDetailsHeaderCardContent}>
-                            Payment Details
+                           <h1> Payment Details</h1>
                         </div>
 
                         <div className={makePaymentContentstyles.applicantDetailsHeaderCardContentDetail}>
-                            All transactions are secure and encrypted.
+                           <h1> All transactions are secure and encrypted.</h1>
                         </div>
                         <div className={makePaymentContentstyles.applicantDetailsHeaderCardContentDetail}>
-                            Please note that there will no cancellations or refunds upon completion of payment.
+                          <h1>  Please note that there will no cancellations or refunds upon completion of payment.</h1>
                         </div>
                     </div>
                     <div className={makePaymentContentstyles.flexContainer}>
                         <span className={makePaymentContentstyles.paymentContainerAmtHeader}>
                             <div className={makePaymentContentstyles.optionsHeaderText}>
-                                Amount payable (inclusive of GST)
+                             <h1>  Amount payable (inclusive of GST)</h1> 
                             </div>
 
                             <div className={makePaymentContentstyles.applicantDetailsHeaderCardContentDetail}>
@@ -75,11 +75,11 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
                         </span>
                         <span className={makePaymentContentstyles.paymentContainerAmtHeader}>
                             <div className={makePaymentContentstyles.optionsHeaderText}>
-                                Type of application
+                              <h1> Type of application</h1> 
                             </div>
 
                             <div className={makePaymentContentstyles.applicantDetailsHeaderCardContentDetail}>
-                                New - Security Officer (SO)
+                               <h1> New - Security Officer (SO)</h1>
                             </div>
                         </span>
                     </div>

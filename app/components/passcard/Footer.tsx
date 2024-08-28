@@ -45,7 +45,7 @@ const Footer: React.FC<FooterProps> =
                                     <button
                                         onClick={onNext}
                                         disabled={!hasNext}
-                                    >
+                                    ><h1>
                                         {activeStep === 0 ? 'Continue to application details' : ''}
                                         {activeStep === 1 ? 'Continue to review details' : ''}
                                         {activeStep === 2 ? 'Continue to make payment' : ''}
@@ -53,6 +53,7 @@ const Footer: React.FC<FooterProps> =
                                         {activeStep === 3 && formData.paymentProcessed ? 'Continue to book appointment' : ''}
                                         {activeStep === 4 ? 'Confirm appointment' : ''}
                                         {activeStep === 5 ? 'Go to dashboard' : ''}
+                                        </h1>
                                     </button>
                                 </div>
                             </span>
