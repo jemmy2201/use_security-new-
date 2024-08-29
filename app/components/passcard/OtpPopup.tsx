@@ -87,10 +87,10 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
             <div className={OtpModuleStyle.container}>
                 <div className={OtpModuleStyle.content}>
                     <div className={OtpModuleStyle.verifyMobileNumber}>
-                        Verify your mobile number
+                        <h2>Verify your mobile number</h2>
                     </div>
                     <div className={OtpModuleStyle.textDetails}>
-                        Before you continue, you are required to verify your mobile number. Enter the 4-digit OTP sent to your mobile number.
+                        <h2>Before you continue, you are required to verify your mobile number. Enter the 4-digit OTP sent to your mobile number.</h2>
                     </div>
                     <div className={OtpModuleStyle.otpBox}>
                         <div className={OtpModuleStyle.otpField}>
@@ -117,16 +117,16 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
 
                     <div>
                         <span className={OtpModuleStyle.otpText}>
-                            Didn’t get the code?
+                            <h2>Didn’t get the code?</h2>
                         </span>
                         <span className={OtpModuleStyle.resendCodeText}>
-                            Resend code
+                           <h2> Resend code</h2>
                         </span>
                     </div>
 
                     <div className={OtpModuleStyle.optButtonBox}>
-                        <button onClick={onClose} className={OtpModuleStyle.cancelButton}>Cancel</button>
-                        <button onClick={handleSubmit} className={OtpModuleStyle.validateButton}>Validate</button>
+                        <button onClick={onClose} className={OtpModuleStyle.cancelButton}><h2>Cancel</h2></button>
+                        <button onClick={handleSubmit} className={OtpModuleStyle.validateButton}><h2>Validate</h2></button>
                     </div>
                 </div>
             </div>

@@ -26,8 +26,8 @@ export async function POST(req: NextRequest) {
         console.log('appType:', appType);
         const schedule = await prisma.booking_schedules.findFirst({
             where: {
-                ...(nric && { nric }),  // Conditionally adds the `nric` filter if `nric` is provided
-                app_type: appType,       // Fixed filter for app_type
+                ...(nric && { nric }),  
+                app_type: appType,       
                 
             },
         });

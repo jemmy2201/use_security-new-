@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import { booking_schedules as bookingDetail } from '@prisma/client';
 import { users as users } from '@prisma/client';
 import bookAppointmentContentstyles from './BookAppointmentContent.module.css';
-
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { format, parseISO } from 'date-fns';
 
 
 const BookAppointmentPage: React.FC = () => {
@@ -76,8 +78,12 @@ const BookAppointmentPage: React.FC = () => {
                                 Date of appointment
                             </div>
                             <div className={bookAppointmentContentstyles.DivDate}>
-                                <input type="date"></input>
-                            </div>
+                            <DatePicker
+        selected={startDate}
+        onChange={date => setStartDate(date)}
+        inline
+        filterDate={date => !isDisabled(date)}
+      />                            </div>
                         </span>
 
                         <span>

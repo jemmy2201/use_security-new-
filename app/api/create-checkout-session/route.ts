@@ -22,7 +22,7 @@ export async function POST() {
           price_data: {
             currency: 'sgd',
             product_data: {
-              name: 'USE Card',
+              name: 'Union of Security Employees (USE)',
             },
             unit_amount: 2250, 
           },
