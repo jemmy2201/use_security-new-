@@ -8,10 +8,16 @@ import bookAppointmentContentstyles from './BookAppointmentContent.module.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format, parseISO } from 'date-fns';
+import { useFormContext } from '.././FormContext';
 
+type DisabledDatesResponse = string[]; // Array of ISO date strings
 
 const BookAppointmentPage: React.FC = () => {
 
+    const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
+    const { formData, setFormData } = useFormContext();
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [disabledDates, setDisabledDates] = useState<Date[]>([]);
     const [bookingSchedules, setBookingSchedules] = useState<bookingDetail[]>([]);
     const router = useRouter();
 
@@ -35,6 +41,25 @@ const BookAppointmentPage: React.FC = () => {
         '3:30pm - 4:30pm',
     ];
 
+    // Function to handle date change
+    const handleDateChange = (date: Date | null) => {
+        setStartDate(date);
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            ['appointmentDate']: date,
+        }));
+    };
+
+    // Handler for button click to set the selected timeslot
+    const handleButtonClick = (text: string) => {
+        console.log('timeslot', text);
+        setSelectedTimeSlot(text);
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            ['timeSlot']: text,
+        }));
+    };
+
     useEffect(() => {
         // Retrieve data from localStorage
         const storedData = localStorage.getItem('users');
@@ -48,11 +73,27 @@ const BookAppointmentPage: React.FC = () => {
         } else {
             setError('No user data found');
         }
+
+        const fetchDisabledDates = async () => {
+            try {
+                const response = await fetch('/api/appointment-dates'); // Replace with your API endpoint
+                if (!response.ok) {
+                    throw new Error('Failed to fetch disabled dates');
+                }
+                const data: DisabledDatesResponse = await response.json();
+                const parsedDates = data.map(dateStr => parseISO(dateStr));
+                setDisabledDates(parsedDates);
+            } catch (error) {
+                console.error('Error fetching disabled dates:', error);
+            }
+        };
+        fetchDisabledDates();
     }, []);
 
-    // Handlers for input changes
-    const handleContactNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setContactNumber(event.target.value);
+
+    // Check if a date is disabled
+    const isDisabled = (date: Date) => {
+        return disabledDates.some(disabledDate => format(disabledDate, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'));
     };
 
     return (
@@ -77,13 +118,16 @@ const BookAppointmentPage: React.FC = () => {
                             <div className={bookAppointmentContentstyles.DivDateOfAppintment}>
                                 Date of appointment
                             </div>
-                            <div className={bookAppointmentContentstyles.DivDate}>
-                            <DatePicker
-        selected={startDate}
-        onChange={date => setStartDate(date)}
-        inline
-        filterDate={date => !isDisabled(date)}
-      />                            </div>
+                            <div>
+                                <DatePicker
+                                    selected={startDate}
+                                    onChange={date => setStartDate(date)} // Using setStartDate directly for simplicity
+                                    dateFormat="yyyy-MM-dd"
+                                    isClearable
+                                    placeholderText="Choose a date"
+                                    excludeDates={disabledDates} // Disable fetched dates
+                                />
+                            </div>
                         </span>
 
                         <span>
@@ -92,7 +136,12 @@ const BookAppointmentPage: React.FC = () => {
                                 <ul>
                                     {buttonTexts.map((text, index) => (
                                         <li key={index} className={bookAppointmentContentstyles.timeSlotLayout}>
-                                            <button className={bookAppointmentContentstyles.timeSlotText}>{text}</button>
+                                            <button
+                                                className={`${bookAppointmentContentstyles.timeSlotText} ${selectedTimeSlot === text ? bookAppointmentContentstyles.selected : ''}`}
+                                                onClick={() => handleButtonClick(text)}
+                                            >
+                                                {text}
+                                            </button>
                                         </li>
                                     ))}
                                 </ul>

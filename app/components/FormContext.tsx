@@ -29,6 +29,8 @@ interface FormData {
     isBgColorMatch?: boolean;
     isTermsAndConditionSigned?: boolean;
     imageUrl?: string;
+    appointmentDate?: Date;
+    timeSlot?: string;
     [key: string]: any;
 }
 
