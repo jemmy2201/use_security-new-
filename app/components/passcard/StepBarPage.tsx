@@ -18,7 +18,7 @@ import { useFormContext } from '.././FormContext';
 import stepBarModuleStyle from './StepBar.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
-import { booking_schedules } from '@prisma/client';
+import { booking_schedules as bookingDetail } from '@prisma/client';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -109,7 +109,7 @@ const StepBarHomePage: React.FC = () => {
 
         if (activeStep == 4) {
 
-            if(!formData.isAppointmentConfirmed){
+            if (!formData.isAppointmentConfirmed) {
                 if (!formData.appointmentDate) {
                     alert('Appointment date is required.');
                     return;
@@ -130,7 +130,7 @@ const StepBarHomePage: React.FC = () => {
                             timeSlot: formData.timeSlot
                         }),
                     });
-    
+
                     if (!response.ok) {
                         throw new Error('Appointment: Failed to save');
                     }
@@ -143,10 +143,34 @@ const StepBarHomePage: React.FC = () => {
                 } catch (error) {
                     console.error("Appointment: Error saving:", error);
                 }
-            }else{
+            } else {
+
+                try {
+                    const response = await fetch('/api/login');
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const data: bookingDetail[] = await response.json();
+
+                    if (data.length === 0) {
+                        console.log('No booking details found.');
+                        // Handle the case when there are no booking details
+                        router.push('/firsttime');
+                    } else {
+                        localStorage.setItem('bookingSchedules', JSON.stringify(data));
+                        // Process the data or store it in state/context
+                        console.log('data from api', data);
+                        // Navigate to the dashboard with query parameters or state
+                        router.push('/dashboard');
+                    }
+                } catch (err) {
+                    setError('Failed to fetch users');
+                } finally {
+                    setLoading(false);
+                }
                 router.push('/dashboard');
             }
-        }else{
+        } else {
             if (activeStep == 3 && !formData.paymentProcessed) {
                 handleCheckout();
             } else {

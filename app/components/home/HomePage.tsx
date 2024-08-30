@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import styles from './HomeStyle.module.css';
 import headerstyles from './HeaderStyle.module.css';
 import footerstyles from './FooterStyle.module.css';
-
-//import bookingDetail from '../../types/BookingDetail';
 import { booking_schedules as bookingDetail } from '@prisma/client';
 
 const HomePage: React.FC = () => {
@@ -35,8 +33,6 @@ const HomePage: React.FC = () => {
                 // Navigate to the dashboard with query parameters or state
                 router.push('/dashboard');
             }
-
-
 
         } catch (err) {
             setError('Failed to fetch users');
