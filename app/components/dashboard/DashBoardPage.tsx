@@ -81,7 +81,7 @@ const DashBoardPage: React.FC = () => {
             localStorage.setItem('users', JSON.stringify(data));
             // Process the data or store it in state/context
             console.log('data from api', data);
-
+            
             const responseBookingSchedule = await fetch('/api/getBookingSchedule');
             if (!responseBookingSchedule.ok) {
                 throw new Error('Network response was not ok');
@@ -146,7 +146,7 @@ const DashBoardPage: React.FC = () => {
                             <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Application type</h2></th>
                             <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Pass card type</h2></th>
                             <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Grade</h2></th>
-                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Application date</h2></th>
+                            <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Collection date</h2></th>
                             <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Application Status</h2></th>
                             <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Actions</h2></th>
                         </tr>
@@ -157,7 +157,7 @@ const DashBoardPage: React.FC = () => {
                                 <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.app_type}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
                                 <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.card_id}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
                                 <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.grade_id}>{booking.grade_id}</td>
-                                <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.trans_date}>{booking.trans_date}</td>
+                                <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.trans_date}>{booking.appointment_date}</td>
                                 <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.TR_AVSO}>{booking.TR_AVSO}</td>
                                 <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.Status_app}>{statusTypeMap[booking.Status_app || ''] || 'Unknown'}</td>
                                 <td className={dashBoardContentstyles.dashBoardTableHeaderContentData}>

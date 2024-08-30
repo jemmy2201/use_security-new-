@@ -121,11 +121,11 @@ const BookAppointmentPage: React.FC = () => {
                             <div>
                                 <DatePicker
                                     selected={startDate}
-                                    onChange={date => setStartDate(date)} // Using setStartDate directly for simplicity
+                                    onChange={handleDateChange} 
                                     dateFormat="yyyy-MM-dd"
                                     isClearable
                                     placeholderText="Choose a date"
-                                    excludeDates={disabledDates} // Disable fetched dates
+                                    excludeDates={disabledDates} 
                                 />
                             </div>
                         </span>

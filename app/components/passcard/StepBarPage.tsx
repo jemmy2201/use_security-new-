@@ -68,7 +68,7 @@ const StepBarHomePage: React.FC = () => {
         setIsPaymentSuccessful(true);
     };
 
-    const handleNext = () => {
+    const handleNext = async () => {
 
         if (activeStep == 0) {
             if (!formData.email) {
@@ -107,24 +107,63 @@ const StepBarHomePage: React.FC = () => {
             }
         }
 
-        if (activeStep == 3 && !formData.paymentProcessed) {
-            handleCheckout();
-        } else {
-            if (formData.originalMobileno === formData.mobileno
-                || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
-                console.log('same mobile');
-                setIsOtpPopupOpen(false);
-                if (activeStep < steps.length - 1) {
-                    setActiveStep(prevStep => prevStep + 1);
+        if (activeStep == 4) {
+
+            if(!formData.isAppointmentConfirmed){
+                if (!formData.appointmentDate) {
+                    alert('Appointment date is required.');
+                    return;
                 }
+                if (!formData.timeSlot) {
+                    alert('Please choose the time slot');
+                    return;
+                }
+                try {
+                    const response = await fetch('/api/handle-appointment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            nric: formData.nric,
+                            appointmentDate: formData.appointmentDate,
+                            timeSlot: formData.timeSlot
+                        }),
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error('Appointment: Failed to save');
+                    }
+                    const result = await response.json();
+                    setFormData(prevFormData => ({
+                        ...prevFormData,
+                        ['isAppointmentConfirmed']: true,
+                    }));
+                    console.log("Appointment: Saved successfully:", result);
+                } catch (error) {
+                    console.error("Appointment: Error saving:", error);
+                }
+            }else{
+                router.push('/dashboard');
+            }
+        }else{
+            if (activeStep == 3 && !formData.paymentProcessed) {
+                handleCheckout();
             } else {
-                console.log('mobile changed');
-                setIsOtpPopupOpen(true);
+                if (formData.originalMobileno === formData.mobileno
+                    || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
+                    console.log('same mobile');
+                    setIsOtpPopupOpen(false);
+                    if (activeStep < steps.length - 1) {
+                        setActiveStep(prevStep => prevStep + 1);
+                    }
+                } else {
+                    console.log('mobile changed');
+                    setIsOtpPopupOpen(true);
+                }
             }
         }
-
     };
-
 
     const handleCheckout = async () => {
         setLoading(true);

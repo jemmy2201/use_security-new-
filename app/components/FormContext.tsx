@@ -31,6 +31,7 @@ interface FormData {
     imageUrl?: string;
     appointmentDate?: Date;
     timeSlot?: string;
+    isAppointmentConfirmed?:boolean;
     [key: string]: any;
 }
 
