@@ -3,13 +3,18 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import { OAuthConfig } from 'next-auth/providers/oauth';
 import fetch from 'node-fetch'; 
+import fs from 'fs';
+import path from 'path';
+
+const privateKey = fs.readFileSync(path.join(process.cwd(), 'path/to/private-key.pem'), 'utf8');
+
 
 // Define the SingPass provider configuration as an object
 const SingPassProvider: OAuthConfig<any> = {
   id: 'singpass',
   name: 'SingPass',
   type: 'oauth',
-  wellKnown: process.env.SINGPASS_JWKS_URL as string,
+  wellKnown: process.env.SINGPASS_WELLKNOWN_URL as string,
   authorization: {
     params: {
       scope: 'openid',
@@ -29,7 +34,8 @@ const SingPassProvider: OAuthConfig<any> = {
     };
   },
   client: {
-    token_endpoint_auth_method: 'client_secret_post',
+    token_endpoint_auth_method: 'private_key_jwt',
+    privateKey: privateKey,
   },
 };
 
