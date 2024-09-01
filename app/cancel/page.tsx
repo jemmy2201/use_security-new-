@@ -1,4 +1,4 @@
-// app/cancel/page.tsx
+"use client";
 
 const CancelPage: React.FC = () => {
     return (

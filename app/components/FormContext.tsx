@@ -1,3 +1,5 @@
+"use client";
+
 import React, { createContext, useState, ReactNode, useContext } from 'react';
 
 // Define the shape of the form data

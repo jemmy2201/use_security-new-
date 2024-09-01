@@ -1,25 +1,26 @@
 // app/api/auth/[...nextauth]/route.ts
 
-import NextAuth from 'next-auth';
-import { NextAuthOptions } from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import { OAuthConfig } from 'next-auth/providers/oauth';
+import fetch from 'node-fetch'; 
 
+// Define the SingPass provider configuration as an object
 const SingPassProvider: OAuthConfig<any> = {
   id: 'singpass',
   name: 'SingPass',
   type: 'oauth',
-  wellKnown: 'https://stg-id.singpass.gov.sg/.well-known/openid-configuration',
+  wellKnown: process.env.SINGPASS_JWKS_URL as string,
   authorization: {
     params: {
       scope: 'openid',
       response_type: 'code',
-      redirect_uri: `https://www.idx-id2021.com/afterlogin`,
+      redirect_uri: process.env.SINGPASS_REDIRECT_URI as string, 
     },
   },
   idToken: true,
   checks: ['pkce', 'state'],
-  clientId: process.env.SINGPASS_CLIENT_ID,
-  clientSecret: process.env.SINGPASS_CLIENT_SECRET,
+  clientId: process.env.SINGPASS_CLIENT_ID as string, 
+  clientSecret: process.env.SINGPASS_CLIENT_SECRET as string, 
   profile(profile) {
     return {
       id: profile.sub,
@@ -32,21 +33,60 @@ const SingPassProvider: OAuthConfig<any> = {
   },
 };
 
+// Function to fetch MyInfo data using access token
+async function fetchMyInfoData(accessToken: string) {
+  const response = await fetch(`${process.env.MYINFO_API_BASE_URL}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch MyInfo data');
+  }
+
+  const myInfoData = await response.json();
+  return myInfoData;
+}
+
+// Define NextAuth options
 const authOptions: NextAuthOptions = {
-  providers: [SingPassProvider],
+  providers: [
+    SingPassProvider, // Directly use the SingPassProvider object here
+  ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ user, account, profile }) {
       // Custom logic for sign-in if needed
       return true;
     },
-    async session({ session, user }) {
+    async session({ session, token, user }) {
       session.user = user;
       return session;
     },
+    async jwt({ token, account }) {
+      if (account) {
+        token.accessToken = account.access_token;
+
+        try {
+          // Fetch MyInfo data using access token
+          const myInfoData = await fetchMyInfoData(token.accessToken as string); // Use type assertion
+
+          // Attach MyInfo data to the JWT token
+          token.myInfo = myInfoData;
+        } catch (error) {
+          console.error('Failed to fetch MyInfo data:', error);
+        }
+      }
+      return token;
+    },
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET as string, // Type assertion
 };
 
+// Define the handler for GET and POST requests
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

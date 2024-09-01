@@ -1,4 +1,5 @@
 // app/success/page.tsx
+"use client";
 
 const SuccessPage: React.FC = () => {
     return (

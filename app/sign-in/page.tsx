@@ -12,9 +12,6 @@ const HomePage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
-    const handleLoginClick = async () => {
-        signIn('singpass'); 
-    };
 
     return (<div className={styles.container}>
         <div className={styles.overlay}>
@@ -29,7 +26,10 @@ const HomePage: React.FC = () => {
                             <p>Contact Us</p>
                         </span>
                         <span className={headerstyles.loginButton}>
-                            <button onClick={handleLoginClick}>Log in with singpass</button>
+                            <button onClick={() => signIn('singpass')} disabled={loading}>
+                                {loading ? 'Logging in...' : 'Log in with Singpass'}
+                            </button>
+                            {error && <p className={styles.error}>{error}</p>}
                         </span>
                     </div>
                 </div>
@@ -62,7 +62,7 @@ const HomePage: React.FC = () => {
                         </div>
                         <div className={styles.services2}>
 
-                        <span className={styles.servicesblock}>
+                            <span className={styles.servicesblock}>
                                 <div className={styles.servicesblockheader}>
                                     Renew pass card
                                 </div>

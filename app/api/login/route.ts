@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { encryptDecrypt } from '../../utils/encryptDecrypt'
 
 const prisma = new PrismaClient();
 
