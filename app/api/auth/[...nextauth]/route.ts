@@ -2,14 +2,16 @@
 
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import { OAuthConfig } from 'next-auth/providers/oauth';
-import fetch from 'node-fetch'; 
+import fetch from 'node-fetch';
 import fs from 'fs';
 import path from 'path';
+import jwt from 'jsonwebtoken';
 
+// Read the private and public keys from the file system
 const privateKey = fs.readFileSync(path.join(process.cwd(), 'path/to/private-key.pem'), 'utf8');
+const publicKey = fs.readFileSync(path.join(process.cwd(), 'path/to/public-key.pem'), 'utf8');
 
-
-// Define the SingPass provider configuration as an object
+// Define the SingPass provider configuration
 const SingPassProvider: OAuthConfig<any> = {
   id: 'singpass',
   name: 'SingPass',
@@ -58,14 +60,24 @@ async function fetchMyInfoData(accessToken: string) {
   return myInfoData;
 }
 
+// Function to verify JWT using the public key
+async function verifyToken(token: string) {
+  return new Promise<any>((resolve, reject) => {
+    jwt.verify(token, publicKey, { algorithms: ['RS256'] }, (err, decoded) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(decoded);
+      }
+    });
+  });
+}
+
 // Define NextAuth options
 const authOptions: NextAuthOptions = {
-  providers: [
-    SingPassProvider, // Directly use the SingPassProvider object here
-  ],
+  providers: [SingPassProvider],
   callbacks: {
     async signIn({ user, account, profile }) {
-      // Custom logic for sign-in if needed
       return true;
     },
     async session({ session, token, user }) {
@@ -78,10 +90,14 @@ const authOptions: NextAuthOptions = {
 
         try {
           // Fetch MyInfo data using access token
-          const myInfoData = await fetchMyInfoData(token.accessToken as string); // Use type assertion
+          const myInfoData = await fetchMyInfoData(token.accessToken as string);
 
           // Attach MyInfo data to the JWT token
           token.myInfo = myInfoData;
+
+          // Verify JWT if needed (Example)
+          const decoded = await verifyToken(token.accessToken as string);
+          console.log('Decoded JWT:', decoded);
         } catch (error) {
           console.error('Failed to fetch MyInfo data:', error);
         }
