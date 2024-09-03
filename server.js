@@ -3,9 +3,8 @@ const { parse } = require("url");
 const next = require("next");
 
 const dev = process.env.NODE_ENV !== "production";
-
-const port = process.env.PORT || 3000;
-const hostname = "localhost";
+const port = process.env.PORT || 80;
+const hostname = undefined;// Allow the server to respond to any hostname or IP
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
 
@@ -33,6 +32,6 @@ app.prepare().then(() => {
       process.exit(1);
     })
     .listen(port, async () => {
-      console.log(`> Ready on http://localhost:${port}`);
+      console.log(`> Ready on port ${port}`);
     });
 });
