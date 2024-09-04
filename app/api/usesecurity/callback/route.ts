@@ -4,35 +4,22 @@ import axios from 'axios';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import jwt from 'jsonwebtoken';
-import { importJWK, jwtVerify, compactDecrypt, decodeJwt } from 'jose';
-
-
+import { importJWK, compactDecrypt, decodeJwt } from 'jose';
 
 const privateKey = readFileSync(resolve('PrivateKey.pem'), 'utf8');
-const CLIENT_ID_SINPASS_UAT = '99gEBb5Bo6stbYJ9jVbmrCFyBZhbeU4I';
-const AUD_UAT = 'http://localhost:5156/singpass/v2';
-const AUTH_API_URL_UAT = 'http://localhost:5156/singpass/v2/token';
-const REDIRECT_URL_SINGPASS_CURL = 'http://localhost/api/usesecurity/callback';
-const URL_API_PRIVATE_KEY_JWE = 'https://www.idx-id2021.com/oauth2/uat_jwks';
 
-const jwk = {
-    kty: "EC",
-    use: "sig",
-    crv: "P-256",
-    kid: "idx-sig",
-    x: "vZU7a9zvPgDW0foGqkxtcbzYw796G1uYKLYCj0BGQYo",
-    y: "ocA9DH32SmIVzuObjeOMHvZZYuLrD4p66w4KE2gngSU",
-    d: "rTMBv7X9HgJfRjZCqyv6XQbOOk-G5C85tIRssTPnhLM",
-};
-
+const CLIENT_ID = process.env.SINGPASS_CLIENT_ID;
+const AUD_URL = process.env.SINGPASS_AUD_URL;
+const AUTH_API_URL = process.env.SINGPASS_AUTH_API_URL as string;
+const REDIRECT_URL_SINGPASS_CURL = process.env.SINGPASS_REDIRECT_URI;
 
 // Convert the private_key_jwt function
 const privateKeyJwt = async () => {
     const expEncode = Math.floor(Date.now() / 1000) + 2 * 60;
     const iatEncode = Math.floor(Date.now() / 1000);
 
-    const clientIdSinpass = CLIENT_ID_SINPASS_UAT;
-    const aud = AUD_UAT;
+    const clientIdSinpass = CLIENT_ID;
+    const aud = AUD_URL;
 
     const payload = {
         sub: clientIdSinpass,
@@ -41,27 +28,14 @@ const privateKeyJwt = async () => {
         iat: iatEncode,
         exp: expEncode
     };
-
-    const secret = new TextEncoder().encode(
-        privateKey,
-    )
-
     const token = jwt.sign(payload, privateKey, { algorithm: 'ES256' });
     return token;
 };
 
 // Convert the id_token function
 const idToken = async (jwtToken: string, code: string) => {
-    const data = `client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&client_assertion=${jwtToken}&client_id=${CLIENT_ID_SINPASS_UAT}&grant_type=authorization_code&redirect_uri=${REDIRECT_URL_SINGPASS_CURL}&code=${code}&scope=openid`;
-
-    console.log('chamil-AUTH_API_URL_UAT', AUTH_API_URL_UAT);
-    console.log('chamil-CLIENT_ID_SINPASS_UAT', CLIENT_ID_SINPASS_UAT);
-    console.log('chamil-REDIRECT_URL_SINGPASS_CURL', REDIRECT_URL_SINGPASS_CURL);
-    console.log('chamil-code', code);
-    console.log('chamil-jwtToken', jwtToken);
-
     const reqBody = {
-        client_id: CLIENT_ID_SINPASS_UAT,
+        client_id: CLIENT_ID,
         code: code,
         client_assertion: jwtToken,
         client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
@@ -70,34 +44,15 @@ const idToken = async (jwtToken: string, code: string) => {
     }
 
     try {
-        const response = await axios.post(AUTH_API_URL_UAT, reqBody, {
+        const response = await axios.post(AUTH_API_URL, reqBody, {
             headers: {
                 'Charset': 'ISO-8859-1',
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         });
-        console.log('============================ done')
         return response.data;
     } catch (error) {
         console.error('Error during ID token request:', error);
-        // throw error; // TODO
-    }
-};
-
-
-
-// Convert the api_private_key_jwe function
-const apiPrivateKeyJwe = async (response: string) => {
-    try {
-        const result = await axios.get(URL_API_PRIVATE_KEY_JWE, {
-            params: { code: response },  // Pass `code` as a query parameter
-            headers: { 'Content-Type': 'application/json' }  // Headers go here
-        });
-        console.log('return from apiPrivateKeyJwe: ', result.data);
-        return result.data;
-    } catch (error) {
-        console.error('Error during API private key JWE request:');
-        //throw error;
     }
 };
 
@@ -120,9 +75,7 @@ async function privateKeyJwe(code: string) {
     try {
         // Decrypt the JWE using the imported key
         const { plaintext } = await compactDecrypt(code, key);
-        console.log('plaintext:', plaintext);
         const decodedToken = decodeJwt(new TextDecoder().decode(plaintext));
-        console.log('decodedToken:', decodedToken);
         const subject = decodedToken.sub;
         console.log('Decrypted subject:', subject);
         return subject;
@@ -131,26 +84,6 @@ async function privateKeyJwe(code: string) {
         throw error;
     }
 }
-
-// Convert the public_key_jwt function
-
-const publicKeyJwt = async (response: string) => {
-    const key = await importJWK(jwk);
-
-    // Ensure the response is a string
-    if (typeof response !== 'string') {
-        throw new Error('JWT response must be a string');
-    }
-
-    try {
-        const { payload } = await jwtVerify(response, key);
-        console.log('payload: ', payload);
-        return payload;
-    } catch (error) {
-        console.error('Error during JWT verification:', error);
-        throw error;
-    }
-};
 
 // Convert the convert_sub function
 const convertSub = (sub: string) => {
@@ -161,9 +94,6 @@ const convertSub = (sub: string) => {
 
 export async function GET(request: NextRequest, res: NextResponse) {
     try {
-
-        console.log('Callback from Singpass login');
-
         // Extract the `code` query parameter from the URL
         const { searchParams } = new URL(request.url);
         const code = searchParams.get('code');
@@ -176,7 +106,6 @@ export async function GET(request: NextRequest, res: NextResponse) {
 
         // Step 1: Obtain JWT token using privateKeyJwt (assuming this is your custom function)
         const jwtToken = await privateKeyJwt();
-        console.log("jwtToken-chamil", jwtToken);
 
         // Step 2: Obtain ID token using the authorization code and JWT token
         const response = await idToken(jwtToken, code);
@@ -185,32 +114,12 @@ export async function GET(request: NextRequest, res: NextResponse) {
         console.log('id token received: ', dataToken);
 
         // Step 3: Decrypt the JWE token (assuming apiPrivateKeyJwe is your custom decryption function)
-        console.log('calling apiPrivateKeyJwe');
-        //const jweDecoded = await apiPrivateKeyJwe(data);
         const jweDecoded = await privateKeyJwe(dataToken) as string;
 
-        console.log('end calling apiPrivateKeyJwe, jweDecoded', jweDecoded);
-
-        // Step 4: Decode the JWT token to get user information (assuming publicKeyJwt is your custom JWT decoding function)
-        console.log('calling publicKeyJwt');
-
-
-        /** 
-            const jwtDecoded = await publicKeyJwt(jweDecoded);
-            console.log('end calling publicKeyJwt jwtDecoded: ', jwtDecoded);
-
-            // Extract `sub` and convert it using your function (assuming convertSub is your custom function)
-            console.log('calling jwtDecoded');
-            const sub = jwtDecoded['Jose.Component.Signature.JWS.payload'] as string;
-            console.log('end calling jwtDecoded, sub: ', sub);
-            const subConverted = convertSub(sub); 
-        */
-
         const subConverted = convertSub(jweDecoded);
-        console.log('nric returned: ', subConverted);
-        const userId = subConverted;
+        console.log('nric : ', subConverted);
 
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+        return NextResponse.redirect(new URL('/dashboard', request.url));
 
     } catch (error) {
         console.error('Error processing Singpass callback:', error);

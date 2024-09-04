@@ -1,10 +1,7 @@
-// app/api/auth/[...nextauth]/route.ts
 
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import { OAuthConfig } from 'next-auth/providers/oauth';
 import fetch from 'node-fetch';
-import fs from 'fs';
-import path from 'path';
 import jwt from 'jsonwebtoken';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
@@ -17,27 +14,26 @@ const SingPassProvider: OAuthConfig<any> = {
   id: 'singpass',
   name: 'SingPass',
   type: 'oauth',
-  wellKnown: 'http://localhost:5156/singpass/v2/.well-known/openid-configuration',
+  wellKnown: process.env.SINGPASS_WELLKNOWN_URL,
   authorization: {
     params: {
       scope: 'openid',
       response_type: 'code',
-      redirect_uri: 'http://localhost/api/usesecurity/callback',
+      redirect_uri: process.env.SINGPASS_REDIRECT_URI,
       nonce: 'dummySessionState',
       state: 'dummySessionState'
     },
   },
   idToken: true,
   checks: ['pkce', 'state'],
-  clientId: '99gEBb5Bo6stbYJ9jVbmrCFyBZhbeU4I',
-  clientSecret: '99gEBb5Bo6stbYJ9jVbmrCFyBZhbeU4I',
+  clientId: process.env.SINGPASS_CLIENT_ID,
+  clientSecret: process.env.SINGPASS_CLIENT_SECRET,
   client: {
     token_endpoint_auth_method: 'private_key_jwt',
     privateKey: privateKey,
-    clientSecret: '99gEBb5Bo6stbYJ9jVbmrCFyBZhbeU4I',
+    clientSecret: process.env.SINGPASS_CLIENT_SECRET,
   },  
   profile(profile) {
-    console.log('profile--', profile);
     return {
       id: profile.sub,
       name: profile.name,
@@ -92,8 +88,6 @@ const authOptions: NextAuthOptions = {
       return true;
     },
     async session({ session, token, user }) {
-      console.log('inside session --- session: ', session.user);
-      console.log('inside session --- token: ', token.sub);
       console.log('inside session --- user: ', user);
       session.user = user;
       return session;
