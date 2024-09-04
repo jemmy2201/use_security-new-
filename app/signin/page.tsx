@@ -7,14 +7,15 @@ import headerstyles from './HeaderStyle.module.css';
 import footerstyles from './FooterStyle.module.css';
 import { signIn } from 'next-auth/react';
 
-const HomePage: React.FC = () => {
+const SignIn: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
     const singpassLoginUrl = `http://localhost:5156/singpass/v2/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=http://localhost/api/usesecurity/callback&scope=openid&response_type=code&state=dummySessionState&nonce=dummySessionState`;
 
     const handleLogin = () => {
-        window.location.href = singpassLoginUrl;
+        // window.location.href = singpassLoginUrl;
+        signIn('singpass');
     };
 
     return (<div className={styles.container}>
@@ -111,4 +112,4 @@ const HomePage: React.FC = () => {
 
 };
 
-export default HomePage;
+export default SignIn;
