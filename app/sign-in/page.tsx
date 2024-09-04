@@ -11,7 +11,11 @@ const HomePage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+    const singpassLoginUrl = `http://localhost:5156/singpass/v2/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=http://localhost/api/usesecurity/callback&scope=openid&response_type=code&state=dummySessionState&nonce=dummySessionState`;
 
+    const handleLogin = () => {
+        window.location.href = singpassLoginUrl;
+    };
 
     return (<div className={styles.container}>
         <div className={styles.overlay}>
@@ -26,7 +30,7 @@ const HomePage: React.FC = () => {
                             <p>Contact Us</p>
                         </span>
                         <span className={headerstyles.loginButton}>
-                            <button onClick={() => signIn('singpass')} disabled={loading}>
+                            <button onClick={handleLogin} disabled={loading}>
                                 {loading ? 'Logging in...' : 'Log in with Singpass'}
                             </button>
                             {error && <p className={styles.error}>{error}</p>}
