@@ -1,0 +1,162 @@
+.applicantDetails {
+  display: flex;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  align-self: stretch;
+  background: #FFF;
+}
+
+.applicantDetailsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.applicantDetailsHeaderCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.applicantDetailsHeaderCardContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  flex: 1 0 0;
+  color: #000;
+  font-family: Poppins;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 42px;
+  /* 150% */
+}
+
+.applicantDetailsHeaderCardContentDetail {
+  color: #000;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 150% */
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.optionsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.optionsHeaderText {
+  color: #000;
+  display: flex;
+  /* Regular Bold */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  /* 150% */
+}
+
+.divGap {
+  padding-bottom: 30px;
+}
+
+.uploadPhoto {
+  display: flex;
+  width: 122px;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  background: #FFF;
+}
+
+.trainingRecord {
+  display: flex;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  align-self: stretch;
+  background: #FFF;
+}
+
+.checkboxesText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1 0 0;
+}
+
+.checkboxes {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.paymentContainer {
+  display: flex;
+  padding: 0px;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #FFF;
+  justify-content: center;
+}
+
+.paymentContainerBackground {
+  display: flex;
+  padding: 3%;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #F5F6F7;
+  justify-content: center;
+}
+
+.declareTextBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.declareText {
+  flex: 1 0 0;
+  color: #000;
+  padding-left: 10px;
+  /* Regular */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 150% */
+}
+
+.alignFles{
+  display: flex;
+  gap: 180px;
+}

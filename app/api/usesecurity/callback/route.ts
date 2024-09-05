@@ -5,6 +5,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import jwt from 'jsonwebtoken';
 import { importJWK, compactDecrypt, decodeJwt } from 'jose';
+import { createSession } from '../../../../lib/session';
 
 const privateKey = readFileSync(resolve('PrivateKey.pem'), 'utf8');
 
@@ -119,7 +120,10 @@ export async function GET(request: NextRequest, res: NextResponse) {
         const subConverted = convertSub(jweDecoded);
         console.log('nric : ', subConverted);
 
-        return NextResponse.redirect(new URL('/dashboard', request.url));
+        
+        await createSession(subConverted)
+        //redirect('/terms')
+        return NextResponse.redirect(new URL('/terms', request.url));
 
     } catch (error) {
         console.error('Error processing Singpass callback:', error);

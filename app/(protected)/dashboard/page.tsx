@@ -1,24 +1,18 @@
 "use client";
 
-import { useSession } from 'next-auth/react';
 import React from 'react';
 import DashBoardPage from '../../components/dashboard/DashBoardPage';
 
 const Dashboard: React.FC = () => {
 
-  const { data: session } = useSession();
-  console.log("user in session ", session?.user);
-  if (!session) {
-    return <p>Loading...</p>;
-  }
+  // const { data: session } = useSession();
+  // console.log("user in session ", session?.user);
 
   return (
   <div>
-    <h1>Welcome</h1>
     <DashBoardPage />
-
   </div>
-  
+
   );
 };
 

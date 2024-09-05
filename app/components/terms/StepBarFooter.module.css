@@ -1,0 +1,27 @@
+.buttonBox {
+    display: flex;
+    padding-left: 19%;
+    gap: 10px;
+    padding-bottom: 4%;
+}
+
+.saveDraft {
+    display: flex;
+    padding: 16px 20px;
+    align-items: flex-start;
+    gap: 8px;
+    border-radius: 28px;
+    border: 1px solid #546E7A;
+    background: #FFF;
+}
+
+.continue {
+    display: flex;
+    padding: 16px 20px;
+    align-items: flex-start;
+    gap: 8px;
+    border-radius: 28px;
+    background: #CC0C00;
+    color: white;
+}
+
