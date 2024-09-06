@@ -2,8 +2,19 @@
 
 import React from 'react';
 import headerstyles from './HeaderStyle.module.css';
+import { logout } from '@/actions/auth';
+
 
 const HeaderPage: React.FC = () => {
+
+    const handleLogout = async () => {
+        try {
+            await logout(); // Call the logout function
+        } catch (error) {
+            console.error('Logout failed', error);
+        }
+    };
+
     return (
         <div className={headerstyles.header}>
             <div className={headerstyles.leftHeader}>
@@ -15,7 +26,7 @@ const HeaderPage: React.FC = () => {
                     <h1>Contact Us</h1>
                 </span>
                 <span className={headerstyles.logoutButton}>
-                    <button><h2>Log out</h2></button>
+                    <button onClick={handleLogout} id='logoutAction'><h2>Log out</h2></button>
                 </span>
             </div>
         </div>

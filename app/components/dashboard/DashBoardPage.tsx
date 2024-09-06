@@ -47,6 +47,14 @@ const DashBoardPage: React.FC = () => {
         setLoading(true);
         setError(null);
         try {
+
+            const myInfoResponse = await fetch('/api/singpass-myinfo');
+            if (!myInfoResponse.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const myInfoData: string = await myInfoResponse.json();
+            console.log('myInfoData: ', myInfoData);
+
             const response = await fetch('/api/myinfo');
             if (!response.ok) {
                 throw new Error('Network response was not ok');

@@ -22,16 +22,16 @@
   align-items: center;
   gap: 40px;
   width: 100%;
-  margin: 0 auto;
+  margin: 10 auto;
   /* This centers the container horizontally */
-  height: 70vh;
+  height: 74vh;
   /* Optional: If you want to center vertically relative to the viewport height */
   justify-content: center;
   /* Centers the content vertically */
 }
 
 .bodyp {
-  width: 640px;
+  width: 940px;
   color: #F5F6F7;
   text-align: center;
   font-family: Poppins;
@@ -43,7 +43,7 @@
 
 .services {
   display: flex;
-  width:640px;
+  width: 940px;
   padding: 40px;
   align-items: center;
   align-content: center;
@@ -53,14 +53,37 @@
 
 .services2 {
   align-items: center;
+  display: flex;
+}
+
+.svgImage {
+  width: 48px;
+  align-items: center;
+  padding-left: 50px;
+  height: 48px;
+  flex-shrink: 0;
+  stroke-width: 2px;
+  stroke: #546E7A;
 }
 
 .servicesblock {
   display: flex;
-  padding-bottom: 30px;
+  padding: 30px;
+  padding-right: 30px;
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
+  border-right: 1px solid grey;
+}
+
+.servicesblock2 {
+  display: flex;
+  padding: 30px;
+  padding-right: 30px;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  
 }
 
 .servicesblockheader {
@@ -90,4 +113,3 @@
   line-height: 24px;
   text-decoration-line: underline;
 }
-

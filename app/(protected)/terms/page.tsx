@@ -5,9 +5,6 @@ import React from 'react';
 import TermsPage from '../../components/terms/TermsPage';
 import { decrypt } from '../../../lib/session';
 
-
-
-
 const Terms: React.FC = async () => {
 
 

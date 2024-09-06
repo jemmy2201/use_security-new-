@@ -117,12 +117,9 @@ export async function GET(request: NextRequest, res: NextResponse) {
         // Step 3: Decrypt the JWE token (assuming apiPrivateKeyJwe is your custom decryption function)
         const jweDecoded = await privateKeyJwe(dataToken) as string;
 
-        const subConverted = convertSub(jweDecoded);
-        console.log('nric : ', subConverted);
-
-        
-        await createSession(subConverted)
-        //redirect('/terms')
+        const userId = convertSub(jweDecoded);
+        console.log('nric / userId : ', userId);
+        await createSession(userId, dataToken);
         return NextResponse.redirect(new URL('/terms', request.url));
 
     } catch (error) {
