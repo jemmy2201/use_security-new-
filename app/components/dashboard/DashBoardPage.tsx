@@ -48,12 +48,12 @@ const DashBoardPage: React.FC = () => {
         setError(null);
         try {
 
-            const myInfoResponse = await fetch('/api/singpass-myinfo');
-            if (!myInfoResponse.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const myInfoData: string = await myInfoResponse.json();
-            console.log('myInfoData: ', myInfoData);
+            // const myInfoResponse = await fetch('/api/singpass-myinfo');
+            // if (!myInfoResponse.ok) {
+            //     throw new Error('Network response was not ok');
+            // }
+            // const myInfoData: string = await myInfoResponse.json();
+            // console.log('myInfoData: ', myInfoData);
 
             const response = await fetch('/api/myinfo');
             if (!response.ok) {
@@ -67,7 +67,7 @@ const DashBoardPage: React.FC = () => {
             console.log('data from api', data);
 
             // Navigate to the dashboard with query parameters or state
-            router.push('/passcard');
+            router.push('/myinfoterms');
 
         } catch (err) {
             setError('Failed to fetch user details');

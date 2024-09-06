@@ -1,4 +1,3 @@
-import { redirect } from 'next/navigation'; // Import redirect
 
 export async function logout() {
     try {
