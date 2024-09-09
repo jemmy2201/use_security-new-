@@ -50,12 +50,14 @@ const ReviewDetailsPage: React.FC = () => {
                     <h1>Singpass enables you to retrieve your personal data from relevant government agencies to pre-fill the relevant fields, making digital transactions faster and more convenient.
                         <br></br><br></br>This digital service, Security ID Card Portal, by Union of Security Employees (USE) is requesting the following information from Singpass, for the purpose of USE security card application.</h1>
                 </div>
-                <div className={termsContentstyles.optionsHeaderText} onClick={handleCheckboxToggle} style={{ cursor: 'pointer' }}>
-                    <span className={termsContentstyles.declareText}>
-                        <h1>Clicking the “I Agree” button permits this digital service to retrieve your data based on the Terms of Use.</h1>
-                    </span>
+                <div className={termsContentstyles.box3}>
+                    1. NRIC / FIN <br></br>
+                    2. Name <br></br>
+                    3. Email <br></br>
+                    4. Mobile number <br></br>
                 </div>
-                <div className={stepBarFooterStyle.box2}>
+                <div><br></br></div>
+                <div>
                     <button className={stepBarFooterStyle.saveDraft}
                         onClick={onBack}
                         style={{ marginRight: '10px' }}>

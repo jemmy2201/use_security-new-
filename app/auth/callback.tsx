@@ -16,7 +16,7 @@ const CallbackPage: React.FC = () => {
                     const { id_token } = response.data;
 
                     // Save ID token in local storage or context
-                    localStorage.setItem('id_token', id_token);
+                    sessionStorage.setItem('id_token', id_token);
                     router.push('/home'); // Redirect to home or desired page
                 } catch (error) {
                     console.error('Callback error:', error);

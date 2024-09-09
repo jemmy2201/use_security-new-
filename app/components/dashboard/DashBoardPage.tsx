@@ -11,7 +11,6 @@ import { SO_APP, AVSO_APP, PI_APP } from '../../constant/constant';
 import { DRAFT, PROCESSING, READY_FOR_ID_CARD_PRINTING, ID_CARD_READY_FOR_COLLECTION, RESUBMISSION, RESUBMITTED, COMPLETED } from '../../constant/constant';
 import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
-import encryptDecrypt from '@/app/utils/encryptDecrypt';
 
 const cardTypeMap: { [key: string]: string } = {
     [SO_APP]: 'Security Officer (SO)',
@@ -61,7 +60,7 @@ const DashBoardPage: React.FC = () => {
             }
             const data: users = await response.json();
 
-            localStorage.setItem('users', JSON.stringify(data));
+            sessionStorage.setItem('users', JSON.stringify(data));
 
             // Process the data or store it in state/context
             console.log('data from api', data);
@@ -86,7 +85,7 @@ const DashBoardPage: React.FC = () => {
                 throw new Error('Network response was not ok');
             }
             const data: users = await response.json();
-            localStorage.setItem('users', JSON.stringify(data));
+            sessionStorage.setItem('users', JSON.stringify(data));
             // Process the data or store it in state/context
             console.log('data from api', data);
             
@@ -95,7 +94,7 @@ const DashBoardPage: React.FC = () => {
                 throw new Error('Network response was not ok');
             }
             const dataBookingSchedule: users = await responseBookingSchedule.json();
-            localStorage.setItem('bookingSchedule', JSON.stringify(dataBookingSchedule));
+            sessionStorage.setItem('bookingSchedule', JSON.stringify(dataBookingSchedule));
             // Process the data or store it in state/context
             console.log('booking data from api', dataBookingSchedule);
 
@@ -110,8 +109,7 @@ const DashBoardPage: React.FC = () => {
     };
 
     useEffect(() => {
-        // Retrieve data from localStorage
-        const storedData = localStorage.getItem('bookingSchedules');
+        const storedData = sessionStorage.getItem('bookingSchedules');
         if (storedData) {
             try {
                 const parsedData: bookingDetail[] = JSON.parse(storedData);

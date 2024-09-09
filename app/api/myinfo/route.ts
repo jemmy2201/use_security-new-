@@ -1,15 +1,22 @@
 import { PrismaClient } from '@prisma/client';
+import { cookies } from 'next/headers'
+import { decrypt } from '../../../lib/session';
+import encryptDecrypt from '@/utils/encryptDecrypt';
+
 
 const prisma = new PrismaClient();
 
 export async function GET(request: Request) {
-  try {
-    const url = new URL(request.url);
-    const nric = 'REhXRHp1K0tZSC80R0tQdXlmcFd2dz09';
+  const cookie = cookies().get('session')?.value
+  const session = await decrypt(cookie)
+  console.log('session user id:', session?.userId);
+  const encryptedUserId = encryptDecrypt(session?.userId as string,'encrypt');
+  console.log('encrypted nric:', encryptedUserId);
 
+  try {
     const user = await prisma.users.findFirst({
       where: {
-        nric: nric, 
+        nric: encryptedUserId, 
       },
     });
     const replacer = (key: string, value: any) => {
@@ -32,6 +39,6 @@ export async function GET(request: Request) {
     return new Response(JSON.stringify({ error: 'Error fetching user details' }), { status: 500 });
 
   } finally {
-    await prisma.$disconnect(); // Ensure connection is closed
+    await prisma.$disconnect(); 
   }
 }

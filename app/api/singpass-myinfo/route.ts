@@ -14,7 +14,7 @@ async function fetchMyInfoData(accessToken: string): Promise<MyInfoData> {
         const response = await fetch('http://localhost:5156/myinfo/v3/person', {
             method: 'GET',
             headers: {
-                // Authorization: 'Bearer ${accessToken}',
+                Authorization: 'Bearer ${accessToken}',
                 'Content-Type': 'application/json',
                 'Cache-Control': 'no-cache',
             },

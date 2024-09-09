@@ -1,6 +1,7 @@
 import 'server-only'
 import { SignJWT, jwtVerify, JWTPayload } from 'jose'
 import { cookies } from 'next/headers'
+import encryptDecrypt from '@/utils/encryptDecrypt';
 
 export interface SessionPayload extends JWTPayload {
     userId?: string;
@@ -43,6 +44,32 @@ export async function createSession(userId: string, userToken: string) {
     })
 }
 
+export async function updateSession() {
+    const session = cookies().get('session')?.value
+    const payload = await decrypt(session)
+
+    if (!session || !payload) {
+        return null
+    }
+
+    const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    cookies().set('session', session, {
+        httpOnly: true,
+        secure: true,
+        expires: expires,
+        sameSite: 'lax',
+        path: '/',
+    })
+}
+
 export function deleteSession() {
     cookies().delete('session')
 }
+
+export async function getEncryptedNricFromSession() {
+    const cookie = cookies().get('session')?.value
+    const session = await decrypt(cookie)
+    console.log('session user id:', session?.userId);
+    return encryptDecrypt(session?.userId as string, 'encrypt');
+}
+

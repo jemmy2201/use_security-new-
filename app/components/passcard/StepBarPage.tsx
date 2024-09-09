@@ -45,28 +45,28 @@ const StepBarHomePage: React.FC = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
+
     useEffect(() => {
         const sessionId = searchParams.get('session_id');
         if (sessionId) {
-            // Handle success
-            setFormData(prevFormData => ({
-                ...prevFormData,
-                ['paymentProcessed']: true,
-                ['paymentSuccess']: true,
-            }));
-            setIsPaymentSuccessful(true);
-            setActiveStep(3);
+            fetch(`/api/payment/success?session_id=${sessionId}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log('after payment success from stripe, data:', data);
+                    setFormData(prevFormData => ({
+                        ...prevFormData,
+                        ['paymentProcessed']: true,
+                        ['paymentSuccess']: true,
+                    }))
+                    setIsPaymentSuccessful(true);
+                    setActiveStep(3);
+                }
+                )
+                .catch((err) => console.error(err));
         }
     }, [searchParams]);
 
-    const handlePaymentSuccess = () => {
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            ['paymentProcessed']: true,
-            ['paymentSuccess']: true,
-        }));
-        setIsPaymentSuccessful(true);
-    };
+
 
     const handleNext = async () => {
 
@@ -145,30 +145,7 @@ const StepBarHomePage: React.FC = () => {
                 }
             } else {
 
-                try {
-                    const response = await fetch('/api/login');
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    const data: bookingDetail[] = await response.json();
-
-                    if (data.length === 0) {
-                        console.log('No booking details found.');
-                        // Handle the case when there are no booking details
-                        router.push('/firsttime');
-                    } else {
-                        localStorage.setItem('bookingSchedules', JSON.stringify(data));
-                        // Process the data or store it in state/context
-                        console.log('data from api', data);
-                        // Navigate to the dashboard with query parameters or state
-                        router.push('/dashboard');
-                    }
-                } catch (err) {
-                    setError('Failed to fetch users');
-                } finally {
-                    setLoading(false);
-                }
-                router.push('/dashboard');
+                
             }
         } else {
             if (activeStep == 3 && !formData.paymentProcessed) {
@@ -183,7 +160,22 @@ const StepBarHomePage: React.FC = () => {
                     }
                 } else {
                     console.log('mobile changed');
+                    const response = await fetch('/api/send-sms', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData.mobileno),
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        console.log('SMS sent:', result);
+                    } else {
+                        console.error('Failed to send SMS:', result.message);
+                    }
                     setIsOtpPopupOpen(true);
+
                 }
             }
         }
@@ -192,11 +184,14 @@ const StepBarHomePage: React.FC = () => {
     const handleCheckout = async () => {
         setLoading(true);
         try {
-            const response = await fetch('/api/create-checkout-session', {
+            const response = await fetch('/api/payment/create-checkout-session', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                body: JSON.stringify({
+                    bookingId: formData.id,
+                }),
             });
 
             const { sessionId } = await response.json();

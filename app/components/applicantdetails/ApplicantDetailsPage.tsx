@@ -93,7 +93,7 @@ const ApplicantDetailsPage: React.FC = () => {
             });
         }
 
-        const storedBookingData = localStorage.getItem('bookingSchedule');
+        const storedBookingData = sessionStorage.getItem('bookingSchedule');
         if (storedBookingData) {
             try {
                 const parsedBookingData: booking_schedules = JSON.parse(storedBookingData);
@@ -120,7 +120,7 @@ const ApplicantDetailsPage: React.FC = () => {
             } catch (err) {
                 setError('Failed to parse user data');
             }
-            localStorage.removeItem('bookingSchedule');
+            sessionStorage.removeItem('bookingSchedule');
         } else {
             setError('No user data found');
         }

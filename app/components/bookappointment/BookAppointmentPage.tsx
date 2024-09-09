@@ -61,8 +61,7 @@ const BookAppointmentPage: React.FC = () => {
     };
 
     useEffect(() => {
-        // Retrieve data from localStorage
-        const storedData = localStorage.getItem('users');
+        const storedData = sessionStorage.getItem('users');
         if (storedData) {
             try {
                 const parsedData: users = JSON.parse(storedData);

@@ -6,6 +6,7 @@ import termsContentstyles from './TermsContent.module.css';
 import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import stepBarFooterStyle from './StepBarFooter.module.css'
+import { booking_schedules as bookingDetail } from '@prisma/client';
 
 const ReviewDetailsPage: React.FC = () => {
 
@@ -24,8 +25,27 @@ const ReviewDetailsPage: React.FC = () => {
 
     };
 
-    const onNext = () => {
-        router.push('/dashboard');
+    const onNext = async () => {
+        try {
+            const response = await fetch('/api/dashboard');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data: bookingDetail[] = await response.json();
+            console.log('booking card list: ', data.length);
+            if (data.length === 0) {
+                console.log('No booking details found.');
+                router.push('/firsttime');
+            } else {
+                sessionStorage.setItem('bookingSchedules', JSON.stringify(data));
+                console.log('data from api', data);
+                router.push('/dashboard');
+            }
+        } catch (err) {
+            setError('Failed to fetch users');
+        } finally {
+            setLoading(false);
+        }
     };
 
 

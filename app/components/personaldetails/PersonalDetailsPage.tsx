@@ -28,7 +28,7 @@ const PersonalDetailsPage: React.FC = () => {
 
     useEffect(() => {
         if (!formData.email && !formData.mobileno) {
-            const storedData = localStorage.getItem('users');
+            const storedData = sessionStorage.getItem('users');
             if (storedData) {
                 try {
                     const parsedData: users = JSON.parse(storedData);
@@ -54,13 +54,9 @@ const PersonalDetailsPage: React.FC = () => {
 
             
         }
-    }, []); // Empty dependency array ensures this runs only once
-
-
+    }, []); 
 
     return (
-
-
         <form>
             <div className={personalDetailsContentstyles.paymentContainer}>
                 <div className={personalDetailsContentstyles.applicantDetails}>

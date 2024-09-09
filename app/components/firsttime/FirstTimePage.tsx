@@ -33,7 +33,7 @@ const FirstTimePage: React.FC = () => {
             }
             const data: users = await response.json();
 
-            localStorage.setItem('users', JSON.stringify(data));
+            sessionStorage.setItem('users', JSON.stringify(data));
 
             // Process the data or store it in state/context
             console.log('data from api', data);
@@ -49,8 +49,7 @@ const FirstTimePage: React.FC = () => {
     };
 
     useEffect(() => {
-        // Retrieve data from localStorage
-        const storedData = localStorage.getItem('bookingSchedules');
+        const storedData = sessionStorage.getItem('bookingSchedules');
         if (storedData) {
             try {
                 const parsedData: bookingDetail[] = JSON.parse(storedData);
