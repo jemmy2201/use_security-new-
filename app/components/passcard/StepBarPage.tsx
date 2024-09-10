@@ -160,7 +160,7 @@ const StepBarHomePage: React.FC = () => {
                     }
                 } else {
                     console.log('mobile changed');
-                    const response = await fetch('/api/send-sms', {
+                    const response = await fetch('/api/sms/send-sms', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -222,7 +222,7 @@ const StepBarHomePage: React.FC = () => {
     const handleSaveDraft = async () => {
         if (activeStep == 0) {
             try {
-                const response = await fetch('/api/handleUser', {
+                const response = await fetch('/api/handle-user', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -247,7 +247,7 @@ const StepBarHomePage: React.FC = () => {
 
         if (activeStep == 1) {
             try {
-                const response = await fetch('/api/handleApplicantDetails', {
+                const response = await fetch('/api/handle-applicant-details', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

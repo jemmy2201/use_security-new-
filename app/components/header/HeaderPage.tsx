@@ -9,7 +9,11 @@ const HeaderPage: React.FC = () => {
 
     const handleLogout = async () => {
         try {
-            await logout(); // Call the logout function
+            await logout(); 
+            sessionStorage.removeItem('id_token');
+            sessionStorage.removeItem('createNewPassApiResponse');
+            sessionStorage.removeItem('users');
+            sessionStorage.removeItem('bookingSchedule');
         } catch (error) {
             console.error('Logout failed', error);
         }

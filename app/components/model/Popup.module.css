@@ -1,0 +1,34 @@
+.modaloverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modalcontent {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 40%;
+  height: 40%;
+}
+
+.modalbody {
+  margin-bottom: 20px;
+}
+
+.modelButton {
+  display: flex;
+  padding: 16px 24px;
+  gap: 8px;
+  border-radius: 28px;
+  background: white;
+  border: 1px solid #546E7A;
+  width: 18%;
+}

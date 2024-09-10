@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { booking_schedules as bookingDetail } from '@prisma/client';
 import { users as users } from '@prisma/client';
 import personalDetailsContentstyles from './PersonalDetailsContent.module.css';
 import { useFormContext } from '.././FormContext';

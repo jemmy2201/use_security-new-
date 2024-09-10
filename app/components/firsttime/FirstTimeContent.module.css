@@ -1,22 +1,48 @@
-.content {
+.mainContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  align-items: start;
+  gap: 8px;
+  align-self: stretch;
+  background: #546E7A;
+}
+
+.welcome {
+  color: #FFF;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.name {
+  color: #FFF;
+  font-family: Poppins;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 42px;
+}
+
+.myApplication {
   display: flex;
   width: 100%;
-  padding: 40px;
-  height: 74vh;
+  height: 40%;
+  padding: 30px;
   flex-direction: column;
-  align-items: flex-center;
-  gap: 40px;
+  align-items: flex-start;
+  gap: 20px;
   background: #FFF;
 }
 
-.tableHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-self: stretch;
-}
-
-.tableContent {
+.myApplicationText {
   color: #000;
   font-family: Poppins;
   font-size: 40px;
@@ -25,43 +51,54 @@
   line-height: 50px;
 }
 
-.primaryButton {
+.recordContainer {
   display: flex;
-  padding: 16px 24px;
-  align-items: flex-left;
+  padding: 16px;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  align-self: stretch;
+  border: 1px solid #CFD8DC;
+  background: #FFF;
+}
+
+.recordBox {
+  display: flex;
+  padding: 40px;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.recordBoxText {
+  color: #000;
+  font-family: Poppins;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 42px;
+}
+
+.recordBoxText2 {
+  color: #546E7A;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.buttonBackground {
+  display: flex;
+  padding: 16px 20px;
+  align-items: flex-start;
   gap: 8px;
   border-radius: 28px;
   background: #CC0C00;
 }
 
-.primaryButtonText {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: white;
-}
-
-.dashBoardTable {
-  display: flex;
-  padding: 16px;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  align-self: stretch;
-  border: 1px solid var(--Light-Gray, #CFD8DC);
-  background: #FFF;
-}
-
-.dashBoardTableHeader {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  align-self: stretch;
-}
-
-.dashBoardTableHeaderContent {
-  width: 160px;
-  color: #000;
+.buttonText {
+  color: #FFF;
   font-family: Roboto;
   font-size: 16px;
   font-style: normal;
@@ -69,14 +106,84 @@
   line-height: 24px;
 }
 
-.dashBoardTableHeaderContentData {
-  width: 160px;
-  color: #000;
-  font-family: Roboto;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
-  align-items: center;
-  text-align: center;
+/* Media Queries for Responsive Design */
+@media (max-width: 1200px) {
+  .myApplication {
+    padding: 20px;
+  }
+
+  .myApplicationText {
+    font-size: 36px;
+    line-height: 46px;
+  }
+
+  .recordBoxText {
+    font-size: 24px;
+    line-height: 38px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .welcome {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .name {
+    font-size: 24px;
+    line-height: 38px;
+  }
+
+  .myApplicationText {
+    font-size: 30px;
+    line-height: 40px;
+  }
+
+  .recordBoxText {
+    font-size: 22px;
+    line-height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+
+  .welcome {
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+  .name {
+    font-size: 20px;
+    line-height: 34px;
+  }
+
+  .myApplicationText {
+    font-size: 24px;
+    line-height: 36px;
+  }
+
+  .recordBox {
+    padding: 40px 0px;
+  }
+
+  .recordBoxText {
+    font-size: 18px;
+    line-height: 32px;
+  }
+
+  .buttonBackground {
+    padding: 12px 16px;
+  }
+
+  .buttonText {
+    font-size: 14px;
+    line-height: 22px;
+  }
 }

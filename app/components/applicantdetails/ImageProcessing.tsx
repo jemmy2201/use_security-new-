@@ -181,7 +181,7 @@ const ImageProcessing = () => {
 
   const sendImageToAPI = async (image: string, nric: string, applicationType: string) => {
     try {
-      const response = await axios.post('/api/handleAppDtlWithImage', {
+      const response = await axios.post('/api/handle-app-dtl-image', {
         image, // Base64 image string
         nric,
         applicationType,

@@ -2,44 +2,53 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './FirstTimeStyle.module.css';
 import firstTimeContentstyles from './FirstTimeContent.module.css';
-import { booking_schedules as bookingDetail } from '@prisma/client';
 import { users as users } from '@prisma/client';
-import { NEW, REPLACEMENT, RENEWAL } from '../../constant/constant';
-import { SO_APP, AVSO_APP, PI_APP } from '../../constant/constant';
-import { DRAFT, PROCESSING, READY_FOR_ID_CARD_PRINTING, ID_CARD_READY_FOR_COLLECTION, RESUBMISSION, RESUBMITTED, COMPLETED } from '../../constant/constant';
 import FooterPageLink from '../footer/FooterPage'
 import HeaderPageLink from '../header/HeaderPage'
+import Modal from './Modal';
 
-
-
-
+export interface createNewPassApiResponse {
+    errorCode?: string;
+    errorMessage?: string;
+    canCreateSoApplication?: boolean;
+    canCreatePiApplication?: boolean;
+    canCreateAvsoApplication?: boolean;
+    passId?: string;
+    recordId: string;
+}
 
 const FirstTimePage: React.FC = () => {
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [bookingSchedules, setBookingSchedules] = useState<bookingDetail[]>([]);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+    const [users, setUsers] = useState<users>();
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [modalMessage, setModalMessage] = useState<string>('');
 
     const handleNewPasscardClick = async () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch('/api/myinfo');
-            if (!response.ok) {
+
+            const responseNewPass = await fetch('/api/handle-create-new-pass');
+            console.log('response from handle-create-new-pass', responseNewPass);
+
+            const dataNewPass: createNewPassApiResponse = await responseNewPass.json();
+            console.log('data:', dataNewPass);
+            if (dataNewPass.errorCode) {
+                setModalMessage('Failed to fetch data from the server.');
+                setShowModal(true); // Show the modal with the message
+                return;
+            }
+
+            const responseMyInfo = await fetch('/api/myinfo');
+            if (!responseMyInfo.ok) {
                 throw new Error('Network response was not ok');
             }
-            const data: users = await response.json();
-
-            sessionStorage.setItem('users', JSON.stringify(data));
-
-            // Process the data or store it in state/context
-            console.log('data from api', data);
-
-            // Navigate to the dashboard with query parameters or state
-            router.push('/passcard');
+            const dataMyInfo: users = await responseMyInfo.json();
+            router.push('/myinfoterms');
 
         } catch (err) {
             setError('Failed to fetch user details');
@@ -48,47 +57,77 @@ const FirstTimePage: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        const storedData = sessionStorage.getItem('bookingSchedules');
-        if (storedData) {
-            try {
-                const parsedData: bookingDetail[] = JSON.parse(storedData);
-                setBookingSchedules(parsedData);
+    const handleCloseModal = () => {
+        setShowModal(false); // Close the modal
+        setModalMessage('');
+    };
 
+    useEffect(() => {
+
+        const storedUserData = sessionStorage.getItem('users');
+        if (storedUserData) {
+            try {
+                const parsedUserData: users = JSON.parse(storedUserData);
+                setUsers(parsedUserData);
             } catch (err) {
                 setError('Failed to parse user data');
             }
         } else {
             setError('No user data found');
         }
+
     }, []);
 
 
-    return (<div className={styles.container}>
-        <div className={styles.content}>
+    return (
+
+        <div className={firstTimeContentstyles.mainContainer}>
             <div >
                 <HeaderPageLink />
             </div>
 
+            <div className={firstTimeContentstyles.container}>
+                <span className={firstTimeContentstyles.welcome}>
+                    Welcome
+                </span>
+                <span className={firstTimeContentstyles.name}>
+                    {users?.name}
+                </span>
 
-            <div className={firstTimeContentstyles.content}>
-                <div className={firstTimeContentstyles.tableHeader}>
-                    <span className={firstTimeContentstyles.tableContent} style={{ textAlign: 'right' }}>
-                        My Applications
-                    </span>
-                    <span className={firstTimeContentstyles.primaryButton}>
-                        <button className={firstTimeContentstyles.primaryButtonText} style={{ textAlign: 'left' }} onClick={handleNewPasscardClick}>
-                            Create new pass card
-                        </button>
-                    </span>
+            </div>
+            <div className={firstTimeContentstyles.myApplication}>
+                <div className={firstTimeContentstyles.myApplicationText}>
+                    My applications
+                </div>
+                <div className={firstTimeContentstyles.recordContainer}>
+                    <div className={firstTimeContentstyles.recordBox}>
+                        <div className={firstTimeContentstyles.recordBoxText}>
+                            No records
+                        </div>
+                        <div className={firstTimeContentstyles.recordBoxText2}>
+                            Your application will be displayed here
+                        </div>
+                        <div className={firstTimeContentstyles.buttonBackground}>
+                            <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewPasscardClick}>
+                                Create new pass card
+                            </button>
+                            {loading && <p>Loading...</p>}
+                            {error && <p>{error}</p>}
+
+                            {/* Show modal when `showModal` is true */}
+                            {showModal && (
+                                <Modal message={modalMessage} onClose={handleCloseModal} />
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div >
+            <div>
                 <FooterPageLink />
             </div>
         </div>
-    </div>
+
     );
 };
 

@@ -34,7 +34,7 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
     const handleSubmit = async () => {
         const otpValue = otp.join(''); // Combine the OTP values into a single string
         try {
-            const response = await fetch('/api/verify-otp', {
+            const response = await fetch('/api/sms/verify-sms', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -11,7 +11,19 @@ export async function GET(request: Request) {
     // Find records with optional filters
     const schedules = await prisma.booking_schedules.findMany({
       where: {
-        ...(encryptedNric && { nric: encryptedNric }), // Conditionally add the `nric` filter if provided
+        ...(encryptedNric && { nric: encryptedNric }), 
+        AND: [
+          {
+            Status_app: {
+              not: null, // Exclude null values
+            },
+          },
+          {
+            Status_app: {
+              not: '', // Exclude empty strings
+            },
+          },
+        ],
       },
     });
     console.log('total pass cards: ', schedules.length);
