@@ -20,7 +20,7 @@ interface ReschedulePageProps {
 
 const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     console.log('ReschedulePage Booking ID:', bookingId);
-
+    const router = useRouter();
     const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [disabledDates, setDisabledDates] = useState<Date[]>([]);
@@ -70,8 +70,18 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 throw new Error('reschedule: Failed to save');
             }
             const result = await response.json();
-
             console.log("reschedule: Saved successfully:", result);
+
+
+            console.log('bookingId', bookingId);
+            try {
+                router.push(`/complete?bookingId=${encodeURIComponent(bookingId)}`);
+            } catch (err) {
+                setError('Failed to fetch user details');
+            } finally {
+                setLoading(false);
+            }
+
 
         } catch (err) {
             setError('Failed to fetch reschedule');

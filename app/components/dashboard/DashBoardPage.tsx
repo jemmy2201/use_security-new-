@@ -209,7 +209,6 @@ const DashBoardPage: React.FC = () => {
     };
 
     useEffect(() => {
-
         const storedUserData = sessionStorage.getItem('users');
         if (storedUserData) {
             try {
@@ -362,7 +361,7 @@ const DashBoardPage: React.FC = () => {
                                                         href="/edit"
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            handleEditPasscardClick(booking.id);
+                                                            handleBookAppointmentClick(booking.id);
                                                         }}
                                                         style={{ color: 'blue', marginRight: '10px' }}>
                                                         Change Appointment
