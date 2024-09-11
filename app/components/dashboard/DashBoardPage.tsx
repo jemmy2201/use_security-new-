@@ -10,7 +10,8 @@ import { SO_APP, AVSO_APP, PI_APP } from '../../constant/constant';
 import { DRAFT, PROCESSING, READY_FOR_ID_CARD_PRINTING, ID_CARD_READY_FOR_COLLECTION, RESUBMISSION, RESUBMITTED, COMPLETED } from '../../constant/constant';
 import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
-import Modal from '../model/Modal'; 
+import Modal from '../model/Modal';
+import globalStyleCss from '../globalstyle/Global.module.css';
 
 export interface createNewPassApiResponse {
     errorCode?: string;
@@ -20,7 +21,7 @@ export interface createNewPassApiResponse {
     canCreateAvsoApplication?: boolean;
     passId?: string;
     recordId: string;
-  }
+}
 
 const cardTypeMap: { [key: string]: string } = {
     [SO_APP]: 'Security Officer (SO)',
@@ -129,7 +130,9 @@ const DashBoardPage: React.FC = () => {
             // Process the data or store it in state/context
             console.log('data from api', data);
 
-            const responseBookingSchedule = await fetch('/api/get-booking-schedule');
+            const bookingId = id.toString(); // Replace with your actual bookingId
+            const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
+
             if (!responseBookingSchedule.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -148,6 +151,21 @@ const DashBoardPage: React.FC = () => {
         }
     };
 
+    const handleBookAppointmentClick = async (id: bigint) => {
+        setLoading(true);
+        setError(null);
+        console.log('id', id);
+        const bookingId = id.toString(); // Correctly call the toString method
+        console.log('bookingId', bookingId);
+        try {
+            router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);
+        } catch (err) {
+            setError('Failed to fetch user details');
+        } finally {
+            setLoading(false);
+        }
+    };
+    
     const handleUpdateClick = async (id: bigint) => {
         setLoading(true);
         setError(null);
@@ -225,8 +243,6 @@ const DashBoardPage: React.FC = () => {
                 <HeaderPageLink />
             </div>
 
-
-
             <div className={dashBoardContentstyles.container}>
                 <span className={dashBoardContentstyles.welcome}>
                     Welcome
@@ -239,11 +255,11 @@ const DashBoardPage: React.FC = () => {
                 <div className={dashBoardContentstyles.myApplication}>
                     <div className={dashBoardContentstyles.tableHeader}>
                         <span className={dashBoardContentstyles.tableContent} style={{ textAlign: 'right' }}>
-                            <h1>My applications</h1>
+                            <div className={globalStyleCss.header1}>My applications</div>
                         </span>
-                        <span className={dashBoardContentstyles.primaryButton}>
-                            <button className={dashBoardContentstyles.primaryButtonText} style={{ textAlign: 'left' }} onClick={handleNewPasscardClick}>
-                                <h2>Create new pass card</h2>
+                        <span className={globalStyleCss.primaryButton}>
+                            <button style={{ textAlign: 'left' }} onClick={handleNewPasscardClick}>
+                                <div className={globalStyleCss.buttonText}>Apply for new pass</div>
                             </button>
                             {loading && <p>Loading...</p>}
                             {error && <p>{error}</p>}
@@ -257,29 +273,40 @@ const DashBoardPage: React.FC = () => {
 
                     <div className={dashBoardContentstyles.recordContainer}>
                         <table>
-                            <thead className={dashBoardContentstyles.dashBoardTableHeader}>
-                                <tr>
-                                    <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Application type</h2></th>
-                                    <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Pass card type</h2></th>
-                                    <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Grade</h2></th>
-                                    <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Collection date</h2></th>
-                                    <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Application Status</h2></th>
-                                    <th className={dashBoardContentstyles.dashBoardTableHeaderContent}><h2>Actions</h2></th>
+                            <thead>
+                                <tr className={globalStyleCss.regularBold}>
+                                    <th className={dashBoardContentstyles.item}>Application type</th>
+                                    <th className={dashBoardContentstyles.item}>Pass card type</th>
+                                    <th className={dashBoardContentstyles.item}>Grade</th>
+                                    <th className={dashBoardContentstyles.item}>Collection date</th>
+                                    <th className={dashBoardContentstyles.item}>Application Status</th>
+                                    <th className={dashBoardContentstyles.item}>Actions</th>
+                                </tr>
+                                <tr className={globalStyleCss.regularBold}>
+                                    <th className={dashBoardContentstyles.item}>Application type</th>
+                                    <th className={dashBoardContentstyles.item}>Pass card type</th>
+                                    <th className={dashBoardContentstyles.item}>Grade</th>
+                                    <th className={dashBoardContentstyles.item}>Collection date</th>
+                                    <th className={dashBoardContentstyles.item}>Application Status</th>
+                                    <th className={dashBoardContentstyles.item}>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className={dashBoardContentstyles.dashBoardTableHeader}>
+                            <tbody>
                                 {bookingSchedules.map((booking) => (
-                                    <tr>
-                                        <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.app_type}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
-                                        <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.card_id}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
-                                        <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.grade_id}>{booking.grade_id}</td>
-                                        <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.trans_date}>{booking.appointment_date}</td>
-                                        <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.TR_AVSO}>{booking.TR_AVSO}</td>
-                                        <td className={dashBoardContentstyles.dashBoardTableHeaderContentData} key={booking.Status_app}>{statusTypeMap[booking.Status_app || ''] || 'Unknown'}</td>
-                                        <td className={dashBoardContentstyles.dashBoardTableHeaderContentData}>
+                                    <tr className={globalStyleCss.regular}>
+                                        <td className={dashBoardContentstyles.item} key={booking.app_type}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
+                                        <td className={dashBoardContentstyles.item} key={booking.card_id}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
+                                        <td className={dashBoardContentstyles.item} key={booking.grade_id}>{booking.grade_id}</td>
+                                        <td className={dashBoardContentstyles.item} key={booking.trans_date}>{booking.appointment_date}</td>
+                                        <td className={dashBoardContentstyles.item} key={booking.Status_app}>{statusTypeMap[booking.Status_app || ''] || 'Unknown'}</td>
 
 
-                                            {booking.Status_app !== '6' ? (
+
+
+                                        <td className={dashBoardContentstyles.item}>
+
+
+                                            {booking.Status_app == '0' ? (
                                                 <>
                                                     <a
                                                         href="/edit"
@@ -298,6 +325,47 @@ const DashBoardPage: React.FC = () => {
                                                         }}
                                                         style={{ color: 'blue', marginRight: '0px' }}>
                                                         Delete
+                                                    </a>
+                                                </>
+                                            ) : null}
+
+
+                                            {booking.Status_app == '1'
+                                                && booking.status_payment
+                                                && !booking.appointment_date ? (
+                                                <>                                                    
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleBookAppointmentClick(booking.id);
+                                                        }}
+                                                        style={{ color: 'blue', marginRight: '0px' }}>
+                                                        Book Appointment
+                                                    </a>
+                                                </>
+                                            ) : null}
+
+
+                                            {booking.Status_app == '1' && booking.appointment_date ? (
+                                                <>
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleEditPasscardClick(booking.id);
+                                                        }}
+                                                        style={{ color: 'blue', marginRight: '10px' }}>
+                                                        View Receipt
+                                                    </a>
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleEditPasscardClick(booking.id);
+                                                        }}
+                                                        style={{ color: 'blue', marginRight: '10px' }}>
+                                                        Change Appointment
                                                     </a>
                                                 </>
                                             ) : null}

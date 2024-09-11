@@ -11,6 +11,17 @@ type CheckboxState = {
     [key: string]: boolean;
 };
 
+
+export interface createNewPassApiResponse {
+    errorCode?: string;
+    errorMessage?: string;
+    canCreateSoApplication?: boolean;
+    canCreatePiApplication?: boolean;
+    canCreateAvsoApplication?: boolean;
+    passId?: string;
+    recordId: string;
+}
+
 const ApplicantDetailsPage: React.FC = () => {
 
     const { formData, setFormData } = useFormContext();

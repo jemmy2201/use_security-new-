@@ -19,6 +19,8 @@ import stepBarModuleStyle from './StepBar.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import { booking_schedules as bookingDetail } from '@prisma/client';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -35,6 +37,15 @@ const steps = [
 
 
 const StepBarHomePage: React.FC = () => {
+
+
+    const showToast = () => {
+        toast.success('This is a success toast!', {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 3000, // 3 seconds
+        });
+    };
+
     const [activeStep, setActiveStep] = useState<number>(0);
     const { formData, setFormData } = useFormContext();
     const [isOtpPopupOpen, setIsOtpPopupOpen] = useState<boolean>(false); // State for OTP popup
@@ -145,7 +156,7 @@ const StepBarHomePage: React.FC = () => {
                 }
             } else {
 
-                
+
             }
         } else {
             if (activeStep == 3 && !formData.paymentProcessed) {
@@ -191,6 +202,8 @@ const StepBarHomePage: React.FC = () => {
                 },
                 body: JSON.stringify({
                     bookingId: formData.id,
+                    applicationType: formData.applicationType,
+                    nric: formData.nric,
                 }),
             });
 
@@ -273,6 +286,29 @@ const StepBarHomePage: React.FC = () => {
                 console.error("Applicant Details: Error saving draft:", error);
             }
         }
+
+        if (activeStep == 2) {
+            try {
+                const response = await fetch('/api/handle-review-details', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nric: formData.nric,
+                        applicationType: formData.applicationType,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Applicant Details: Failed to save draft');
+                }
+                const result = await response.json();
+                console.log("Review Details: Draft saved successfully:", result);
+            } catch (error) {
+                console.error("Review Details: Error saving draft:", error);
+            }
+        }
     };
 
 
@@ -294,6 +330,7 @@ const StepBarHomePage: React.FC = () => {
                 hasBack={activeStep > 0}
                 activeStep={activeStep}
             />
+            <ToastContainer />
             <FooterPageLink></FooterPageLink>
             <OtpPopup
                 isOpen={isOtpPopupOpen}

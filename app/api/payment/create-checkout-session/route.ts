@@ -18,7 +18,31 @@ const stripe = new Stripe(getStripeKey(), {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { bookingId } = body;
+
+  const { nric, applicationType, bookingId } = body;
+  console.log('applicationType:', applicationType);
+  console.log('encrypted nric:', nric);
+  let appType = '';
+  if (applicationType === 'SO') {
+    appType = '1';
+  }
+  if (applicationType === 'AVSO') {
+    appType = '2';
+  }
+  if (applicationType === 'PI') {
+    appType = '3';
+  }
+  console.log('appType:', appType);
+
+  // Validate required fields
+  if (!nric || !appType) {
+    return NextResponse.json(
+      { error: 'nric / fin, application type are required' },
+      { status: 400 }
+    );
+  }
+
+
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card', 'paynow'],
@@ -47,13 +71,25 @@ export async function POST(req: NextRequest) {
     });
     console.log('session id generated at stripe checkout session ', session.id);
     console.log('payment intent generated at stripe checkout session ', session.payment_intent);
-    const updatedSchedule = await prisma.booking_schedules.update({
-      where: { id: 101010628 },
-      data: {
-        stripe_session_id: session.id,
-        status_payment: '0'
+
+    const statusApp = '0';
+    console.log('appType:', appType);
+    const schedule = await prisma.booking_schedules.findFirst({
+      where: {
+        ...(nric && { nric }),
+        app_type: appType,
       },
     });
+
+    if (schedule) {
+      const updatedSchedule = await prisma.booking_schedules.update({
+        where: { id: schedule.id },
+        data: {
+          stripe_session_id: session.id,
+        },
+      });
+    }
+
     return NextResponse.json({ sessionId: session.id });
   } catch (err: any) {
     console.log('Error:', err);

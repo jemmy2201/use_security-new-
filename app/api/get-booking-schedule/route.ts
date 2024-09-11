@@ -6,16 +6,19 @@ const prisma = new PrismaClient();
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
-    //const nric = url.searchParams.get('nric');
-    const id = 101010628;
+    const bookingIdString = url.searchParams.get('bookingId');
+    console.log('get-booking-schedule, bookingIdString:', bookingIdString);
+    if(!bookingIdString){
+      return new Response(JSON.stringify({ error: 'Booking Id reqquire' }), { status: 400 });
+    }
 
-    // Find records with optional filters
+    const bookingId = BigInt(bookingIdString) as bigint;
     const schedules = await prisma.booking_schedules.findUnique({
       where: {
-        ...(id && { id: id }), 
-      },
+        id: bookingId,
+      } as any, // Use this only if you are sure about the type
     });
-    
+
     console.log('schedules', schedules);
     // Custom replacer function to convert BigInt to string
     const replacer = (key: string, value: any) => {

@@ -13,10 +13,10 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     <div className={styleCss.modaloverlay}>
       <div className={styleCss.modalcontent}>
         <div className={styleCss.modalbody}>
-          <div className={globalStyleCss.header1}>
+          <div className={globalStyleCss.header2}>
             Pass card application restrictions
           </div>
-          <div className={globalStyleCss.header2}>
+          <div className={globalStyleCss.regular}>
             Security Officers who already hold an Aviation Security Officer (AVSO) pass card and Private investigator (PI) pass card are not eligible to apply for additional pass cards.
           </div>
         </div>

@@ -22,6 +22,7 @@ export async function encrypt(payload: SessionPayload) {
 
 export async function decrypt(session: string | undefined = '') {
     try {
+        console.log('session:', session);
         const { payload } = await jwtVerify(session, encodedKey, {
             algorithms: ['HS256'],
         })
@@ -32,12 +33,13 @@ export async function decrypt(session: string | undefined = '') {
 }
 
 export async function createSession(userId: string, userToken: string) {
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    const expiresAt = new Date(Date.now() + 70 * 24 * 60 * 60 * 1000)
     const session = await encrypt({ userId, expiresAt, userToken })
 
+    console.log('expiresAt:', expiresAt);
     cookies().set('session', session, {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === 'production',
         expires: expiresAt,
         sameSite: 'lax',
         path: '/',

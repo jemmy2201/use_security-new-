@@ -5,12 +5,18 @@ const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { nric, applicationType, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso } = body;
+        const { nric, applicationType } = body;
         console.log('applicationType:', applicationType);
         console.log('encrypted nric:', nric);
         let appType = '';
         if (applicationType === 'SO') {
-            appType = '1';  // Or use `1` without quotes if a number is expected
+            appType = '1';  
+        }
+        if (applicationType === 'AVSO') {
+            appType = '2';  
+        }
+        if (applicationType === 'PI') {
+            appType = '3';  
         }
         console.log('appType:', appType);
 
@@ -48,18 +54,13 @@ export async function POST(req: NextRequest) {
                 return serialized;
             };
             // If a schedule is found, update it
+            const currentDate = formatDateToDDMMYYYY(new Date());
             const updatedSchedule = await prisma.booking_schedules.update({
                 where: { id: schedule.id }, // Using the unique identifier for update
                 data: {
-                    app_type: appType,
                     Status_app: statusApp,
                     Status_draft: statusApp,
-                    TR_AVSO: trAvso,
-                    TR_CCTC: trCctc,
-                    TR_CSSPB: trCsspb,
-                    TR_HCTA: trHcta,
-                    TR_RTT: trRtt,
-                    TR_X_RAY: trXray,
+                    declaration_date: currentDate,
                 },
             });
             console.log('Schedule updated:', updatedSchedule);
@@ -81,4 +82,11 @@ export async function POST(req: NextRequest) {
     } finally {
         await prisma.$disconnect();
     }
+}
+
+function formatDateToDDMMYYYY(date: Date): string {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
 }

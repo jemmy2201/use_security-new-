@@ -5,25 +5,25 @@ const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { nric, mobileno, email } = body;
-
-        if (!nric || !mobileno || !email) {
+        const { bookingId, appointmentDate, timeSlot } = body;
+        console.log('bookingId:', bookingId);
+        console.log('appointmentDate:timeSlot', appointmentDate, timeSlot);
+        const [startTime, endTime] = timeSlot.split(" - ");
+        // Validate required fields
+        if (!bookingId || !appointmentDate) {
             return NextResponse.json(
-                { error: 'nric / fin, mobile, and email are required' },
+                { error: 'bookingId, appointment date are required' },
                 { status: 400 }
             );
         }
 
-        const appType = '1';
-        const statusApp = '0';
-
-        const userRecord = await prisma.users.findFirst({
+        const schedule = await prisma.booking_schedules.findFirst({
             where: {
-                ...(nric && { nric: nric }), // Conditionally adds the `nric` filter if `nric` is provided
+                id:bookingId       
             },
         });
 
-        if (userRecord) {
+        if (schedule) {
             // Convert userRecord BigInt fields to strings
             const serializeBigInt = (obj: any) => {
                 const serialized: any = {};
@@ -38,23 +38,23 @@ export async function POST(req: NextRequest) {
                 }
                 return serialized;
             };
-
-            // If a user record is found, update it
-            const updatedUserRecord = await prisma.users.update({
-                where: { id: userRecord.id }, // Using the unique identifier for update
+            // If a schedule is found, update it
+            const updatedSchedule = await prisma.booking_schedules.update({
+                where: { id: schedule.id }, // Using the unique identifier for update
                 data: {
-                    mobileno: mobileno,
-                    email: email,
+                    appointment_date: appointmentDate,
+                    time_start_appointment: startTime,
+                    time_end_appointment: endTime
                 },
             });
+            //console.log('Schedule updated:', updatedSchedule);
+            const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
+            return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });
 
-            // Serialize the updatedUserRecord to handle BigInt
-            const serializedUserRecord = serializeBigInt(updatedUserRecord);
-
-            console.log('User Record Updated:', serializedUserRecord);
-            return NextResponse.json({ message: 'Personal details updated' });
         } else {
-            return NextResponse.json({ error: 'Applicant not found' }, { status: 400 });
+
+            return NextResponse.json({ error: 'Record not found' }, { status: 400 });
+
         }
 
     } catch (error) {

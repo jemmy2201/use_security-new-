@@ -143,19 +143,6 @@
   align-self: stretch;
 }
 
-.declareText {
-  flex: 1 0 0;
-  color: #000;
-  padding-left: 10px;
-  /* Regular */
-  font-family: Roboto;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
-  /* 150% */
-}
-
 .alignFles {
   display: flex;
   gap: 180px;

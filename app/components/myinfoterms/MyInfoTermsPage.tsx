@@ -6,6 +6,7 @@ import termsContentstyles from './MyInfoTermsContent.module.css';
 import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import stepBarFooterStyle from './StepBarFooter.module.css'
+import globalStyleCss from '../globalstyle/Global.module.css';
 
 const ReviewDetailsPage: React.FC = () => {
 
@@ -47,16 +48,21 @@ const ReviewDetailsPage: React.FC = () => {
                             </clipPath>
                         </defs>
                     </svg>
-                    <h1>Singpass enables you to retrieve your personal data from relevant government agencies to pre-fill the relevant fields, making digital transactions faster and more convenient.
-                        <br></br><br></br>This digital service, Security ID Card Portal, by Union of Security Employees (USE) is requesting the following information from Singpass, for the purpose of USE security card application.</h1>
+                    <div className={globalStyleCss.regular}>Singpass enables you to retrieve your personal data from relevant government agencies to pre-fill the relevant fields, making digital transactions faster and more convenient.</div>
+                    <br></br><div className={globalStyleCss.regularBold}>This digital service, Security ID Card Portal, by Union of Security Employees (USE) is requesting the following information from Singpass, for the purpose of USE security card application.</div>
                 </div>
                 <div className={termsContentstyles.box3}>
-                    1. NRIC / FIN <br></br>
-                    2. Name <br></br>
-                    3. Email <br></br>
-                    4. Mobile number <br></br>
+                    <div className={globalStyleCss.regular}>
+                    &gt; NRIC / FIN <br></br><br></br>
+                    &gt; Name <br></br><br></br>
+                    &gt; Email <br></br><br></br>
+                    &gt; Mobile number <br></br>
+                    </div>
                 </div>
                 <div><br></br></div>
+                <div className={globalStyleCss.regular}>
+                    Clicking the “I Agree” button permits this digital service to retrieve your data based on the Terms of Use.
+                </div><br></br>
                 <div>
                     <button className={stepBarFooterStyle.saveDraft}
                         onClick={onBack}

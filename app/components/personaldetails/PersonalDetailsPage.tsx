@@ -6,6 +6,9 @@ import { users as users } from '@prisma/client';
 import personalDetailsContentstyles from './PersonalDetailsContent.module.css';
 import { useFormContext } from '.././FormContext';
 import { booking_schedules } from '@prisma/client';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
+
 const PersonalDetailsPage: React.FC = () => {
 
     const { formData, setFormData } = useFormContext();

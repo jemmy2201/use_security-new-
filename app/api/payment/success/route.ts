@@ -36,6 +36,8 @@ export async function GET(req: NextRequest) {
             const updatedSchedule = await prisma.booking_schedules.update({
                 where: { id: schedule.id },
                 data: {
+                    Status_app: '1',
+                    Status_draft: '1',
                     stripe_payment_id: paymentIntentId,
                     status_payment: '1',
                 },

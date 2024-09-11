@@ -42,7 +42,7 @@ const FirstTimePage: React.FC = () => {
                 setShowModal(true); // Show the modal with the message
                 return;
             }
-
+            sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(dataNewPass));
             const responseMyInfo = await fetch('/api/myinfo');
             if (!responseMyInfo.ok) {
                 throw new Error('Network response was not ok');
