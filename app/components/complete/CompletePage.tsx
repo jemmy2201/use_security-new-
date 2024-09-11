@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import rescheduleContentstyles from './CompleteContent.module.css';
+import CompleteContentstyles from './CompleteContent.module.css';
 import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import globalStyleCss from '../globalstyle/Global.module.css';
@@ -75,12 +75,12 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
             <div >
                 <HeaderPageLink />
             </div>
-            <div className={rescheduleContentstyles.container}>
+            <div className={CompleteContentstyles.container}>
                 <div className={globalStyleCss.header1}>
                     Reschedule Appointment
                 </div>
-                <div className={rescheduleContentstyles.innerContainer}>
-                    <div className={rescheduleContentstyles.appointmentDetails}>
+                <div className={CompleteContentstyles.innerContainer}>
+                    <div className={CompleteContentstyles.appointmentDetails}>
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                                 <g clip-path="url(#clip0_1255_11911)">
@@ -97,15 +97,15 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
                             Appointment successfully booked
                         </span>
                     </div>
-                    <div className={rescheduleContentstyles.innerContainerBox}>
+                    <div className={CompleteContentstyles.innerContainerBox}>
                         <div className={globalStyleCss.header2}>
                             Appointment details
                         </div>
-                        <div className={rescheduleContentstyles.smsTextContainer}>
+                        <div className={CompleteContentstyles.smsTextContainer}>
                             <div className={globalStyleCss.regular}>An SMS reminder will be sent to you 3 days before the collection date.</div>
                         </div>
-                        <div className={rescheduleContentstyles.collectionTextContainer}>
-                            <span className={rescheduleContentstyles.collectionTextSpan}>
+                        <div className={CompleteContentstyles.collectionTextContainer}>
+                            <span className={CompleteContentstyles.collectionTextSpan}>
                                 <div className={globalStyleCss.regularBold}>
                                     Collection Date
                                 </div>
@@ -114,7 +114,7 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
                                 </div>
                             </span>
 
-                            <span className={rescheduleContentstyles.collectionTextSpan}>
+                            <span className={CompleteContentstyles.collectionTextSpan}>
                                 <div className={globalStyleCss.regularBold}>
                                     Collection time slot
                                 </div>
@@ -124,8 +124,8 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
                             </span>
 
                         </div>
-                        <div className={rescheduleContentstyles.collectionTextContainer}>
-                            <span className={rescheduleContentstyles.collectionTextSpan}>
+                        <div className={CompleteContentstyles.collectionTextContainer}>
+                            <span className={CompleteContentstyles.collectionTextSpan}>
                                 <div className={globalStyleCss.regularBold}>
                                     Pass card no.
                                 </div>
@@ -134,7 +134,7 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
                                 </div>
                             </span>
 
-                            <span className={rescheduleContentstyles.collectionTextSpan}>
+                            <span className={CompleteContentstyles.collectionTextSpan}>
                                 <div className={globalStyleCss.regularBold}>
                                     Pass card date of expiry
                                 </div>
@@ -144,7 +144,7 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
                             </span>
 
                         </div>
-                        <div className={rescheduleContentstyles.collectionCenterContainer}>
+                        <div className={CompleteContentstyles.collectionCenterContainer}>
                             <div className={globalStyleCss.regular}>
                                 Collection centre
                             </div>
@@ -159,11 +159,11 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
                 </div>
 
 
-                <div className={rescheduleContentstyles.buttonContainer}>
-                    <button className={rescheduleContentstyles.saveDraft} type='button' onClick={onReschedule} style={{ marginRight: '10px' }}>
+                <div className={CompleteContentstyles.buttonContainer}>
+                    <button className={CompleteContentstyles.saveDraft} type='button' onClick={onReschedule} style={{ marginRight: '10px' }}>
                         <div className={globalStyleCss.regular}>Reschedule Appointment</div>
                     </button>
-                    <button className={rescheduleContentstyles.continue} type='button' onClick={onComplete}>
+                    <button className={CompleteContentstyles.continue} type='button' onClick={onComplete}>
                         <div className={globalStyleCss.buttonText}>Complete</div>
                     </button>
                 </div>
