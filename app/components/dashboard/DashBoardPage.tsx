@@ -281,14 +281,7 @@ const DashBoardPage: React.FC = () => {
                                     <th className={dashBoardContentstyles.item}>Application Status</th>
                                     <th className={dashBoardContentstyles.item}>Actions</th>
                                 </tr>
-                                <tr className={globalStyleCss.regularBold}>
-                                    <th className={dashBoardContentstyles.item}>Application type</th>
-                                    <th className={dashBoardContentstyles.item}>Pass card type</th>
-                                    <th className={dashBoardContentstyles.item}>Grade</th>
-                                    <th className={dashBoardContentstyles.item}>Collection date</th>
-                                    <th className={dashBoardContentstyles.item}>Application Status</th>
-                                    <th className={dashBoardContentstyles.item}>Actions</th>
-                                </tr>
+
                             </thead>
                             <tbody>
                                 {bookingSchedules.map((booking) => (
@@ -298,13 +291,7 @@ const DashBoardPage: React.FC = () => {
                                         <td className={dashBoardContentstyles.item} key={booking.grade_id}>{booking.grade_id}</td>
                                         <td className={dashBoardContentstyles.item} key={booking.trans_date}>{booking.appointment_date}</td>
                                         <td className={dashBoardContentstyles.item} key={booking.Status_app}>{statusTypeMap[booking.Status_app || ''] || 'Unknown'}</td>
-
-
-
-
                                         <td className={dashBoardContentstyles.item}>
-
-
                                             {booking.Status_app == '0' ? (
                                                 <>
                                                     <a
@@ -354,8 +341,8 @@ const DashBoardPage: React.FC = () => {
                                                             e.preventDefault();
                                                             handleEditPasscardClick(booking.id);
                                                         }}
-                                                        style={{ color: 'blue', marginRight: '10px' }}>
-                                                        View Receipt
+                                                        className={globalStyleCss.blueLink}>
+                                                        View Receipt &nbsp;
                                                     </a>
                                                     <a
                                                         href="/edit"
@@ -363,7 +350,7 @@ const DashBoardPage: React.FC = () => {
                                                             e.preventDefault();
                                                             handleBookAppointmentClick(booking.id);
                                                         }}
-                                                        style={{ color: 'blue', marginRight: '10px' }}>
+                                                        className={globalStyleCss.blueLink}>
                                                         Change Appointment
                                                     </a>
                                                 </>

@@ -12,12 +12,10 @@ export async function POST(req: NextRequest) {
         if (applicationType === 'SO') {
             appType = '1';  
         }
-        if (applicationType === 'AVSO') {
+        if (applicationType === 'PI') {
             appType = '2';  
         }
-        if (applicationType === 'PI') {
-            appType = '3';  
-        }
+
         console.log('appType:', appType);
 
         // Validate required fields
@@ -34,6 +32,15 @@ export async function POST(req: NextRequest) {
             where: {
                 ...(nric && { nric }),  
                 app_type: appType, 
+                AND: [
+                    {
+                      OR: [
+                        { Status_app: '0' },
+                        { Status_app: null },
+                        { Status_app: '' }
+                      ]
+                    }
+                  ],
             },
         });
 
