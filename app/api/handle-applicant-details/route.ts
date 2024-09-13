@@ -26,8 +26,17 @@ export async function POST(req: NextRequest) {
         console.log('appType:', appType);
         const schedule = await prisma.booking_schedules.findFirst({
             where: {
-                ...(nric && { nric }),  
-                app_type: appType, 
+                ...(nric && { nric }),
+                app_type: appType,
+                AND: [
+                    {
+                        OR: [
+                            { Status_app: '0' },
+                            { Status_app: null },
+                            { Status_app: '' }
+                        ]
+                    }
+                ],
             },
         });
 
@@ -67,9 +76,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });
 
         } else {
-
             return NextResponse.json({ error: 'Record not found' }, { status: 400 });
-
         }
 
     } catch (error) {

@@ -32,7 +32,8 @@ export async function GET(req: NextRequest) {
         });
 
         if (schedule && session.payment_status == 'paid') {
-            const paymentIntentId = session.payment_intent as string
+            const paymentIntentId = session.payment_intent as string;
+            const currentDate = formatDateToDDMMYYYY(new Date());
             const updatedSchedule = await prisma.booking_schedules.update({
                 where: { id: schedule.id },
                 data: {
@@ -40,6 +41,7 @@ export async function GET(req: NextRequest) {
                     Status_draft: '1',
                     stripe_payment_id: paymentIntentId,
                     status_payment: '1',
+                    trans_date: currentDate,
                 },
             });
         }else{
@@ -51,5 +53,12 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'Unable to retrieve session' }, { status: 500 });
     } finally {
         await prisma.$disconnect();
+    }
+
+    function formatDateToDDMMYYYY(date: Date): string {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
     }
 }

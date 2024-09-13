@@ -47,7 +47,15 @@ export async function POST(req: NextRequest) {
       where: {
         ...(nric && { nric }),
         app_type: appType,
-        statusApp: statusApp
+        AND: [
+          {
+            OR: [
+              { Status_app: '0' },
+              { Status_app: null },
+              { Status_app: '' }
+            ]
+          }
+        ],        
       },
     });
 

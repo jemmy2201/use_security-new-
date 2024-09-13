@@ -5,8 +5,16 @@ const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { nric, appointmentDate, timeSlot } = body;
-        console.log('applicationType:timeSlot', appointmentDate, timeSlot);
+        const { nric, appointmentDate, timeSlot, applicationType } = body;
+        console.log('appointmentDate:nric', appointmentDate, nric);
+        console.log('timeSlot:applicationType', timeSlot, applicationType);
+        let appType = '';
+        if (applicationType === 'SO') {
+            appType = '1';  // Or use `1` without quotes if a number is expected
+        }
+        if (applicationType === 'PI') {
+            appType = '2';  // Or use `1` without quotes if a number is expected
+        }
         const [startTime, endTime] = timeSlot.split(" - ");
         // Validate required fields
         if (!nric || !appointmentDate) {
@@ -18,8 +26,17 @@ export async function POST(req: NextRequest) {
 
         const schedule = await prisma.booking_schedules.findFirst({
             where: {
-                ...(nric && { nric }),  
-                app_type: '1',       
+                ...(nric && { nric }),
+                app_type: appType,
+                AND: [
+                    {
+                        OR: [
+                            { Status_app: '0' },
+                            { Status_app: '1' },
+                            { Status_app: '4' },
+                        ]
+                    }
+                ],
             },
         });
 
@@ -41,7 +58,7 @@ export async function POST(req: NextRequest) {
             };
             // If a schedule is found, update it
             const updatedSchedule = await prisma.booking_schedules.update({
-                where: { id: schedule.id }, // Using the unique identifier for update
+                where: { id: schedule.id },
                 data: {
                     Status_app: '2',
                     appointment_date: appointmentDate,

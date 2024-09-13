@@ -108,6 +108,8 @@ const ApplicantDetailsPage: React.FC = () => {
         if (storedBookingData) {
             try {
                 const parsedBookingData: booking_schedules = JSON.parse(storedBookingData);
+                const fileName = parsedBookingData?.passid + parsedBookingData.nric.slice(-4);
+                console.log('image file name:', fileName);
                 // Initialize formData only if it's empty
                 setFormData(prevFormData => ({
                     ...prevFormData,
@@ -118,7 +120,7 @@ const ApplicantDetailsPage: React.FC = () => {
                     trHcta: parsedBookingData.TR_HCTA || false,
                     trRtt: parsedBookingData.TR_RTT || false,
                     trXray: parsedBookingData.TR_X_RAY || false,
-                    imageUrl: '/uploads/10005GSOdz09.png',
+                    imageUrl: `/uploads/${fileName}.png`,
                 }));
                 setCheckboxes({
                     trRtt: parsedBookingData?.TR_RTT || false,

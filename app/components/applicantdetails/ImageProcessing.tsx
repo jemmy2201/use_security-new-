@@ -69,7 +69,11 @@ const ImageProcessing = () => {
             ['imageUrl']: '',
           }));
           // Call API with processed image data
-          await sendImageToAPI(resizedImage, formData.nric ? formData.nric : '', formData.applicationType ? formData.applicationType : '');
+          console.log('isFaceDetected', isFaceDetected);
+          console.log('isBgColorMatch', isBgColorMatch);
+          if (isBgColorMatch && isFaceDetected) {
+            await sendImageToAPI(resizedImage, formData.nric ? formData.nric : '', formData.applicationType ? formData.applicationType : '');
+          }
         } catch (error) {
           console.error('Error processing image:', error);
         }
@@ -117,8 +121,6 @@ const ImageProcessing = () => {
       return false;
     }
   };
-
-
 
   const verifyBackgroundColor = (image: HTMLImageElement, targetColor: string) => {
     const canvas = document.createElement('canvas');
@@ -187,7 +189,7 @@ const ImageProcessing = () => {
         applicationType,
       });
 
-      // console.log('API Response:', response.data);
+      console.log('API Response:', response.data);
     } catch (error) {
       console.error('Error sending data to API:', error);
     }
@@ -241,7 +243,7 @@ const ImageProcessing = () => {
 
           <div className={applicantDetailsContentstyles.chooseFileText}>
             <h1>Maximum file size: 5 MB <br></br>
-            Supported file types: JPG / PNG</h1>
+              Supported file types: JPG / PNG</h1>
           </div>
           <div className={applicantDetailsContentstyles.fileUploadWrapper}>
             <label htmlFor="file-upload" className={applicantDetailsContentstyles.chooseFileButton}>

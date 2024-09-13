@@ -166,6 +166,32 @@ const DashBoardPage: React.FC = () => {
         }
     };
     
+    
+    const handleViewReceiptClick = async (id: bigint) => {
+        setLoading(true);
+        setError(null);
+        console.log('id', id);
+        const bookingId = id.toString(); // Correctly call the toString method
+        console.log('bookingId', bookingId);
+
+        // const response = await fetch('/api/generate-pdf?bookingId=${bookingId}');
+        // const blob = await response.blob();
+        // const url = window.URL.createObjectURL(blob);
+        // const link = document.createElement('a');
+        // link.href = url;
+        // link.download = 'generated.pdf';
+        // link.click();
+
+        try {
+            router.push(`/receipt?bookingId=${encodeURIComponent(bookingId)}`);
+        } catch (err) {
+            setError('Failed to load receipt page');
+        } finally {
+            setLoading(false);
+        }
+
+    };    
+    
     const handleUpdateClick = async (id: bigint) => {
         setLoading(true);
         setError(null);
@@ -300,7 +326,7 @@ const DashBoardPage: React.FC = () => {
                                                             e.preventDefault();
                                                             handleEditPasscardClick(booking.id);
                                                         }}
-                                                        style={{ color: 'blue', marginRight: '10px' }}>
+                                                        className={globalStyleCss.blueLink}>
                                                         Continue
                                                     </a>
                                                     <a
@@ -309,7 +335,7 @@ const DashBoardPage: React.FC = () => {
                                                             e.preventDefault();
                                                             handleNewPasscardClick();
                                                         }}
-                                                        style={{ color: 'blue', marginRight: '0px' }}>
+                                                        className={globalStyleCss.blueLink}>
                                                         Delete
                                                     </a>
                                                 </>
@@ -319,27 +345,37 @@ const DashBoardPage: React.FC = () => {
                                             {booking.Status_app == '1'
                                                 && booking.status_payment
                                                 && !booking.appointment_date ? (
-                                                <>                                                    
+                                                <> 
+
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleViewReceiptClick(booking.id);
+                                                        }}
+                                                        className={globalStyleCss.blueLink}>
+                                                        View Receipt &nbsp;
+                                                    </a>                                                                                                   
                                                     <a
                                                         href="/edit"
                                                         onClick={(e) => {
                                                             e.preventDefault();
                                                             handleBookAppointmentClick(booking.id);
                                                         }}
-                                                        style={{ color: 'blue', marginRight: '0px' }}>
+                                                        className={globalStyleCss.blueLink}>
                                                         Book Appointment
                                                     </a>
                                                 </>
                                             ) : null}
 
 
-                                            {booking.Status_app == '1' && booking.appointment_date ? (
+                                            {(booking.Status_app == '1' || booking.Status_app == '2') && booking.appointment_date ? (
                                                 <>
                                                     <a
                                                         href="/edit"
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            handleEditPasscardClick(booking.id);
+                                                            handleViewReceiptClick(booking.id);
                                                         }}
                                                         className={globalStyleCss.blueLink}>
                                                         View Receipt &nbsp;
@@ -364,7 +400,7 @@ const DashBoardPage: React.FC = () => {
                                                             e.preventDefault();
                                                             handleUpdateClick(booking.id);
                                                         }}
-                                                        style={{ color: 'blue', marginRight: '10px' }}>
+                                                        className={globalStyleCss.blueLink}>
                                                         Update
                                                     </a>
                                                     <a
@@ -373,7 +409,7 @@ const DashBoardPage: React.FC = () => {
                                                             e.preventDefault();
                                                             handleRenewClick(booking.id);
                                                         }}
-                                                        style={{ color: 'blue', marginRight: '0px' }}>
+                                                        className={globalStyleCss.blueLink}>
                                                         Renew
                                                     </a>
                                                     <a
@@ -382,7 +418,7 @@ const DashBoardPage: React.FC = () => {
                                                             e.preventDefault();
                                                             handleReplaceClick(booking.id);
                                                         }}
-                                                        style={{ color: 'blue', marginRight: '0px' }}>
+                                                        className={globalStyleCss.blueLink}>
                                                         Replace
                                                     </a>
                                                 </>

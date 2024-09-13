@@ -97,7 +97,7 @@ const StepBarHomePage: React.FC = () => {
                 alert('Application type is required.');
                 return;
             }
-            if (!formData.image) {
+            if (!formData.image && !formData.imageUrl) {
                 alert('Photo is required.');
                 return;
             }
@@ -138,7 +138,8 @@ const StepBarHomePage: React.FC = () => {
                         body: JSON.stringify({
                             nric: formData.nric,
                             appointmentDate: formData.appointmentDate,
-                            timeSlot: formData.timeSlot
+                            timeSlot: formData.timeSlot,
+                            applicationType: formData.applicationType,
                         }),
                     });
 
