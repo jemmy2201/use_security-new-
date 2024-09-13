@@ -11,6 +11,7 @@ import globalStyleCss from '../globalstyle/Global.module.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format, parseISO } from 'date-fns';
+import "react-datepicker/dist/react-datepicker.css";
 
 type DisabledDatesResponse = string[]; // Array of ISO date strings
 
@@ -18,25 +19,40 @@ interface ReschedulePageProps {
     bookingId: string;
 }
 
+const buttonTexts = [
+    '9:30am - 10:30am',
+    '10:30am - 11:30am',
+    '11:30am - 12:30pm',
+    '12:30pm - 1:30pm',
+    '1:30pm - 2:30pm',
+    '2:30pm - 3:30pm',
+    '3:30pm - 4:30pm',
+];
+
 const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     console.log('ReschedulePage Booking ID:', bookingId);
     const router = useRouter();
     const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
     const [startDate, setStartDate] = useState<Date | null>(null);
+    const [fullyBookedDates, setFullyBookedDates] = useState<Date[]>([]);
     const [disabledDates, setDisabledDates] = useState<Date[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Array of button texts
-    const buttonTexts = [
-        '9:30am - 10:30am',
-        '10:30am - 11:30am',
-        '11:30am - 12:30pm',
-        '12:30pm - 1:30pm',
-        '1:30pm - 2:30pm',
-        '2:30pm - 3:30pm',
-        '3:30pm - 4:30pm',
-    ];
+    const formatDate = (date: Date | null) => {
+        if (!date) return "";
+        const day = date.getDate();
+        const month = date.toLocaleString('default', { month: 'long' }); // e.g., "September"
+        const year = date.getFullYear();
+        return `${day} ${month} ${year}`;
+    };
+    const formattedDate = formatDate(startDate);
+
+    const isFullyBooked = (date: Date) => {
+        return fullyBookedDates.some(
+            (bookedDate) => bookedDate.toDateString() === date.toDateString()
+        );
+    };
 
     // Function to handle date change
     const handleDateChange = (date: Date | null) => {
@@ -72,7 +88,6 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             const result = await response.json();
             console.log("reschedule: Saved successfully:", result);
 
-
             console.log('bookingId', bookingId);
             try {
                 router.push(`/complete?bookingId=${encodeURIComponent(bookingId)}`);
@@ -81,8 +96,6 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             } finally {
                 setLoading(false);
             }
-
-
         } catch (err) {
             setError('Failed to fetch reschedule');
         } finally {
@@ -100,13 +113,20 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 const data: DisabledDatesResponse = await response.json();
                 const parsedDates = data.map(dateStr => parseISO(dateStr));
                 setDisabledDates(parsedDates);
+
+                const responseFullBooked = await fetch("/api/get-fully-booked-dates");
+                const dataFullyNooked = await responseFullBooked.json();
+
+                // Assuming the API returns dates in ISO format
+                const bookedDates = dataFullyNooked.map((dateStr: string) => new Date(dateStr));
+                setFullyBookedDates(bookedDates);
+
             } catch (error) {
                 console.error('Error fetching disabled dates:', error);
             }
         };
         fetchDisabledDates();
     }, []);
-
 
     return (
 
@@ -135,7 +155,15 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                                 <div className={rescheduleContentstyles.DivDateOfAppintment}>
                                     Date of appointment
                                 </div>
-                                <div>
+                                <div className={rescheduleContentstyles.displayDateTextBox}>
+                                    <input
+                                        type="text"
+                                        value={formattedDate}
+                                        readOnly
+                                    />
+                                </div>
+                                <br></br>
+                                <div className={rescheduleContentstyles.displayDateBox}>
                                     <DatePicker
                                         selected={startDate}
                                         onChange={handleDateChange}
@@ -143,6 +171,20 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                                         isClearable
                                         placeholderText="Choose a date"
                                         excludeDates={disabledDates}
+                                        renderDayContents={(day, date) => {
+                                            const isBooked = isFullyBooked(date);
+                                            return (
+                                                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                                                    <span>{day}</span>
+                                                    {isBooked && (
+                                                        <div style={{ fontSize: "8px", color: "red", marginTop: "0px" }}>
+                                                            Full
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        }}
+                                        inline
                                     />
                                 </div>
                             </span>

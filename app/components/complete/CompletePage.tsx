@@ -38,20 +38,6 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
     };
 
     useEffect(() => {
-        const fetchDisabledDates = async () => {
-            try {
-                const response = await fetch('/api/appointment-dates'); // Replace with your API endpoint
-                if (!response.ok) {
-                    throw new Error('Failed to fetch disabled dates');
-                }
-
-            } catch (error) {
-                console.error('Error fetching disabled dates:', error);
-            }
-        };
-        fetchDisabledDates();
-
-
         const fetchBookingSchedule = async () => {
             try {
                 const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);

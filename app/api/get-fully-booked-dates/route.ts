@@ -24,26 +24,8 @@ export interface bookingDate {
 // API Handler for GET request to fetch disabled dates
 export async function GET() {
   try {
-    // Fetch dates from the `dateholiday` table
-    const holidays = await prisma.dateholidays.findMany({
-      select: {
-        date: true, // Select only the date field
-      },
-    });
 
-    const disabledDates = holidays
-      .map((holiday) => {
-        if (holiday.date) {
-          // Assume holiday.date is string or Date
-          const date = new Date(holiday.date);
-          if (!isNaN(date.getTime())) { // Check if date is valid
-            return date.toISOString().split('T')[0];
-          }
-        }
-        return null;
-      })
-      .filter((date) => date !== null);
-
+    const disabledDates: string[] = [];
     console.log('disabledDates', disabledDates);
 
     const today = new Date();

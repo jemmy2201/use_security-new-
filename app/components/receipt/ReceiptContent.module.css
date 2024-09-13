@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  flex-shrink: 0;
+  background: #F5F6F7;
+  justify-content: center;
+  padding-top: 2%;
+  padding-left: 10%;
+  padding-bottom: 3%;
+}
+
+.innerContainer {
+  display: flex;
+  padding: 20px;
+  width: 80%;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #FFF;
+  justify-content: center;
+}
+
+.appointmentDetails {
+  padding: 10px;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.receiptTextBox {
+  display: flex;
+  align-items: flex-start;
+  padding: 5px;
+  gap: 10px;
+  align-self: stretch;
+}
+
+.boxWidth {
+  width: 400px;
+}
+
+.customhr {
+  border: 10;
+  width: 900px;
+  height: 1px;
+  background: #D5D5D5;
+  margin: 20px 0;
+}

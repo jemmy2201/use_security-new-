@@ -172,7 +172,7 @@
 .DivDateOfAppintment {
   color: #000;
   align-self: stretch;
-  width: 200px;
+  width: 500px;
   /* Regular Bold */
   font-family: Roboto;
   font-size: 16px;
@@ -247,4 +247,24 @@
   padding: 0px;
   align-items: flex-start;
   gap: 40px;
+}
+
+.displayDateTextBox {
+  width: 90%;
+  display: flex;
+  padding: 12px 16px;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+  border-radius: 4px;
+  border: 1px solid #546E7A;
+  background: #FFF;
+}
+
+.displayDateBox {
+  width: 90%;
+  height: 524.172px;
+  flex-shrink: 0;
+  border: 2px solid #E1E1E1;
+  background: lightgray 50% cover no-repeat;
 }
