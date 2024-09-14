@@ -18,7 +18,6 @@ import { useFormContext } from '.././FormContext';
 import stepBarModuleStyle from './StepBar.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
-import { booking_schedules as bookingDetail } from '@prisma/client';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -320,7 +319,7 @@ const StepBarHomePage: React.FC = () => {
     return (
         <div>
             <HeaderPageLink></HeaderPageLink>
-            <main style={{ padding: '20px', minHeight: '70vh', background: '#F5F6F7' }}>
+            <main className={stepBarModuleStyle.bodyContainer}>
                 <StepBar steps={steps} activeStep={activeStep} />
             </main>
             <Footer

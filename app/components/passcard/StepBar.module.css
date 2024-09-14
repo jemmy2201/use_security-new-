@@ -1,3 +1,315 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+
+
+@media screen and (max-width: 769px) {
+    .bodyContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+        width: 100%;
+        padding-top: 80px;
+        padding-bottom: 80px;
+        background: #F5F6F7;
+        flex-wrap: wrap;
+
+        .headerContainer {
+            flex-wrap: wrap;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .pageHeading {
+                flex-wrap: wrap;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                color: #000;
+                font-family: Poppins;
+                font-size: 36px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 42px;
+                text-align: center;
+                /* 116.667% */
+            }
+
+            .menuBar {
+                flex-wrap: wrap;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                justify-content: center;
+                align-items: center;
+                gap: 16px;
+                display: none;
+
+            }
+
+            .stepFooterContainer {
+                flex-wrap: wrap;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 20px;
+                background: #F5F6F7;
+                padding-bottom: 20px;
+
+                .saveDraft {
+                    display: flex;
+                    padding: 16px 20px;
+                    align-items: flex-start;
+                    gap: 8px;
+                    border-radius: 28px;
+                    border: 1px solid #546E7A;
+                    background: #FFF;
+                }
+
+                .continue {
+                    display: flex;
+                    padding: 16px 20px;
+                    align-items: flex-start;
+                    gap: 8px;
+                    border-radius: 28px;
+                    background: #CC0C00;
+                    color: white;
+                }
+            }
+        }
+
+    }
+
+    .stepBarContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stepList {
+        display: flex;
+        list-style: none;
+        padding: 10;
+        margin: 0;
+        position: relative;
+        align-items: center;
+    }
+
+    .stepItem {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        margin: 0 40px;
+    }
+
+    .stepNumber {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #CFD8DC;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: 0, 17%, 94%, 0.911;
+        font-weight: bold;
+        position: relative;
+        z-index: 2;
+    }
+
+    .stepText {
+        margin-top: 5px;
+        /* Space between the circle and text */
+        font-size: 14px;
+        /* Adjust font size as needed */
+        color: #333;
+        /* Adjust text color as needed */
+        text-align: center;
+        /* Center the text under the circle */
+        max-width: 150px;
+        /* Limit the width to avoid text overflow */
+        word-wrap: break-word;
+        /* Allow long words to break and fit within the container */
+    }
+
+    .connectorLine {
+        width: 200px;
+        /* Adjust width as needed */
+        height: 2px;
+        background-color: #ddd;
+        position: absolute;
+        top: 25%;
+        /* Center vertically */
+        left: 40%;
+        /* Place connector line to the right of the step */
+        transform: translateY(-50%);
+        /* Center the line vertically relative to the circle */
+        z-index: 1;
+        /* Ensure connector line is below the step number */
+    }
+
+    .stepItem.active .stepNumber {
+        background-color: #546E7A;
+        color: white;
+    }
+
+    .stepContent {
+        display: flex;
+        padding: 40px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 40px;
+        align-self: stretch;
+    }
+
+    .stepContentDiv {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        align-self: stretch;
+        background: #F5F6F7;
+    }
+
+    .footerContentDiv {
+        display: flex;
+        width: 1224px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 40px;
+
+    }
+
+    .createNewPassCard {
+        display: flex;
+        width: 100%;
+        height: 50px;
+        padding-bottom: 5%;
+        padding-left: 20%;
+        color: #000;
+    }
+
+    .createNewPassCardText {
+        color: #000;
+        justify-content: center;
+        font-family: Poppins;
+        font-size: 35px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 50px;
+    }
+
+    .otp-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+    .otp-popup input {
+        display: block;
+        margin-bottom: 10px;
+        padding: 8px;
+        width: 100%;
+    }
+
+    .otp-popup button {
+        margin-right: 10px;
+    }
+
+    .paymentContainer {
+        display: flex;
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        background: #FFF;
+        justify-content: center;
+    }
+
+}
+
+
+.bodyContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    background: #F5F6F7;
+    flex-wrap: wrap;
+
+    .headerContainer {
+        flex-wrap: wrap;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .pageHeading {
+            flex-wrap: wrap;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #000;
+            font-family: Poppins;
+            font-size: 36px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 42px;
+            text-align: center;
+            /* 116.667% */
+        }
+
+        .menuBar {
+            flex-wrap: wrap;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stepFooterContainer {
+            flex-wrap: wrap;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            background: #F5F6F7;
+            padding-bottom: 20px;
+
+            .saveDraft {
+                display: flex;
+                padding: 16px 20px;
+                align-items: flex-start;
+                gap: 8px;
+                border-radius: 28px;
+                border: 1px solid #546E7A;
+                background: #FFF;
+            }
+
+            .continue {
+                display: flex;
+                padding: 16px 20px;
+                align-items: flex-start;
+                gap: 8px;
+                border-radius: 28px;
+                background: #CC0C00;
+                color: white;
+            }
+        }
+    }
+
+}
+
 .stepBarContainer {
     display: flex;
     flex-direction: column;
@@ -7,7 +319,7 @@
 .stepList {
     display: flex;
     list-style: none;
-    padding: 0;
+    padding: 10;
     margin: 0;
     position: relative;
     align-items: center;
@@ -148,4 +460,4 @@
     gap: 20px;
     background: #FFF;
     justify-content: center;
-  }
+}

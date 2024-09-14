@@ -7,7 +7,8 @@ import personalDetailsContentstyles from './PersonalDetailsContent.module.css';
 import { useFormContext } from '.././FormContext';
 import { booking_schedules } from '@prisma/client';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; 
+import 'react-toastify/dist/ReactToastify.css';
+import globalStyleCss from '../globalstyle/Global.module.css';
 
 const PersonalDetailsPage: React.FC = () => {
 
@@ -54,92 +55,54 @@ const PersonalDetailsPage: React.FC = () => {
                 setError('No user data found');
             }
 
-            
+
         }
-    }, []); 
+    }, []);
 
     return (
         <form>
-            <div className={personalDetailsContentstyles.paymentContainer}>
-                <div className={personalDetailsContentstyles.applicantDetails}>
-                    <div className={personalDetailsContentstyles.applicantDetailsHeaderCard}>
-                        <div className={personalDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                            <h1>Personal details</h1>
-                        </div>
 
+            <div className={personalDetailsContentstyles.stepContentContainer}>
+                <div className={personalDetailsContentstyles.headingText}>
+                    Personal details
+                </div>
+                <div className={personalDetailsContentstyles.contentBox}>
+                    <div className={personalDetailsContentstyles.item}>
+                        <div className={globalStyleCss.regularBold}>Full name </div>
+                        <div className={globalStyleCss.regular}>{formData.name || ''}</div>
                     </div>
+                    <div className={personalDetailsContentstyles.item}>
+                        <div className={globalStyleCss.regularBold}>NRIC/FIN No. </div>
+                        <div className={globalStyleCss.regular}>{formData.nricText || ''}</div>
+                    </div>
+                </div>
 
-                    <div className={personalDetailsContentstyles.flexContainer}>
-                        <span>
-                            <div className={personalDetailsContentstyles.paymentContainerAmtHeader}>
-                                <div className={personalDetailsContentstyles.optionsHeaderText}>
-                                    <label><h1>Full name:</h1></label>
-
-                                </div>
-                                <div className={personalDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        value={formData.name || ''}
-                                    />
-                                </div>
-                            </div>
-                            <div className={personalDetailsContentstyles.spanLeftGap}>
-
-                            </div>
-                            <div className={personalDetailsContentstyles.paymentContainerAmtHeader}>
-                                <div className={personalDetailsContentstyles.optionsHeaderText}>
-                                    <label><h1>Mobile number:</h1></label>
-                                </div>
-                                <div>
-                                    <input
-                                        type="number"
-                                        id="mobileno"
-                                        value={formData.mobileno || ''}
-                                        onChange={handleChange}
-                                        className={personalDetailsContentstyles.mobileNoFieldBox}
-                                        required placeholder="Enter your mobile number"
-                                    />
-                                </div>
-                            </div>
-
-                        </span>
-                        <span>
-                            <div className={personalDetailsContentstyles.paymentContainerAmtHeader}>
-                                <div className={personalDetailsContentstyles.optionsHeaderText}>
-                                    <label><h1>NRIC/FIN No.:</h1></label>
-                                </div>
-                                <div className={personalDetailsContentstyles.personalDetailsNricText}>
-                                    <input
-                                        type="text"
-                                        id="nric"
-                                        value={formData.nricText || ''}
-                                    />
-                                </div>
-                            </div>
-                            <div className={personalDetailsContentstyles.spanLeftGap}>
-
-                            </div>
-                            <div className={personalDetailsContentstyles.paymentContainerAmtHeader}>
-                                <div className={personalDetailsContentstyles.optionsHeaderText}>
-                                    <label><h1>Email Address:</h1></label>
-                                </div>
-
-                                <div>
-                                    <input
-                                        type="text"
-                                        id="email"
-                                        value={formData.email || ''}
-                                        onChange={handleChange}
-                                        className={personalDetailsContentstyles.mobileNoFieldBox}
-                                        required placeholder="Enter your email"
-                                    />
-                                </div>
-                            </div>
-                        </span>
+                <div className={personalDetailsContentstyles.contentBox}>
+                    <div className={personalDetailsContentstyles.item}>
+                        <div className={globalStyleCss.regularBold}>Mobile number: </div>
+                        <div className={globalStyleCss.regular}>                                <input
+                            type="number"
+                            id="mobileno"
+                            value={formData.mobileno || ''}
+                            onChange={handleChange}
+                            className={personalDetailsContentstyles.inputBox}
+                            required placeholder="Enter your mobile number"
+                        /></div>
+                    </div>
+                    <div className={personalDetailsContentstyles.item}>
+                        <div className={globalStyleCss.regularBold}>Email Address. </div>
+                        <div className={globalStyleCss.regular}>                               <input
+                            type="text"
+                            id="email"
+                            value={formData.email || ''}
+                            onChange={handleChange}
+                            className={personalDetailsContentstyles.inputBox}
+                            required placeholder="Enter your email"
+                        /></div>
                     </div>
                 </div>
             </div>
+
         </form>
     );
 };

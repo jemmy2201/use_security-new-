@@ -2,7 +2,6 @@
 
 import React from 'react';
 import stepBarFooterStyle from './StepBarFooter.module.css'
-import styleBarModule from './StepBar.module.css';
 import { useFormContext } from '.././FormContext';
 
 interface FooterProps {
@@ -19,8 +18,7 @@ const Footer: React.FC<FooterProps> =
         const { formData, setFormData } = useFormContext();
         return (
             <footer>
-                <div style={{ background: '#F5F6F7' }}>
-                    <div className={stepBarFooterStyle.buttonBox}>
+                    <div className={stepBarFooterStyle.stepFooterContainer}>
                         {!formData.paymentProcessed && (
                             <span className={stepBarFooterStyle.saveDraft}>
                                 <button onClick={onSaveDraft} style={{ marginRight: 'auto' }}>
@@ -63,7 +61,7 @@ const Footer: React.FC<FooterProps> =
                         </span>
                     </div>
 
-                </div>
+                
             </footer>
         );
     }

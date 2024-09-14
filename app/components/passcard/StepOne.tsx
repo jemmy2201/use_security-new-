@@ -5,7 +5,7 @@ import PersonalDetailsPageLink from '../personaldetails/PersonalDetailsPage'
 const StepOne: React.FC = () => {
 
     return (
-        <div className={styleBarModule.stepContentDiv}>
+        <div>
             <PersonalDetailsPageLink></PersonalDetailsPageLink>
         </div>
     );

@@ -15,11 +15,11 @@ interface StepBarProps {
 }
 
 const StepBar: React.FC<StepBarProps> = ({ steps, activeStep }) => (
-    <div className={styleBarModule.stepBarContainer}>
-        <div className={styleBarModule.createNewPassCard}>
-                <div className={styleBarModule.createNewPassCardText}><h1>Apply for new pass card</h1></div>
+    <div className={styleBarModule.headerContainer}>
+        <div className={styleBarModule.pageHeading}>
+            Apply for new pass card: Security Officer (SO)/Aviation Security Officer (AVSO)
         </div>
-        <div>
+        <div className={styleBarModule.menuBar}>
             <ul className={styleBarModule.stepList}>
                 {steps.map((step, index) => {
                     const [number, ...textArray] = step.label.split(' '); // Split label into number and text
@@ -36,10 +36,10 @@ const StepBar: React.FC<StepBarProps> = ({ steps, activeStep }) => (
                     );
                 })}
             </ul>
-            <div className={styleBarModule.stepContent}>
-                {steps[activeStep].content}
-            </div>
         </div>
+
+        {steps[activeStep].content}
+
     </div>
 );
 
