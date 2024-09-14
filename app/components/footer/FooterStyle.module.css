@@ -35,7 +35,7 @@
   gap: 16px;
   background: #000;
 
-  .box {
+  .boxUnderLine {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,6 +48,20 @@
     font-weight: 400;
     line-height: 21px;
     text-decoration-line: underline;
+    text-align: center;
+  }
+  .box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: center;
+    color: #FFF;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 21px;
     text-align: center;
   }
 }

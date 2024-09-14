@@ -7,6 +7,7 @@ import headerstyles from './HeaderStyle.module.css';
 import footerstyles from './FooterStyle.module.css';
 import { signIn } from 'next-auth/react';
 import s from "./signin.module.scss";
+import FooterPageLink from '../components/footer/FooterPage'
 
 const HomePage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -124,18 +125,7 @@ const HomePage: React.FC = () => {
 
             </div>
 
-            <div className={footerstyles.footerContainer}>
-                <div className={footerstyles.box}>
-                    <div>Privacy Notice</div>
-                    <div>|</div>
-                    <div>Terms & Conditions</div>
-                    <div>|</div>
-                    <div>FAQs</div>
-                </div>
-                <div className={footerstyles.box}>
-                    <div>Copyright © 2024 Union of Security Employees (USE). All rights reserved</div>
-                </div>
-            </div>
+            <FooterPageLink />
 
         </div>
     </div>

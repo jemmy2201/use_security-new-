@@ -26,14 +26,16 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
-                color: #000;
-                font-family: Poppins;
-                font-size: 36px;
-                font-style: normal;
-                font-weight: 700;
-                line-height: 42px;
-                text-align: center;
-                /* 116.667% */
+                
+                .pageHeadingText {
+                    color: #000;
+                    font-family: Poppins;
+                    font-size: 32px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 32px;
+                    text-align: left;
+                }
             }
 
             .menuBar {
@@ -258,14 +260,16 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            color: #000;
-            font-family: Poppins;
-            font-size: 36px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 42px;
-            text-align: center;
-            /* 116.667% */
+
+            .pageHeadingText {
+                color: #000;
+                font-family: Poppins;
+                font-size: 42px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 42px;
+                text-align: left;
+            }
         }
 
         .menuBar {

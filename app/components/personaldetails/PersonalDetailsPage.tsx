@@ -5,10 +5,18 @@ import { useRouter } from 'next/navigation';
 import { users as users } from '@prisma/client';
 import personalDetailsContentstyles from './PersonalDetailsContent.module.css';
 import { useFormContext } from '.././FormContext';
-import { booking_schedules } from '@prisma/client';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import globalStyleCss from '../globalstyle/Global.module.css';
+
+export interface createNewPassApiResponse {
+    errorCode?: string;
+    errorMessage?: string;
+    canCreateSoApplication?: boolean;
+    canCreatePiApplication?: boolean;
+    canCreateAvsoApplication?: boolean;
+    passId?: string;
+    recordId: string;
+}
 
 const PersonalDetailsPage: React.FC = () => {
 
@@ -37,14 +45,22 @@ const PersonalDetailsPage: React.FC = () => {
                     const parsedData: users = JSON.parse(storedData);
                     setUsers(parsedData);
                     // Initialize formData only if it's empty
-                    setFormData({
-                        email: parsedData?.email ?? '',
-                        originalMobileno: parsedData?.mobileno ?? '',
-                        mobileno: parsedData?.mobileno ?? '',
-                        name: parsedData?.name ?? '',
-                        nric: parsedData?.nric ?? '',
-                        nricText: 'SXXXXXXXA',
-                    });
+
+                    const storedNewPassResponseData = sessionStorage.getItem('createNewPassApiResponse');
+                    if (storedNewPassResponseData) {
+                        const parsedNewPassData: createNewPassApiResponse = JSON.parse(storedNewPassResponseData);
+                        setFormData({
+                            email: parsedData?.email ?? '',
+                            originalMobileno: parsedData?.mobileno ?? '',
+                            mobileno: parsedData?.mobileno ?? '',
+                            name: parsedData?.name ?? '',
+                            nric: parsedData?.nric ?? '',
+                            nricText: 'SXXXXXXXA',
+                            applicationType: parsedNewPassData.canCreateSoApplication? 'SO':'PI',
+                            passId: parsedNewPassData.passId,
+                            id: parsedNewPassData.recordId,
+                        });
+                    }
 
                     console.log('Parsed data:', parsedData);
 
@@ -54,9 +70,8 @@ const PersonalDetailsPage: React.FC = () => {
             } else {
                 setError('No user data found');
             }
-
-
         }
+
     }, []);
 
     return (

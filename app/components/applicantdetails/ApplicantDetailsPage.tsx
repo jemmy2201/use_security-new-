@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import applicantDetailsContentstyles from './ApplicantDetailsContent.module.css';
-import { booking_schedules as bookingDetail } from '@prisma/client';
 import ImageProcessingPage from './ImageProcessing'
 import { useFormContext } from '.././FormContext';
 import { booking_schedules } from '@prisma/client';
@@ -137,67 +136,11 @@ const ApplicantDetailsPage: React.FC = () => {
         } else {
             setError('No user data found');
         }
-    }, [formData]); // Empty dependency array ensures this runs only once
+    }, [formData]); 
 
     return (
 
         <form>
-            <div className={applicantDetailsContentstyles.paymentContainer}>
-                <div className={applicantDetailsContentstyles.applicantDetails}>
-                    <div className={applicantDetailsContentstyles.applicantDetailsHeaderCard}>
-                        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                            <h1>Applicant Details</h1>
-                        </div>
-                        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
-                            <h1>Please select the pass card type you would like to apply for.</h1>
-                        </div>
-                    </div>
-
-                    <div className={applicantDetailsContentstyles.options}>
-                        <div className={applicantDetailsContentstyles.optionsHeader}>
-                            <div className={applicantDetailsContentstyles.optionsHeaderText}>
-                                <h1>Type of application</h1>
-                            </div>
-                            <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
-                                
-                                <label><h1>
-                                    <input
-                                        type="radio"
-                                        value="SO"
-                                        id="applicationType"
-                                        checked={selectedOption === 'SO'}
-                                        onChange={handleOptionChange}
-                                    />
-                                    Security Officer (SO)</h1>
-                                </label>
-                                <label><h2>
-                                    <input
-                                        type="radio"
-                                        value="AVSO"
-                                        id="applicationType"
-                                        checked={selectedOption === 'AVSO'}
-                                        onChange={handleOptionChange}
-                                    />
-                                    Aviation Security Officer (AVSO)</h2>
-                                </label>
-                                <label><h1>
-                                    <input
-                                        type="radio"
-                                        value="PI"
-                                        id="applicationType"
-                                        checked={selectedOption === 'PI'}
-                                        onChange={handleOptionChange}
-                                    />
-                                    Private Investigator (PI)</h1>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className={applicantDetailsContentstyles.paymentContainerBackground}>
-
-            </div>
             <div className={applicantDetailsContentstyles.paymentContainer}>
 
                 <div className={applicantDetailsContentstyles.applicantDetails}>
@@ -307,10 +250,8 @@ const ApplicantDetailsPage: React.FC = () => {
                                         />
                                         Handle Counter Terrorist Activities (HCTA)</h1>
                                     </label>
-
                                 </div>
                                 <div>
-
                                     <label className={applicantDetailsContentstyles.checkboxes}>
                                         <h1><input
                                             type="checkbox"
@@ -320,10 +261,8 @@ const ApplicantDetailsPage: React.FC = () => {
                                         />
                                         Operate Basic Security Equipment</h1>
                                     </label>
-
                                 </div>
                                 <div>
-
                                     <label className={applicantDetailsContentstyles.checkboxes}>
                                         <h1><input
                                             type="checkbox"

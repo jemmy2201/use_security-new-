@@ -27,12 +27,42 @@ const FirstTimePage: React.FC = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [modalMessage, setModalMessage] = useState<string>('');
 
-    const handleNewPasscardClick = async () => {
+    const handleNewSoPasscardClick = async () => {
         setLoading(true);
         setError(null);
         try {
 
-            const responseNewPass = await fetch('/api/handle-create-new-pass');
+            const responseNewPass = await fetch('/api/handle-create-new-pass/so-card');
+            console.log('response from handle-create-new-pass', responseNewPass);
+
+            const dataNewPass: createNewPassApiResponse = await responseNewPass.json();
+            console.log('data:', dataNewPass);
+            if (dataNewPass.errorCode) {
+                setModalMessage('Failed to fetch data from the server.');
+                setShowModal(true); // Show the modal with the message
+                return;
+            }
+            sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(dataNewPass));
+            const responseMyInfo = await fetch('/api/myinfo');
+            if (!responseMyInfo.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const dataMyInfo: users = await responseMyInfo.json();
+            router.push('/myinfoterms');
+
+        } catch (err) {
+            setError('Failed to fetch user details');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleNewPiPasscardClick = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+
+            const responseNewPass = await fetch('/api/handle-create-new-pass/pi-card');
             console.log('response from handle-create-new-pass', responseNewPass);
 
             const dataNewPass: createNewPassApiResponse = await responseNewPass.json();
@@ -108,8 +138,8 @@ const FirstTimePage: React.FC = () => {
                             Your application will be displayed here
                         </div>
                         <div className={firstTimeContentstyles.buttonBackground}>
-                            <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewPasscardClick}>
-                                Create new pass card
+                            <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewSoPasscardClick}>
+                                Create new SO pass card
                             </button>
                             {loading && <p>Loading...</p>}
                             {error && <p>{error}</p>}
@@ -119,6 +149,18 @@ const FirstTimePage: React.FC = () => {
                                 <Modal message={modalMessage} onClose={handleCloseModal} />
                             )}
                         </div>
+                        <div className={firstTimeContentstyles.buttonBackground}>
+                            <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewPiPasscardClick}>
+                                Create new PI pass card
+                            </button>
+                            {loading && <p>Loading...</p>}
+                            {error && <p>{error}</p>}
+
+                            {/* Show modal when `showModal` is true */}
+                            {showModal && (
+                                <Modal message={modalMessage} onClose={handleCloseModal} />
+                            )}
+                        </div>                        
                     </div>
                 </div>
             </div>

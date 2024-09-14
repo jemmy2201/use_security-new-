@@ -2,6 +2,8 @@
 
 import React from 'react';
 import styleBarModule from './StepBar.module.css';
+import { useFormContext } from '.././FormContext';
+
 // Define the type for the step content
 interface Step {
     content: JSX.Element;
@@ -14,10 +16,19 @@ interface StepBarProps {
     activeStep: number; // Add activeStep to props
 }
 
-const StepBar: React.FC<StepBarProps> = ({ steps, activeStep }) => (
-    <div className={styleBarModule.headerContainer}>
+const StepBar: React.FC<StepBarProps> = ({ steps, activeStep }) => {
+
+    const { formData, setFormData } = useFormContext();
+
+    return (<div className={styleBarModule.headerContainer}>
         <div className={styleBarModule.pageHeading}>
-            Apply for new pass card: Security Officer (SO)/Aviation Security Officer (AVSO)
+            {formData.applicationType == 'SO' ? (
+                <>
+                    <div className={styleBarModule.pageHeadingText}>Apply for new pass card:</div> 
+                    <div className={styleBarModule.pageHeadingText}>Security Officer (SO)/Aviation Security Officer (AVSO)</div>
+                </>
+            ) : <> <div className={styleBarModule.pageHeadingText}>Apply for new pass card: <br></br> Personal Investigator (PI) </div></>}
+
         </div>
         <div className={styleBarModule.menuBar}>
             <ul className={styleBarModule.stepList}>
@@ -41,6 +52,7 @@ const StepBar: React.FC<StepBarProps> = ({ steps, activeStep }) => (
         {steps[activeStep].content}
 
     </div>
-);
+    );
+};
 
 export default StepBar;

@@ -5,6 +5,7 @@ import React, { createContext, useState, ReactNode, useContext } from 'react';
 // Define the shape of the form data
 interface FormData {
     id?: string;
+    passId?:string;
     name?: string;
     nric?: string;
     nricText?: string;
