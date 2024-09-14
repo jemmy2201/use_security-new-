@@ -59,5 +59,18 @@
   font-style: normal;
   font-weight: 700;
   line-height: 20px;
+  display: inline;
   /* 125% */
+}
+
+/* @media (max-width: 800px) {
+  #company {
+    display: none;
+  }
+} */
+
+@media screen and (max-width: 800px) {
+  .useText {
+    display: none;
+  }
 }

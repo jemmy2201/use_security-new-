@@ -6,6 +6,9 @@ import styles from './HomeStyle.module.css';
 import headerstyles from './HeaderStyle.module.css';
 import footerstyles from './FooterStyle.module.css';
 import { signIn } from 'next-auth/react';
+import globalStyle from '../components/globalstyle/Global.module.css';
+
+import s from "./signin.module.scss";
 
 const HomePage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -21,7 +24,7 @@ const HomePage: React.FC = () => {
             <div className={headerstyles.header}>
                 <div className={headerstyles.leftHeader}>
                     <span className={headerstyles.logo}><img src="/images/logo.png" alt="Logo" /></span>
-                    <span className={headerstyles.useText}><h1>Union of Security Employees (USE)</h1></span>
+                    <span className={headerstyles.useText}>Union of Security Employees (USE)</span>
                 </div>
                 <div className={headerstyles.headercontainer}>
                     <span className={headerstyles.contactus}>
@@ -35,10 +38,12 @@ const HomePage: React.FC = () => {
 
             <div className={styles.body}>
                 <div className={styles.bodyp}><h1>Welcome to USE Pass Card Portal</h1></div>
-                <div className={styles.services}>
-                    <div className={styles.services2}>
-                        <span className={styles.servicesblock}>
-                            <div className={styles.svgImage}>
+
+                <div className={s.serviceWrapper}>
+                    <div className={s.services}>
+
+                        <div className={s.box}>
+                            <div className={s.svg}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                                     <circle cx="24" cy="24" r="23" stroke="#546E7A" strokeWidth="2" />
 
@@ -49,17 +54,17 @@ const HomePage: React.FC = () => {
                                 </svg>
                             </div>
 
-
-                            <div className={styles.servicesblockheader}>
-                                <h2>Apply new pass card</h2>
+                            <div className={s.boxHeader}>
+                                Apply new pass card
                             </div>
-                            <div className={styles.servicesblockbody}>
-                                <h2>Quickly apply for your new pass card online.</h2>
+                            <div className={s.boxContent}>
+                                Quickly apply for your new pass card online.
                             </div>
 
-                        </span>
-                        <span className={styles.servicesblock}>
-                            <div className={styles.svgImage}>
+                        </div>
+
+                        <div className={s.box}>
+                            <div className={s.svg}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                                     <circle cx="24" cy="24" r="23" stroke="#546E7A" strokeWidth="2" />
                                     <g transform="translate(12, 12)">
@@ -68,16 +73,17 @@ const HomePage: React.FC = () => {
                                 </svg>
 
                             </div>
-                            <div className={styles.servicesblockheader}>
-                                <h2>Renew pass card</h2>
+                            <div className={s.boxHeader}>
+                               Renew pass card
                             </div>
-                            <div className={styles.servicesblockbody}>
-                                <h2>Renew your pass card before it expires.</h2>
+                            <div className={s.boxContent}>
+                                Renew your pass card before it expires.
                             </div>
 
-                        </span>
-                        <span className={styles.servicesblock}>
-                            <div className={styles.svgImage}>
+                        </div>
+
+                        <div className={s.box}>
+                            <div className={s.svg}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                                     <circle cx="24" cy="24" r="23" stroke="#546E7A" strokeWidth="2" />
 
@@ -88,18 +94,18 @@ const HomePage: React.FC = () => {
                                 </svg>
                             </div>
 
-                            <div className={styles.servicesblockheader}>
-                                <h2>Replace pass card</h2>
+                            <div className={s.boxHeader}>
+                                Replace pass card
                             </div>
-                            <div className={styles.servicesblockbody}>
-                                <h2>Request a replacement for lost or stolen cards. </h2>
+                            <div className={s.boxContent}>
+                                Request a replacement for lost or stolen cards. 
 
                             </div>
 
-                        </span>
+                        </div>
 
-                        <span className={styles.servicesblock2}>
-                            <div className={styles.svgImage}>
+                        <div className={s.box}>
+                            <div className={s.svg}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                                     <circle cx="24" cy="24" r="23" stroke="#546E7A" strokeWidth="2" />
 
@@ -110,17 +116,19 @@ const HomePage: React.FC = () => {
 
                             </div>
 
-                            <div className={styles.servicesblockheader}>
-                                <h2>Update pass card</h2>
+                            <div className={s.boxHeader}>
+                                Update pass card
                             </div>
-                            <div className={styles.servicesblockbody}>
-                                <h2>Update your pass card details instantly.</h2>
+                            <div className={s.boxContent}>
+                                Update your pass card details instantly.
                             </div>
 
-                        </span>
+                        </div>
+
                     </div>
 
                 </div>
+
             </div>
 
             <div className={footerstyles.footer}>

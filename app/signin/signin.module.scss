@@ -1,0 +1,48 @@
+.text {
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    line-height: 24px;
+}
+
+.serviceWrapper {
+    .services {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .box {
+            order: 1;
+            padding: 24px;
+            background-color: #fff;
+            margin: 12px;
+            width: 236px;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-items: center;
+
+            .svg {
+                margin-bottom: 24px;
+                svg {
+                    stroke-width: 2px;
+                    stroke: #546E7A;
+                    width: 48px;
+                    height: 48px;
+                }
+            }
+
+            .boxHeader {
+                @extend .text;
+                font-weight: 700;
+                margin-bottom: 8px;
+            }
+
+            .boxContent {
+                @extend .text;
+                font-weight: 400;
+                text-align: center;
+            }
+        }
+    }
+}
