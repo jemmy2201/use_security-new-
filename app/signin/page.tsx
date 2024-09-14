@@ -6,8 +6,6 @@ import styles from './HomeStyle.module.css';
 import headerstyles from './HeaderStyle.module.css';
 import footerstyles from './FooterStyle.module.css';
 import { signIn } from 'next-auth/react';
-import globalStyle from '../components/globalstyle/Global.module.css';
-
 import s from "./signin.module.scss";
 
 const HomePage: React.FC = () => {
@@ -21,29 +19,24 @@ const HomePage: React.FC = () => {
 
     return (<div className={styles.container}>
         <div className={styles.overlay}>
-            <div className={headerstyles.header}>
-                <div className={headerstyles.leftHeader}>
-                    <span className={headerstyles.logo}><img src="/images/logo.png" alt="Logo" /></span>
-                    <span className={headerstyles.useText}>Union of Security Employees (USE)</span>
-                </div>
-                <div className={headerstyles.headercontainer}>
-                    <span className={headerstyles.contactus}>
-                        <h1>Contact Us</h1>
-                    </span>
-                    <span className={headerstyles.loginButton}>
-                        <button onClick={handleLoginClick}><h2>Log in with singpass</h2></button>
-                    </span>
+            <div className={headerstyles.headerContainer}>
+                <div className={headerstyles.logo}><img src="/images/logo.png" alt="Logo" /></div>
+                <div className={headerstyles.companyName}>Union of Security Employees (USE)</div>
+                <div className={headerstyles.leftBox}>
+                    <div className={headerstyles.contactUs}>Contact Us</div>
+                    <div className={headerstyles.loginButton}><button type='button' onClick={handleLoginClick}>Log in with singpass
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div className={styles.body}>
-                <div className={styles.bodyp}><h1>Welcome to USE Pass Card Portal</h1></div>
+            <div className={s.bodyBox}>
+                <div className={s.title}>Welcome to USE Pass Card Portal</div>
 
                 <div className={s.serviceWrapper}>
                     <div className={s.services}>
-
                         <div className={s.box}>
-                            <div className={s.svg}>
+                            <div className={s.svgBox}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                                     <circle cx="24" cy="24" r="23" stroke="#546E7A" strokeWidth="2" />
 
@@ -64,7 +57,7 @@ const HomePage: React.FC = () => {
                         </div>
 
                         <div className={s.box}>
-                            <div className={s.svg}>
+                            <div className={s.svgBox}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                                     <circle cx="24" cy="24" r="23" stroke="#546E7A" strokeWidth="2" />
                                     <g transform="translate(12, 12)">
@@ -74,7 +67,7 @@ const HomePage: React.FC = () => {
 
                             </div>
                             <div className={s.boxHeader}>
-                               Renew pass card
+                                Renew pass card
                             </div>
                             <div className={s.boxContent}>
                                 Renew your pass card before it expires.
@@ -83,7 +76,7 @@ const HomePage: React.FC = () => {
                         </div>
 
                         <div className={s.box}>
-                            <div className={s.svg}>
+                            <div className={s.svgBox}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                                     <circle cx="24" cy="24" r="23" stroke="#546E7A" strokeWidth="2" />
 
@@ -98,14 +91,14 @@ const HomePage: React.FC = () => {
                                 Replace pass card
                             </div>
                             <div className={s.boxContent}>
-                                Request a replacement for lost or stolen cards. 
+                                Request a replacement for lost or stolen cards.
 
                             </div>
 
                         </div>
 
                         <div className={s.box}>
-                            <div className={s.svg}>
+                            <div className={s.svgBox}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                                     <circle cx="24" cy="24" r="23" stroke="#546E7A" strokeWidth="2" />
 
@@ -131,16 +124,16 @@ const HomePage: React.FC = () => {
 
             </div>
 
-            <div className={footerstyles.footer}>
-                <div className={footerstyles.cta}>
-                    <div className={footerstyles.text}><h1>Privacy Notice</h1></div>
-                    <div className={footerstyles.text}>|</div>
-                    <div className={footerstyles.text}><h1>Terms & Conditions</h1></div>
-                    <div className={footerstyles.text}>|</div>
-                    <div className={footerstyles.text}><h1>FAQs</h1></div>
+            <div className={footerstyles.footerContainer}>
+                <div className={footerstyles.box}>
+                    <div>Privacy Notice</div>
+                    <div>|</div>
+                    <div>Terms & Conditions</div>
+                    <div>|</div>
+                    <div>FAQs</div>
                 </div>
-                <div className={footerstyles.copyright}>
-                    <div><h1>Copyright © 2024 Union of Security Employees (USE). All rights reserved.</h1></div>
+                <div className={footerstyles.box}>
+                    <div>Copyright © 2024 Union of Security Employees (USE). All rights reserved</div>
                 </div>
             </div>
 

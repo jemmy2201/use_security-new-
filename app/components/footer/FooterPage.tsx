@@ -4,16 +4,16 @@ import React from 'react';
 import footerstyles from './FooterStyle.module.css';
 
 const FooterPage: React.FC = () => {
-    return (<div className={footerstyles.footer}>
-        <div className={footerstyles.cta}>
-            <div className={footerstyles.text}><h1>Privacy Notice</h1></div>
-            <div className={footerstyles.text}>|</div>
-            <div className={footerstyles.text}><h1>Terms & Conditions</h1></div>
-            <div className={footerstyles.text}>|</div>
-            <div className={footerstyles.text}><h1>FAQs</h1></div>
+    return (<div className={footerstyles.footerContainer}>
+        <div className={footerstyles.box}>
+            <div>Privacy Notice</div>
+            <div>|</div>
+            <div>Terms & Conditions</div>
+            <div>|</div>
+            <div>FAQs</div>
         </div>
-        <div className={footerstyles.copyright}>
-            <div><h1>Copyright © 2024 Union of Security Employees (USE). All rights reserved.</h1></div>
+        <div className={footerstyles.box}>
+            <div>Copyright © 2024 Union of Security Employees (USE). All rights reserved</div>
         </div>
     </div>
     );

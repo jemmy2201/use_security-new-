@@ -9,7 +9,7 @@ const HeaderPage: React.FC = () => {
 
     const handleLogout = async () => {
         try {
-            await logout(); 
+            await logout();
             sessionStorage.removeItem('id_token');
             sessionStorage.removeItem('createNewPassApiResponse');
             sessionStorage.removeItem('users');
@@ -20,20 +20,18 @@ const HeaderPage: React.FC = () => {
     };
 
     return (
-        <div className={headerstyles.header}>
-            <div className={headerstyles.leftHeader}>
-                <span className={headerstyles.logo}><img src="/images/logo.png" alt="Logo" /></span>
-                <span className={headerstyles.useText}><h1>Union of Security Employees (USE)</h1></span>
-            </div>
-            <div className={headerstyles.headercontainer}>
-                <span className={headerstyles.contactus}>
-                    <h1>Contact Us</h1>
-                </span>
-                <span className={headerstyles.logoutButton}>
-                    <button onClick={handleLogout} id='logoutAction'><h2>Log out</h2></button>
-                </span>
+
+        <div className={headerstyles.headerContainer}>
+            <div className={headerstyles.logo}><img src="/images/logo.png" alt="Logo" /></div>
+            <div className={headerstyles.companyName}>Union of Security Employees (USE)</div>
+            <div className={headerstyles.leftBox}>
+                <div className={headerstyles.contactUs}>Contact Us</div>
+                <div className={headerstyles.loginButton}>
+                    <button type='button' onClick={handleLogout}>Log out</button>
+                </div>
             </div>
         </div>
+
     );
 };
 
