@@ -143,11 +143,9 @@ const ApplicantDetailsPage: React.FC = () => {
     return (
 
         <form>
-            
+            <div className={applicantDetailsContentstyles.mainContainer}>
                 <ImageProcessingPage></ImageProcessingPage>
-                <div className={applicantDetailsContentstyles.paymentContainerBackground}>
 
-                </div>
                 <div className={applicantDetailsContentstyles.stepContentContainer}>
                     <div className={globalStyleCss.header1}>
                         Training records
@@ -160,7 +158,7 @@ const ApplicantDetailsPage: React.FC = () => {
                         <div className={applicantDetailsContentstyles.trainingOptionBox}>
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
-                            <div className={globalStyleCss.regular}>
+                                <div className={globalStyleCss.regular}>
                                     <input
                                         type="checkbox"
                                         name="trAvso"
@@ -172,7 +170,7 @@ const ApplicantDetailsPage: React.FC = () => {
 
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
-                            <div className={globalStyleCss.regular}><input
+                                <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trCctc"
                                     checked={checkboxes.trCctc}
@@ -185,7 +183,7 @@ const ApplicantDetailsPage: React.FC = () => {
 
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
-                            <div className={globalStyleCss.regular}><input
+                                <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trCsspb"
                                     checked={checkboxes.trCsspb}
@@ -197,7 +195,7 @@ const ApplicantDetailsPage: React.FC = () => {
 
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
-                            <div className={globalStyleCss.regular}><input
+                                <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trXray"
                                     checked={checkboxes.trXray}
@@ -208,7 +206,7 @@ const ApplicantDetailsPage: React.FC = () => {
 
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
-                            <div className={globalStyleCss.regular}><input
+                                <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trNota"
                                     checked={checkboxes.trNota}
@@ -221,7 +219,7 @@ const ApplicantDetailsPage: React.FC = () => {
                         <div className={applicantDetailsContentstyles.trainingOptionBox}>
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
-                            <div className={globalStyleCss.regular}><input
+                                <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trHcta"
                                     checked={checkboxes.trHcta}
@@ -230,7 +228,7 @@ const ApplicantDetailsPage: React.FC = () => {
                                     Handle Counter Terrorist Activities (HCTA)</div>
                             </label>
                             <label className={applicantDetailsContentstyles.checkboxes}>
-                            <div className={globalStyleCss.regular}><input
+                                <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trObsa"
                                     checked={checkboxes.trObsa}
@@ -239,7 +237,7 @@ const ApplicantDetailsPage: React.FC = () => {
                                     Operate Basic Security Equipment</div>
                             </label>
                             <label className={applicantDetailsContentstyles.checkboxes}>
-                            <div className={globalStyleCss.regular}><input
+                                <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trSsm"
                                     checked={checkboxes.trSsm}
@@ -249,7 +247,7 @@ const ApplicantDetailsPage: React.FC = () => {
                             </label>
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
-                            <div className={globalStyleCss.regular}> <input
+                                <div className={globalStyleCss.regular}> <input
                                     type="checkbox"
                                     name="trRtt"
                                     checked={checkboxes.trRtt}
@@ -260,8 +258,8 @@ const ApplicantDetailsPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
-        </form>
-
+            </div>
+        </form >
 
     );
 };

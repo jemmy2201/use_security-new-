@@ -1,233 +1,248 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
 
-.stepContentContainer {
+
+.mainContainer {
   display: flex;
-  padding: 40px;
   flex-direction: column;
-  align-items: flex-start;
+  width: 1224px;
+  align-items: center;
   gap: 40px;
-  background: white;
-  flex-wrap: wrap;
 
-  .headingText {
-    color: #000;
-    /* Desktop H2 */
-    font-family: Poppins;
-    font-size: 28px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 42px;
-    /* 150% */
-  }
-
-  .trainingText {
-    color: #000;
-
-    /* Regular Bold */
-    font-family: Roboto;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 24px;
-    /* 150% */
-  }
-
-  .trainingOptionContainer {
-    display: flex;
-    flex-wrap: wrap;
-    color: #000;
-    /* Regular */
-    font-family: Roboto;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px;
-
-    .trainingOptionBox {
-      padding-right: 10px;
-      flex-wrap: wrap;
-
-      .checkboxes {
-        display: flex;
-        align-items: flex-start;
-        gap: 8px;
-        align-self: stretch;
-        color: #000;
-
-        /* Regular */
-        font-family: Roboto;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 24px;
-        /* 150% */
-      }
-    }
-  }
-
-  .headingDetail {
-    color: #000;
-
-    /* Regular */
-    font-family: Roboto;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px;
-  }
-
-  .warningBox {
-    display: flex;
-    padding: 12px 16px;
-    flex-direction: row;
+  @media screen and (max-width: 769px) {
+    width: 360px;
+    padding: 24px 24px 40px 24px;
     align-items: flex-start;
-    background: #FFECB3;
+    gap: 24px;
+  }
 
-    .warningText {
+  .stepContentContainer {
+    display: flex;
+    padding: 40px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    background: white;
+    flex-wrap: wrap;
+    @media screen and (max-width: 769px) {
+      padding: 24px;
+      gap: 24px;
+      width: 290px;
+    }
+    .headingText {
       color: #000;
+      /* Desktop H2 */
+      font-family: Poppins;
+      font-size: 28px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 42px;
+      /* 150% */
+    }
+
+    .trainingText {
+      color: #000;
+
+      /* Regular Bold */
+      font-family: Roboto;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px;
+      /* 150% */
+    }
+
+    .trainingOptionContainer {
+      display: flex;
+      flex-wrap: wrap;
+      color: #000;
+      /* Regular */
       font-family: Roboto;
       font-size: 16px;
       font-style: normal;
       font-weight: 400;
       line-height: 24px;
-      padding-left: 5px;
+
+      .trainingOptionBox {
+        padding-right: 10px;
+        flex-wrap: wrap;
+
+        .checkboxes {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+          align-self: stretch;
+          color: #000;
+
+          /* Regular */
+          font-family: Roboto;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 24px;
+          /* 150% */
+        }
+      }
     }
-  }
 
-  .photoHrLine {
-    display: flex;
-    height: 1px;
-    padding-top: 5%;
-    padding-bottom: 5%;
-    justify-content: center;
-    align-items: center;
-    align-self: stretch;
-  }
+    .headingDetail {
+      color: #000;
 
-  .photoUploadError {
-    flex-direction: column;
-    align-items: flex-start;
-    align-self: stretch;
-    background: #FFCDD2;
-  }
+      /* Regular */
+      font-family: Roboto;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 24px;
+    }
 
-  .photoUploadErrorBox {
-    align-items: flex-start;
-    gap: 8px;
-    align-self: stretch;
-    border-radius: 4px;
-    color: #000;
-
-    /* Regular */
-    font-family: Roboto;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px;
-    /* 150% */
-  }
-
-  .photoContainer {
-    display: flex;
-    align-items: flex-start;
-    gap: 40px;
-    align-self: stretch;
-
-    .uploadBox {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 24px;
+    .warningBox {
       display: flex;
+      padding: 12px 16px;
+      flex-direction: row;
+      align-items: flex-start;
+      background: #FFECB3;
 
-      .uploadPhotoContainerBox {
-        width: 200px;
-        height: 257px;
-        flex-shrink: 0;
-        border: 2px dashed #CFD8DC;
-        background: #F5F6F7;
-      }
-
-      .chooseFileButton {
-        display: flex;
-        padding: 16px 20px;
-        align-items: flex-start;
-        gap: 8px;
-        border-radius: 28px;
-        background: #CC0C00;
-      }
-
-      .chooseFileButtonText {
-        color: #FFF;
-
-        /* Regular Bold */
+      .warningText {
+        color: #000;
         font-family: Roboto;
         font-size: 16px;
         font-style: normal;
-        font-weight: 700;
+        font-weight: 400;
         line-height: 24px;
-        /* 150% */
+        padding-left: 5px;
       }
     }
 
-    .photosDosDontContainer {
+    .photoHrLine {
       display: flex;
+      height: 1px;
+      padding-top: 5%;
+      padding-bottom: 5%;
+      justify-content: center;
+      align-items: center;
+      align-self: stretch;
+    }
+
+    .photoUploadError {
       flex-direction: column;
       align-items: flex-start;
-      gap: 24px;
+      align-self: stretch;
+      background: #FFCDD2;
+    }
+
+    .photoUploadErrorBox {
+      align-items: flex-start;
+      gap: 8px;
+      align-self: stretch;
+      border-radius: 4px;
       color: #000;
-      font-family: "SF Pro Text";
+
+      /* Regular */
+      font-family: Roboto;
       font-size: 16px;
       font-style: normal;
-      font-weight: 700;
+      font-weight: 400;
       line-height: 24px;
-      @media screen and (max-width: 769px) {
-        display: none; 
-      }
       /* 150% */
-      .dosDontDoText {
+    }
+
+    .photoContainer {
+      display: flex;
+      align-items: flex-start;
+      gap: 40px;
+      align-self: stretch;
+
+      .uploadBox {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+        display: flex;
+
+        .uploadPhotoContainerBox {
+          width: 200px;
+          height: 257px;
+          flex-shrink: 0;
+          border: 2px dashed #CFD8DC;
+          background: #F5F6F7;
+        }
+
+        .chooseFileButton {
+          display: flex;
+          padding: 16px 20px;
+          align-items: flex-start;
+          gap: 8px;
+          border-radius: 28px;
+          background: #CC0C00;
+        }
+
+        .chooseFileButtonText {
+          color: #FFF;
+
+          /* Regular Bold */
+          font-family: Roboto;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 24px;
+          /* 150% */
+        }
+      }
+
+      .photosDosDontContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
         color: #000;
+        width:500px;
         font-family: "SF Pro Text";
         font-size: 16px;
         font-style: normal;
         font-weight: 700;
         line-height: 24px;
+
+        @media screen and (max-width: 769px) {
+          display: none;
+        }
+
         /* 150% */
-      }
+        .dosDontDoText {
+          color: #000;
+          font-family: "SF Pro Text";
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 24px;
+          /* 150% */
+        }
 
-      .photosDosDontContainerPicsBox {
-        display: flex;
-        gap: 35%;
-        padding-bottom: 10%;
-        padding-left: 5%;
-
-        .picBox {
+        .photosDosDontContainerPicsBox {
           display: flex;
-          width: 80px;
-          height: 120px;
-          flex-direction: column;
-          align-items: center;
-          gap: 8px;
+          gap: 35%;
+          padding-bottom: 10%;
+          padding-left: 5%;
 
-          .picFrame {
+          .picBox {
             display: flex;
-            width: 75px;
+            width: 80px;
             height: 120px;
             flex-direction: column;
             align-items: center;
-            gap: 80px;
-            border: 2px dashed #CFD8DC;
+            gap: 8px;
+
+            .picFrame {
+              display: flex;
+              width: 75px;
+              height: 120px;
+              flex-direction: column;
+              align-items: center;
+              gap: 80px;
+              border: 2px dashed #CFD8DC;
+            }
           }
         }
       }
     }
   }
-}
 
-.paymentContainerBackground {
-  display: flex;
-  padding: 3%;
-  flex-direction: column;
-  align-items: flex-start;
-  background: #F5F6F7;
-  justify-content: center;
 }
