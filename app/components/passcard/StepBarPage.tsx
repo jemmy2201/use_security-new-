@@ -37,14 +37,6 @@ const steps = [
 
 const StepBarHomePage: React.FC = () => {
 
-
-    const showToast = () => {
-        toast.success('This is a success toast!', {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 3000, // 3 seconds
-        });
-    };
-
     const [activeStep, setActiveStep] = useState<number>(0);
     const { formData, setFormData } = useFormContext();
     const [isOtpPopupOpen, setIsOtpPopupOpen] = useState<boolean>(false); // State for OTP popup
@@ -319,7 +311,7 @@ const StepBarHomePage: React.FC = () => {
     return (
         <div>
             <HeaderPageLink></HeaderPageLink>
-            <main className={stepBarModuleStyle.bodyContainer}>
+            <main>
                 <StepBar steps={steps} activeStep={activeStep} />
             </main>
             <Footer

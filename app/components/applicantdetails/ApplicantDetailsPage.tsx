@@ -6,6 +6,8 @@ import applicantDetailsContentstyles from './ApplicantDetailsContent.module.css'
 import ImageProcessingPage from './ImageProcessing'
 import { useFormContext } from '.././FormContext';
 import { booking_schedules } from '@prisma/client';
+import globalStyleCss from '../globalstyle/Global.module.css';
+
 type CheckboxState = {
     [key: string]: boolean;
 };
@@ -136,160 +138,128 @@ const ApplicantDetailsPage: React.FC = () => {
         } else {
             setError('No user data found');
         }
-    }, [formData]); 
+    }, [formData]);
 
     return (
 
         <form>
-            <div className={applicantDetailsContentstyles.paymentContainer}>
+            
+                <ImageProcessingPage></ImageProcessingPage>
+                <div className={applicantDetailsContentstyles.paymentContainerBackground}>
 
-                <div className={applicantDetailsContentstyles.applicantDetails}>
-                    <div className={applicantDetailsContentstyles.applicantDetailsHeaderCard}>
-                        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                            <h1>Photo</h1>
+                </div>
+                <div className={applicantDetailsContentstyles.stepContentContainer}>
+                    <div className={globalStyleCss.header1}>
+                        Training records
+                    </div>
+
+                    <div className={globalStyleCss.header2}>
+                        Types of trainings
+                    </div>
+                    <div className={applicantDetailsContentstyles.trainingOptionContainer}>
+                        <div className={applicantDetailsContentstyles.trainingOptionBox}>
+
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                            <div className={globalStyleCss.regular}>
+                                    <input
+                                        type="checkbox"
+                                        name="trAvso"
+                                        checked={checkboxes.trAvso}
+                                        onChange={handleCheckboxChange}
+                                    />
+                                    Airport Screener Deployment</div>
+                            </label>
+
+
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                            <div className={globalStyleCss.regular}><input
+                                    type="checkbox"
+                                    name="trCctc"
+                                    checked={checkboxes.trCctc}
+                                    onChange={handleCheckboxChange}
+                                />
+                                    Conduct Crowd and Traffic Control (CCTC)</div>
+                            </label>
+
+
+
+
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                            <div className={globalStyleCss.regular}><input
+                                    type="checkbox"
+                                    name="trCsspb"
+                                    checked={checkboxes.trCsspb}
+                                    onChange={handleCheckboxChange}
+                                />
+                                    Conduct Security Screening of Person and Bag (CSSPB)</div>
+                            </label>
+
+
+
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                            <div className={globalStyleCss.regular}><input
+                                    type="checkbox"
+                                    name="trXray"
+                                    checked={checkboxes.trXray}
+                                    onChange={handleCheckboxChange}
+                                />
+                                    Conduct Screening using X-ray Machine (X-RAY)</div>
+                            </label>
+
+
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                            <div className={globalStyleCss.regular}><input
+                                    type="checkbox"
+                                    name="trNota"
+                                    checked={checkboxes.trNota}
+                                    onChange={handleCheckboxChange}
+                                />
+                                    None of the above (SO)</div>
+                            </label>
+
                         </div>
-                        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
-                            <h1>This photo will be used for your pass card.</h1>
-                        </div>
-                        <div className={applicantDetailsContentstyles.uploadPhotoBox}>
-                            <ImageProcessingPage></ImageProcessingPage>
+                        <div className={applicantDetailsContentstyles.trainingOptionBox}>
+
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                            <div className={globalStyleCss.regular}><input
+                                    type="checkbox"
+                                    name="trHcta"
+                                    checked={checkboxes.trHcta}
+                                    onChange={handleCheckboxChange}
+                                />
+                                    Handle Counter Terrorist Activities (HCTA)</div>
+                            </label>
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                            <div className={globalStyleCss.regular}><input
+                                    type="checkbox"
+                                    name="trObsa"
+                                    checked={checkboxes.trObsa}
+                                    onChange={handleCheckboxChange}
+                                />
+                                    Operate Basic Security Equipment</div>
+                            </label>
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                            <div className={globalStyleCss.regular}><input
+                                    type="checkbox"
+                                    name="trSsm"
+                                    checked={checkboxes.trSsm}
+                                    onChange={handleCheckboxChange}
+                                />
+                                    Security Surveillance Management</div>
+                            </label>
+
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                            <div className={globalStyleCss.regular}> <input
+                                    type="checkbox"
+                                    name="trRtt"
+                                    checked={checkboxes.trRtt}
+                                    onChange={handleCheckboxChange}
+                                />
+                                    Recognise Terrorist Threat (RTT)</div>
+                            </label>
                         </div>
                     </div>
                 </div>
-
-            </div>
-            <div className={applicantDetailsContentstyles.paymentContainerBackground}>
-
-            </div>
-            <div className={applicantDetailsContentstyles.paymentContainer}>
-
-
-                <div className={applicantDetailsContentstyles.applicantDetails}>
-                    <div className={applicantDetailsContentstyles.applicantDetailsHeaderCard}>
-                        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContent}>
-                            <h1>Training records</h1>
-                        </div>
-
-                        <div className={applicantDetailsContentstyles.applicantDetailsHeaderCardContentDetail}>
-                            <h1>Types of trainings</h1>
-                        </div>
-                        <div className={applicantDetailsContentstyles.trainingOptionText}>
-                            <span className={applicantDetailsContentstyles.trainingOptionBox}>
-                                <div>
-
-                                    <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <h1>
-                                        <input
-                                            type="checkbox"
-                                            name="trAvso"
-                                            checked={checkboxes.trAvso}
-                                            onChange={handleCheckboxChange}
-                                        />
-                                        Airport Screener Deployment</h1>
-                                    </label>
-
-                                </div>
-                                <div>
-
-                                    <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <h1><input
-                                            type="checkbox"
-                                            name="trCctc"
-                                            checked={checkboxes.trCctc}
-                                            onChange={handleCheckboxChange}
-                                        />
-                                        Conduct Crowd and Traffic Control (CCTC)</h1>
-                                    </label>
-
-                                </div>
-                                <div>
-
-                                    <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <h1><input
-                                            type="checkbox"
-                                            name="trCsspb"
-                                            checked={checkboxes.trCsspb}
-                                            onChange={handleCheckboxChange}
-                                        />
-                                        Conduct Security Screening of Person and Bag (CSSPB)</h1>
-                                    </label>
-
-                                </div>
-                                <div>
-                                    <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <h1><input
-                                            type="checkbox"
-                                            name="trXray"
-                                            checked={checkboxes.trXray}
-                                            onChange={handleCheckboxChange}
-                                        />
-                                        Conduct Screening using X-ray Machine (X-RAY)</h1>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <h1><input
-                                            type="checkbox"
-                                            name="trNota"
-                                            checked={checkboxes.trNota}
-                                            onChange={handleCheckboxChange}
-                                        />
-                                        None of the above (SO)</h1>
-                                    </label>
-                                </div>
-                            </span>
-                            <span className={applicantDetailsContentstyles.trainingOptionBox}>
-                                <div>
-
-                                    <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <h1><input
-                                            type="checkbox"
-                                            name="trHcta"
-                                            checked={checkboxes.trHcta}
-                                            onChange={handleCheckboxChange}
-                                        />
-                                        Handle Counter Terrorist Activities (HCTA)</h1>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <h1><input
-                                            type="checkbox"
-                                            name="trObsa"
-                                            checked={checkboxes.trObsa}
-                                            onChange={handleCheckboxChange}
-                                        />
-                                        Operate Basic Security Equipment</h1>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label className={applicantDetailsContentstyles.checkboxes}>
-                                        <h1><input
-                                            type="checkbox"
-                                            name="trSsm"
-                                            checked={checkboxes.trSsm}
-                                            onChange={handleCheckboxChange}
-                                        />
-                                        Security Surveillance Management</h1>
-                                    </label>
-
-                                </div>
-                                <div>
-                                    <label className={applicantDetailsContentstyles.checkboxes}>
-                                       <h1> <input
-                                            type="checkbox"
-                                            name="trRtt"
-                                            checked={checkboxes.trRtt}
-                                            onChange={handleCheckboxChange}
-                                        />
-                                        Recognise Terrorist Threat (RTT)</h1>
-                                    </label>
-                                </div>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </form>
 
 

@@ -3,7 +3,8 @@
 import React from 'react';
 import headerstyles from './HeaderStyle.module.css';
 import { logout } from '@/actions/auth';
-
+import globalStyleCss from '../globalstyle/Global.module.css';
+ 
 
 const HeaderPage: React.FC = () => {
 
@@ -21,11 +22,11 @@ const HeaderPage: React.FC = () => {
 
     return (
 
-        <div className={headerstyles.headerContainer}>
+        <div className={headerstyles.siteHeaderContainer}>
             <div className={headerstyles.logo}><img src="/images/logo.png" alt="Logo" /></div>
             <div className={headerstyles.companyName}>Union of Security Employees (USE)</div>
             <div className={headerstyles.leftBox}>
-                <div className={headerstyles.contactUs}>Contact Us</div>
+                <div className={headerstyles.contactUs}><div className={globalStyleCss.buttonText}>Contact Us</div></div>
                 <div className={headerstyles.loginButton}>
                     <button type='button' onClick={handleLogout}>Log out</button>
                 </div>

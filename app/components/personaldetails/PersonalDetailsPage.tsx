@@ -78,24 +78,25 @@ const PersonalDetailsPage: React.FC = () => {
         <form>
 
             <div className={personalDetailsContentstyles.stepContentContainer}>
-                <div className={personalDetailsContentstyles.headingText}>
+                <div className={globalStyleCss.header1}>
                     Personal details
                 </div>
                 <div className={personalDetailsContentstyles.contentBox}>
                     <div className={personalDetailsContentstyles.item}>
                         <div className={globalStyleCss.regularBold}>Full name </div>
-                        <div className={globalStyleCss.regular}>{formData.name || ''}</div>
+                        <div className={personalDetailsContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.name || ''}</div></div>
                     </div>
                     <div className={personalDetailsContentstyles.item}>
                         <div className={globalStyleCss.regularBold}>NRIC/FIN No. </div>
-                        <div className={globalStyleCss.regular}>{formData.nricText || ''}</div>
+                        <div className={personalDetailsContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.nricText || ''}</div></div>
                     </div>
                 </div>
 
                 <div className={personalDetailsContentstyles.contentBox}>
                     <div className={personalDetailsContentstyles.item}>
                         <div className={globalStyleCss.regularBold}>Mobile number: </div>
-                        <div className={globalStyleCss.regular}>                                <input
+                        <div className={globalStyleCss.regular}>                                
+                        <input
                             type="number"
                             id="mobileno"
                             value={formData.mobileno || ''}
@@ -106,7 +107,8 @@ const PersonalDetailsPage: React.FC = () => {
                     </div>
                     <div className={personalDetailsContentstyles.item}>
                         <div className={globalStyleCss.regularBold}>Email Address. </div>
-                        <div className={globalStyleCss.regular}>                               <input
+                        <div className={globalStyleCss.regular}>                               
+                        <input
                             type="text"
                             id="email"
                             value={formData.email || ''}

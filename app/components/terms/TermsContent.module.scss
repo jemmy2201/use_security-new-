@@ -1,3 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+
+.mainContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 80px -507px;
+  flex-wrap: wrap;
+  background: #F5F6F7;
+
+  .termsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 80px;
+
+    .headerText {
+      color: #000;
+      /* Desktop H1 */
+      font-family: Poppins;
+      font-size: 36px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 42px;
+      /* 116.667% */
+    }
+
+    .bodyContainer {
+      display: flex;
+      flex-direction: column;
+      height: 360px;
+      padding: 40px;
+      align-items: flex-start;
+      gap: 16px;
+      background: white;
+
+      .headerText {
+        align-self: stretch;
+        color: #000;
+        font-family: Poppins;
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 42px;
+        text-align: left;
+      }
+
+      .detailContainer {
+        display: flex;
+        padding-left: 40px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        align-self: stretch;
+
+        .termsConditionArea {
+          flex: 1 0 0;
+          color: #000;
+          /* Regular */
+          font-family: Roboto;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 24px;
+          /* 150% */
+        }
+      }
+
+    }
+
+    .options {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 8px;
+
+      .text {
+        color: #000;
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+        padding-left: 5px;
+      }
+    }
+
+  }
+
+  .buttonBox {
+    display: flex;
+    padding-left: 19%;
+    gap: 10px;
+    padding-bottom: 4%;
+  }
+
+  .saveDraft {
+    padding: 16px 20px;
+    align-items: flex-start;
+    gap: 8px;
+    border-radius: 28px;
+    border: 1px solid #546E7A;
+    background: #FFF;
+  }
+
+  .continue {
+    padding: 16px 20px;
+    align-items: flex-start;
+    gap: 8px;
+    border-radius: 28px;
+    background: #CC0C00;
+    color: white;
+  }
+}
+
+
+
 .applicantDetails {
   display: flex;
   padding: 40px;
@@ -49,13 +170,7 @@
   /* 150% */
 }
 
-.options {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-  align-self: stretch;
-}
+
 
 .optionsHeader {
   display: flex;
@@ -68,13 +183,11 @@
 .optionsHeaderText {
   color: #000;
   display: flex;
-  /* Regular Bold */
   font-family: Roboto;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: 24px;
-  /* 150% */
 }
 
 .divGap {
@@ -145,12 +258,7 @@
   justify-content: center;
 }
 
-.declareTextBox {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  align-self: stretch;
-}
+
 
 .declareText {
   flex: 1 0 0;

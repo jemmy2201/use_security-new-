@@ -2,7 +2,7 @@
 
 @media screen and (max-width: 769px) {
 
-  .headerContainer {
+  .siteHeaderContainer {
     display: flex;
     width: 100%;
     padding: 16px 32px;
@@ -42,15 +42,6 @@
       display: flex;
       align-items: center;
       padding: 8px;
-      color: #FFFFFF;
-
-      /* Regular Bold */
-      font-family: Roboto;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 24px;
-      /* 150% */
     }
 
     .loginButton {
@@ -72,7 +63,7 @@
   }
 }
 
-.headerContainer {
+.siteHeaderContainer {
   display: flex;
   width: 100%;
   padding: 16px 32px;
@@ -111,14 +102,6 @@
     display: flex;
     align-items: center;
     padding: 8px;
-    color: #FFFFFF;
-    /* Regular Bold */
-    font-family: Roboto;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 24px;
-    /* 150% */
   }
 
   .loginButton {
