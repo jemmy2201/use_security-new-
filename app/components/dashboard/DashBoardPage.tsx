@@ -165,8 +165,8 @@ const DashBoardPage: React.FC = () => {
             setLoading(false);
         }
     };
-    
-    
+
+
     const handleViewReceiptClick = async (id: bigint) => {
         setLoading(true);
         setError(null);
@@ -190,8 +190,8 @@ const DashBoardPage: React.FC = () => {
             setLoading(false);
         }
 
-    };    
-    
+    };
+
     const handleUpdateClick = async (id: bigint) => {
         setLoading(true);
         setError(null);
@@ -264,26 +264,28 @@ const DashBoardPage: React.FC = () => {
     return (
 
         <div className={dashBoardContentstyles.mainContainer}>
+
             <div >
                 <HeaderPageLink />
             </div>
-
             <div className={dashBoardContentstyles.container}>
-                <span className={dashBoardContentstyles.welcome}>
+                <div className={globalStyleCss.regularBoldWhite}>
                     Welcome
-                </span>
-                <span className={dashBoardContentstyles.name}>
+                </div>
+                <div className={globalStyleCss.header1White}>
                     {users?.name}
-                </span>
+                </div>
             </div>
+
             <div className={dashBoardContentstyles.centerBox}>
                 <div className={dashBoardContentstyles.myApplication}>
-                    <div className={dashBoardContentstyles.tableHeader}>
-                        <span className={dashBoardContentstyles.tableContent} style={{ textAlign: 'right' }}>
-                            <div className={globalStyleCss.header1}>My applications</div>
-                        </span>
-                        <span className={globalStyleCss.primaryButton}>
-                            <button style={{ textAlign: 'left' }} onClick={handleNewPasscardClick}>
+                    <div className={dashBoardContentstyles.headerBox}>
+                        <div className={globalStyleCss.header1}>
+                            My applications
+                        </div>
+
+                        <div className={dashBoardContentstyles.primaryButton}>
+                            <button onClick={handleNewPasscardClick}>
                                 <div className={globalStyleCss.buttonText}>Apply for new pass</div>
                             </button>
                             {loading && <p>Loading...</p>}
@@ -293,7 +295,7 @@ const DashBoardPage: React.FC = () => {
                             {showModal && (
                                 <Modal message={modalMessage} onClose={handleCloseModal} />
                             )}
-                        </span>
+                        </div>
                     </div>
 
                     <div className={dashBoardContentstyles.recordContainer}>
@@ -345,7 +347,7 @@ const DashBoardPage: React.FC = () => {
                                             {booking.Status_app == '1'
                                                 && booking.status_payment
                                                 && !booking.appointment_date ? (
-                                                <> 
+                                                <>
 
                                                     <a
                                                         href="/edit"
@@ -355,7 +357,7 @@ const DashBoardPage: React.FC = () => {
                                                         }}
                                                         className={globalStyleCss.blueLink}>
                                                         View Receipt &nbsp;
-                                                    </a>                                                                                                   
+                                                    </a>
                                                     <a
                                                         href="/edit"
                                                         onClick={(e) => {
@@ -431,18 +433,13 @@ const DashBoardPage: React.FC = () => {
                             </tbody>
                         </table>
                     </div>
-                    <div>
 
-                    </div>
                 </div>
             </div>
-
-
             <div>
                 <FooterPageLink />
             </div>
         </div>
-
     );
 };
 

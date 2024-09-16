@@ -18,6 +18,22 @@
   }
 }
 
+.header1White {
+  color: white;
+  font-family: Poppins;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 42px; 
+  @media screen and (max-width: 769px) {
+    font-family: Poppins;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px; 
+  }
+}
+
 .header2 {
   color:  #000;
   font-family: Poppins;
@@ -80,6 +96,22 @@
   line-height: 24px; 
   @media screen and (max-width: 769px) {
     color:  #000;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; 
+  }
+}
+
+.regularBoldWhite {
+  color: white;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px; 
+  @media screen and (max-width: 769px) {
     font-family: Roboto;
     font-size: 16px;
     font-style: normal;

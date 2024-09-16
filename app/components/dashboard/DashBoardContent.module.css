@@ -1,144 +1,75 @@
 .mainContainer {
   background: #F5F6F7;
-  width: 100%;
-  height: 100%;
-  flex-shrink: 0;
+  flex-wrap: wrap;
+  .container {
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    align-items: start;
+    gap: 8px;
+    background: #546E7A;
+  }
+
+  .centerBox {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #F5F6F7;
+    justify-content: center;
+    padding-top: 20px;
+    align-items: center;
+    padding-bottom: 20px;
+    flex-wrap: wrap;
+    .myApplication {
+      display: flex;
+      padding: 40px;
+      flex-direction: column;
+      align-items: flex-start;
+      background: #FFF;
+      flex-wrap: wrap;
+      .headerBox {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        align-self: stretch;
+        padding-bottom: 20px;
+        flex-wrap: wrap;
+        .primaryButton {
+          padding: 16px 24px;
+          align-items: flex-left;
+          gap: 8px;
+          border-radius: 28px;
+          background: #CC0C00;
+          @media screen and (max-width: 769px) {
+            align-items: center;
+            align-content: flex-start;
+            gap: 8px;
+            border-radius: 28px;
+            background: #CC0C00; 
+            flex-wrap: wrap;
+          }
+        }
+      }
+      .recordContainer {
+        display: flex;
+        padding: 10px;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        align-self: stretch;
+        border: 1px solid #CFD8DC;
+        background: #FFF;
+        flex-wrap: wrap;
+        .item {
+          padding-right: 20px;
+          text-align: left;
+          flex-wrap: wrap;
+        }
+      }
+    }
+  }
 }
 
-.container {
-  display: flex;
-  padding: 20px;
-  flex-direction: column;
-  align-items: start;
-  gap: 8px;
-  align-self: stretch;
-  background: #546E7A;
-}
-
-.welcome {
-  color: #FFF;
-  font-family: Roboto;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
-}
-
-.name {
-  color: #FFF;
-  font-family: Poppins;
-  font-size: 28px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 42px;
-}
-
-.centerBox {
-  display: flex;
-  width: 100%;
-  height: 120%;
-  flex-direction: column;
-  align-items: flex-start;
-  flex-shrink: 0;
-  background: #F5F6F7;
-  justify-content: center;
-  padding-top: 2%;
-  align-items: center;
-  padding-bottom: 10%;
-}
-
-.myApplication {
-  display: flex;
-  width: 90%;
-  padding: 5%;
-  gap: 5%;
-  flex-direction: column;
-  align-items: flex-start;
-  background: #FFF;
-}
-
-
-.tableHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-self: stretch;
-  padding-bottom: 2%;
-  ;
-}
-
-.dashBoardTableHeaderContentData {
-  width: 160px;
-  color: #000;
-  font-family: Roboto;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
-  align-items: center;
-  text-align: center;
-}
-
-.item {
-  padding-right: 20px;
-  text-align: left;
-}
-
-
-.recordContainer {
-  display: flex;
-  padding: 10px;
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  align-self: stretch;
-  border: 1px solid #CFD8DC;
-  background: #FFF;
-}
-
-.recordBox {
-  display: flex;
-  padding: 80px 0px;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-}
-
-.recordBoxText {
-  color: #000;
-  font-family: Poppins;
-  font-size: 28px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 42px;
-}
-
-.recordBoxText2 {
-  color: #546E7A;
-  font-family: Roboto;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
-}
-
-.buttonBackground {
-  padding: 16px 20px;
-  align-items: flex-start;
-  gap: 8px;
-  border-radius: 28px;
-  background: #CC0C00;
-}
-
-.buttonText {
-  color: #FFF;
-  font-family: Roboto;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
-}
 
 .popup {
   position: fixed;
@@ -159,89 +90,6 @@
   border-radius: 5px;
   text-align: center;
   width: 300px;
-  /* Adjust width as necessary */
 }
 
 
-/* Media Queries for Responsive Design */
-@media (max-width: 1200px) {
-  .myApplication {
-    padding: 20px;
-  }
-
-  .myApplicationText {
-    font-size: 36px;
-    line-height: 46px;
-    display: flex;
-  }
-
-  .recordBoxText {
-    font-size: 24px;
-    line-height: 38px;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 16px;
-  }
-
-  .welcome {
-    font-size: 14px;
-    line-height: 22px;
-  }
-
-  .name {
-    font-size: 24px;
-    line-height: 38px;
-  }
-
-  .myApplicationText {
-    font-size: 30px;
-    line-height: 40px;
-  }
-
-  .recordBoxText {
-    font-size: 22px;
-    line-height: 36px;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 12px;
-  }
-
-  .welcome {
-    font-size: 12px;
-    line-height: 20px;
-  }
-
-  .name {
-    font-size: 20px;
-    line-height: 34px;
-  }
-
-  .myApplicationText {
-    font-size: 24px;
-    line-height: 36px;
-  }
-
-  .recordBox {
-    padding: 40px 0px;
-  }
-
-  .recordBoxText {
-    font-size: 18px;
-    line-height: 32px;
-  }
-
-  .buttonBackground {
-    padding: 12px 16px;
-  }
-
-  .buttonText {
-    font-size: 14px;
-    line-height: 22px;
-  }
-}

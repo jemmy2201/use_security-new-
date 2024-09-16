@@ -134,68 +134,65 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             <div >
                 <HeaderPageLink />
             </div>
-            <div className={rescheduleContentstyles.container}>
-                <div className={globalStyleCss.header1}>
-                    Reschedule Appointment
+            <div className={rescheduleContentstyles.mainContainer}>
+                <div className={rescheduleContentstyles.headerBox}>
+                    <div className={globalStyleCss.header1}>
+                        Reschedule Appointment
+                    </div>
                 </div>
-                <div className={rescheduleContentstyles.innerContainer}>
-                    <div className={rescheduleContentstyles.appointmentDetails}>
-                        <div className={globalStyleCss.header2}>
+
+                <div className={rescheduleContentstyles.appointmentDetailContainer}>
+                    <div className={rescheduleContentstyles.header}>
+                        <div className={globalStyleCss.header1}>
                             Appointment details
                         </div>
                         <div className={globalStyleCss.regular}>
                             Please choose a date and time to book your appointment to collect your pass card.
                         </div>
                     </div>
-                </div>
-                <div className={rescheduleContentstyles.bookAppointmentContainer}>
-                    <div className={rescheduleContentstyles.bookAppointmentDetailsContainer}>
-                        <div className={rescheduleContentstyles.bookAppointmentDetailsContainerSide}>
-                            <span className={rescheduleContentstyles.DivDateContainer}>
-                                <div className={rescheduleContentstyles.DivDateOfAppintment}>
-                                    Date of appointment
-                                </div>
-                                <div className={rescheduleContentstyles.displayDateTextBox}>
-                                    <input
-                                        type="text"
-                                        value={formattedDate}
-                                        readOnly
-                                    />
-                                </div>
-                                <br></br>
-                                <div className={rescheduleContentstyles.displayDateBox}>
-                                    <DatePicker
-                                        selected={startDate}
-                                        onChange={handleDateChange}
-                                        dateFormat="yyyy-MM-dd"
-                                        isClearable
-                                        placeholderText="Choose a date"
-                                        excludeDates={disabledDates}
-                                        renderDayContents={(day, date) => {
-                                            const isBooked = isFullyBooked(date);
-                                            return (
-                                                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                                                    <span>{day}</span>
-                                                    {isBooked && (
-                                                        <div style={{ fontSize: "8px", color: "red", marginTop: "0px" }}>
-                                                            Full
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            );
-                                        }}
-                                        inline
-                                    />
-                                </div>
-                            </span>
+                    <div className={rescheduleContentstyles.appointmentBox}>
+                        <div>
+                            <div className={globalStyleCss.regularBold}>
+                                Date of appointment
+                            </div>
+                            <div className={rescheduleContentstyles.displayDateTextBox}>
+                                <input
+                                    type="text"
+                                    value={formattedDate}
+                                    readOnly
+                                />
+                            </div>
+                            <div className={rescheduleContentstyles.displayDateBox}>
+                                <DatePicker
+                                    selected={startDate}
+                                    onChange={handleDateChange}
+                                    dateFormat="yyyy-MM-dd"
+                                    isClearable
+                                    placeholderText="Choose a date"
+                                    excludeDates={disabledDates}
+                                    renderDayContents={(day, date) => {
+                                        const isBooked = isFullyBooked(date);
+                                        return (
+                                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                                                <span>{day}</span>
+                                                {isBooked && (
+                                                    <div style={{ fontSize: "8px", color: "red", marginTop: "0px" }}>
+                                                        Full
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    }}
+                                    inline
+                                />
+                            </div>
+                        </div>
 
-                            <span>
-                                <div className={rescheduleContentstyles.DivDateOfAppintment}>
-                                    <div className={globalStyleCss.regularBold}>
-                                        Available Time slot
-                                    </div>
-                                </div>
-
+                        <div>
+                            <div className={globalStyleCss.regularBold}>
+                                Available Time slot
+                            </div>
+                            <div>
                                 <ul>
                                     {buttonTexts.map((text, index) => (
                                         <li key={index}>
@@ -208,50 +205,45 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                                         </li>
                                     ))}
                                 </ul>
-
-                            </span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div className={rescheduleContentstyles.bookAppointmentContainer}>
-                    <div className={rescheduleContentstyles.bookAppointmentDetailsContainer}>
-                        <div className={rescheduleContentstyles.applicantDetailsHeaderCard}>
-                            <div className={globalStyleCss.header2}>
-                                Collection Details
-                            </div>
-                            <hr className={rescheduleContentstyles.bookAppointmentBoxLine}></hr>
-                            <div className={rescheduleContentstyles.DivStyle}>
-                                <span className={rescheduleContentstyles.collectionText}>
-                                    <div className={globalStyleCss.regularBold}>
-                                        Monday to Friday
-                                    </div>
-                                </span>
-                                <span className={rescheduleContentstyles.montoFriTimings}>
-                                    <div className={globalStyleCss.regular}>
-                                        9:30am - 4:30pm (last walk-in at 4:30pm)</div>
-                                </span>
-                            </div>
-                            <hr className={rescheduleContentstyles.bookAppointmentBoxLine}></hr>
 
-                            <div className={rescheduleContentstyles.DivStyle}>
-                                <span className={rescheduleContentstyles.collectionText}>
-                                    <div className={globalStyleCss.regularBold}>Last Tuesday of the month & selected eves of Public Holidays (New Year’s Day, Chinese New Year & Christmas Day)
-                                    </div>
-                                </span>
-                                <span className={rescheduleContentstyles.montoFriTimings}>
-                                    <div className={globalStyleCss.regular}> 9:30am - 4:30pm (last walk-in at 12:30pm)
-                                    </div>
-                                </span>
-                            </div>
-                            <hr className={rescheduleContentstyles.bookAppointmentBoxLine}></hr>
-                            <div>
-                                <span className={rescheduleContentstyles.collectionText}>
-                                    Closed on Saturdays, Sundays & Public Holidays
-                                </span>
-
+                <div className={rescheduleContentstyles.appointmentDetailContainer}>
+                    <div className={globalStyleCss.header2}>
+                        Collection Details
+                    </div>
+                    <hr className={rescheduleContentstyles.bookAppointmentBoxLine}></hr>
+                    <div className={rescheduleContentstyles.DivStyle}>
+                        <div className={rescheduleContentstyles.collectionText}>
+                            <div className={globalStyleCss.regularBold}>
+                                Monday to Friday
                             </div>
                         </div>
+                        <div className={rescheduleContentstyles.montoFriTimings}>
+                            <div className={globalStyleCss.regular}>
+                                9:30am - 4:30pm (last walk-in at 4:30pm)</div>
+                        </div>
+                    </div>
+                    <hr className={rescheduleContentstyles.bookAppointmentBoxLine}></hr>
+
+                    <div className={rescheduleContentstyles.DivStyle}>
+                        <div className={rescheduleContentstyles.collectionText}>
+                            <div className={globalStyleCss.regularBold}>Last Tuesday of the month & selected eves of Public Holidays (New Year’s Day, Chinese New Year & Christmas Day)
+                            </div>
+                        </div>
+                        <div className={rescheduleContentstyles.montoFriTimings}>
+                            <div className={globalStyleCss.regular}> 9:30am - 4:30pm (last walk-in at 12:30pm)
+                            </div>
+                        </div>
+                    </div>
+                    <hr className={rescheduleContentstyles.bookAppointmentBoxLine}></hr>
+                    <div>
+                        <span className={rescheduleContentstyles.collectionText}>
+                            Closed on Saturdays, Sundays & Public Holidays
+                        </span>
                     </div>
                 </div>
 
