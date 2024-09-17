@@ -245,8 +245,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           </div>
 
           <hr className={resubmitPhotoContentstyles.photoHrLine}></hr>
-
-          {(faceDetected || bgColorMatch) ? (
+          {!faceDetected || !bgColorMatch ? (
             <div className={resubmitPhotoContentstyles.photoUploadError}>
               <div className={resubmitPhotoContentstyles.photoUploadErrorBox}>
                 <div>
