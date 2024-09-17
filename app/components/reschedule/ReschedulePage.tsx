@@ -122,12 +122,12 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             try {
                 router.push(`/complete?bookingId=${encodeURIComponent(bookingId)}`);
             } catch (err) {
-                setError('Failed to fetch user details');
+                setErrorMessage('Failed to fetch user details');
             } finally {
                 setLoading(false);
             }
         } catch (err) {
-            setError('Failed to fetch reschedule');
+            setErrorMessage('Failed to fetch reschedule');
         } finally {
             setLoading(false);
         }
@@ -261,7 +261,8 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
                     <div className={rescheduleContentstyles.DivStyle}>
                         <div className={rescheduleContentstyles.collectionText}>
-                            <div className={globalStyleCss.regularBold}>Last Tuesday of the month & selected eves of Public Holidays (New Year’s Day, Chinese New Year & Christmas Day)
+                            <div className={globalStyleCss.regularBold}>
+                                Last Tuesday of the month & selected eves of Public Holidays (New Year’s Day, Chinese New Year & Christmas Day)
                             </div>
                         </div>
                         <div className={rescheduleContentstyles.montoFriTimings}>
@@ -271,9 +272,9 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                     </div>
                     <hr className={rescheduleContentstyles.bookAppointmentBoxLine}></hr>
                     <div>
-                        <span className={rescheduleContentstyles.collectionText}>
+                        <div className={rescheduleContentstyles.collectionText}>
                             Closed on Saturdays, Sundays & Public Holidays
-                        </span>
+                        </div>
                     </div>
                 </div>
 

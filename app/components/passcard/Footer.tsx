@@ -4,7 +4,8 @@ import React from 'react';
 import stepBarFooterStyle from './StepBarFooter.module.css'
 import { useFormContext } from '.././FormContext';
 import globalStyleCss from '../globalstyle/Global.module.css';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface FooterProps {
     onNext: () => void;
@@ -24,8 +25,9 @@ const Footer: React.FC<FooterProps> =
                     {!formData.paymentProcessed && (
                         <span className={stepBarFooterStyle.saveDraft}>
                             <button onClick={onSaveDraft} style={{ marginRight: 'auto' }}>
-                            <div className={globalStyleCss.regular}>Save draft</div>
+                                <div className={globalStyleCss.regular}>Save draft</div>
                             </button>
+                            <ToastContainer />
                         </span>
 
                     )}
@@ -37,6 +39,7 @@ const Footer: React.FC<FooterProps> =
                                 disabled={!hasBack}
                                 style={{ marginRight: '10px' }}
                             >
+                                <ToastContainer />
                                 <div className={globalStyleCss.regular}>Back</div>
                             </button>
                         </span>

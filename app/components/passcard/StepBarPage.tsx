@@ -48,6 +48,7 @@ const StepBarHomePage: React.FC = () => {
     const searchParams = useSearchParams();
 
 
+
     useEffect(() => {
         const sessionId = searchParams.get('session_id');
         if (sessionId) {
@@ -245,6 +246,11 @@ const StepBarHomePage: React.FC = () => {
 
                 const result = await response.json();
                 console.log("Personal Details: Draft saved successfully:", result);
+                console.log('showing toast message');
+                toast.success('Your draft has been saved', {
+                    position: 'top-right', 
+                    autoClose: 10000, 
+                  });
             } catch (error) {
                 console.error("Personal Details: Error saving draft:", error);
             }
@@ -274,6 +280,10 @@ const StepBarHomePage: React.FC = () => {
                 }
                 const result = await response.json();
                 console.log("Applicant Details: Draft saved successfully:", result);
+                toast.success('Your draft has been saved', {
+                    position: 'top-right', 
+                    autoClose: 10000, 
+                  });
             } catch (error) {
                 console.error("Applicant Details: Error saving draft:", error);
             }
@@ -297,6 +307,10 @@ const StepBarHomePage: React.FC = () => {
                 }
                 const result = await response.json();
                 console.log("Review Details: Draft saved successfully:", result);
+                toast.success('Your draft has been saved', {
+                    position: 'top-right', 
+                    autoClose: 10000, 
+                  });
             } catch (error) {
                 console.error("Review Details: Error saving draft:", error);
             }

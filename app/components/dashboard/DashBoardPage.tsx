@@ -40,7 +40,7 @@ const statusTypeMap: { [key: string]: string } = {
     [PROCESSING]: 'PROCESSING',
     [READY_FOR_ID_CARD_PRINTING]: 'READY_FOR_ID_CARD_PRINTING',
     [ID_CARD_READY_FOR_COLLECTION]: 'ID_CARD_READY_FOR_COLLECTION',
-    [RESUBMISSION]: 'RESUBMISSION',
+    [RESUBMISSION]: 'Photo rejected',
     [RESUBMITTED]: 'RESUBMITTED',
     [COMPLETED]: 'Issued',
 };
@@ -159,6 +159,21 @@ const DashBoardPage: React.FC = () => {
         console.log('bookingId', bookingId);
         try {
             router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);
+        } catch (err) {
+            setError('Failed to fetch user details');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleResubmitPhotoClick = async (id: bigint) => {
+        setLoading(true);
+        setError(null);
+        console.log('id', id);
+        const bookingId = id.toString(); // Correctly call the toString method
+        console.log('bookingId', bookingId);
+        try {
+            router.push(`/resubmitphoto?bookingId=${encodeURIComponent(bookingId)}`);
         } catch (err) {
             setError('Failed to fetch user details');
         } finally {
@@ -390,6 +405,29 @@ const DashBoardPage: React.FC = () => {
                                                         }}
                                                         className={globalStyleCss.blueLink}>
                                                         Change Appointment
+                                                    </a>
+                                                </>
+                                            ) : null}
+
+                                            {booking.Status_app == '4' ? (
+                                                <>
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleResubmitPhotoClick(booking.id);
+                                                        }}
+                                                        className={globalStyleCss.blueLink}>
+                                                        Upload photo &nbsp;
+                                                    </a>
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleViewReceiptClick(booking.id);
+                                                        }}
+                                                        className={globalStyleCss.blueLink}>
+                                                        View receipt
                                                     </a>
                                                 </>
                                             ) : null}
