@@ -39,7 +39,7 @@ const FirstTimePage: React.FC = () => {
             console.log('data:', dataNewPass);
             if (dataNewPass.errorCode) {
                 setModalMessage('Failed to fetch data from the server.');
-                setShowModal(true); // Show the modal with the message
+                setShowModal(true); 
                 return;
             }
             sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(dataNewPass));
@@ -69,7 +69,7 @@ const FirstTimePage: React.FC = () => {
             console.log('data:', dataNewPass);
             if (dataNewPass.errorCode) {
                 setModalMessage('Failed to fetch data from the server.');
-                setShowModal(true); // Show the modal with the message
+                setShowModal(true); 
                 return;
             }
             sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(dataNewPass));
@@ -141,10 +141,6 @@ const FirstTimePage: React.FC = () => {
                             <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewSoPasscardClick}>
                                 Create new SO pass card
                             </button>
-                            {loading && <p>Loading...</p>}
-                            {error && <p>{error}</p>}
-
-                            {/* Show modal when `showModal` is true */}
                             {showModal && (
                                 <Modal message={modalMessage} onClose={handleCloseModal} />
                             )}
@@ -153,10 +149,6 @@ const FirstTimePage: React.FC = () => {
                             <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewPiPasscardClick}>
                                 Create new PI pass card
                             </button>
-                            {loading && <p>Loading...</p>}
-                            {error && <p>{error}</p>}
-
-                            {/* Show modal when `showModal` is true */}
                             {showModal && (
                                 <Modal message={modalMessage} onClose={handleCloseModal} />
                             )}

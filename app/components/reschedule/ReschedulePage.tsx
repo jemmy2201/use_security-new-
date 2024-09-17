@@ -37,7 +37,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     const [fullyBookedDates, setFullyBookedDates] = useState<Date[]>([]);
     const [disabledDates, setDisabledDates] = useState<Date[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const formatDate = (date: Date | null) => {
         if (!date) return "";
@@ -65,8 +65,38 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
         setSelectedTimeSlot(text);
     };
 
-    const onBack = () => {
+    const onBack = async () => {
 
+        try {
+            const responseUser = await fetch('/api/myinfo');
+            if (!responseUser.ok) {
+                console.log('no user detail found hence redirecting to firsttime page');
+                router.push('/firsttime');
+            }
+            const dataUser: users = await responseUser.json();
+
+            sessionStorage.setItem('users', JSON.stringify(dataUser));
+            console.log('data from api', dataUser);
+
+            const response = await fetch('/api/dashboard');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data: bookingDetail[] = await response.json();
+            console.log('booking card list: ', data.length);
+            if (data.length === 0) {
+                console.log('No booking details found.');
+                router.push('/firsttime');
+            } else {
+                sessionStorage.setItem('bookingSchedules', JSON.stringify(data));
+                console.log('data from api', data);
+                router.push('/dashboard');
+            }
+        } catch (err) {
+            setErrorMessage('Failed to fetch users');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const onNext = async () => {
@@ -248,7 +278,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 </div>
 
                 <div className={rescheduleContentstyles.buttonContainer}>
-                    <button className={rescheduleContentstyles.saveDraft} onClick={onBack} style={{ marginRight: '10px' }}>
+                    <button className={rescheduleContentstyles.saveDraft} type='button' onClick={onBack} style={{ marginRight: '10px' }}>
                         <div className={globalStyleCss.regular}>Cancel</div>
                     </button>
                     <button className={rescheduleContentstyles.continue} type='button' onClick={onNext}>

@@ -9,6 +9,7 @@ import stepBarFooterStyle from './StepBarFooter.module.css'
 import { booking_schedules as bookingDetail } from '@prisma/client';
 import { users as users } from '@prisma/client';
 import globalStyleCss from '../globalstyle/Global.module.css';
+import { logout } from '@/actions/auth';
 
 const TermsPage: React.FC = () => {
 
@@ -33,8 +34,16 @@ const TermsPage: React.FC = () => {
         setIsChecked(!isChecked);
     };
 
-    const onBack = () => {
-
+    const onCancel = async () => {
+        try {
+            await logout();
+            sessionStorage.removeItem('id_token');
+            sessionStorage.removeItem('createNewPassApiResponse');
+            sessionStorage.removeItem('users');
+            sessionStorage.removeItem('bookingSchedule');
+        } catch (error) {
+            console.error('Logout failed', error);
+        }
     };
 
     const onContinue = async () => {
@@ -151,7 +160,7 @@ const TermsPage: React.FC = () => {
 
                     <div className={termsContentstyles.box2}>
                         <button className={termsContentstyles.saveDraft}
-                            onClick={onBack} style={{ marginRight: '10px' }}>
+                            onClick={onCancel} style={{ marginRight: '10px' }}>
                             <div className={globalStyleCss.regular}>Cancel</div>
                         </button>
                         <button className={termsContentstyles.continue} type='button' onClick={onContinue}>

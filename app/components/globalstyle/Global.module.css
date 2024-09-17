@@ -171,6 +171,23 @@
   }
 }
 
+
+.buttonTextBlack {
+  color: black;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  @media screen and (max-width: 769px) {
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; 
+  }
+}
+
 .blueLink {
   color: #0277BD;
   font-family: Roboto;

@@ -425,8 +425,6 @@ const DashBoardPage: React.FC = () => {
                                                     </a>
                                                 </>
                                             ) : null}
-
-
                                         </td>
                                     </tr>
                                 ))}

@@ -24,7 +24,7 @@ const Footer: React.FC<FooterProps> =
                     {!formData.paymentProcessed && (
                         <span className={stepBarFooterStyle.saveDraft}>
                             <button onClick={onSaveDraft} style={{ marginRight: 'auto' }}>
-                            <div className={globalStyleCss.regular}>Save draft for later</div>
+                            <div className={globalStyleCss.regular}>Save draft</div>
                             </button>
                         </span>
 

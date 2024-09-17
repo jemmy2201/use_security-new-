@@ -83,11 +83,10 @@
   .companyName {
     color: #FFF;
     font-family: Poppins;
-    font-size: 16px;
+    font-size: 24px;
     font-style: normal;
     font-weight: 700;
     line-height: 24px;
-    /* 100% */
   }
 
   .leftBox {

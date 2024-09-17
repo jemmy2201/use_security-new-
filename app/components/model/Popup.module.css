@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
 .modaloverlay {
   position: fixed;
   top: 0;
@@ -8,27 +10,43 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
-}
+  z-index: 111;
 
-.modalcontent {
-  background: white;
-  padding: 20px;
-  border-radius: 5px;
-  width: 40%;
-  height: 40%;
-}
+  .modelContainer {
+    display: flex;
+    padding: 40px;
+    flex-direction: column;
+    gap: 8px;
 
-.modalbody {
-  margin-bottom: 20px;
-}
+    @media screen and (max-width: 769px) {
+      padding: 20px;
+    }
 
-.modelButton {
-  display: flex;
-  padding: 16px 24px;
-  gap: 8px;
-  border-radius: 28px;
-  background: white;
-  border: 1px solid #546E7A;
-  width: 18%;
+    .modelBox {
+      display: flex;
+      padding: 40px;
+      width: 650px;
+      flex-direction: column;
+      align-items: left;
+      background: white;
+      gap: 20px;
+
+      @media screen and (max-width: 769px) {
+        padding: 20px;
+        width: 357px;
+      }
+
+      .modelButton {
+        display: flex;
+        padding: 16px 20px;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 8px;
+        align-self: stretch;
+        border-radius: 28px;
+        border: 1px solid #546E7A;
+        background: #FFF;
+      }
+    }
+  }
 }
