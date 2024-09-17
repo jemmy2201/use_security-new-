@@ -1,6 +1,7 @@
 .mainContainer {
   background: #F5F6F7;
   flex-wrap: wrap;
+
   .container {
     display: flex;
     padding: 20px;
@@ -20,6 +21,7 @@
     align-items: center;
     padding-bottom: 20px;
     flex-wrap: wrap;
+
     .myApplication {
       display: flex;
       padding: 40px;
@@ -27,6 +29,7 @@
       align-items: flex-start;
       background: #FFF;
       flex-wrap: wrap;
+      width:90%;
       .headerBox {
         display: flex;
         justify-content: space-between;
@@ -34,22 +37,29 @@
         align-self: stretch;
         padding-bottom: 20px;
         flex-wrap: wrap;
+        @media screen and (max-width: 769px) {
+          display: flex;
+          gap: 20px;
+          align-items: center;
+        }
         .primaryButton {
           padding: 16px 24px;
           align-items: flex-left;
           gap: 8px;
           border-radius: 28px;
           background: #CC0C00;
+
           @media screen and (max-width: 769px) {
             align-items: center;
             align-content: flex-start;
             gap: 8px;
             border-radius: 28px;
-            background: #CC0C00; 
+            background: #CC0C00;
             flex-wrap: wrap;
           }
         }
       }
+
       .recordContainer {
         display: flex;
         padding: 10px;
@@ -60,10 +70,43 @@
         border: 1px solid #CFD8DC;
         background: #FFF;
         flex-wrap: wrap;
+
+        @media screen and (max-width: 769px) {
+          display: none
+        }
+
         .item {
           padding-right: 20px;
           text-align: left;
           flex-wrap: wrap;
+        }
+      }
+
+      .recordContainerMobile {
+        display: none;
+        border: 1px solid #CFD8DC;
+        padding: 20px;
+
+        @media screen and (max-width: 769px) {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+          align-self: stretch;
+        }
+
+        .item {
+          display: flex;
+          gap: 24px;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: space-between;
+          width: 100%;
+
+          .cell {
+            width: 50%;
+            text-align: left;
+          }
         }
       }
     }
@@ -91,5 +134,3 @@
   text-align: center;
   width: 300px;
 }
-
-
