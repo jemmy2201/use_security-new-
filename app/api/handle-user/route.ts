@@ -1,25 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
+import { getEncryptedNricFromSession } from "../../../lib/session";
 
 const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { nric, mobileno, email } = body;
+        const { mobileno, email } = body;
+        const encryptedNric = await getEncryptedNricFromSession();
 
-        if (!nric || !mobileno || !email) {
+        if (!encryptedNric || !mobileno || !email) {
             return NextResponse.json(
                 { error: 'nric / fin, mobile, and email are required' },
                 { status: 400 }
             );
         }
 
-        const appType = '1';
-        const statusApp = '0';
-
         const userRecord = await prisma.users.findFirst({
             where: {
-                ...(nric && { nric: nric }), // Conditionally adds the `nric` filter if `nric` is provided
+                ...(encryptedNric && { nric: encryptedNric }), 
             },
         });
 

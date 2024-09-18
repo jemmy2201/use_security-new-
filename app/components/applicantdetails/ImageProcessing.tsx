@@ -186,8 +186,6 @@ const ImageProcessing = () => {
     try {
       const response = await axios.post('/api/handle-app-dtl-image', {
         image,
-        nric,
-        applicationType,
       });
 
       console.log('API Response:', response.data);

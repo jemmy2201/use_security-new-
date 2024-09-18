@@ -1,46 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
+import { getEncryptedNricFromSession } from "../../../../lib/session";
 
 const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { nric, applicationType } = body;
-        console.log('applicationType:', applicationType);
-        console.log('encrypted nric:', nric);
-        let appType = '';
-        if (applicationType === 'SO') {
-            appType = '1';  
-        }
-        if (applicationType === 'PI') {
-            appType = '2';  
-        }
+        const { bookindId } = body;
+        const encryptedNric = await getEncryptedNricFromSession();
+        console.log('applicationType:', bookindId);
+        console.log('encrypted nric:', encryptedNric);
 
-        console.log('appType:', appType);
-
-        // Validate required fields
-        if (!nric || !appType) {
+        if (!encryptedNric || !bookindId) {
             return NextResponse.json(
-                { error: 'nric / fin, application type are required' },
+                { error: 'nric / fin, bookindId are required' },
                 { status: 400 }
             );
         }
 
-        const statusApp = '0';
-        console.log('appType:', appType);
         const schedule = await prisma.booking_schedules.findFirst({
             where: {
-                ...(nric && { nric }),  
-                app_type: appType, 
+                ...(encryptedNric && { nric: encryptedNric }),
+                id: bookindId,
                 AND: [
                     {
-                      OR: [
-                        { Status_app: '0' },
-                        { Status_app: null },
-                        { Status_app: '' }
-                      ]
+                        OR: [
+                            { Status_app: '0' },
+                            { Status_app: null },
+                            { Status_app: '' }
+                        ]
                     }
-                  ],
+                ],
             },
         });
 
@@ -60,13 +50,11 @@ export async function POST(req: NextRequest) {
                 }
                 return serialized;
             };
-            // If a schedule is found, update it
+
             const currentDate = formatDateToDDMMYYYY(new Date());
             const updatedSchedule = await prisma.booking_schedules.update({
-                where: { id: schedule.id }, // Using the unique identifier for update
+                where: { id: schedule.id },
                 data: {
-                    Status_app: statusApp,
-                    Status_draft: statusApp,
                     declaration_date: currentDate,
                 },
             });

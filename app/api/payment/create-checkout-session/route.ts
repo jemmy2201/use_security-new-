@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { PrismaClient } from '@prisma/client';
+import { getEncryptedNricFromSession } from '../../../../lib/session';
 
 const prisma = new PrismaClient();
 
@@ -19,34 +20,27 @@ const stripe = new Stripe(getStripeKey(), {
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  const { nric, applicationType, bookingId } = body;
-  console.log('applicationType:', applicationType);
-  console.log('encrypted nric:', nric);
-  let appType = '';
-  if (applicationType === 'SO') {
-    appType = '1';
-  }
-  if (applicationType === 'PI') {
-    appType = '2';
-  }
+  const { bookingId } = body;
+  const encryptedNric = await getEncryptedNricFromSession();
+  console.log('bookingId:', bookingId);
+  console.log('encrypted nric:', encryptedNric);
 
-  console.log('appType:', appType);
+
 
   // Validate required fields
-  if (!nric || !appType) {
+  if (!encryptedNric || !bookingId) {
     return NextResponse.json(
-      { error: 'nric / fin, application type are required' },
+      { error: 'nric / fin, bookingId are required' },
       { status: 400 }
     );
   }
 
   try {
-    const statusApp = '0';
-    console.log('appType:', appType);
+
     const schedule = await prisma.booking_schedules.findFirst({
       where: {
-        ...(nric && { nric }),
-        app_type: appType,
+        ...(encryptedNric && { nric: encryptedNric }),
+        id: bookingId,
         AND: [
           {
             OR: [

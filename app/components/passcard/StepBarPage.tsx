@@ -132,10 +132,10 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({actionType}) => {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            nric: formData.nric,
                             appointmentDate: formData.appointmentDate,
                             timeSlot: formData.timeSlot,
                             applicationType: formData.applicationType,
+                            bookingId: formData.id,
                         }),
                     });
 
@@ -333,7 +333,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({actionType}) => {
 
         if (activeStep == 2) {
             try {
-                const response = await fetch('/api/handle-review-details', {
+                const response = await fetch('/api/handle-review-details/new', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

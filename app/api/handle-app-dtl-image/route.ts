@@ -2,30 +2,21 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { PrismaClient } from '@prisma/client';
+import { getEncryptedNricFromSession } from '../../../lib/session';
 
 const prisma = new PrismaClient();
 
 type ImageRequestBody = {
   image: string;
-  nric: string;
-  applicationType: string;
 };
 
 export async function POST(req: NextRequest) {
   try {
-    const { image, nric, applicationType }: ImageRequestBody = await req.json();
-    console.log('applicationType:', applicationType);
+    const { image }: ImageRequestBody = await req.json();
+    const encryptedNric = await getEncryptedNricFromSession();
     // Validate input
-    if (!image || applicationType === undefined || nric === undefined) {
+    if (!image || !encryptedNric) {
       return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });
-    }
-
-    let appType = '';
-    if (applicationType == 'SO') {
-      appType = '1';
-    }
-    if (applicationType == 'PI') {
-      appType = '2';
     }
 
     // Save image to the server (if needed)
@@ -40,8 +31,7 @@ export async function POST(req: NextRequest) {
 
     const schedule = await prisma.booking_schedules.findFirst({
       where: {
-        ...(nric && { nric }),  // Conditionally adds the `nric` filter if `nric` is provided
-        app_type: appType,       // Fixed filter for app_type
+        ...(encryptedNric && { nric: encryptedNric }),  
         AND: [
           {
             OR: [
@@ -56,7 +46,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (schedule) {
-      const fileName = schedule?.passid + nric.slice(-4);
+      const fileName = schedule?.passid + encryptedNric.slice(-4);
       console.log('file name:', fileName);
       const filePath = path.join(uploadsDir, fileName + '.png');
       fs.writeFileSync(filePath, buffer);

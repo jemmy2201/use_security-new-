@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
+import { getEncryptedNricFromSession } from "../../../lib/session";
 
 const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         const { bookingId, appointmentDate, timeSlot } = body;
-        console.log('bookingId:', bookingId);
+        const encryptedNric = await getEncryptedNricFromSession();
+        console.log('bookingId:encryptedNric', bookingId, encryptedNric);
         console.log('appointmentDate:timeSlot', appointmentDate, timeSlot);
         const [startTime, endTime] = timeSlot.split(" - ");
         // Validate required fields
@@ -19,6 +21,7 @@ export async function POST(req: NextRequest) {
 
         const schedule = await prisma.booking_schedules.findFirst({
             where: {
+                ...(encryptedNric && { nric: encryptedNric }),
                 id:bookingId       
             },
         });
@@ -47,7 +50,7 @@ export async function POST(req: NextRequest) {
                     time_end_appointment: endTime
                 },
             });
-            //console.log('Schedule updated:', updatedSchedule);
+
             const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
             return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });
 

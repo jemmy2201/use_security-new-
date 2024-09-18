@@ -1,23 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
+import { getEncryptedNricFromSession } from "../../../lib/session";
 
 const prisma = new PrismaClient();
+
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { nric, appointmentDate, timeSlot, applicationType } = body;
-        console.log('appointmentDate:nric', appointmentDate, nric);
-        console.log('timeSlot:applicationType', timeSlot, applicationType);
-        let appType = '';
-        if (applicationType === 'SO') {
-            appType = '1';  // Or use `1` without quotes if a number is expected
-        }
-        if (applicationType === 'PI') {
-            appType = '2';  // Or use `1` without quotes if a number is expected
-        }
+        const { appointmentDate, timeSlot, bookingId } = body;
+        const encryptedNric = await getEncryptedNricFromSession();
+        console.log('bookingId:encryptedNric', bookingId, encryptedNric);
+        console.log('timeSlot:appointmentDate', timeSlot, appointmentDate);
+
         const [startTime, endTime] = timeSlot.split(" - ");
         // Validate required fields
-        if (!nric || !appointmentDate) {
+        if (!encryptedNric || !appointmentDate) {
             return NextResponse.json(
                 { error: 'nric / fin, appointment date are required' },
                 { status: 400 }
@@ -26,8 +23,8 @@ export async function POST(req: NextRequest) {
 
         const schedule = await prisma.booking_schedules.findFirst({
             where: {
-                ...(nric && { nric }),
-                app_type: appType,
+                ...(encryptedNric && { nric: encryptedNric }),
+                id: bookingId,
                 AND: [
                     {
                         OR: [

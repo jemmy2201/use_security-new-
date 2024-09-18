@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     const schedules = await prisma.booking_schedules.findUnique({
       where: {
         id: bookingId,
-      } as any, // Use this only if you are sure about the type
+      } as any, 
     });
 
     console.log('schedules', schedules);
