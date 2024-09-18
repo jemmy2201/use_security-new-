@@ -4,21 +4,24 @@ import React from 'react';
 import styleBarModule from './StepBar.module.css';
 import { useFormContext } from '.././FormContext';
 import globalStyleCss from '../globalstyle/Global.module.css';
+import { useEffect, useState } from 'react';
 
 // Define the type for the step content
 interface Step {
     content: JSX.Element;
-    label: string; // Label can contain both step number and text
+    label: string;
 }
 
 // Define the props type for StepBar
 interface StepBarProps {
+    actionType: string;
     steps: Step[];
     activeStep: number; // Add activeStep to props
 }
 
-const StepBar: React.FC<StepBarProps> = ({ steps, activeStep }) => {
+const StepBar: React.FC<StepBarProps> = ({ actionType, steps, activeStep }) => {
 
+    console.log('StepBar: Action Type:', actionType);
     const { formData, setFormData } = useFormContext();
 
     return (
@@ -26,12 +29,48 @@ const StepBar: React.FC<StepBarProps> = ({ steps, activeStep }) => {
         <div className={styleBarModule.bodyContainer}>
             <div className={styleBarModule.headerContainer}>
                 <div className={styleBarModule.pageHeading}>
-                    {formData.applicationType == 'SO' ? (
+                    {formData.applicationType == '1' && formData.cardId == '1' ? (
                         <>
                             <div className={globalStyleCss.header1}>Apply for new pass card:</div>
                             <div className={globalStyleCss.header1}>Security Officer (SO)/Aviation Security Officer (AVSO)</div>
                         </>
-                    ) : <> <div className={globalStyleCss.header1}>Apply for new pass card: <br></br> Personal Investigator (PI) </div></>}
+                    ) : <> </>}
+
+                    {formData.applicationType == '2' && formData.cardId == '1' ? (
+                        <>
+                            <div className={globalStyleCss.header1}>Replace pass card:</div>
+                            <div className={globalStyleCss.header1}>Security Officer (SO)/Aviation Security Officer (AVSO)</div>
+                        </>
+                    ) : <> </>}
+
+                    {formData.applicationType == '3' && formData.cardId == '1' ? (
+                        <>
+                            <div className={globalStyleCss.header1}>Renew pass card:</div>
+                            <div className={globalStyleCss.header1}>Security Officer (SO)/Aviation Security Officer (AVSO)</div>
+                        </>
+                    ) : <> </>}
+
+
+                    {formData.applicationType == '1' && formData.cardId == '2' ? (
+                        <>
+                            <div className={globalStyleCss.header1}>Apply for new pass card:</div>
+                            <div className={globalStyleCss.header1}>Personal Investigator (PI)</div>
+                        </>
+                    ) : <> </>}
+
+                    {formData.applicationType == '2' && formData.cardId == '2' ? (
+                        <>
+                            <div className={globalStyleCss.header1}>Replace pass card:</div>
+                            <div className={globalStyleCss.header1}>Personal Investigator (PI)</div>
+                        </>
+                    ) : <> </>}
+
+                    {formData.applicationType == '3' && formData.cardId == '2' ? (
+                        <>
+                            <div className={globalStyleCss.header1}>Renew pass card:</div>
+                            <div className={globalStyleCss.header1}>Personal Investigator (PI)</div>
+                        </>
+                    ) : <> </>}
 
                 </div>
                 <div className={styleBarModule.menuBar}>

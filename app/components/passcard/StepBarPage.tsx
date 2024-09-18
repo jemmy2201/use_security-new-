@@ -20,6 +20,10 @@ import { loadStripe } from '@stripe/stripe-js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+interface ActionTypeProps {
+    actionType: string;
+  }
+
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 
@@ -34,8 +38,9 @@ const steps = [
 
 
 
-const StepBarHomePage: React.FC = () => {
+const StepBarHomePage: React.FC<ActionTypeProps> = ({actionType}) => {
 
+    console.log('StepBarHomePage: Action Type', actionType);
     const [activeStep, setActiveStep] = useState<number>(0);
     const { formData, setFormData } = useFormContext();
     const [isOtpPopupOpen, setIsOtpPopupOpen] = useState<boolean>(false); // State for OTP popup
@@ -325,7 +330,7 @@ const StepBarHomePage: React.FC = () => {
         <div>
             <HeaderPageLink></HeaderPageLink>
             <main>
-                <StepBar steps={steps} activeStep={activeStep} />
+                <StepBar actionType={actionType} steps={steps} activeStep={activeStep} />
             </main>
             <Footer
                 onNext={handleNext}

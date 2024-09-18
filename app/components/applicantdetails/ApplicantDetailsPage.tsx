@@ -89,6 +89,7 @@ const ApplicantDetailsPage: React.FC = () => {
 
     useEffect(() => {
         // Set the selected option from formData if available
+        console.log('ApplicantDetailsPage: Action Type', formData.actionType);
         if (formData.applicationType) {
             setSelectedOption(formData.applicationType);
             console.log('form data', formData);

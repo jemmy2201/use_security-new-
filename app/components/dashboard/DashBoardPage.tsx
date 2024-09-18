@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dashBoardContentstyles from './DashBoardContent.module.css';
-import { booking_schedules as bookingDetail } from '@prisma/client';
+import { booking_schedules, booking_schedules as bookingDetail } from '@prisma/client';
 import { users as users } from '@prisma/client';
 import { NEW, REPLACEMENT, RENEWAL } from '../../constant/constant';
 import { SO_APP, AVSO_APP, PI_APP } from '../../constant/constant';
@@ -136,13 +136,14 @@ const DashBoardPage: React.FC = () => {
             if (!responseBookingSchedule.ok) {
                 throw new Error('Network response was not ok');
             }
-            const dataBookingSchedule: users = await responseBookingSchedule.json();
+            const dataBookingSchedule: booking_schedules = await responseBookingSchedule.json();
             sessionStorage.setItem('bookingSchedule', JSON.stringify(dataBookingSchedule));
+            sessionStorage.setItem('actionTypeValue', 'Edit');
             // Process the data or store it in state/context
             console.log('booking data from api', dataBookingSchedule);
 
             // Navigate to the dashboard with query parameters or state
-            router.push('/passcard');
+            router.push('/passcard?actionType=Edit');
 
         } catch (err) {
             setError('Failed to fetch user details');
@@ -165,6 +166,15 @@ const DashBoardPage: React.FC = () => {
             setLoading(false);
         }
     };
+
+    const handleDeletePasscardClick = async (id: bigint) => {
+
+        console.log('id', id);
+        const bookingId = id.toString(); // Correctly call the toString method
+        console.log('bookingId', bookingId);
+    };
+
+
 
     const handleResubmitPhotoClick = async (id: bigint) => {
         setLoading(true);
@@ -227,7 +237,28 @@ const DashBoardPage: React.FC = () => {
         setError(null);
         console.log('id', id);
         try {
+            const response = await fetch('/api/myinfo');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data: users = await response.json();
+            sessionStorage.setItem('users', JSON.stringify(data));
+            // Process the data or store it in state/context
+            console.log('data from api', data);
 
+            const bookingId = id.toString(); // Replace with your actual bookingId
+            const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
+
+            if (!responseBookingSchedule.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const dataBookingSchedule: booking_schedules = await responseBookingSchedule.json();
+            sessionStorage.setItem('bookingSchedule', JSON.stringify(dataBookingSchedule));
+            // Process the data or store it in state/context
+            console.log('booking data from api', dataBookingSchedule);
+            sessionStorage.setItem('actionTypeValue', 'Renew');
+            // Navigate to the dashboard with query parameters or state
+            router.push('/passcard?actionType=Renew');
 
         } catch (err) {
             setError('Failed to fetch user details');
@@ -241,7 +272,28 @@ const DashBoardPage: React.FC = () => {
         setError(null);
         console.log('id', id);
         try {
+            const response = await fetch('/api/myinfo');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data: users = await response.json();
+            sessionStorage.setItem('users', JSON.stringify(data));
+            // Process the data or store it in state/context
+            console.log('data from api', data);
 
+            const bookingId = id.toString(); // Replace with your actual bookingId
+            const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
+
+            if (!responseBookingSchedule.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const dataBookingSchedule: booking_schedules = await responseBookingSchedule.json();
+            sessionStorage.setItem('bookingSchedule', JSON.stringify(dataBookingSchedule));
+            // Process the data or store it in state/context
+            console.log('booking data from api', dataBookingSchedule);
+            sessionStorage.setItem('actionTypeValue', 'Replace');
+            // Navigate to the dashboard with query parameters or state
+            router.push('/passcard?actionType=Replace');
 
         } catch (err) {
             setError('Failed to fetch user details');
@@ -326,12 +378,12 @@ const DashBoardPage: React.FC = () => {
                             </thead>
                             <tbody>
                                 {bookingSchedules.map((booking) => (
-                                    <tr className={globalStyleCss.regular}>
-                                        <td className={dashBoardContentstyles.item} key={booking.app_type}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
-                                        <td className={dashBoardContentstyles.item} key={booking.card_id}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
-                                        <td className={dashBoardContentstyles.item} key={booking.grade_id}>{booking.grade_id}</td>
-                                        <td className={dashBoardContentstyles.item} key={booking.trans_date}>{booking.appointment_date}</td>
-                                        <td className={dashBoardContentstyles.item} key={booking.Status_app}>{statusTypeMap[booking.Status_app || ''] || 'Unknown'}</td>
+                                    <tr key={booking.id} className={globalStyleCss.regular}>
+                                        <td className={dashBoardContentstyles.item}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
+                                        <td className={dashBoardContentstyles.item}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
+                                        <td className={dashBoardContentstyles.item}>{booking.grade_id}</td>
+                                        <td className={dashBoardContentstyles.item}>{booking.appointment_date}</td>
+                                        <td className={dashBoardContentstyles.item}>{statusTypeMap[booking.Status_app || ''] || 'Unknown'}</td>
                                         <td className={dashBoardContentstyles.item}>
                                             {booking.Status_app == '0' ? (
                                                 <>
@@ -342,13 +394,13 @@ const DashBoardPage: React.FC = () => {
                                                             handleEditPasscardClick(booking.id);
                                                         }}
                                                         className={globalStyleCss.blueLink}>
-                                                        Continue
+                                                        Continue &nbsp;
                                                     </a>
                                                     <a
                                                         href="/edit"
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            handleNewPasscardClick();
+                                                            handleDeletePasscardClick(booking.id);
                                                         }}
                                                         className={globalStyleCss.blueLink}>
                                                         Delete
@@ -470,7 +522,7 @@ const DashBoardPage: React.FC = () => {
 
 
                     {bookingSchedules.map((booking) => (
-                        <div className={dashBoardContentstyles.recordContainerMobile}>
+                        <div key={booking.id} className={dashBoardContentstyles.recordContainerMobile}>
                             <div className={dashBoardContentstyles.item}>
                                 <div className={dashBoardContentstyles.cell}>
                                     <div className={globalStyleCss.regularBold}>
@@ -553,13 +605,13 @@ const DashBoardPage: React.FC = () => {
                                                         handleEditPasscardClick(booking.id);
                                                     }}
                                                     className={globalStyleCss.blueLink}>
-                                                    Continue
+                                                    Continue <br></br>
                                                 </a>
                                                 <a
                                                     href="/edit"
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        handleNewPasscardClick();
+                                                        handleDeletePasscardClick(booking.id);
                                                     }}
                                                     className={globalStyleCss.blueLink}>
                                                     Delete
@@ -580,7 +632,7 @@ const DashBoardPage: React.FC = () => {
                                                         handleViewReceiptClick(booking.id);
                                                     }}
                                                     className={globalStyleCss.blueLink}>
-                                                    View Receipt &nbsp;
+                                                    View Receipt <br></br>
                                                 </a>
                                                 <a
                                                     href="/edit"
@@ -604,7 +656,7 @@ const DashBoardPage: React.FC = () => {
                                                         handleViewReceiptClick(booking.id);
                                                     }}
                                                     className={globalStyleCss.blueLink}>
-                                                    View Receipt &nbsp;
+                                                    View Receipt <br></br>
                                                 </a>
                                                 <a
                                                     href="/edit"
@@ -650,7 +702,7 @@ const DashBoardPage: React.FC = () => {
                                                         handleUpdateClick(booking.id);
                                                     }}
                                                     className={globalStyleCss.blueLink}>
-                                                    Update<br></br>
+                                                    Update <br></br>
                                                 </a>
                                                 <a
                                                     href="/edit"

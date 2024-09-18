@@ -2,11 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { users as users } from '@prisma/client';
+import { booking_schedules, users as users } from '@prisma/client';
 import personalDetailsContentstyles from './PersonalDetailsContent.module.css';
 import { useFormContext } from '.././FormContext';
 import 'react-toastify/dist/ReactToastify.css';
 import globalStyleCss from '../globalstyle/Global.module.css';
+import { Console } from 'console';
 
 export interface createNewPassApiResponse {
     errorCode?: string;
@@ -38,29 +39,68 @@ const PersonalDetailsPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        console.log('PersonalDetailsPage: Action Type ', formData.actionType);
         if (!formData.email && !formData.mobileno) {
             const storedData = sessionStorage.getItem('users');
             if (storedData) {
                 try {
+
+                    const actionTypeValue = sessionStorage.getItem('actionTypeValue');
+                    console.log('Action type value:', typeof actionTypeValue);
                     const parsedData: users = JSON.parse(storedData);
                     setUsers(parsedData);
-                    // Initialize formData only if it's empty
-
-                    const storedNewPassResponseData = sessionStorage.getItem('createNewPassApiResponse');
-                    if (storedNewPassResponseData) {
-                        const parsedNewPassData: createNewPassApiResponse = JSON.parse(storedNewPassResponseData);
-                        setFormData({
-                            email: parsedData?.email ?? '',
-                            originalMobileno: parsedData?.mobileno ?? '',
-                            mobileno: parsedData?.mobileno ?? '',
-                            name: parsedData?.name ?? '',
-                            nric: parsedData?.nric ?? '',
-                            nricText: 'SXXXXXXXA',
-                            applicationType: parsedNewPassData.canCreateSoApplication ? 'SO' : 'PI',
-                            passId: parsedNewPassData.passId,
-                            id: parsedNewPassData.recordId,
-                        });
+                    if (!!actionTypeValue && (actionTypeValue === 'Edit' || actionTypeValue === 'Replace' || actionTypeValue === 'Renew')) {
+                        const storedBookingSchedule = sessionStorage.getItem('bookingSchedule');
+                        console.log('storedBookingSchedule:', storedBookingSchedule);
+                        if (storedBookingSchedule) {
+                            const parsedBookingSchedule: booking_schedules = JSON.parse(storedBookingSchedule);
+                            console.log('parsedBookingSchedule:', parsedBookingSchedule);
+                            
+                            let appType = '';
+                            if(actionTypeValue == 'Edit'){
+                                appType='1';
+                            }
+                            if(actionTypeValue == 'Replace'){
+                                appType='2';
+                            }
+                            if(actionTypeValue == 'Renew'){
+                                appType='3';
+                            }
+                            
+                            setFormData({
+                                email: parsedData?.email ?? '',
+                                originalMobileno: parsedData?.mobileno ?? '',
+                                mobileno: parsedData?.mobileno ?? '',
+                                name: parsedData?.name ?? '',
+                                nric: parsedData?.nric ?? '',
+                                nricText: 'SXXXXXXXA',
+                                applicationType: appType,
+                                passId: parsedBookingSchedule.passid,
+                                bookingId: parsedBookingSchedule.id,
+                                id: parsedBookingSchedule.id.toString(),
+                                actionType: actionTypeValue,
+                                cardId: parsedBookingSchedule.card_id ? parsedBookingSchedule.card_id : '',
+                            });
+                        }
+                    } else {
+                        const storedNewPassResponseData = sessionStorage.getItem('createNewPassApiResponse');
+                        if (storedNewPassResponseData) {
+                            const parsedNewPassData: createNewPassApiResponse = JSON.parse(storedNewPassResponseData);
+                            setFormData({
+                                email: parsedData?.email ?? '',
+                                originalMobileno: parsedData?.mobileno ?? '',
+                                mobileno: parsedData?.mobileno ?? '',
+                                name: parsedData?.name ?? '',
+                                nric: parsedData?.nric ?? '',
+                                nricText: 'SXXXXXXXA',
+                                passId: parsedNewPassData.passId,
+                                id: parsedNewPassData.recordId,
+                                actionType: actionTypeValue ? actionTypeValue : '',
+                                applicationType: '1'
+                            });
+                        }
                     }
+
 
                     console.log('Parsed data:', parsedData);
 
