@@ -5,13 +5,13 @@ export const THREE_YEARS = 3;
 
 // applicationTypes
 export const NEW = "1";
-export const REPLACEMENT = "2";
-export const RENEWAL = "3";
+export const RENEWAL = "2";
+export const REPLACEMENT = "3";
 
 // cardTypes
 export const SO_APP = 1;
-export const AVSO_APP = 2;
-export const PI_APP = 3;
+export const PI_APP = 2;
+export const AVSO_APP = 3;
 
 
 // status_app

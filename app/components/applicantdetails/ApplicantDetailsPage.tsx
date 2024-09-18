@@ -115,7 +115,6 @@ const ApplicantDetailsPage: React.FC = () => {
                 // Initialize formData only if it's empty
                 setFormData(prevFormData => ({
                     ...prevFormData,
-                    applicationType: parsedBookingData.app_type == '1' ? 'SO' : '',
                     trAvso: parsedBookingData.TR_AVSO || false,
                     trCctc: parsedBookingData.TR_CCTC || false,
                     trCsspb: parsedBookingData.TR_CSSPB || false,

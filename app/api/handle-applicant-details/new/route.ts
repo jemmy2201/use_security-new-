@@ -1,33 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
+import { getEncryptedNricFromSession } from "../../../../lib/session";
 
 const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
+        console.log('handle-applicant-details, new');
         const body = await req.json();
-        const { nric, applicationType, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso } = body;
+        const { bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso } = body;
         console.log('applicationType:', applicationType);
-        console.log('encrypted nric:', nric);
-        let appType = '';
-        if (applicationType === 'SO') {
-            appType = '1';  // Or use `1` without quotes if a number is expected
-        }
-        console.log('appType:', appType);
+        console.log('cardId:', cardId);
+
+        const encryptedNric = await getEncryptedNricFromSession();
+        console.log('encrypted nric:', encryptedNric);
+
 
         // Validate required fields
-        if (!nric || !appType) {
+        if (!encryptedNric || !applicationType || !cardId) {
             return NextResponse.json(
-                { error: 'nric / fin, application type are required' },
+                { error: 'nric / fin, cardId and application type are required' },
                 { status: 400 }
             );
         }
 
-        const statusApp = '0';
-        console.log('appType:', appType);
         const schedule = await prisma.booking_schedules.findFirst({
             where: {
-                ...(nric && { nric }),
-                app_type: appType,
+                ...(encryptedNric && { nric: encryptedNric }),
+                card_id: cardId,
+                id: bookingId,
                 AND: [
                     {
                         OR: [
@@ -37,6 +37,9 @@ export async function POST(req: NextRequest) {
                         ]
                     }
                 ],
+            },
+            orderBy: {
+                id: 'desc',
             },
         });
 
@@ -60,9 +63,8 @@ export async function POST(req: NextRequest) {
             const updatedSchedule = await prisma.booking_schedules.update({
                 where: { id: schedule.id }, // Using the unique identifier for update
                 data: {
-                    app_type: appType,
-                    Status_app: statusApp,
-                    Status_draft: statusApp,
+                    Status_app: '0',
+                    Status_draft: '0',
                     TR_AVSO: trAvso,
                     TR_CCTC: trCctc,
                     TR_CSSPB: trCsspb,

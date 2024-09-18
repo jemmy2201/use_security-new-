@@ -24,8 +24,8 @@ export async function GET(req: NextRequest) {
     }
     try {
         const session = await stripe.checkout.sessions.retrieve(session_id);
-        console.log('String session id:', session_id);
-        console.log('String session:', session);
+        //console.log('String session id:', session_id);
+        //console.log('String session:', session);
 
         const schedule = await prisma.booking_schedules.findFirst({
             where: { stripe_session_id: session.id },

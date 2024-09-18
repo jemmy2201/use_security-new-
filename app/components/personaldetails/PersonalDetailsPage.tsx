@@ -60,10 +60,10 @@ const PersonalDetailsPage: React.FC = () => {
                             if(actionTypeValue == 'Edit'){
                                 appType='1';
                             }
-                            if(actionTypeValue == 'Replace'){
+                            if(actionTypeValue == 'Renew'){
                                 appType='2';
                             }
-                            if(actionTypeValue == 'Renew'){
+                            if(actionTypeValue == 'Replace'){
                                 appType='3';
                             }
                             

@@ -19,7 +19,7 @@ export const POST = async (req: NextRequest) => {
   let event;
 
   try {
-    const body = await req.text(); // Get raw body for verification
+    const body = await req.text(); 
     event = stripe.webhooks.constructEvent(
       body,
       sig,
@@ -33,17 +33,14 @@ export const POST = async (req: NextRequest) => {
   // Handle the event type
   switch (event.type) {
     case 'payment_intent.succeeded':
-      // Handle successful payment event
       console.log('Payment succeeded');
       break;
     case 'payment_intent.payment_failed':
-      // Handle failed payment event
       console.log('Payment failed');
       break;
     default:
       console.log(`Unhandled event type: ${event.type}`);
   }
 
-  // Return a response to acknowledge receipt of the event
   return NextResponse.json({ received: true }, { status: 200 });
 };
