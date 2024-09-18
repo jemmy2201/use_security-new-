@@ -15,7 +15,6 @@ import OtpPopup from './OtpPopup';
 import FooterPageLink from '../footer/FooterPage'
 import HeaderPageLink from '../header/HeaderPage'
 import { useFormContext } from '.././FormContext';
-import stepBarModuleStyle from './StepBar.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import { ToastContainer, toast } from 'react-toastify';

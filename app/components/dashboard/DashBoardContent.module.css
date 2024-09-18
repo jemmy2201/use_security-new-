@@ -29,7 +29,8 @@
       align-items: flex-start;
       background: #FFF;
       flex-wrap: wrap;
-      width:90%;
+      width: 90%;
+
       .headerBox {
         display: flex;
         justify-content: space-between;
@@ -37,11 +38,13 @@
         align-self: stretch;
         padding-bottom: 20px;
         flex-wrap: wrap;
+
         @media screen and (max-width: 769px) {
           display: flex;
           gap: 20px;
           align-items: center;
         }
+
         .primaryButton {
           padding: 16px 24px;
           align-items: flex-left;

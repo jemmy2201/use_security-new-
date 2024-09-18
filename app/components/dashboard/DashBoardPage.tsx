@@ -211,9 +211,10 @@ const DashBoardPage: React.FC = () => {
         setLoading(true);
         setError(null);
         console.log('id', id);
+        const bookingId = id.toString(); // Correctly call the toString method
+        console.log('bookingId', bookingId);
         try {
-
-
+            router.push(`/updatedetails?bookingId=${encodeURIComponent(bookingId)}`);
         } catch (err) {
             setError('Failed to fetch user details');
         } finally {
@@ -438,7 +439,7 @@ const DashBoardPage: React.FC = () => {
                                                             handleUpdateClick(booking.id);
                                                         }}
                                                         className={globalStyleCss.blueLink}>
-                                                        Update
+                                                        Update &nbsp;
                                                     </a>
                                                     <a
                                                         href="/edit"
@@ -447,7 +448,7 @@ const DashBoardPage: React.FC = () => {
                                                             handleRenewClick(booking.id);
                                                         }}
                                                         className={globalStyleCss.blueLink}>
-                                                        Renew
+                                                        Renew &nbsp;
                                                     </a>
                                                     <a
                                                         href="/edit"
@@ -649,7 +650,7 @@ const DashBoardPage: React.FC = () => {
                                                         handleUpdateClick(booking.id);
                                                     }}
                                                     className={globalStyleCss.blueLink}>
-                                                    Update
+                                                    Update<br></br>
                                                 </a>
                                                 <a
                                                     href="/edit"
@@ -658,7 +659,7 @@ const DashBoardPage: React.FC = () => {
                                                         handleRenewClick(booking.id);
                                                     }}
                                                     className={globalStyleCss.blueLink}>
-                                                    Renew
+                                                    Renew <br></br>
                                                 </a>
                                                 <a
                                                     href="/edit"
