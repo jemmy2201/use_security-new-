@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { encryptDecrypt } from '../../utils/encryptDecrypt'
+import { getEncryptedNricFromSession } from '../../../lib/session';
 
 const prisma = new PrismaClient();
 
@@ -7,7 +8,8 @@ export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
     const bookingIdString = url.searchParams.get('bookingId');
-    console.log('get-booking-schedule, bookingIdString:', bookingIdString);
+    const encryptedNric = await getEncryptedNricFromSession();
+    console.log('get-booking-schedule, bookingIdString:encryptedNric', bookingIdString, encryptedNric);
     if(!bookingIdString){
       return new Response(JSON.stringify({ error: 'Booking Id reqquire' }), { status: 400 });
     }
@@ -15,6 +17,7 @@ export async function GET(request: Request) {
     const bookingId = BigInt(bookingIdString) as bigint;
     const schedules = await prisma.booking_schedules.findUnique({
       where: {
+        ...(encryptedNric && { nric: encryptedNric }),
         id: bookingId,
       } as any, 
     });

@@ -23,12 +23,14 @@ export async function POST(req: NextRequest) {
             where: {
                 ...(encryptedNric && { nric: encryptedNric }),
                 card_id: cardId,
+                app_type: applicationType,
                 id: bookingId,
                 AND: [
                     {
                         OR: [
                             { Status_app: '0' },
-                            { Status_app: '6' }
+                            { Status_app: '' },
+                            { Status_app: null }
                         ]
                     }
                 ],
@@ -66,7 +68,6 @@ export async function POST(req: NextRequest) {
                     TR_X_RAY: trXray,
                     Status_app: '0',
                     Status_draft: '0',
-                    app_type: '3',
                 },
             });
             console.log('Schedule updated:', updatedSchedule);

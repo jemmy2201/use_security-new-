@@ -22,7 +22,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 interface ActionTypeProps {
     actionType: string;
-  }
+}
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -38,7 +38,7 @@ const steps = [
 
 
 
-const StepBarHomePage: React.FC<ActionTypeProps> = ({actionType}) => {
+const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
 
     console.log('StepBarHomePage: Action Type', actionType);
     const [activeStep, setActiveStep] = useState<number>(0);
@@ -189,6 +189,189 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({actionType}) => {
         }
     };
 
+    const saveUserDetails = async () => {
+        try {
+            const response = await fetch('/api/handle-user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nric: formData.nric,
+                    mobileno: formData.mobileno,
+                    email: formData.email,
+                    actionType: actionType,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Personal Details: Failed to save draft');
+            }
+
+            const result = await response.json();
+            console.log("Personal Details: Draft saved successfully:", result);
+            console.log('showing toast message');
+            toast.success('Your draft has been saved', {
+                position: 'top-right',
+                autoClose: 10000,
+            });
+        } catch (error) {
+            console.error("Personal Details: Error saving draft:", error);
+        }
+    }
+
+    const saveApplicantDetails = async () => {
+        try {
+            console.log('application type: ', formData.applicationType);
+            console.log('saveReviewDetails booking id', formData.bookingId);
+            console.log('saveReviewDetails id', formData.id);
+            if (formData.applicationType == '1') {
+                const response = await fetch('/api/handle-applicant-details/new', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nric: formData.nric,
+                        bookingId: formData.id,
+                        applicationType: formData.applicationType,
+                        cardId: formData.cardId,
+                        trRtt: formData.trRtt ? 'YES' : '',
+                        trCsspb: formData.trCsspb ? 'YES' : '',
+                        trCctc: formData.trCctc ? 'YES' : '',
+                        trHcta: formData.trHcta ? 'YES' : '',
+                        trXray: formData.trXray ? 'YES' : '',
+                        trAvso: formData.trAvso ? 'YES' : '',
+                        actionType: actionType,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Applicant Details: Failed to save draft');
+                }
+                const result = await response.json();
+                console.log("Applicant Details: Draft saved successfully:", result);
+                toast.success('Your draft has been saved', {
+                    position: 'top-right',
+                    autoClose: 10000,
+                });
+            }
+
+            if (formData.applicationType == '2') {
+                const response = await fetch('/api/handle-applicant-details/replace', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nric: formData.nric,
+                        bookingId: formData.id,
+                        applicationType: formData.applicationType,
+                        cardId: formData.cardId,
+                        trRtt: formData.trRtt ? 'YES' : '',
+                        trCsspb: formData.trCsspb ? 'YES' : '',
+                        trCctc: formData.trCctc ? 'YES' : '',
+                        trHcta: formData.trHcta ? 'YES' : '',
+                        trXray: formData.trXray ? 'YES' : '',
+                        trAvso: formData.trAvso ? 'YES' : '',
+                        actionType: actionType,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Applicant Details: Failed to save draft');
+                }
+                const result = await response.json();
+                console.log("Applicant Details: Draft saved successfully:", result);
+                toast.success('Your draft has been saved', {
+                    position: 'top-right',
+                    autoClose: 10000,
+                });
+            }
+
+            if (formData.applicationType == '3') {
+                const response = await fetch('/api/handle-applicant-details/renew', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nric: formData.nric,
+                        bookingId: formData.id,
+                        applicationType: formData.applicationType,
+                        cardId: formData.cardId,
+                        trRtt: formData.trRtt ? 'YES' : '',
+                        trCsspb: formData.trCsspb ? 'YES' : '',
+                        trCctc: formData.trCctc ? 'YES' : '',
+                        trHcta: formData.trHcta ? 'YES' : '',
+                        trXray: formData.trXray ? 'YES' : '',
+                        trAvso: formData.trAvso ? 'YES' : '',
+                        actionType: actionType,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Applicant Details: Failed to save draft');
+                }
+                const result = await response.json();
+                console.log("Applicant Details: Draft saved successfully:", result);
+                toast.success('Your draft has been saved', {
+                    position: 'top-right',
+                    autoClose: 10000,
+                });
+            }
+
+        } catch (error) {
+            console.error("Applicant Details: Error saving draft:", error);
+        }
+    }
+
+    const saveReviewDetails = async () => {
+        try {
+            console.log('saveReviewDetails', formData.bookingId);
+            const response = await fetch('/api/handle-review-details/new', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    bookingId: formData.bookingId,
+                    actionType: actionType,
+                    applicationType: formData.applicationType,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Applicant Details: Failed to save draft');
+            }
+            const result = await response.json();
+            console.log("Review Details: Draft saved successfully:", result);
+            toast.success('Your draft has been saved', {
+                position: 'top-right',
+                autoClose: 10000,
+            });
+        } catch (error) {
+            console.error("Review Details: Error saving draft:", error);
+        }
+    }
+
+    const handleSaveDraft = async () => {
+        if (activeStep == 0) {
+            saveUserDetails();
+        }
+
+        if (activeStep == 1) {
+            await saveUserDetails();
+            await saveApplicantDetails();
+        }
+
+        if (activeStep == 2) {
+            await saveUserDetails();
+            await saveApplicantDetails();
+            await saveReviewDetails();
+        }
+    };
+
     const handleCheckout = async () => {
         setLoading(true);
         try {
@@ -208,7 +391,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({actionType}) => {
             const stripe = await stripePromise;
 
             if (stripe) {
-                // Redirect to Stripe Checkout
                 const { error } = await stripe.redirectToCheckout({ sessionId });
                 if (!error) {
                     // Optionally, handle success callback if needed after redirection
@@ -228,141 +410,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({actionType}) => {
             setActiveStep(prevStep => prevStep - 1);
         }
     };
-
-    const handleSaveDraft = async () => {
-        if (activeStep == 0) {
-            try {
-                const response = await fetch('/api/handle-user', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        nric: formData.nric,
-                        mobileno: formData.mobileno,
-                        email: formData.email,
-                        actionType: actionType,
-                    }),
-                });
-
-                if (!response.ok) {
-                    throw new Error('Personal Details: Failed to save draft');
-                }
-
-                const result = await response.json();
-                console.log("Personal Details: Draft saved successfully:", result);
-                console.log('showing toast message');
-                toast.success('Your draft has been saved', {
-                    position: 'top-right', 
-                    autoClose: 10000, 
-                  });
-            } catch (error) {
-                console.error("Personal Details: Error saving draft:", error);
-            }
-        }
-
-        if (activeStep == 1) {
-            try {
-
-                console.log('application type: ', formData.applicationType);
-                if(formData.applicationType == '1'){
-                    const response = await fetch('/api/handle-applicant-details/new', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            nric: formData.nric,
-                            bookingId: formData.id,
-                            applicationType: formData.applicationType,
-                            cardId: formData.cardId,
-                            trRtt: formData.trRtt ? 'YES' : '',
-                            trCsspb: formData.trCsspb ? 'YES' : '',
-                            trCctc: formData.trCctc ? 'YES' : '',
-                            trHcta: formData.trHcta ? 'YES' : '',
-                            trXray: formData.trXray ? 'YES' : '',
-                            trAvso: formData.trAvso ? 'YES' : '',
-                            actionType: actionType,
-                        }),
-                    });
-    
-                    if (!response.ok) {
-                        throw new Error('Applicant Details: Failed to save draft');
-                    }
-                    const result = await response.json();
-                    console.log("Applicant Details: Draft saved successfully:", result);
-                    toast.success('Your draft has been saved', {
-                        position: 'top-right', 
-                        autoClose: 10000, 
-                      });
-                }
-
-                if(formData.applicationType == '3'){
-                    const response = await fetch('/api/handle-applicant-details/replace', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            nric: formData.nric,
-                            bookingId: formData.id,
-                            applicationType: formData.applicationType,
-                            cardId: formData.cardId,
-                            trRtt: formData.trRtt ? 'YES' : '',
-                            trCsspb: formData.trCsspb ? 'YES' : '',
-                            trCctc: formData.trCctc ? 'YES' : '',
-                            trHcta: formData.trHcta ? 'YES' : '',
-                            trXray: formData.trXray ? 'YES' : '',
-                            trAvso: formData.trAvso ? 'YES' : '',
-                            actionType: actionType,
-                        }),
-                    });
-    
-                    if (!response.ok) {
-                        throw new Error('Applicant Details: Failed to save draft');
-                    }
-                    const result = await response.json();
-                    console.log("Applicant Details: Draft saved successfully:", result);
-                    toast.success('Your draft has been saved', {
-                        position: 'top-right', 
-                        autoClose: 10000, 
-                      });
-                }
-                
-            } catch (error) {
-                console.error("Applicant Details: Error saving draft:", error);
-            }
-        }
-
-        if (activeStep == 2) {
-            try {
-                const response = await fetch('/api/handle-review-details/new', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        nric: formData.nric,
-                        applicationType: formData.applicationType,
-                        actionType: actionType,
-                    }),
-                });
-
-                if (!response.ok) {
-                    throw new Error('Applicant Details: Failed to save draft');
-                }
-                const result = await response.json();
-                console.log("Review Details: Draft saved successfully:", result);
-                toast.success('Your draft has been saved', {
-                    position: 'top-right', 
-                    autoClose: 10000, 
-                  });
-            } catch (error) {
-                console.error("Review Details: Error saving draft:", error);
-            }
-        }
-    };
-
 
     const handleOtpCancel = () => {
         setIsOtpPopupOpen(false); // Close OTP popup if user cancels

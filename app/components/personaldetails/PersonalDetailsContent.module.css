@@ -4,9 +4,9 @@
 .mainContainer {
   display: flex;
   flex-direction: column;
-  width: 1224px;
   align-items: center;
   gap: 40px;
+  flex-wrap: wrap;
 
   @media screen and (max-width: 769px) {
     width: 360px;
@@ -28,7 +28,7 @@
     @media screen and (max-width: 769px) {
       padding: 24px;
       gap: 24px;
-      width: 290px;
+      width: 310px;
     }
 
     .headingText {

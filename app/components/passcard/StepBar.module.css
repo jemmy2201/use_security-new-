@@ -8,8 +8,8 @@
         align-items: center;
         gap: 40px;
         width: 100%;
-        padding-top: 80px;
-        padding-bottom: 80px;
+        padding-top: 20px;
+        padding-bottom: 20px;
         background: #F5F6F7;
         flex-wrap: wrap;
 
@@ -48,35 +48,7 @@
 
             }
 
-            .stepFooterContainer {
-                flex-wrap: wrap;
-                display: flex;
-                justify-content: center;
-                align-items: flex-start;
-                gap: 20px;
-                background: #F5F6F7;
-                padding-bottom: 20px;
-
-                .saveDraft {
-                    display: flex;
-                    padding: 16px 20px;
-                    align-items: flex-start;
-                    gap: 8px;
-                    border-radius: 28px;
-                    border: 1px solid #546E7A;
-                    background: #FFF;
-                }
-
-                .continue {
-                    display: flex;
-                    padding: 16px 20px;
-                    align-items: flex-start;
-                    gap: 8px;
-                    border-radius: 28px;
-                    background: #CC0C00;
-                    color: white;
-                }
-            }
+            
         }
 
     }
@@ -242,11 +214,15 @@
     align-items: center;
     gap: 40px;
     width: 100%;
-    padding-top: 80px;
-    padding-bottom: 80px;
+    padding-top: 40px;
+    padding-bottom: 40px;
     background: #F5F6F7;
     flex-wrap: wrap;
-
+    @media screen and (max-width: 769px) {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        gap: 20px;
+    }
     .headerContainer {
         flex-wrap: wrap;
         display: flex;
@@ -270,35 +246,7 @@
             gap: 16px;
         }
 
-        .stepFooterContainer {
-            flex-wrap: wrap;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 20px;
-            background: #F5F6F7;
-            padding-bottom: 20px;
-
-            .saveDraft {
-                display: flex;
-                padding: 16px 20px;
-                align-items: flex-start;
-                gap: 8px;
-                border-radius: 28px;
-                border: 1px solid #546E7A;
-                background: #FFF;
-            }
-
-            .continue {
-                display: flex;
-                padding: 16px 20px;
-                align-items: flex-start;
-                gap: 8px;
-                border-radius: 28px;
-                background: #CC0C00;
-                color: white;
-            }
-        }
+        
     }
 
 }

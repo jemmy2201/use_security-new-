@@ -39,6 +39,7 @@
     font-style: normal;
     font-weight: 700;
     line-height: 42px;
+
     @media screen and (max-width: 769px) {
         font-size: 28px;
         line-height: 32px;
@@ -97,6 +98,7 @@
     width: 211px;
     align-items: center;
     gap: 8px;
+
     @media screen and (max-width: 769px) {
         width: 157px;
     }

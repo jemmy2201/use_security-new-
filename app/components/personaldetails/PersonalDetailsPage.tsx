@@ -49,23 +49,13 @@ const PersonalDetailsPage: React.FC = () => {
                     console.log('Action type value:', typeof actionTypeValue);
                     const parsedData: users = JSON.parse(storedData);
                     setUsers(parsedData);
-                    if (!!actionTypeValue && (actionTypeValue === 'Edit' || actionTypeValue === 'Replace' || actionTypeValue === 'Renew')) {
+                    if (!!actionTypeValue && (actionTypeValue === 'Edit' 
+                                || actionTypeValue === 'Replace' || actionTypeValue === 'Renew')) {
                         const storedBookingSchedule = sessionStorage.getItem('bookingSchedule');
                         console.log('storedBookingSchedule:', storedBookingSchedule);
                         if (storedBookingSchedule) {
                             const parsedBookingSchedule: booking_schedules = JSON.parse(storedBookingSchedule);
                             console.log('parsedBookingSchedule:', parsedBookingSchedule);
-                            
-                            let appType = '';
-                            if(actionTypeValue == 'Edit'){
-                                appType='1';
-                            }
-                            if(actionTypeValue == 'Renew'){
-                                appType='2';
-                            }
-                            if(actionTypeValue == 'Replace'){
-                                appType='3';
-                            }
                             
                             setFormData({
                                 email: parsedData?.email ?? '',
@@ -74,9 +64,9 @@ const PersonalDetailsPage: React.FC = () => {
                                 name: parsedData?.name ?? '',
                                 nric: parsedData?.nric ?? '',
                                 nricText: 'SXXXXXXXA',
-                                applicationType: appType,
+                                applicationType: parsedBookingSchedule.app_type,
                                 passId: parsedBookingSchedule.passid,
-                                bookingId: parsedBookingSchedule.id,
+                                bookingId: parsedBookingSchedule.id.toString(),
                                 id: parsedBookingSchedule.id.toString(),
                                 actionType: actionTypeValue,
                                 cardId: parsedBookingSchedule.card_id ? parsedBookingSchedule.card_id : '',
@@ -95,6 +85,7 @@ const PersonalDetailsPage: React.FC = () => {
                                 nricText: 'SXXXXXXXA',
                                 passId: parsedNewPassData.passId,
                                 id: parsedNewPassData.recordId,
+                                bookingId: parsedNewPassData.recordId,
                                 actionType: actionTypeValue ? actionTypeValue : '',
                                 applicationType: '1'
                             });

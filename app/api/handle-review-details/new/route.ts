@@ -7,13 +7,13 @@ export async function POST(req: NextRequest) {
     try {
         console.log('handle-review-details, new');
         const body = await req.json();
-        const { bookindId, actionType } = body;
+        const { bookingId, actionType, applicationType } = body;
         const encryptedNric = await getEncryptedNricFromSession();
-        console.log('actionType:applicationType:encrypted nric', actionType, bookindId, encryptedNric);
+        console.log('actionType:bookingId:encrypted nric', actionType, bookingId, encryptedNric);
 
-        if (!encryptedNric || !bookindId) {
+        if (!encryptedNric || !bookingId || !applicationType) {
             return NextResponse.json(
-                { error: 'nric / fin, bookindId are required' },
+                { error: 'nric / fin, bookingId are required' },
                 { status: 400 }
             );
         }
@@ -21,7 +21,8 @@ export async function POST(req: NextRequest) {
         const schedule = await prisma.booking_schedules.findFirst({
             where: {
                 ...(encryptedNric && { nric: encryptedNric }),
-                id: bookindId,
+                app_type: applicationType,
+                id: bookingId,
                 AND: [
                     {
                         OR: [
@@ -63,13 +64,13 @@ export async function POST(req: NextRequest) {
             return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });
 
         } else {
-
+            console.log('handle-review-details, record not found');
             return NextResponse.json({ error: 'Record not found' }, { status: 400 });
 
         }
 
     } catch (error) {
-        console.error('Error saving user:', error);
+        console.error('Error saving review details:', error);
         return NextResponse.json(
             { error: 'Error saving user to the database' },
             { status: 500 }

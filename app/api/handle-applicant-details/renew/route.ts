@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
                     {
                         OR: [
                             { Status_app: '0' },
-                            { Status_app: '6' }
+                            { Status_app: '' },
+                            { Status_app: null },
                         ]
                     }
                 ],

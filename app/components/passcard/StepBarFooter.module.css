@@ -1,34 +1,53 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
 
 
-.stepFooterContainer {
-    flex-wrap: wrap;
+
+.bodyContainer {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 20px;
+    flex-direction: column;
     background: #F5F6F7;
-    padding-bottom: 20px;
-    .saveDraft {
-        display: flex;
-        padding: 16px 20px;
-        align-items: flex-start;
-        gap: 8px;
-        border-radius: 28px;
-        border: 1px solid #546E7A;
-        background: #FFF;
-    }
+    flex-wrap: wrap;
     
-    .continue {
+    .headerContainer {
+        flex-wrap: wrap;
         display: flex;
-        padding: 16px 20px;
-        align-items: flex-start;
-        gap: 8px;
-        border-radius: 28px;
-        background: #CC0C00;
-        color: white;
+        flex-direction: column;
+        
+        .stepFooterContainer {
+            flex-wrap: wrap;
+            display: flex;
+            
+            padding-left:12%;
+            gap: 16px;
+            align-items: left;
+            @media screen and (max-width: 769px) {
+                padding-left:8%;
+                flex-direction: row;
+            }
+            .saveDraft {
+                display: flex;
+                padding: 16px 20px;
+                gap: 8px;
+                border-radius: 28px;
+                border: 1px solid #546E7A;
+                background: #FFF;
+            }
+            
+            .continue {
+                display: flex;
+                padding: 16px 20px;
+                gap: 8px;
+                border-radius: 28px;
+                background: #CC0C00;
+                color: white;
+            }
+        }
     }
 }
+
+
+
+
 
 
 

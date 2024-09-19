@@ -147,11 +147,11 @@ const ApplicantDetailsPage: React.FC = () => {
                 <ImageProcessingPage></ImageProcessingPage>
 
                 <div className={applicantDetailsContentstyles.stepContentContainer}>
-                    <div className={globalStyleCss.header1}>
+                    <div className={globalStyleCss.header2}>
                         Training records
                     </div>
 
-                    <div className={globalStyleCss.header2}>
+                    <div className={globalStyleCss.regularBold}>
                         Types of trainings
                     </div>
                     <div className={applicantDetailsContentstyles.trainingOptionContainer}>
@@ -164,10 +164,9 @@ const ApplicantDetailsPage: React.FC = () => {
                                         name="trAvso"
                                         checked={checkboxes.trAvso}
                                         onChange={handleCheckboxChange}
-                                    />
-                                    Airport Screener Deployment</div>
+                                    /> </div>
+                                <div>Airport Screener Deployment</div>
                             </label>
-
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
@@ -175,12 +174,10 @@ const ApplicantDetailsPage: React.FC = () => {
                                     name="trCctc"
                                     checked={checkboxes.trCctc}
                                     onChange={handleCheckboxChange}
-                                />
+                                /></div>
+                                <div>
                                     Conduct Crowd and Traffic Control (CCTC)</div>
                             </label>
-
-
-
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
@@ -188,11 +185,10 @@ const ApplicantDetailsPage: React.FC = () => {
                                     name="trCsspb"
                                     checked={checkboxes.trCsspb}
                                     onChange={handleCheckboxChange}
-                                />
+                                /></div>
+                                <div>
                                     Conduct Security Screening of Person and Bag (CSSPB)</div>
                             </label>
-
-
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
@@ -201,9 +197,8 @@ const ApplicantDetailsPage: React.FC = () => {
                                     checked={checkboxes.trXray}
                                     onChange={handleCheckboxChange}
                                 />
-                                    Conduct Screening using X-ray Machine (X-RAY)</div>
+                                </div> <div>Conduct Screening using X-ray Machine (X-RAY)</div>
                             </label>
-
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
@@ -211,7 +206,8 @@ const ApplicantDetailsPage: React.FC = () => {
                                     name="trNota"
                                     checked={checkboxes.trNota}
                                     onChange={handleCheckboxChange}
-                                />
+                                /></div>
+                                <div>
                                     None of the above (SO)</div>
                             </label>
 
@@ -224,7 +220,8 @@ const ApplicantDetailsPage: React.FC = () => {
                                     name="trHcta"
                                     checked={checkboxes.trHcta}
                                     onChange={handleCheckboxChange}
-                                />
+                                /></div>
+                                <div>
                                     Handle Counter Terrorist Activities (HCTA)</div>
                             </label>
                             <label className={applicantDetailsContentstyles.checkboxes}>
@@ -233,7 +230,8 @@ const ApplicantDetailsPage: React.FC = () => {
                                     name="trObsa"
                                     checked={checkboxes.trObsa}
                                     onChange={handleCheckboxChange}
-                                />
+                                /></div>
+                                <div>
                                     Operate Basic Security Equipment</div>
                             </label>
                             <label className={applicantDetailsContentstyles.checkboxes}>
@@ -242,8 +240,8 @@ const ApplicantDetailsPage: React.FC = () => {
                                     name="trSsm"
                                     checked={checkboxes.trSsm}
                                     onChange={handleCheckboxChange}
-                                />
-                                    Security Surveillance Management</div>
+                                /> </div>
+                                <div> Security Surveillance Management</div>
                             </label>
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
@@ -252,7 +250,8 @@ const ApplicantDetailsPage: React.FC = () => {
                                     name="trRtt"
                                     checked={checkboxes.trRtt}
                                     onChange={handleCheckboxChange}
-                                />
+                                /></div>
+                                <div>
                                     Recognise Terrorist Threat (RTT)</div>
                             </label>
                         </div>
