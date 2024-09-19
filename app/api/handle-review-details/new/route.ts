@@ -5,11 +5,11 @@ import { getEncryptedNricFromSession } from "../../../../lib/session";
 const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
+        console.log('handle-review-details, new');
         const body = await req.json();
-        const { bookindId } = body;
+        const { bookindId, actionType } = body;
         const encryptedNric = await getEncryptedNricFromSession();
-        console.log('applicationType:', bookindId);
-        console.log('encrypted nric:', encryptedNric);
+        console.log('actionType:applicationType:encrypted nric', actionType, bookindId, encryptedNric);
 
         if (!encryptedNric || !bookindId) {
             return NextResponse.json(

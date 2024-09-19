@@ -5,8 +5,8 @@ export const THREE_YEARS = 3;
 
 // applicationTypes
 export const NEW = "1";
-export const RENEWAL = "2";
-export const REPLACEMENT = "3";
+export const REPLACEMENT = "2";
+export const RENEWAL = "3";
 
 // cardTypes
 export const SO_APP = 1;

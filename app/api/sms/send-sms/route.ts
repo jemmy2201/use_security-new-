@@ -29,7 +29,7 @@ export async function POST(request: Request) {
         const activationRecord = await prisma.activation_phones.create({
             data: {
                 activation: otpNumber.toString(),
-                status: 'pending',
+                status: '',
                 nric: encryptedNric as string,
             },
         });

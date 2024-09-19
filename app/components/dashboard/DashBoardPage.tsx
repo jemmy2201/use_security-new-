@@ -8,6 +8,8 @@ import { users as users } from '@prisma/client';
 import { NEW, REPLACEMENT, RENEWAL } from '../../constant/constant';
 import { SO_APP, AVSO_APP, PI_APP } from '../../constant/constant';
 import { DRAFT, PROCESSING, READY_FOR_ID_CARD_PRINTING, ID_CARD_READY_FOR_COLLECTION, RESUBMISSION, RESUBMITTED, COMPLETED } from '../../constant/constant';
+import { SO, SSO, SS, SSS, CSO } from '../../constant/constant';
+
 import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import Modal from '../model/Modal';
@@ -35,6 +37,14 @@ const appTypeMap: { [key: string]: string } = {
     [RENEWAL]: 'Renew',
 };
 
+const gradeTypeMap: { [key: string]: string } = {
+    [SO]: 'SO',
+    [SSO]: 'SSO',
+    [SS]: 'SS',
+    [SSS]: 'SSS',
+    [CSO]: 'CSO',
+};
+
 const statusTypeMap: { [key: string]: string } = {
     [DRAFT]: 'DRAFT',
     [PROCESSING]: 'PROCESSING',
@@ -56,6 +66,15 @@ const DashBoardPage: React.FC = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [modalMessage, setModalMessage] = useState<string>('');
 
+
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+        });
+    };
 
     const handleNewPasscardClick = async () => {
         setLoading(true);
@@ -381,8 +400,8 @@ const DashBoardPage: React.FC = () => {
                                     <tr key={booking.id} className={globalStyleCss.regular}>
                                         <td className={dashBoardContentstyles.item}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
                                         <td className={dashBoardContentstyles.item}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
-                                        <td className={dashBoardContentstyles.item}>{booking.grade_id}</td>
-                                        <td className={dashBoardContentstyles.item}>{booking.appointment_date}</td>
+                                        <td className={dashBoardContentstyles.item}>{gradeTypeMap[booking.grade_id || ''] || ''}</td>
+                                        <td className={dashBoardContentstyles.item}>{formatDate(booking.appointment_date || '')}</td>
                                         <td className={dashBoardContentstyles.item}>{statusTypeMap[booking.Status_app || ''] || 'Unknown'}</td>
                                         <td className={dashBoardContentstyles.item}>
                                             {booking.Status_app == '0' ? (
@@ -516,8 +535,34 @@ const DashBoardPage: React.FC = () => {
                                         </td>
                                     </tr>
                                 ))}
+
+                                <tr>
+                                    <td colSpan={6} >
+                                        <div className={dashBoardContentstyles.collectionHeader}>
+                                            <div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <g clip-path="url(#clip0_1402_6733)">
+                                                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 16C13 16.55 12.55 17 12 17C11.45 17 11 16.55 11 16V12C11 11.45 11.45 11 12 11C12.55 11 13 11.45 13 12V16ZM12 9C11.45 9 11 8.55 11 8C11 7.45 11.45 7 12 7C12.55 7 13 7.45 13 8C13 8.55 12.55 9 12 9Z" fill="#546E7A" />
+                                                    </g>
+                                                    <defs>
+                                                        <clipPath id="clip0_1402_6733">
+                                                            <rect width="24" height="24" fill="white" />
+                                                        </clipPath>
+                                                    </defs>
+                                                </svg>
+                                            </div>
+                                            <div className={globalStyleCss.regular}>
+                                                You have made an appointment to collect your new pass card on 6 Sep 2024, 2:30pm - 3:30pm. Reschedule appointment
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
+
+
+
                     </div>
 
 
@@ -557,7 +602,7 @@ const DashBoardPage: React.FC = () => {
                                 </div>
                                 <div className={dashBoardContentstyles.cell}>
                                     <div className={globalStyleCss.regular}>
-                                        {booking.grade_id}
+                                        {gradeTypeMap[booking.grade_id || ''] || ''}
                                     </div>
                                 </div>
                             </div>

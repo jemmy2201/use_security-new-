@@ -7,10 +7,8 @@ export async function POST(req: NextRequest) {
     try {
         console.log('handle-applicant-details, renew');
         const body = await req.json();
-        const { bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso } = body;
-        console.log('applicationType:', applicationType);
-        console.log('cardId:', cardId);
-
+        const { bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, actionType } = body;
+        console.log('actionType:applicationType:cardId', actionType, applicationType, cardId);
         const encryptedNric = await getEncryptedNricFromSession();
         console.log('encrypted nric:', encryptedNric);
 

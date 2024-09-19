@@ -241,6 +241,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({actionType}) => {
                         nric: formData.nric,
                         mobileno: formData.mobileno,
                         email: formData.email,
+                        actionType: actionType,
                     }),
                 });
 
@@ -281,6 +282,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({actionType}) => {
                             trHcta: formData.trHcta ? 'YES' : '',
                             trXray: formData.trXray ? 'YES' : '',
                             trAvso: formData.trAvso ? 'YES' : '',
+                            actionType: actionType,
                         }),
                     });
     
@@ -312,6 +314,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({actionType}) => {
                             trHcta: formData.trHcta ? 'YES' : '',
                             trXray: formData.trXray ? 'YES' : '',
                             trAvso: formData.trAvso ? 'YES' : '',
+                            actionType: actionType,
                         }),
                     });
     
@@ -341,6 +344,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({actionType}) => {
                     body: JSON.stringify({
                         nric: formData.nric,
                         applicationType: formData.applicationType,
+                        actionType: actionType,
                     }),
                 });
 

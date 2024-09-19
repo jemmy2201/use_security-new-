@@ -16,24 +16,30 @@ export async function POST(request: NextRequest) {
     console.log('encryptedNric:', encryptedNric);
     const activationRecord = await prisma.activation_phones.findFirst({
       where: {
-        status: 'pending',
+        status: '',
         nric: encryptedNric as string,
       },
       orderBy: {
-        id: 'desc', 
+        id: 'desc',
       },
     });
     console.log('activationRecord:', activationRecord);
-    if(activationRecord){
-      if(activationRecord.activation == otp){
+    if (activationRecord) {
+      if (activationRecord.activation == otp) {
         const updatedSchedule = await prisma.activation_phones.update({
           where: { id: activationRecord.id },
           data: {
-              status: 'success'
+            status: '1'
           },
-      });
+        });
         return NextResponse.json({ success: true, message: 'OTP verified successfully' }, { status: 200 });
-      }else{
+      } else {
+        const updatedSchedule = await prisma.activation_phones.update({
+          where: { id: activationRecord.id },
+          data: {
+            status: '0'
+          },
+        });
         return NextResponse.json({ success: false, message: 'Invalid OTP' }, { status: 400 });
 
       }

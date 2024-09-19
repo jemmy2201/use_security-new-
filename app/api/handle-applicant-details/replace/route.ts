@@ -7,15 +7,11 @@ export async function POST(req: NextRequest) {
     try {
         console.log('handle-applicant-details, replace');
         const body = await req.json();
-        const { bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso } = body;
-        console.log('applicationType:', applicationType);
-        console.log('bookingId, cardId:', bookingId, cardId);
-
+        const { bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, actionType } = body;
+        console.log('actionType:applicationType:cardId', actionType, applicationType, cardId);
         const encryptedNric = await getEncryptedNricFromSession();
         console.log('encrypted nric:', encryptedNric);
 
-
-        // Validate required fields
         if (!encryptedNric || !applicationType || !cardId) {
             return NextResponse.json(
                 { error: 'nric / fin, cardId and application type are required' },

@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { mobileno, email } = body;
+        const { mobileno, email, actionType } = body;
         const encryptedNric = await getEncryptedNricFromSession();
-
+        console.log('handle-user, actionType:',actionType);
         if (!encryptedNric || !mobileno || !email) {
             return NextResponse.json(
                 { error: 'nric / fin, mobile, and email are required' },
