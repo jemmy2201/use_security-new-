@@ -44,12 +44,25 @@ export async function GET(req: NextRequest) {
                     trans_date: currentDate,
                 },
             });
-        }else{
+            const replacer = (key: string, value: any) => {
+                if (typeof value === 'bigint') {
+                    return value.toString();
+                }
+                return value;
+            };
+
+            return new Response(JSON.stringify(schedule, replacer), {
+                status: 200,
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+        } else {
+            console.log('Payment fail');
             return NextResponse.json({ error: 'Payment fail' }, { status: 500 });
         }
 
-        return NextResponse.json({ session });
     } catch (error) {
+        console.log('error in payment success update', error);
         return NextResponse.json({ error: 'Unable to retrieve session' }, { status: 500 });
     } finally {
         await prisma.$disconnect();

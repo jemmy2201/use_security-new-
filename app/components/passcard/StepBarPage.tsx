@@ -19,6 +19,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { booking_schedules } from '@prisma/client';
 
 interface ActionTypeProps {
     actionType: string;
@@ -56,12 +57,19 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
     useEffect(() => {
         const sessionId = searchParams.get('session_id');
         if (sessionId) {
+            console.log('inside stepbar page:');
             fetch(`/api/payment/success?session_id=${sessionId}`)
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log('after payment success from stripe, data:', data);
+                    console.log('step bar page after payment success from stripe, data:', data);
+                    const bookingData: booking_schedules =  data;
                     setFormData(prevFormData => ({
                         ...prevFormData,
+                        applicationType: bookingData.app_type,
+                        cardId: bookingData.card_id,
+                        id: bookingData.id,
+                        passId: bookingData.passid,
+                        bookingId: bookingData.id,
                         ['paymentProcessed']: true,
                         ['paymentSuccess']: true,
                     }))
@@ -153,7 +161,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 }
             } else {
 
-
+                router.push('/dashboard');
             }
         } else {
             if (activeStep == 3 && !formData.paymentProcessed) {

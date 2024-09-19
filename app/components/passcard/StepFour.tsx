@@ -15,6 +15,7 @@ const StepFour: React.FC = () => {
     const searchParams = useSearchParams();
 
     useEffect(() => {
+        console.log('inside step 4:');
         const sessionId = searchParams.get('session_id');
         if (sessionId) {
             // Handle success
@@ -23,6 +24,7 @@ const StepFour: React.FC = () => {
     }, [searchParams]);
 
     const handlePaymentSuccess = () => {
+        console.log('inside step 4:handlePaymentSuccess');
         setFormData(prevFormData => ({
             ...prevFormData,
             ['paymentProcessed']: true,

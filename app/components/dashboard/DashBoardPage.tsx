@@ -23,6 +23,7 @@ export interface createNewPassApiResponse {
     canCreateAvsoApplication?: boolean;
     passId?: string;
     recordId: string;
+    cardId: string;
 }
 
 const cardTypeMap: { [key: string]: string } = {

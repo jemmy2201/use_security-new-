@@ -17,6 +17,7 @@ export interface createNewPassApiResponse {
     canCreateAvsoApplication?: boolean;
     passId?: string;
     recordId: string;
+    cardId: string;
 }
 
 const PersonalDetailsPage: React.FC = () => {
@@ -87,7 +88,8 @@ const PersonalDetailsPage: React.FC = () => {
                                 id: parsedNewPassData.recordId,
                                 bookingId: parsedNewPassData.recordId,
                                 actionType: actionTypeValue ? actionTypeValue : '',
-                                applicationType: '1'
+                                applicationType: '1',
+                                cardId: parsedNewPassData.cardId,
                             });
                         }
                     }

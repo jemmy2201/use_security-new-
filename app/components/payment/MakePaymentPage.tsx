@@ -57,13 +57,11 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
                         </div>
                         <div className={makePaymentContentstyles.item}>
                             <div className={globalStyleCss.regularBold}>Type of application </div>
-                            <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.applicationType == 'SO' ? 'Security Officer' : 'Private Investigator'}</div></div>
+                            <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.cardId == '1' ? 'Security Officer' : 'Private Investigator'}</div></div>
                         </div>
                     </div>
                 </div>
-                <div>
-                    {error && <p className={makePaymentContentstyles.error}>{error}</p>}
-                </div>
+                {error && <p className={makePaymentContentstyles.error}>{error}</p>}
 
             </div>
         </form>

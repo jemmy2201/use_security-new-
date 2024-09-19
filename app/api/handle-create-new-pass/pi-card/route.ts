@@ -12,6 +12,7 @@ export interface createNewPassApiResponse {
   canCreateAvsoApplication?: boolean;
   passId?: string;
   recordId: string;
+  cardId: string;
 }
 
 const mapToCreateNewPassApiResponse = (
@@ -25,6 +26,7 @@ const mapToCreateNewPassApiResponse = (
     canCreateAvsoApplication: false,
     passId: '',
     recordId: '',
+    cardId: '',
   };
 };
 
@@ -37,7 +39,8 @@ export async function GET(request: Request) {
     const schedules = await prisma.booking_schedules.findMany({
       where: {
         ...(encryptedNric && { nric: encryptedNric }),
-        app_type: '2',
+        app_type: '1',
+        card_id: '2',
         AND: [
           {
             OR: [
@@ -65,6 +68,7 @@ export async function GET(request: Request) {
       responseData.canCreatePiApplication = true;
       responseData.passId = booking_schedules.passid;
       responseData.recordId = booking_schedules.id.toString();
+      responseData.cardId = booking_schedules.card_id ? booking_schedules.card_id : '';
       return new Response(JSON.stringify(responseData), { status: 200 });
     }
 

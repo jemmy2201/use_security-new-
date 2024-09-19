@@ -73,6 +73,7 @@ const ReviewDetailsPage: React.FC = () => {
                 <div className={globalStyleCss.header2}>
                     Photo
                 </div>
+                <br></br>
                 <div className={globalStyleCss.regular}>
                 Please make sure your photo is compliant to prevent your application from being rejected.                  </div>
                 <img src={formData.image} alt="Processed" />
@@ -85,7 +86,7 @@ const ReviewDetailsPage: React.FC = () => {
                 <div className={globalStyleCss.header2}>
                     Training records
                 </div>
-
+                <br></br>
                 <div className={globalStyleCss.regularBold}>
                     Types of trainings
                 </div>
@@ -107,7 +108,7 @@ const ReviewDetailsPage: React.FC = () => {
                 <div className={globalStyleCss.header2}>
                     Declaration
                 </div>
-
+                <br></br>
                 <div className={reviewDetailsContentstyles.declareBox} onClick={handleCheckboxToggle} style={{ cursor: 'pointer' }}>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

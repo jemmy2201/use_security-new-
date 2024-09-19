@@ -16,6 +16,7 @@ export interface createNewPassApiResponse {
     canCreateAvsoApplication?: boolean;
     passId?: string;
     recordId: string;
+    cardId: string;
 }
 
 const FirstTimePage: React.FC = () => {
@@ -32,6 +33,13 @@ const FirstTimePage: React.FC = () => {
         setError(null);
         try {
 
+            const response = await fetch('/api/myinfo');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data: users = await response.json();
+            sessionStorage.setItem('users', JSON.stringify(data));
+
             const responseNewPass = await fetch('/api/handle-create-new-pass/so-card');
             console.log('response from handle-create-new-pass', responseNewPass);
 
@@ -43,12 +51,16 @@ const FirstTimePage: React.FC = () => {
                 return;
             }
             sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(dataNewPass));
-            const responseMyInfo = await fetch('/api/myinfo');
-            if (!responseMyInfo.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const dataMyInfo: users = await responseMyInfo.json();
-            router.push('/myinfoterms');
+            // const responseMyInfo = await fetch('/api/myinfo');
+            // if (!responseMyInfo.ok) {
+            //     throw new Error('Network response was not ok');
+            // }
+            // const dataMyInfo: users = await responseMyInfo.json();
+            // router.push('/myinfoterms');
+
+            sessionStorage.setItem('actionTypeValue', 'New');
+
+            router.push('/passcard?actionType=New');
 
         } catch (err) {
             setError('Failed to fetch user details');

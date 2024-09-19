@@ -12,6 +12,19 @@ export async function GET(request: Request) {
     const schedules = await prisma.booking_schedules.findMany({
       where: {
         ...(encryptedNric && { nric: encryptedNric }), 
+        AND: [
+          {
+              OR: [
+                  { Status_app: '0' },
+                  { Status_app: '1' },
+                  { Status_app: '2' },
+                  { Status_app: '3' },
+                  { Status_app: '4' },
+                  { Status_app: '5' },
+                  { Status_app: '6' },
+              ]
+          }
+      ],
       },
     });
     console.log('total pass cards: ', schedules.length);
