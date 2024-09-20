@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import reviewDetailsContentstyles from './ReviewDetailsContent.module.css';
 import { useFormContext } from '.././FormContext';
 import globalStyleCss from '../globalstyle/Global.module.css';
-
+import ReviewImageProcessing from './ReviewImageProcessing';
 type CheckboxState = {
     [key: string]: boolean;
 };
@@ -60,19 +60,20 @@ const ReviewDetailsPage: React.FC = () => {
         if (formData.applicationType) {
             setIsChecked(formData?.isTermsAndConditionSigned || false);
         }
+
+        const fileName = formData?.passid + formData.nric?.slice(-4);
+        console.log('image file name:', fileName);
+        // Initialize formData only if it's empty
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            imageUrl: `/uploads/${fileName}.png`,
+        }));
+
     }, [formData]);
 
     const [isEditingSection1, setIsEditingSection1] = useState(false);
     const [isEditingSection2, setIsEditingSection2] = useState(false);
-
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const { name, value, type, checked } = e.target;
-    //     setFormData((prevFormData) => ({
-    //         ...prevFormData,
-    //         [name]: type === 'checkbox' ? checked : value,
-    //     }));
-    // };
-
+    const [isEditingSection3, setIsEditingSection3] = useState(false);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
         setFormData(prevFormData => ({
@@ -85,6 +86,7 @@ const ReviewDetailsPage: React.FC = () => {
     const toggleEditMode = (section: number) => {
         if (section === 1) setIsEditingSection1(!isEditingSection1);
         if (section === 2) setIsEditingSection2(!isEditingSection2);
+        if (section === 3) setIsEditingSection3(!isEditingSection3);
 
         setCheckboxes({
             trRtt: formData?.trRtt || false,
@@ -112,10 +114,9 @@ const ReviewDetailsPage: React.FC = () => {
 
                             <div className={reviewDetailsContentstyles.stepContentContainer}>
                                 <div className={reviewDetailsContentstyles.headerContentBox}>
-                                    <div className={reviewDetailsContentstyles.headerLink}>
-                                        <div className={globalStyleCss.header2}>
-                                            Personal details
-                                        </div>
+
+                                    <div className={globalStyleCss.header2}>
+                                        Personal details
                                     </div>
                                     <div className={reviewDetailsContentstyles.editLink}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -176,11 +177,11 @@ const ReviewDetailsPage: React.FC = () => {
                         <>
                             <div className={reviewDetailsContentstyles.stepContentContainer}>
                                 <div className={reviewDetailsContentstyles.headerContentBox}>
-                                    <div className={reviewDetailsContentstyles.headerLink}>
-                                        <div className={globalStyleCss.header2}>
-                                            Personal details
-                                        </div>
+
+                                    <div className={globalStyleCss.header2}>
+                                        Personal details
                                     </div>
+
                                     <div className={reviewDetailsContentstyles.editLink}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                             <g clip-path="url(#clip0_1418_2800)">
@@ -224,32 +225,81 @@ const ReviewDetailsPage: React.FC = () => {
                 </section>
 
 
-
-                <div className={reviewDetailsContentstyles.stepContentContainer}>
-
-                    <div className={globalStyleCss.header2}>
-                        Photo
-                    </div>
-                    <br></br>
-                    <div className={globalStyleCss.regular}>
-                        Please make sure your photo is compliant to prevent your application from being rejected.                  </div>
-                    <img src={formData.image} alt="Processed" />
-
-                </div>
-
-                <div className={reviewDetailsContentstyles.stepContentContainer}>
-
-                    <section>
-
-                        {isEditingSection2 ? (
+                <section>
+                    {
+                        isEditingSection2 ? (
                             <>
+                                <div className={reviewDetailsContentstyles.stepContentContainer}>
 
+
+
+                                    <div className={reviewDetailsContentstyles.headerContentBox}>
+
+                                        <div className={globalStyleCss.header2}>
+                                            Photo
+                                        </div>
+                                        <div className={reviewDetailsContentstyles.editLink}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <g clip-path="url(#clip0_1418_2800)">
+                                                    <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_1418_2800">
+                                                        <rect width="24" height="24" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>&nbsp;
+                                            <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(2)}>Save</button>
+                                        </div>
+                                    </div>
+
+                                    <ReviewImageProcessing></ReviewImageProcessing>
+                                </div>
+
+                            </>
+
+                        ) : (
+                            <>
+                                <div className={reviewDetailsContentstyles.stepContentContainer}>
+                                    <div className={reviewDetailsContentstyles.headerContentBox}>
+
+                                        <div className={globalStyleCss.header2}>
+                                            Photo
+                                        </div>
+
+                                        <div className={reviewDetailsContentstyles.editLink}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <g clip-path="url(#clip0_1418_2800)">
+                                                    <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_1418_2800">
+                                                        <rect width="24" height="24" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>&nbsp;
+                                            <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(2)}>Edit</button>
+                                        </div>
+                                    </div>
+                                    <div className={globalStyleCss.regular}>
+                                        Please make sure your photo is compliant to prevent your application from being rejected.
+                                    </div>
+                                    <img src={formData.image} alt="Processed" />
+                                </div>
+                            </>
+                        )}
+                </section>
+
+                <section>
+
+                    {isEditingSection3 ? (
+                        <>
+                            <div className={reviewDetailsContentstyles.stepContentContainer}>
 
                                 <div className={reviewDetailsContentstyles.headerContentBox}>
-                                    <div className={reviewDetailsContentstyles.headerLink}>
-                                        <div className={globalStyleCss.header2}>
-                                            Training records
-                                        </div>
+
+                                    <div className={globalStyleCss.header2}>
+                                        Training records
                                     </div>
                                     <div className={reviewDetailsContentstyles.editLink}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -262,15 +312,12 @@ const ReviewDetailsPage: React.FC = () => {
                                                 </clipPath>
                                             </defs>
                                         </svg>&nbsp;
-                                        <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(2)}>Save</button>
+                                        <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(3)}>Save</button>
                                     </div>
                                 </div>
-                                <br></br>
                                 <div className={globalStyleCss.regularBold}>
                                     Types of trainings
                                 </div>
-
-
 
                                 <div className={reviewDetailsContentstyles.trainingOptionContainer}>
                                     <div className={reviewDetailsContentstyles.trainingOptionBox}>
@@ -375,17 +422,15 @@ const ReviewDetailsPage: React.FC = () => {
                                     </div>
                                 </div>
 
+                            </div>
 
-
-                            </>
-                        ) : (
-                            <>
-
+                        </>
+                    ) : (
+                        <>
+                            <div className={reviewDetailsContentstyles.stepContentContainer}>
                                 <div className={reviewDetailsContentstyles.headerContentBox}>
-                                    <div className={reviewDetailsContentstyles.headerLink}>
-                                        <div className={globalStyleCss.header2}>
-                                            Training records
-                                        </div>
+                                    <div className={globalStyleCss.header2}>
+                                        Training records
                                     </div>
                                     <div className={reviewDetailsContentstyles.editLink}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -398,38 +443,40 @@ const ReviewDetailsPage: React.FC = () => {
                                                 </clipPath>
                                             </defs>
                                         </svg>&nbsp;
-                                        <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(2)}>Edit</button>
+                                        <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(3)}>Edit</button>
                                     </div>
                                 </div>
-                                <br></br>
                                 <div className={globalStyleCss.regularBold}>
                                     Types of trainings
                                 </div>
                                 <div className={reviewDetailsContentstyles.trainingOptionContainer}>
                                     <div className={globalStyleCss.regular}>
-                                        {formData.trAvso ? <div>Airport Screener Deployment</div> : ""}
-                                        {formData.trCctc ? <div>Conduct Crowd and Traffic Control (CCTC)</div> : ""}
-                                        {formData.trCsspb ? <div>Conduct Security Screening of Person and Bag (CSSPB)</div> : ""}
-                                        {formData.trNota ? <div>None of the above (SO)</div> : ""}
-                                        {formData.trHcta ? <div>Handle Counter Terrorist Activities (HCTA)</div> : ""}
-                                        {formData.trXray ? <div>Conduct Screening using X-ray Machine (X-RAY)</div> : ""}
-                                        {formData.trObsa ? <div>Operate Basic Security Equipment</div> : ""}
-                                        {formData.trSsm ? <div>Security Surveillance Management</div> : ""}
-                                        {formData.trRtt ? <div>Recognise Terrorist Threat (RTT)</div> : ""}
+                                        {formData.trAvso ? <div className={globalStyleCss.regular}>Airport Screener Deployment</div> : ""}
+                                        {formData.trCctc ? <div className={globalStyleCss.regular}>Conduct Crowd and Traffic Control (CCTC)</div> : ""}
+                                        {formData.trCsspb ? <div className={globalStyleCss.regular}>Conduct Security Screening of Person and Bag (CSSPB)</div> : ""}
+                                        {formData.trNota ? <div className={globalStyleCss.regular}>None of the above (SO)</div> : ""}
+                                        {formData.trHcta ? <div className={globalStyleCss.regular}>Handle Counter Terrorist Activities (HCTA)</div> : ""}
+                                        {formData.trXray ? <div className={globalStyleCss.regular}>Conduct Screening using X-ray Machine (X-RAY)</div> : ""}
+                                        {formData.trObsa ? <div className={globalStyleCss.regular}>Operate Basic Security Equipment</div> : ""}
+                                        {formData.trSsm ? <div className={globalStyleCss.regular}>Security Surveillance Management</div> : ""}
+                                        {formData.trRtt ? <div className={globalStyleCss.regular}>Recognise Terrorist Threat (RTT)</div> : ""}
                                     </div>
                                 </div>
-                            </>
-                        )}
-                    </section>
 
-                </div>
+
+                            </div>
+                        </>
+                    )}
+                </section>
 
                 <div className={reviewDetailsContentstyles.stepContentContainer}>
 
-                    <div className={globalStyleCss.header2}>
-                        Declaration
+                    <div className={reviewDetailsContentstyles.headerContentBox}>
+                        <div className={globalStyleCss.header2}>
+                            Declaration
+                        </div>
                     </div>
-                    <br></br>
+
                     <div className={reviewDetailsContentstyles.declareBox} onClick={handleCheckboxToggle} style={{ cursor: 'pointer' }}>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -440,13 +487,13 @@ const ReviewDetailsPage: React.FC = () => {
                             </svg>
                         </div>
                         <div className={globalStyleCss.regular}>
-                            I hereby certify that the information and photograph provided are accurate and complete. <br></br>I acknowledge that should any of this information be found to be false, misleading, or misrepresentative, <br></br>I may be held legally responsible.
+                            I hereby certify that the information and photograph provided are accurate and complete. I acknowledge that should any of this information be found to be false, misleading, or misrepresentative, I may be held legally responsible.
                         </div>
                     </div>
                 </div>
 
             </div>
-        </form>
+        </form >
     );
 };
 

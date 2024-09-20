@@ -18,12 +18,11 @@ const TermsPage: React.FC = () => {
 
     const [text, setText] = useState<string>(
         `1.1 This is an Agreement (“Terms of Use”) between you and the UNION OF SECURITY EMPLOYEES("we", “us” and/or “USE”) for the use of our web portal https://www.iduse.org.sg ("Web Portal") and mobile applications (“Apps”), owned and operated by us, and their related services and features (the Website and the Apps shall be collectively referred to as “USE Web Portal”). By using and accessing the USE Web Portal, you conclude a legally binding agreement with us.
+
 1.2  We may update these Terms of Use from time to time by posting a revised version on the USE Web Portal. We will not send an individual notice to you. Any amended Terms of Use shall replace all previous versions of the same.
+
 1.3  By using the USE Web Portal, you agree to comply with the Terms of Use, including any revisions that we may make to the Terms of Use. If you do not agree to the Terms of Use and/or to the amendments, you should immediately cease the use of any of the services on the USE Web Portal.
-1.1 This is an Agreement (“Terms of Use”) between you and the UNION OF SECURITY EMPLOYEES("we", “us” and/or “USE”) for the use of our web portal https://www.iduse.org.sg ("Web Portal") and mobile applications (“Apps”), owned and operated by us, and their related services and features (the Website and the Apps shall be collectively referred to as “USE Web Portal”). By using and accessing the USE Web Portal, you conclude a legally binding agreement with us.
-1.2  We may update these Terms of Use from time to time by posting a revised version on the USE Web Portal. We will not send an individual notice to you. Any amended Terms of Use shall replace all previous versions of the same.
-1.3  By using the USE Web Portal, you agree to comply with the Terms of Use, including any revisions that we may make to the Terms of Use. If you do not agree to the Terms of Use and/or to the amendments, you should immediately cease the use of any of the services on the USE Web Portal.`
-    );
+`);
 
     const router = useRouter();
 
@@ -97,7 +96,7 @@ const TermsPage: React.FC = () => {
             </div>
             <div className={termsContentstyles.mainContainer}>
                 <div className={termsContentstyles.termsContainer}>
-                    <div className={termsContentstyles.headerText}>
+                    <div className={globalStyleCss.header1}>
                         Terms & Conditions of Use
                     </div>
 
@@ -119,14 +118,14 @@ const TermsPage: React.FC = () => {
                         </>
                     )}
                     <div className={termsContentstyles.bodyContainer}>
-                        <div className={termsContentstyles.headerText}>
+                        <div className={globalStyleCss.header2}>
                             1. Acceptance
                         </div>
                         <div className={termsContentstyles.detailContainer}>
                             <textarea
                                 id="scrollableTextarea"
                                 value={text}
-                                rows={10}
+                                rows={6}
                                 style={{
                                     width: '100%',
                                     height: '250px',

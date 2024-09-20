@@ -8,14 +8,15 @@ const prisma = new PrismaClient();
 
 type ImageRequestBody = {
   image: string;
+  bookingId: number;
 };
 
 export async function POST(req: NextRequest) {
   try {
-    const { image }: ImageRequestBody = await req.json();
+    const { image, bookingId }: ImageRequestBody = await req.json();
+    console.log('bookingId:', bookingId);
     const encryptedNric = await getEncryptedNricFromSession();
-    // Validate input
-    if (!image || !encryptedNric) {
+    if (!image || !encryptedNric || !bookingId) {
       return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });
     }
 
@@ -32,6 +33,7 @@ export async function POST(req: NextRequest) {
     const schedule = await prisma.booking_schedules.findFirst({
       where: {
         ...(encryptedNric && { nric: encryptedNric }),  
+        id: bookingId,
         AND: [
           {
             OR: [

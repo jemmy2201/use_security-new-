@@ -35,16 +35,18 @@
       align-items: flex-start;
       gap: 8px;
       align-self: stretch;
+      padding-bottom: 20px;
+
     }
 
     .headerContentBox {
       display: flex;
       align-items: flex-start;
-      flex-wrap: wrap;
+      padding-bottom: 20px;
 
       @media screen and (max-width: 769px) {
-        gap: 24px;
-        padding-top: 20px;
+        gap: 10px;
+        padding-top: 10px;
       }
 
       .editLink {
@@ -53,19 +55,13 @@
         align-content: end;
       }
 
-      .headerLink {
-        display: flex;
-        align-items: end;
-        align-content: end;
-        padding-right: 400px;
-      }
     }
 
     .contentBox {
       display: flex;
       align-items: flex-start;
       flex-wrap: wrap;
-      padding-top: 40px;
+      padding-top: 20px;
 
       @media screen and (max-width: 769px) {
         gap: 24px;
@@ -129,6 +125,10 @@
       font-weight: 400;
       line-height: 24px;
       padding-top: 20px;
+
+      @media screen and (max-width: 769px) {
+        padding-top: 0px;
+      }
 
       .trainingOptionBox {
         padding-right: 10px;
