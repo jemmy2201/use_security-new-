@@ -21,12 +21,29 @@ export interface createNewPassApiResponse {
 
 const FirstTimePage: React.FC = () => {
 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
     const [users, setUsers] = useState<users>();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [modalMessage, setModalMessage] = useState<string>('');
+
+    const options = ['Security Officer (SO)/Aviation Security Officer (AVSO)', 'Private Investigator (PI)'];
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const handleSelect = (option: string) => {
+        console.log('Selected:', option);
+        if (option == 'Private Investigator (PI)') {
+            handleNewPiPasscardClick();
+        } else {
+            handleNewSoPasscardClick();
+        }
+        setIsDropdownOpen(false);
+    };
 
     const handleNewSoPasscardClick = async () => {
         setLoading(true);
@@ -47,7 +64,7 @@ const FirstTimePage: React.FC = () => {
             console.log('data:', dataNewPass);
             if (dataNewPass.errorCode) {
                 setModalMessage('Failed to fetch data from the server.');
-                setShowModal(true); 
+                setShowModal(true);
                 return;
             }
             sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(dataNewPass));
@@ -81,7 +98,7 @@ const FirstTimePage: React.FC = () => {
             console.log('data:', dataNewPass);
             if (dataNewPass.errorCode) {
                 setModalMessage('Failed to fetch data from the server.');
-                setShowModal(true); 
+                setShowModal(true);
                 return;
             }
             sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(dataNewPass));
@@ -149,22 +166,58 @@ const FirstTimePage: React.FC = () => {
                         <div className={firstTimeContentstyles.recordBoxText2}>
                             Your application will be displayed here
                         </div>
-                        <div className={firstTimeContentstyles.buttonBackground}>
+                        {/* <div className={firstTimeContentstyles.buttonBackground}>
                             <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewSoPasscardClick}>
                                 Create new SO pass card
                             </button>
                             {showModal && (
                                 <Modal message={modalMessage} onClose={handleCloseModal} />
                             )}
-                        </div>
+                        </div> */}
                         <div className={firstTimeContentstyles.buttonBackground}>
-                            <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewPiPasscardClick}>
+                            {/* <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewPiPasscardClick}>
                                 Create new PI pass card
+                            </button> */}
+
+                            <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={toggleDropdown}>
+                                Apply for new pass card
                             </button>
+
+                            {isDropdownOpen && (
+                                <ul style={{
+                                    listStyle: 'none',
+                                    padding: 0,
+                                    margin: 0,
+                                    position: 'absolute',
+                                    background: 'white',
+                                    border: '1px solid #ccc',
+                                    zIndex: 1,
+                                    width: '250px', 
+                                    maxHeight: '100px', 
+                                    overflowY: 'auto'   
+                                }}>
+                                    {options.map((option, index) => (
+                                        <li
+                                            key={index}
+                                            onClick={() => handleSelect(option)}
+                                            style={{
+                                                padding: '4px',
+                                                cursor: 'pointer',
+                                                whiteSpace: 'normal',  
+                                                wordWrap: 'break-word' 
+                                            }}
+                                        >
+                                            {option}
+                                        </li>
+                                    ))}
+                                </ul>
+
+                            )}
+
                             {showModal && (
                                 <Modal message={modalMessage} onClose={handleCloseModal} />
                             )}
-                        </div>                        
+                        </div>
                     </div>
                 </div>
             </div>

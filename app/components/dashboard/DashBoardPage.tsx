@@ -59,6 +59,8 @@ const statusTypeMap: { [key: string]: string } = {
 
 const DashBoardPage: React.FC = () => {
 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
     const [users, setUsers] = useState<users>();
     const [loading, setLoading] = useState<boolean>(false);
     const [bookingSchedules, setBookingSchedules] = useState<bookingDetail[]>([]);
@@ -67,6 +69,21 @@ const DashBoardPage: React.FC = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [modalMessage, setModalMessage] = useState<string>('');
 
+    const options = ['Security Officer (SO)/Aviation Security Officer (AVSO)', 'Private Investigator (PI)'];
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const handleSelect = (option: string) => {
+        console.log('Selected:', option);
+        if (option == 'Private Investigator (PI)') {
+            handlePINewPasscardClick();
+        } else {
+            handleSONewPasscardClick();
+        }
+        setIsDropdownOpen(false);
+    };
 
     const formatDate = (dateString: string) => {
         if (!dateString) {
@@ -379,22 +396,46 @@ const DashBoardPage: React.FC = () => {
                         </div>
 
                         <div className={dashBoardContentstyles.primaryButton}>
-                            <button onClick={handleSONewPasscardClick}>
-                                <div className={globalStyleCss.buttonText}>Apply for new SO pass</div>
+                            <button onClick={toggleDropdown}>
+                                <div className={globalStyleCss.buttonText}>Apply for new pass card</div>
                             </button>
+
+                            {isDropdownOpen && (
+                                <ul style={{
+                                    listStyle: 'none',
+                                    padding: 0,
+                                    margin: 0,
+                                    position: 'absolute',
+                                    background: 'white',
+                                    border: '1px solid #ccc',
+                                    zIndex: 1,
+                                    width: '250px',
+                                    maxHeight: '100px',
+                                    overflowY: 'auto'
+                                }}>
+                                    {options.map((option, index) => (
+                                        <li
+                                            key={index}
+                                            onClick={() => handleSelect(option)}
+                                            style={{
+                                                padding: '4px',
+                                                cursor: 'pointer',
+                                                whiteSpace: 'normal',
+                                                wordWrap: 'break-word'
+                                            }}
+                                        >
+                                            {option}
+                                        </li>
+                                    ))}
+                                </ul>
+
+                            )}
+
                             {showModal && (
                                 <Modal message={modalMessage} onClose={handleCloseModal} />
                             )}
                         </div>
 
-                        <div className={dashBoardContentstyles.primaryButton}>
-                            <button onClick={handlePINewPasscardClick}>
-                                <div className={globalStyleCss.buttonText}>Apply for new PI pass</div>
-                            </button>
-                            {showModal && (
-                                <Modal message={modalMessage} onClose={handleCloseModal} />
-                            )}
-                        </div>
 
                     </div>
 
