@@ -57,7 +57,7 @@ const PersonalDetailsPage: React.FC = () => {
                         if (storedBookingSchedule) {
                             const parsedBookingSchedule: booking_schedules = JSON.parse(storedBookingSchedule);
                             console.log('parsedBookingSchedule:', parsedBookingSchedule);
-                            
+                            const fileName = parsedBookingSchedule?.passid + parsedBookingSchedule.nric.slice(-4);
                             setFormData({
                                 email: parsedData?.email ?? '',
                                 originalMobileno: parsedData?.mobileno ?? '',
@@ -70,6 +70,7 @@ const PersonalDetailsPage: React.FC = () => {
                                 bookingId: parsedBookingSchedule.id.toString(),
                                 id: parsedBookingSchedule.id.toString(),
                                 actionType: actionTypeValue,
+                                imageUrl: `/uploads/${fileName}.png`,
                                 cardId: parsedBookingSchedule.card_id ? parsedBookingSchedule.card_id : '',
                             });
                         }
@@ -77,6 +78,9 @@ const PersonalDetailsPage: React.FC = () => {
                         const storedNewPassResponseData = sessionStorage.getItem('createNewPassApiResponse');
                         if (storedNewPassResponseData) {
                             const parsedNewPassData: createNewPassApiResponse = JSON.parse(storedNewPassResponseData);
+                            const bookingPassId = parsedNewPassData.passId;
+                            const image4char = parsedData.nric?.slice(-4) || ''; 
+                            const fileName = bookingPassId + image4char;
                             setFormData({
                                 email: parsedData?.email ?? '',
                                 originalMobileno: parsedData?.mobileno ?? '',
@@ -90,6 +94,7 @@ const PersonalDetailsPage: React.FC = () => {
                                 actionType: actionTypeValue ? actionTypeValue : '',
                                 applicationType: '1',
                                 cardId: parsedNewPassData.cardId,
+                                imageUrl: `/uploads/${fileName}.png`,
                             });
                         }
                     }
