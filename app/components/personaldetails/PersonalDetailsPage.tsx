@@ -58,7 +58,7 @@ const PersonalDetailsPage: React.FC = () => {
                     console.log('Action type value:', typeof actionTypeValue);
                     const parsedData: userInfo = JSON.parse(storedData);
                     setUsers(parsedData);
-                    if (!!actionTypeValue && (actionTypeValue === 'Edit' 
+                    if (actionTypeValue && (actionTypeValue === 'Edit' 
                                 || actionTypeValue === 'Replace' || actionTypeValue === 'Renew')) {
                         const storedBookingSchedule = sessionStorage.getItem('bookingSchedule');
                         console.log('storedBookingSchedule:', storedBookingSchedule);

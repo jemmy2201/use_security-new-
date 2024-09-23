@@ -24,13 +24,32 @@ const ImageProcessing = () => {
         await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
         console.log('Image processing applicationType:', formData.applicationType);
         console.log('Image processing image url:', formData.imageUrl);
-        if (formData.applicationType == '2' || formData.applicationType == '3') {
-          setFormData(prevFormData => ({
-            ...prevFormData,
-            isFaceDetected: true,
-            isBgColorMatch: true,
-          }));
+        // if (formData.applicationType == '2' || formData.applicationType == '3') {
+        //   setFormData(prevFormData => ({
+        //     ...prevFormData,
+        //     isFaceDetected: true,
+        //     isBgColorMatch: true,
+        //   }));
+        // }
+
+        if (formData.imageUrl) {
+          const img = new Image();
+          img.src = formData.imageUrl;
+
+          img.onload = () => {
+            console.log("Image loaded successfully");
+            setFormData(prevFormData => ({
+              ...prevFormData,
+              isFaceDetected: true,
+              isBgColorMatch: true,
+            }));
+          };
+
+          img.onerror = () => {
+            console.error("Failed to load the image");
+          };
         }
+
       } catch (error) {
         console.error('Error loading models:', error);
       }
@@ -38,6 +57,23 @@ const ImageProcessing = () => {
 
     loadModels();
   }, []);
+
+
+  const verifyImage = (imageUrl: string) => {
+    const img = new Image();
+    img.src = imageUrl;
+
+    img.onload = () => {
+      console.log("Image loaded successfully");
+      // Perform your face and background verification here
+    };
+
+    img.onerror = () => {
+      console.error("Failed to load the image");
+    };
+  };
+
+
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

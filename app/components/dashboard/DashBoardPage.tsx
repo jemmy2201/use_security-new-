@@ -252,7 +252,7 @@ const DashBoardPage: React.FC = () => {
     };
 
 
-    const handleEditPasscardClick = async (id: bigint) => {
+    const handleDraftContinuePasscardClick = async (id: bigint) => {
         setLoading(true);
         setError(null);
         console.log('id', id);
@@ -477,7 +477,7 @@ const DashBoardPage: React.FC = () => {
                                                             href="/edit"
                                                             onClick={(e) => {
                                                                 e.preventDefault();
-                                                                handleEditPasscardClick(booking.id);
+                                                                handleDraftContinuePasscardClick(booking.id);
                                                             }}
                                                             className={globalStyleCss.blueLink}>
                                                             Continue &nbsp;
@@ -732,7 +732,7 @@ const DashBoardPage: React.FC = () => {
                                                     href="/edit"
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        handleEditPasscardClick(booking.id);
+                                                        handleDraftContinuePasscardClick(booking.id);
                                                     }}
                                                     className={globalStyleCss.blueLink}>
                                                     Continue <br></br>

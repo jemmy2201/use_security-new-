@@ -35,7 +35,6 @@ const TermsPage: React.FC = () => {
 
     const [isChecked, setIsChecked] = useState(false);
 
-    // Toggle the checkbox state
     const handleCheckboxToggle = () => {
         setIsChecked(!isChecked);
     };
@@ -132,6 +131,7 @@ const TermsPage: React.FC = () => {
                             <textarea
                                 id="scrollableTextarea"
                                 value={text}
+                                readOnly
                                 rows={6}
                                 style={{
                                     width: '100%',
