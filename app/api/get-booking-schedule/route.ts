@@ -1,16 +1,20 @@
 import { PrismaClient } from '@prisma/client';
 import { encryptDecrypt } from '../../utils/encryptDecrypt'
 import { getEncryptedNricFromSession } from '../../../lib/session';
+import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);
     const bookingIdString = url.searchParams.get('bookingId');
-    const encryptedNric = await getEncryptedNricFromSession();
+    const encryptedNric = await getEncryptedNricFromSession(request);
+    if (encryptedNric instanceof NextResponse) {
+      return encryptedNric; // Return the redirect response if necessary
+    }
     console.log('get-booking-schedule, bookingIdString:encryptedNric', bookingIdString, encryptedNric);
-    if(!bookingIdString){
+    if (!bookingIdString) {
       return new Response(JSON.stringify({ error: 'Booking Id reqquire' }), { status: 400 });
     }
 
@@ -19,7 +23,7 @@ export async function GET(request: Request) {
       where: {
         ...(encryptedNric && { nric: encryptedNric }),
         id: bookingId,
-      } as any, 
+      } as any,
     });
 
     console.log('schedules', schedules);

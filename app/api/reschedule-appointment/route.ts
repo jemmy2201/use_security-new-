@@ -7,7 +7,10 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         const { bookingId, appointmentDate, timeSlot } = body;
-        const encryptedNric = await getEncryptedNricFromSession();
+        const encryptedNric = await getEncryptedNricFromSession(req);
+        if (encryptedNric instanceof NextResponse) {
+            return encryptedNric; // Return the redirect response if necessary
+        }
         console.log('bookingId:encryptedNric', bookingId, encryptedNric);
         console.log('appointmentDate:timeSlot', appointmentDate, timeSlot);
         const [startTime, endTime] = timeSlot.split(" - ");
@@ -22,7 +25,7 @@ export async function POST(req: NextRequest) {
         const schedule = await prisma.booking_schedules.findFirst({
             where: {
                 ...(encryptedNric && { nric: encryptedNric }),
-                id:bookingId       
+                id: bookingId
             },
         });
 

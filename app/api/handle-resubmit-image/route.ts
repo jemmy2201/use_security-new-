@@ -16,7 +16,10 @@ export async function POST(req: NextRequest) {
   try {
     const { image, bookingId }: ImageRequestBody = await req.json();
     console.log('bookingId:', bookingId);
-    const encryptedNric = await getEncryptedNricFromSession();
+    const encryptedNric = await getEncryptedNricFromSession(req);
+    if (encryptedNric instanceof NextResponse) {
+      return encryptedNric; // Return the redirect response if necessary
+    }
     // Validate input
     if (!image || bookingId === undefined || encryptedNric === undefined) {
       return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });

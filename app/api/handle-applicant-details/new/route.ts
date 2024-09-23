@@ -12,7 +12,10 @@ export async function POST(req: NextRequest) {
         const { image, bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, actionType } = body;
         console.log('actionType:applicationType:cardId', actionType, applicationType, cardId);
 
-        const encryptedNric = await getEncryptedNricFromSession();
+        const encryptedNric = await getEncryptedNricFromSession(req);
+        if (encryptedNric instanceof NextResponse) {
+            return encryptedNric; // Return the redirect response if necessary
+          }
         console.log('encrypted nric:', encryptedNric);
 
         console.log('image :', image);

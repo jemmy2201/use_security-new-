@@ -12,7 +12,10 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const encryptedNric = await getEncryptedNricFromSession();
+    const encryptedNric = await getEncryptedNricFromSession(request);
+    if (encryptedNric instanceof NextResponse) {
+      return encryptedNric; // Return the redirect response if necessary
+    }
     console.log('encryptedNric:', encryptedNric);
     const activationRecord = await prisma.activation_phones.findFirst({
       where: {

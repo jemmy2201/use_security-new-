@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { getEncryptedNricFromSession } from '../../../../lib/session';
 import { booking_schedules } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
@@ -30,11 +31,13 @@ const mapToCreateNewPassApiResponse = (
   };
 };
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);
-    const encryptedNric = await getEncryptedNricFromSession();
-
+    const encryptedNric = await getEncryptedNricFromSession(request);
+    if (encryptedNric instanceof NextResponse) {
+      return encryptedNric; // Return the redirect response if necessary
+    }
     // Find records with optional filters
     const schedules = await prisma.booking_schedules.findMany({
       where: {

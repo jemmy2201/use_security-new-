@@ -8,7 +8,10 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         const { appointmentDate, timeSlot, bookingId } = body;
-        const encryptedNric = await getEncryptedNricFromSession();
+        const encryptedNric = await getEncryptedNricFromSession(req);
+        if (encryptedNric instanceof NextResponse) {
+            return encryptedNric; // Return the redirect response if necessary
+        }
         console.log('bookingId:encryptedNric', bookingId, encryptedNric);
         console.log('timeSlot:appointmentDate', timeSlot, appointmentDate);
 

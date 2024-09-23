@@ -8,7 +8,10 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const { bookingId, mobileno, email, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso } = body;
 
-        const encryptedNric = await getEncryptedNricFromSession();
+        const encryptedNric = await getEncryptedNricFromSession(req);
+        if (encryptedNric instanceof NextResponse) {
+            return encryptedNric; // Return the redirect response if necessary
+          }
         if (!encryptedNric || !mobileno) {
             return NextResponse.json(
                 { error: 'nric / fin, application type are required' },

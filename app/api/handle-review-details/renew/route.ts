@@ -8,7 +8,10 @@ export async function POST(req: NextRequest) {
         console.log('handle-review-details, renew');
         const body = await req.json();
         const { bookindId, actionType, applicationType } = body;
-        const encryptedNric = await getEncryptedNricFromSession();
+        const encryptedNric = await getEncryptedNricFromSession(req);
+        if (encryptedNric instanceof NextResponse) {
+            return encryptedNric; // Return the redirect response if necessary
+        }
         console.log('actionType:applicationType:encrypted nric', actionType, bookindId, encryptedNric);
 
         if (!encryptedNric || !bookindId || !applicationType) {

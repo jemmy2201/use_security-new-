@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { getEncryptedNricFromSession } from '../../../../lib/session';
+import { NextRequest } from 'next/server';
+
 const prisma = new PrismaClient();
 
 
 
 // POST request handler for sending SMS
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     try {
         const { mobile, message } = await request.json();
 
@@ -25,7 +27,10 @@ export async function POST(request: Request) {
         // const result = await response.text();
         // console.log('SMS API Response:', result);
 
-        const encryptedNric = await getEncryptedNricFromSession();
+        const encryptedNric = await getEncryptedNricFromSession(request);
+        if (encryptedNric instanceof NextResponse) {
+            return encryptedNric; // Return the redirect response if necessary
+          }
         const activationRecord = await prisma.activation_phones.create({
             data: {
                 activation: otpNumber.toString(),

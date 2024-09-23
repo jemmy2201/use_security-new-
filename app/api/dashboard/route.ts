@@ -1,30 +1,33 @@
 import { PrismaClient } from '@prisma/client';
 import { getEncryptedNricFromSession } from '../../../lib/session';
+import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);
-    const encryptedNric = await getEncryptedNricFromSession();
-
+    const encryptedNric = await getEncryptedNricFromSession(request);
+    if (encryptedNric instanceof NextResponse) {
+      return encryptedNric; 
+    }
     // Find records with optional filters
     const schedules = await prisma.booking_schedules.findMany({
       where: {
-        ...(encryptedNric && { nric: encryptedNric }), 
+        ...(encryptedNric && { nric: encryptedNric }),
         AND: [
           {
-              OR: [
-                  { Status_app: '0' },
-                  { Status_app: '1' },
-                  { Status_app: '2' },
-                  { Status_app: '3' },
-                  { Status_app: '4' },
-                  { Status_app: '5' },
-                  { Status_app: '6' },
-              ]
+            OR: [
+              { Status_app: '0' },
+              { Status_app: '1' },
+              { Status_app: '2' },
+              { Status_app: '3' },
+              { Status_app: '4' },
+              { Status_app: '5' },
+              { Status_app: '6' },
+            ]
           }
-      ],
+        ],
       },
     });
     console.log('total pass cards: ', schedules.length);
@@ -44,6 +47,6 @@ export async function GET(request: Request) {
     return new Response(JSON.stringify({ error: 'Error fetching schedules' }), { status: 500 });
 
   } finally {
-    await prisma.$disconnect(); 
+    await prisma.$disconnect();
   }
 }

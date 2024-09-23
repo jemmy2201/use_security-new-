@@ -2,6 +2,8 @@ import 'server-only'
 import { SignJWT, jwtVerify, JWTPayload } from 'jose'
 import { cookies } from 'next/headers'
 import encryptDecrypt from '@/utils/encryptDecrypt';
+import { NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 export interface SessionPayload extends JWTPayload {
     userId?: string;
@@ -21,8 +23,17 @@ export async function encrypt(payload: SessionPayload) {
 }
 
 export async function decrypt(session: string | undefined = '') {
+
+    console.log('decrypt: session:', session);
+    const { payload } = await jwtVerify(session, encodedKey, {
+        algorithms: ['HS256'],
+    })
+    return payload
+
+}
+
+export async function decryptSession(session: string | undefined = '') {
     try {
-        //console.log('session:', session);
         const { payload } = await jwtVerify(session, encodedKey, {
             algorithms: ['HS256'],
         })
@@ -30,6 +41,7 @@ export async function decrypt(session: string | undefined = '') {
     } catch (error) {
         console.log('Failed to verify session')
     }
+
 }
 
 export async function createSession(userId: string, userToken: string) {
@@ -68,9 +80,37 @@ export function deleteSession() {
     cookies().delete('session')
 }
 
-export async function getEncryptedNricFromSession() {
+export async function getEncryptedNricFromSession(req: NextRequest) {
     const cookie = cookies().get('session')?.value
-    const session = await decrypt(cookie)
+
+    if (!cookie) {
+        // If there's no cookie, redirect to the login page
+        return NextResponse.redirect(new URL('/signin', req.nextUrl.origin));
+    }
+    console.log('calling decryptdecryptdecryptdecryptdecryptdecryptdecrypt');
+    console.log('calling decryptdecryptdecryptdecryptdecryptdecryptdecrypt');
+
+    console.log('calling decryptdecryptdecryptdecryptdecryptdecryptdecrypt');
+
+    console.log('calling decryptdecryptdecryptdecryptdecryptdecryptdecrypt');
+
+    console.log('calling decryptdecryptdecryptdecryptdecryptdecryptdecrypt');
+
+    console.log('calling decryptdecryptdecryptdecryptdecryptdecryptdecrypt');
+
+    let session;
+    try {
+        session = await decrypt(cookie);
+    } catch (error) {
+        console.error('Decryption failed:');
+        console.error('Decryption failed:');
+        console.error('Decryption failed:');
+        console.error('Decryption failed:');
+        console.error('Decryption failed:', error);
+        console.error('Decryption failed:', error);
+        // Redirect to the login page if decryption fails
+        return NextResponse.redirect(new URL('/signin', req.nextUrl.origin));
+    }
     console.log('session user id:', session?.userId);
     return encryptDecrypt(session?.userId as string, 'encrypt');
 }

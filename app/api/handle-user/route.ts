@@ -7,8 +7,11 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         const { mobileno, email, actionType } = body;
-        const encryptedNric = await getEncryptedNricFromSession();
-        console.log('handle-user, actionType:',actionType);
+        const encryptedNric = await getEncryptedNricFromSession(req);
+        if (encryptedNric instanceof NextResponse) {
+            return encryptedNric; // Return the redirect response if necessary
+        }
+        console.log('handle-user, actionType:', actionType);
         if (!encryptedNric || !mobileno || !email) {
             return NextResponse.json(
                 { error: 'nric / fin, mobile, and email are required' },
@@ -18,7 +21,7 @@ export async function POST(req: NextRequest) {
 
         const userRecord = await prisma.users.findFirst({
             where: {
-                ...(encryptedNric && { nric: encryptedNric }), 
+                ...(encryptedNric && { nric: encryptedNric }),
             },
         });
 
