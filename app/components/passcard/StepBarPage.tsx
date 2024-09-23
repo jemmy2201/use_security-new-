@@ -231,6 +231,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
 
     const saveApplicantDetails = async () => {
         try {
+
             console.log('application type: ', formData.applicationType);
             console.log('saveReviewDetails booking id', formData.bookingId);
             console.log('saveReviewDetails id', formData.id);
@@ -359,6 +360,22 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
         }
 
         if (activeStep == 1) {
+            if (!formData.applicationType) {
+                alert('Application type is required.');
+                return;
+            }
+            if (!formData.image && !formData.imageUrl) {
+                alert('Photo is required.');
+                return;
+            }
+            if (!formData.isFaceDetected || !formData.isBgColorMatch) {
+                alert('There is problem with photo. Please upload again correct photo.');
+                return;
+            }
+            if (!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta && !formData.trRtt && !formData.trXray) {
+                alert('Training record is required');
+                return;
+            }
             await saveUserDetails();
             await saveApplicantDetails();
             toast.success('Your draft has been saved', {

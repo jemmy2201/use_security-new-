@@ -75,7 +75,7 @@ const ImageProcessing = () => {
           console.log('image file name:', fileName);
           setFormData(prevFormData => ({
             ...prevFormData,
-            ['image']: img,
+            ['image']: resizedImage,
             ['isFaceDetected']: isFaceDetected,
             ['isBgColorMatch']: isBgColorMatch,
             ['imageUrl']: fileName,
