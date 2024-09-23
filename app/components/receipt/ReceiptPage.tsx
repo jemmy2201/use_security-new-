@@ -7,10 +7,17 @@ import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { booking_schedules } from '@prisma/client';
-import { users } from '@prisma/client';
 
 interface CompletePageProps {
     bookingId: string;
+}
+
+export interface userInfo {
+    name?: string;
+    nric?: string;
+    textNric?: string;
+    email?: string;
+    mobileno?: string;
 }
 
 const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
@@ -19,7 +26,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [bookingSchedule, setBookingSchedule] = useState<booking_schedules>();
-    const [users, setUsers] = useState<users>();
+    const [users, setUsers] = useState<userInfo>();
 
     const formatDate = (dateString: string) => {
         const [day, month, year] = dateString.split('-').map(Number); // Split the date and convert to numbers
@@ -51,7 +58,8 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
         if (storedData) {
             const actionTypeValue = sessionStorage.getItem('actionTypeValue');
             console.log('Action type value:', typeof actionTypeValue);
-            const parsedData: users = JSON.parse(storedData);
+            const parsedData: userInfo = JSON.parse(storedData);
+            console.log('parsedData userinfo: ', parsedData);
             setUsers(parsedData);
         }
 
@@ -182,7 +190,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                             <div className={globalStyleCss.regularBold}> NRIC / FIN no.</div>
                         </span>
                         <span className={receiptContentstyles.boxWidth}>
-                            <div className={globalStyleCss.regular}>  {users?.nric}</div>
+                            <div className={globalStyleCss.regular}>  {users?.textNric}</div>
                         </span>
                     </div>
                 </div>

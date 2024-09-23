@@ -6,7 +6,6 @@ import rescheduleContentstyles from './RescheduleContent.module.css';
 import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import { booking_schedules as bookingDetail } from '@prisma/client';
-import { users as users } from '@prisma/client';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -17,6 +16,14 @@ type DisabledDatesResponse = string[]; // Array of ISO date strings
 
 interface ReschedulePageProps {
     bookingId: string;
+}
+
+export interface userInfo {
+    name?: string;
+    nric?: string;
+    textNric?: string;
+    email?: string;
+    mobileno?: string;
 }
 
 const buttonTexts = [
@@ -73,7 +80,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 console.log('no user detail found hence redirecting to firsttime page');
                 router.push('/firsttime');
             }
-            const dataUser: users = await responseUser.json();
+            const dataUser: userInfo = await responseUser.json();
 
             sessionStorage.setItem('users', JSON.stringify(dataUser));
             console.log('data from api', dataUser);

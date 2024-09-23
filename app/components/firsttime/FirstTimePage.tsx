@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import firstTimeContentstyles from './FirstTimeContent.module.css';
-import { users as users } from '@prisma/client';
 import FooterPageLink from '../footer/FooterPage'
 import HeaderPageLink from '../header/HeaderPage'
 import Modal from './Modal';
@@ -19,13 +18,21 @@ export interface createNewPassApiResponse {
     cardId: string;
 }
 
+export interface userInfo {
+    name?: string;
+    nric?: string;
+    textNric?: string;
+    email?: string;
+    mobileno?: string;
+}
+
 const FirstTimePage: React.FC = () => {
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
-    const [users, setUsers] = useState<users>();
+    const [users, setUsers] = useState<userInfo>();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [modalMessage, setModalMessage] = useState<string>('');
 
@@ -127,7 +134,7 @@ const FirstTimePage: React.FC = () => {
         const storedUserData = sessionStorage.getItem('users');
         if (storedUserData) {
             try {
-                const parsedUserData: users = JSON.parse(storedUserData);
+                const parsedUserData: userInfo = JSON.parse(storedUserData);
                 setUsers(parsedUserData);
             } catch (err) {
                 setError('Failed to parse user data');

@@ -27,7 +27,6 @@ const BookAppointmentPage: React.FC = () => {
 
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [users, setUsers] = useState<users>();
     const [error, setError] = useState<string | null>(null);
 
     // Array of button texts

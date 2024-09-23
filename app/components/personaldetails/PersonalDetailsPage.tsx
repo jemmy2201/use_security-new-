@@ -20,9 +20,18 @@ export interface createNewPassApiResponse {
     cardId: string;
 }
 
+export interface userInfo {
+    name?: string;
+    nric?: string;
+    textNric?: string;
+    email?: string;
+    mobileno?: string;
+}
+
 const PersonalDetailsPage: React.FC = () => {
 
     const { formData, setFormData } = useFormContext();
+    const [users, setUsers] = useState<userInfo>();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
@@ -36,7 +45,6 @@ const PersonalDetailsPage: React.FC = () => {
 
     const router = useRouter();
 
-    const [users, setUsers] = useState<users>();
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -48,7 +56,7 @@ const PersonalDetailsPage: React.FC = () => {
 
                     const actionTypeValue = sessionStorage.getItem('actionTypeValue');
                     console.log('Action type value:', typeof actionTypeValue);
-                    const parsedData: users = JSON.parse(storedData);
+                    const parsedData: userInfo = JSON.parse(storedData);
                     setUsers(parsedData);
                     if (!!actionTypeValue && (actionTypeValue === 'Edit' 
                                 || actionTypeValue === 'Replace' || actionTypeValue === 'Renew')) {
@@ -64,7 +72,7 @@ const PersonalDetailsPage: React.FC = () => {
                                 mobileno: parsedData?.mobileno ?? '',
                                 name: parsedData?.name ?? '',
                                 nric: parsedData?.nric ?? '',
-                                nricText: 'SXXXXXXXA',
+                                nricText: parsedData.textNric,
                                 applicationType: parsedBookingSchedule.app_type,
                                 passId: parsedBookingSchedule.passid,
                                 bookingId: parsedBookingSchedule.id.toString(),
@@ -87,7 +95,7 @@ const PersonalDetailsPage: React.FC = () => {
                                 mobileno: parsedData?.mobileno ?? '',
                                 name: parsedData?.name ?? '',
                                 nric: parsedData?.nric ?? '',
-                                nricText: 'SXXXXXXXA',
+                                nricText: parsedData.textNric,
                                 passId: parsedNewPassData.passId,
                                 id: parsedNewPassData.recordId,
                                 bookingId: parsedNewPassData.recordId,

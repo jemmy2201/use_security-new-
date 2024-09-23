@@ -7,9 +7,16 @@ import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import stepBarFooterStyle from './StepBarFooter.module.css'
 import { booking_schedules as bookingDetail } from '@prisma/client';
-import { users as users } from '@prisma/client';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { logout } from '@/actions/auth';
+
+export interface userInfo {
+    name?: string;
+    nric?: string;
+    textNric?: string;
+    email?: string;
+    mobileno?: string;
+}
 
 const TermsPage: React.FC = () => {
 
@@ -56,7 +63,7 @@ const TermsPage: React.FC = () => {
                     console.log('no user detail found hence redirecting to firsttime page');
                     router.push('/firsttime');
                 }
-                const dataUser: users = await responseUser.json();
+                const dataUser: userInfo = await responseUser.json();
 
                 sessionStorage.setItem('users', JSON.stringify(dataUser));
                 // Process the data or store it in state/context

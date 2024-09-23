@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dashBoardContentstyles from './DashBoardContent.module.css';
 import { booking_schedules, booking_schedules as bookingDetail } from '@prisma/client';
-import { users as users } from '@prisma/client';
 import { NEW, REPLACEMENT, RENEWAL } from '../../constant/constant';
 import { SO_APP, AVSO_APP, PI_APP } from '../../constant/constant';
 import { DRAFT, PROCESSING, READY_FOR_ID_CARD_PRINTING, ID_CARD_READY_FOR_COLLECTION, RESUBMISSION, RESUBMITTED, COMPLETED } from '../../constant/constant';
@@ -25,6 +24,15 @@ export interface createNewPassApiResponse {
     recordId: string;
     cardId: string;
 }
+
+export interface userInfo {
+    name?: string;
+    nric?: string;
+    textNric?: string;
+    email?: string;
+    mobileno?: string;
+}
+
 
 const cardTypeMap: { [key: string]: string } = {
     [SO_APP]: 'Security Officer (SO)',
@@ -61,7 +69,7 @@ const DashBoardPage: React.FC = () => {
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-    const [users, setUsers] = useState<users>();
+    const [users, setUsers] = useState<userInfo>();
     const [loading, setLoading] = useState<boolean>(false);
     const [bookingSchedules, setBookingSchedules] = useState<bookingDetail[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -116,7 +124,7 @@ const DashBoardPage: React.FC = () => {
             if (!responseMyInfo.ok) {
                 throw new Error('Network response was not ok');
             }
-            const dataMyInfo: users = await responseMyInfo.json();
+            const dataMyInfo: userInfo = await responseMyInfo.json();
             router.push('/myinfoterms');
 
 
@@ -146,7 +154,7 @@ const DashBoardPage: React.FC = () => {
             if (!responseMyInfo.ok) {
                 throw new Error('Network response was not ok');
             }
-            const dataMyInfo: users = await responseMyInfo.json();
+            const dataMyInfo: userInfo = await responseMyInfo.json();
             router.push('/myinfoterms');
 
         } catch (err) {
@@ -253,7 +261,7 @@ const DashBoardPage: React.FC = () => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            const data: users = await response.json();
+            const data: userInfo = await response.json();
             sessionStorage.setItem('users', JSON.stringify(data));
             // Process the data or store it in state/context
             console.log('data from api', data);
@@ -287,7 +295,7 @@ const DashBoardPage: React.FC = () => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            const data: users = await response.json();
+            const data: userInfo = await response.json();
             sessionStorage.setItem('users', JSON.stringify(data));
             // Process the data or store it in state/context
             console.log('data from api', data);
@@ -319,7 +327,7 @@ const DashBoardPage: React.FC = () => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            const data: users = await response.json();
+            const data: userInfo = await response.json();
             sessionStorage.setItem('users', JSON.stringify(data));
             // Process the data or store it in state/context
             console.log('data from api', data);
@@ -349,7 +357,7 @@ const DashBoardPage: React.FC = () => {
         const storedUserData = sessionStorage.getItem('users');
         if (storedUserData) {
             try {
-                const parsedUserData: users = JSON.parse(storedUserData);
+                const parsedUserData: userInfo = JSON.parse(storedUserData);
                 setUsers(parsedUserData);
             } catch (err) {
                 setError('Failed to parse user data');

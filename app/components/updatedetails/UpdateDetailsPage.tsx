@@ -6,7 +6,6 @@ import updateDetailsContentstyles from './UpdateDetailsContent.module.css';
 import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import { booking_schedules as bookingDetail } from '@prisma/client';
-import { users as users } from '@prisma/client';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { useFormContext } from '.././FormContext';
 import { booking_schedules } from '@prisma/client';
@@ -19,6 +18,14 @@ interface UpdateDetailsPageProps {
 type CheckboxState = {
     [key: string]: boolean;
 };
+
+export interface userInfo {
+    name?: string;
+    nric?: string;
+    textNric?: string;
+    email?: string;
+    mobileno?: string;
+}
 
 const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
     console.log('UpdateDetailsPage Booking ID:', bookingId);
@@ -71,7 +78,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                 console.log('no user detail found hence redirecting to firsttime page');
                 router.push('/firsttime');
             }
-            const dataUser: users = await responseUser.json();
+            const dataUser: userInfo = await responseUser.json();
 
             sessionStorage.setItem('users', JSON.stringify(dataUser));
             console.log('data from api', dataUser);
@@ -177,7 +184,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                 if (!responseMyInfo.ok) {
                     throw new Error('Network response was not ok');
                 }
-                const dataMyInfo: users = await responseMyInfo.json();
+                const dataMyInfo: userInfo = await responseMyInfo.json();
 
                 setFormData({
                     email: dataMyInfo?.email ?? '',
