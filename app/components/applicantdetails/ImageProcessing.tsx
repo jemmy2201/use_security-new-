@@ -22,6 +22,7 @@ const ImageProcessing = () => {
         await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
         await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
         await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+        await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
         console.log('Image processing applicationType:', formData.applicationType);
         console.log('Image processing image url:', formData.imageUrl);
         // if (formData.applicationType == '2' || formData.applicationType == '3') {
@@ -57,21 +58,6 @@ const ImageProcessing = () => {
 
     loadModels();
   }, []);
-
-
-  const verifyImage = (imageUrl: string) => {
-    const img = new Image();
-    img.src = imageUrl;
-
-    img.onload = () => {
-      console.log("Image loaded successfully");
-      // Perform your face and background verification here
-    };
-
-    img.onerror = () => {
-      console.error("Failed to load the image");
-    };
-  };
 
 
 
@@ -144,33 +130,49 @@ const ImageProcessing = () => {
 
   const detectSpectacles = async (imageElement: HTMLImageElement) => {
     try {
-      const detections = await faceapi.detectAllFaces(imageElement).withFaceLandmarks();
+      await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+      await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+  
+      const detections = await faceapi.detectAllFaces(imageElement, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
       console.log('Glass detections:', detections);
-
+  
       if (detections.length > 0) {
         const landmarks = detections[0].landmarks;
+        console.log('Landmarks:', landmarks);
+  
         const leftEye = landmarks.getLeftEye();
         const rightEye = landmarks.getRightEye();
         const nose = landmarks.getNose();
-
+  
         if (leftEye.length > 0 && rightEye.length > 0 && nose.length > 0) {
           const eyeDistance = Math.hypot(leftEye[3].x - rightEye[3].x, leftEye[3].y - rightEye[3].y);
           const noseWidth = Math.hypot(nose[2].x - nose[1].x, nose[2].y - nose[1].y);
-
-          // Example refined heuristic: Adjust these values based on actual data
-          const isGlassesDetected = eyeDistance < 40 && noseWidth > 20;
-
-          // Additional checks can be added here
+  
+          console.log('Eye Distance:', eyeDistance, 'Nose Width:', noseWidth);
+  
+          // Updated heuristic based on your data
+          let isGlassesDetected = false;
+  
+          if (eyeDistance > 40) {
+            // Strong likelihood of spectacles if eye distance is large enough
+            isGlassesDetected = noseWidth > 8; // Refine based on nose width
+          } else if (eyeDistance < 40) {
+            // Lower likelihood, but nose width can refine the decision
+            isGlassesDetected = noseWidth > 6.5 && noseWidth < 8.5; // Allow some leeway here
+          }
+  
           console.log('Glasses detected:', isGlassesDetected);
           return isGlassesDetected;
         }
       }
       return false;
     } catch (error) {
-      console.error('Error detecting spectacles:', error);
+      console.error('Error detecting spectacles:', error.message);
       return false;
     }
   };
+  
+
 
   const verifyBackgroundColor = (image: HTMLImageElement, targetColor: string) => {
     const canvas = document.createElement('canvas');
@@ -198,9 +200,8 @@ const ImageProcessing = () => {
       const b = data[i + 2];
       const a = data[i + 3];
 
-      if (a > 0) { // Consider only non-transparent pixels
+      if (a > 0) { 
         totalPixelCount++;
-        // Adjust the color tolerance as needed
         if (Math.abs(r - targetRGB.r) < 30 && Math.abs(g - targetRGB.g) < 30 && Math.abs(b - targetRGB.b) < 30) {
           whitePixelCount++;
         }
@@ -209,9 +210,8 @@ const ImageProcessing = () => {
 
     // Calculate the percentage of white pixels
     const whitePixelPercentage = (whitePixelCount / totalPixelCount) * 100;
-
-    // Adjust percentage threshold based on your requirement
-    return whitePixelPercentage > 40; // This threshold can be adjusted
+    console.log('whitePixelPercentage:', whitePixelPercentage);
+    return whitePixelPercentage > 40; 
   };
 
   const checkBrightnessContrast = (image: HTMLImageElement) => {
@@ -292,7 +292,7 @@ const ImageProcessing = () => {
             )}
 
             {spectacleDetected ? (
-              <p>Eyewear has been detected</p>
+              <p>. Eyewear has been detected</p>
             ) : (
               <p></p>
             )}
