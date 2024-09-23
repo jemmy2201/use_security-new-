@@ -23,6 +23,7 @@ const ImageProcessing = () => {
         await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
         await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
         console.log('Image processing applicationType:', formData.applicationType);
+        console.log('Image processing image url:', formData.imageUrl);
         if (formData.applicationType == '2' || formData.applicationType == '3') {
           setFormData(prevFormData => ({
             ...prevFormData,
@@ -83,7 +84,9 @@ const ImageProcessing = () => {
           console.log('isFaceDetected', isFaceDetected);
           console.log('isBgColorMatch', isBgColorMatch);
           if (isBgColorMatch && isFaceDetected) {
-            await sendImageToAPI(resizedImage, formData.nric ? formData.nric : '', formData.applicationType ? formData.applicationType : '');
+            // await sendImageToAPI(resizedImage, formData.nric ? formData.nric : '', 
+            //     formData.applicationType ? formData.applicationType : '', 
+            //     formData.bookingId ? formData.bookingId : '');
           }
         } catch (error) {
           console.error('Error processing image:', error);
@@ -192,10 +195,11 @@ const ImageProcessing = () => {
     return image.src;
   };
 
-  const sendImageToAPI = async (image: string, nric: string, applicationType: string) => {
+  const sendImageToAPI = async (image: string, nric: string, applicationType: string, bookingId: string) => {
     try {
       const response = await axios.post('/api/handle-app-dtl-image', {
         image,
+        bookingId,
       });
 
       console.log('API Response:', response.data);
@@ -265,7 +269,19 @@ const ImageProcessing = () => {
       <div className={applicantDetailsContentstyles.photoContainer}>
         <div className={applicantDetailsContentstyles.uploadBox}>
           <div className={applicantDetailsContentstyles.uploadPhotoContainerBox}>
-            {formData.imageUrl && <img src={formData.imageUrl} alt="Processed" />}
+
+            {formData.image ? (
+              <>
+                {formData.image && <img src={formData.image} />}
+              </>
+            ) : (
+              <>
+                {formData.imageUrl && <img src={formData.imageUrl} />}
+              </>
+            )
+
+            }
+
           </div>
 
           <div className={globalStyleCss.regular}>

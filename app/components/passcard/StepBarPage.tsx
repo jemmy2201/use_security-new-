@@ -120,6 +120,10 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 alert('Please tick the declaration');
                 return;
             }
+            await saveUserDetails();
+            await saveApplicantDetails();
+            await saveReviewDetails();
+            
         }
 
         if (activeStep == 4) {
@@ -219,10 +223,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             const result = await response.json();
             console.log("Personal Details: Draft saved successfully:", result);
             console.log('showing toast message');
-            toast.success('Your draft has been saved', {
-                position: 'top-right',
-                autoClose: 10000,
-            });
+
         } catch (error) {
             console.error("Personal Details: Error saving draft:", error);
         }
@@ -251,6 +252,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                         trXray: formData.trXray ? 'YES' : '',
                         trAvso: formData.trAvso ? 'YES' : '',
                         actionType: actionType,
+                        image: formData.image,
                     }),
                 });
 
@@ -259,10 +261,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 }
                 const result = await response.json();
                 console.log("Applicant Details: Draft saved successfully:", result);
-                toast.success('Your draft has been saved', {
-                    position: 'top-right',
-                    autoClose: 10000,
-                });
             }
 
             if (formData.applicationType == '2') {
@@ -291,10 +289,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 }
                 const result = await response.json();
                 console.log("Applicant Details: Draft saved successfully:", result);
-                toast.success('Your draft has been saved', {
-                    position: 'top-right',
-                    autoClose: 10000,
-                });
             }
 
             if (formData.applicationType == '3') {
@@ -323,10 +317,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 }
                 const result = await response.json();
                 console.log("Applicant Details: Draft saved successfully:", result);
-                toast.success('Your draft has been saved', {
-                    position: 'top-right',
-                    autoClose: 10000,
-                });
             }
 
         } catch (error) {
@@ -354,10 +344,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             }
             const result = await response.json();
             console.log("Review Details: Draft saved successfully:", result);
-            toast.success('Your draft has been saved', {
-                position: 'top-right',
-                autoClose: 10000,
-            });
         } catch (error) {
             console.error("Review Details: Error saving draft:", error);
         }
@@ -366,17 +352,29 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
     const handleSaveDraft = async () => {
         if (activeStep == 0) {
             saveUserDetails();
+            toast.success('Your draft has been saved', {
+                position: 'top-right',
+                autoClose: 10000,
+            });
         }
 
         if (activeStep == 1) {
             await saveUserDetails();
             await saveApplicantDetails();
+            toast.success('Your draft has been saved', {
+                position: 'top-right',
+                autoClose: 10000,
+            });
         }
 
         if (activeStep == 2) {
             await saveUserDetails();
             await saveApplicantDetails();
             await saveReviewDetails();
+            toast.success('Your draft has been saved', {
+                position: 'top-right',
+                autoClose: 10000,
+            });
         }
     };
 

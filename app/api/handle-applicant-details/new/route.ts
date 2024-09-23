@@ -1,25 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
 import { getEncryptedNricFromSession } from "../../../../lib/session";
+import fs from 'fs';
+import path from 'path';
 
 const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
         console.log('handle-applicant-details, new');
         const body = await req.json();
-        const { bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, actionType } = body;
+        const { image, bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, actionType } = body;
         console.log('actionType:applicationType:cardId', actionType, applicationType, cardId);
 
         const encryptedNric = await getEncryptedNricFromSession();
         console.log('encrypted nric:', encryptedNric);
 
-
+        console.log('image :', image);
         // Validate required fields
         if (!encryptedNric || !applicationType || !cardId) {
             return NextResponse.json(
                 { error: 'nric / fin, cardId and application type are required' },
                 { status: 400 }
             );
+        }
+        
+        const base64Data = image.replace(/^data:image\/\w+;base64,/, '');
+        const buffer = Buffer.from(base64Data, 'base64');
+    
+        // Define a path to save the image
+        const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+        if (!fs.existsSync(uploadsDir)) {
+          fs.mkdirSync(uploadsDir, { recursive: true });
         }
 
         const schedule = await prisma.booking_schedules.findFirst({
@@ -73,6 +84,13 @@ export async function POST(req: NextRequest) {
                 },
             });
             console.log('Schedule updated:', updatedSchedule);
+
+
+            const fileName = schedule?.passid + encryptedNric.slice(-4);
+            console.log('file name:', fileName);
+            const filePath = path.join(uploadsDir, fileName + '.png');
+            fs.writeFileSync(filePath, buffer);
+
             const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
             return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });
 
