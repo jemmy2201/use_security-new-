@@ -91,21 +91,7 @@ const ApplicantDetailsPage: React.FC = () => {
     useEffect(() => {
         // Set the selected option from formData if available
         console.log('ApplicantDetailsPage: Action Type', formData.actionType);
-        if (formData.applicationType) {
-            setSelectedOption(formData.applicationType);
-            console.log('form data', formData);
-            setCheckboxes({
-                trRtt: formData?.trRtt || false,
-                trCsspb: formData?.trCsspb || false,
-                trCctc: formData?.trCctc || false,
-                trHcta: formData?.trHcta || false,
-                trXray: formData?.trXray || false,
-                trAvso: formData?.trAvso || false,
-                trNota: formData?.trNota || false,
-                trObse: formData?.trObse || false,
-                trSsm: formData?.trSsm || false,
-            });
-        }
+
 
         const storedBookingData = sessionStorage.getItem('bookingSchedule');
         if (storedBookingData) {

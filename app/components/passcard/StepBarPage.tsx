@@ -206,20 +206,23 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
 
     const saveUserDetails = async () => {
         try {
+            const payload = {
+                nric: formData.nric,
+                mobileno: formData.mobileno,
+                email: formData.email,
+                actionType: actionType,
+            };
+            console.log('payload', payload)
             const response = await fetch('/api/handle-user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    nric: formData.nric,
-                    mobileno: formData.mobileno,
-                    email: formData.email,
-                    actionType: actionType,
-                }),
+                body: JSON.stringify(payload),
             });
 
-            if (!response.ok) {
+            if (!response.ok && response.status === 401) {
+                router.push('/signin');
                 throw new Error('Personal Details: Failed to save draft');
             }
 
@@ -263,9 +266,11 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                     }),
                 });
 
-                if (!response.ok) {
+                if (!response.ok && response.status === 401) {
+                    router.push('/signin');
                     throw new Error('Applicant Details: Failed to save draft');
                 }
+
                 const result = await response.json();
                 console.log("Applicant Details: Draft saved successfully:", result);
             }
@@ -294,9 +299,11 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                     }),
                 });
 
-                if (!response.ok) {
+                if (!response.ok && response.status === 401) {
+                    router.push('/signin');
                     throw new Error('Applicant Details: Failed to save draft');
                 }
+
                 const result = await response.json();
                 console.log("Applicant Details: Draft saved successfully:", result);
             }
@@ -325,7 +332,8 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                     }),
                 });
 
-                if (!response.ok) {
+                if (!response.ok && response.status === 401) {
+                    router.push('/signin');
                     throw new Error('Applicant Details: Failed to save draft');
                 }
                 const result = await response.json();
@@ -351,10 +359,12 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                     applicationType: formData.applicationType,
                 }),
             });
-
-            if (!response.ok) {
-                throw new Error('Applicant Details: Failed to save draft');
+            
+            if (!response.ok && response.status === 401) {
+                router.push('/signin');
+                throw new Error('Review Details: Failed to save draft');
             }
+
             const result = await response.json();
             console.log("Review Details: Draft saved successfully:", result);
         } catch (error) {
@@ -363,6 +373,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
     }
 
     const handleSaveDraft = async () => {
+        console.log('activeStep', activeStep);
         if (activeStep == 0) {
             saveUserDetails();
             toast.success('Your draft has been saved', {
@@ -464,7 +475,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                             <div className={mainPageModule.linkBox}>
                                 <button type='button' onClick={handleBack} style={{ display: 'inline-flex', alignItems: 'center' }}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <g clip-path="url(#clip0_1433_2277)">
+                                        <g clipPath="url(#clip0_1433_2277)">
                                             <path d="M7.825 13L13.425 18.6L12 20L4 12L12 4L13.425 5.4L7.825 11H20V13H7.825Z" fill="#546E7A" />
                                         </g>
                                         <defs>
@@ -489,7 +500,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                             <div className={mainPageModule.linkBox}>
                                 <button type='button' onClick={handleBack} style={{ display: 'inline-flex', alignItems: 'center' }}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <g clip-path="url(#clip0_1433_2277)">
+                                        <g clipPath="url(#clip0_1433_2277)">
                                             <path d="M7.825 13L13.425 18.6L12 20L4 12L12 4L13.425 5.4L7.825 11H20V13H7.825Z" fill="#546E7A" />
                                         </g>
                                         <defs>
@@ -513,7 +524,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                             <div className={mainPageModule.linkBox}>
                                 <button type='button' onClick={handleBack} style={{ display: 'inline-flex', alignItems: 'center' }}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <g clip-path="url(#clip0_1433_2277)">
+                                        <g clipPath="url(#clip0_1433_2277)">
                                             <path d="M7.825 13L13.425 18.6L12 20L4 12L12 4L13.425 5.4L7.825 11H20V13H7.825Z" fill="#546E7A" />
                                         </g>
                                         <defs>

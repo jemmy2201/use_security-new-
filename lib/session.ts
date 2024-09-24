@@ -4,6 +4,7 @@ import { cookies } from 'next/headers'
 import encryptDecrypt from '@/utils/encryptDecrypt';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
+import { redirect } from "next/navigation";
 
 export interface SessionPayload extends JWTPayload {
     userId?: string;
@@ -84,6 +85,21 @@ export async function updateSession() {
     })
 }
 
+export async function isJwtTokenExpired(session: any) {
+    // console.log('===========session', session);
+    // console.log('===========session:exp', session.exp);
+
+    return !session;
+
+    // const exp = session.exp;
+    
+    // console.log('=======exp:', exp);
+
+    // const currentTime = Math.floor(Date.now() / 1000);
+    // console.log('===========exp cond', exp && exp < currentTime);
+    // return !(exp && exp < currentTime)
+}
+
 export function deleteSession() {
     cookies().delete('session')
 }
@@ -92,34 +108,17 @@ export async function getEncryptedNricFromSession(req: NextRequest) {
     const cookie = cookies().get('session')?.value
 
     if (!cookie) {
-        // If there's no cookie, redirect to the login page
-        return NextResponse.redirect(new URL('/signin', req.nextUrl.origin));
+        return NextResponse.json({ error: 'Error-01' }, { status: 401 });
     }
-    console.log('calling decryptdecryptdecryptdecryptdecryptdecryptdecrypt');
-    console.log('calling decryptdecryptdecryptdecryptdecryptdecryptdecrypt');
-
-    console.log('calling decryptdecryptdecryptdecryptdecryptdecryptdecrypt');
-
-    console.log('calling decryptdecryptdecryptdecryptdecryptdecryptdecrypt');
-
-    console.log('calling decryptdecryptdecryptdecryptdecryptdecryptdecrypt');
-
-    console.log('calling decryptdecryptdecryptdecryptdecryptdecryptdecrypt');
-
     let session;
     try {
         session = await decrypt(cookie);
     } catch (error) {
         console.error('Decryption failed:');
-        console.error('Decryption failed:');
-        console.error('Decryption failed:');
-        console.error('Decryption failed:');
-        console.error('Decryption failed:', error);
-        console.error('Decryption failed:', error);
-        // Redirect to the login page if decryption fails
-        return NextResponse.redirect(new URL('/signin', req.nextUrl.origin));
+        return NextResponse.json({ error: 'Error-01' }, { status: 401 });
+
     }
-    console.log('session user id:', session?.userId);
+    // console.log('session user id:', session?.userId);
     return encryptDecrypt(session?.userId as string, 'encrypt');
 }
 
