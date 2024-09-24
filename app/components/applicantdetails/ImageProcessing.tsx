@@ -167,7 +167,7 @@ const ImageProcessing = () => {
       }
       return false;
     } catch (error) {
-      console.error('Error detecting spectacles:', error.message);
+      console.error('Error detecting spectacles:', error);
       return false;
     }
   };
