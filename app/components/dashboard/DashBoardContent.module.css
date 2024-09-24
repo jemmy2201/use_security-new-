@@ -35,6 +35,7 @@
         padding: 20px;
 
       }
+
       .headerBox {
         display: flex;
         justify-content: space-between;
@@ -82,11 +83,28 @@
           display: none
         }
 
+        .hrBox {
+          padding: 16px;
+          align-items: center;
+          gap: 24px;
+          align-self: stretch;
+
+          .hrLine {
+            display: flex;
+            height: 2px;
+            justify-content: center;
+            align-items: center;
+            align-self: stretch;
+            background: #D5D5D5;
+          }
+        }
+
         .item {
           padding-right: 20px;
           text-align: left;
           flex-wrap: wrap;
         }
+
         .collectionHeader {
           display: inline-flex;
           padding: 10px;
@@ -124,6 +142,7 @@
             text-align: left;
           }
         }
+
         .collectionHeader {
           display: flex;
           flex-direction: column;

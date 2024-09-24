@@ -8,8 +8,6 @@ import globalStyleCss from '../globalstyle/Global.module.css';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from '.././FormContext';
 
-
-
 const ReviewImageProcessing: React.FC = () => {
 
   const { formData, setFormData } = useFormContext();
