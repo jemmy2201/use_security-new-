@@ -56,20 +56,11 @@ const ReviewDetailsPage: React.FC = () => {
     };
 
     useEffect(() => {
-        // Set the selected option from formData if available
-        if (formData.applicationType) {
-            setIsChecked(formData?.isTermsAndConditionSigned || false);
-        }
 
-        const fileName = formData?.passid + formData.nric?.slice(-4);
-        console.log('image file name:', fileName);
-        // Initialize formData only if it's empty
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            imageUrl: `/uploads/${fileName}.png`,
-        }));
+        console.log('review detail page, iamge file name:', formData.imageUrl);
+        setIsChecked(formData?.isTermsAndConditionSigned || false);
 
-    }, [formData]);
+    }, []);
 
     const [isEditingSection1, setIsEditingSection1] = useState(false);
     const [isEditingSection2, setIsEditingSection2] = useState(false);
@@ -89,15 +80,15 @@ const ReviewDetailsPage: React.FC = () => {
         if (section === 3) setIsEditingSection3(!isEditingSection3);
 
         setCheckboxes({
-            trRtt: formData?.trRtt || false,
-            trCsspb: formData?.trCsspb || false,
-            trCctc: formData?.trCctc || false,
-            trHcta: formData?.trHcta || false,
-            trXray: formData?.trXray || false,
-            trAvso: formData?.trAvso || false,
-            trNota: formData?.trNota || false,
-            trObse: formData?.trObse || false,
-            trSsm: formData?.trSsm || false,
+            trRtt: formData?.trRtt ? true : false,
+            trCsspb: formData?.trCsspb ? true : false,
+            trCctc: formData?.trCctc ? true : false,
+            trHcta: formData?.trHcta ? true : false,
+            trXray: formData?.trXray ? true : false,
+            trAvso: formData?.trAvso ? true : false,
+            trNota: formData?.trNota ? true : false,
+            trObse: formData?.trObse ? true : false,
+            trSsm: formData?.trSsm ? true : false,
         });
 
     };
@@ -120,7 +111,7 @@ const ReviewDetailsPage: React.FC = () => {
                                     </div>
                                     <div className={reviewDetailsContentstyles.editLink}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <g clip-path="url(#clip0_1418_2800)">
+                                            <g clipPath="url(#clip0_1418_2800)">
                                                 <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
                                             </g>
                                             <defs>
@@ -184,7 +175,7 @@ const ReviewDetailsPage: React.FC = () => {
 
                                     <div className={reviewDetailsContentstyles.editLink}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <g clip-path="url(#clip0_1418_2800)">
+                                            <g clipPath="url(#clip0_1418_2800)">
                                                 <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
                                             </g>
                                             <defs>
@@ -230,9 +221,6 @@ const ReviewDetailsPage: React.FC = () => {
                         isEditingSection2 ? (
                             <>
                                 <div className={reviewDetailsContentstyles.stepContentContainer}>
-
-
-
                                     <div className={reviewDetailsContentstyles.headerContentBox}>
 
                                         <div className={globalStyleCss.header2}>
@@ -240,7 +228,7 @@ const ReviewDetailsPage: React.FC = () => {
                                         </div>
                                         <div className={reviewDetailsContentstyles.editLink}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <g clip-path="url(#clip0_1418_2800)">
+                                                <g clipPath="url(#clip0_1418_2800)">
                                                     <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
                                                 </g>
                                                 <defs>
@@ -269,7 +257,7 @@ const ReviewDetailsPage: React.FC = () => {
 
                                         <div className={reviewDetailsContentstyles.editLink}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <g clip-path="url(#clip0_1418_2800)">
+                                                <g clipPath="url(#clip0_1418_2800)">
                                                     <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
                                                 </g>
                                                 <defs>
@@ -284,7 +272,17 @@ const ReviewDetailsPage: React.FC = () => {
                                     <div className={globalStyleCss.regular}>
                                         Please make sure your photo is compliant to prevent your application from being rejected.
                                     </div>
-                                    <img src={formData.image} alt="Processed" />
+                                    {formData.image ? (
+                                        <>
+                                            {formData.image && <img src={formData.image} />}
+                                        </>
+                                    ) : (
+                                        <>
+                                            {formData.imageUrl && <img src={formData.imageUrl} />}
+                                        </>
+                                    )
+
+                                    }
                                 </div>
                             </>
                         )}
@@ -303,7 +301,7 @@ const ReviewDetailsPage: React.FC = () => {
                                     </div>
                                     <div className={reviewDetailsContentstyles.editLink}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <g clip-path="url(#clip0_1418_2800)">
+                                            <g clipPath="url(#clip0_1418_2800)">
                                                 <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
                                             </g>
                                             <defs>
@@ -434,7 +432,7 @@ const ReviewDetailsPage: React.FC = () => {
                                     </div>
                                     <div className={reviewDetailsContentstyles.editLink}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <g clip-path="url(#clip0_1418_2800)">
+                                            <g clipPath="url(#clip0_1418_2800)">
                                                 <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
                                             </g>
                                             <defs>

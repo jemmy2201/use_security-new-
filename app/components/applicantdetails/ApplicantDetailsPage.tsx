@@ -92,9 +92,22 @@ const ApplicantDetailsPage: React.FC = () => {
         // Set the selected option from formData if available
         console.log('ApplicantDetailsPage: Action Type', formData.actionType);
 
+        console.log('form data', formData);
+        setCheckboxes({
+            trRtt: formData?.trRtt ? true : false,
+            trCsspb: formData?.trCsspb ? true : false,
+            trCctc: formData?.trCctc ? true : false,
+            trHcta: formData?.trHcta ? true : false,
+            trXray: formData?.trXray ? true : false,
+            trAvso: formData?.trAvso ? true : false,
+            trNota: formData?.trNota ? true : false,
+            trObse: formData?.trObse ? true : false,
+            trSsm: formData?.trSsm ? true : false,
+        });
+
 
         const storedBookingData = sessionStorage.getItem('bookingSchedule');
-        if (storedBookingData) {
+        if (storedBookingData && !formData.isDataLoaded) {
             try {
                 const parsedBookingData: booking_schedules = JSON.parse(storedBookingData);
                 const fileName = parsedBookingData?.passid + parsedBookingData.nric.slice(-4);
@@ -102,6 +115,7 @@ const ApplicantDetailsPage: React.FC = () => {
                 // Initialize formData only if it's empty
                 setFormData(prevFormData => ({
                     ...prevFormData,
+                    isDataLoaded: true,
                     trAvso: parsedBookingData.TR_AVSO || false,
                     trCctc: parsedBookingData.TR_CCTC || false,
                     trCsspb: parsedBookingData.TR_CSSPB || false,
@@ -114,15 +128,15 @@ const ApplicantDetailsPage: React.FC = () => {
                     imageUrl: `/uploads/${fileName}.png`,
                 }));
                 setCheckboxes({
-                    trRtt: parsedBookingData?.TR_RTT || false,
-                    trCsspb: parsedBookingData?.TR_CSSPB || false,
-                    trCctc: parsedBookingData?.TR_CCTC || false,
-                    trHcta: parsedBookingData?.TR_HCTA || false,
-                    trXray: parsedBookingData?.TR_X_RAY || false,
-                    trAvso: parsedBookingData?.TR_AVSO || false,
-                    trNota: parsedBookingData.TR_NOTA || false,
-                    trObse: parsedBookingData.TR_OBSE || false,
-                    trSsm: parsedBookingData.TR_SSM || false,
+                    trRtt: parsedBookingData?.TR_RTT ? true: false,
+                    trCsspb: parsedBookingData?.TR_CSSPB ? true: false,
+                    trCctc: parsedBookingData?.TR_CCTC ? true: false,
+                    trHcta: parsedBookingData?.TR_HCTA ? true: false,
+                    trXray: parsedBookingData?.TR_X_RAY ? true: false,
+                    trAvso: parsedBookingData?.TR_AVSO ? true: false,
+                    trNota: parsedBookingData.TR_NOTA ? true: false,
+                    trObse: parsedBookingData.TR_OBSE ? true: false,
+                    trSsm: parsedBookingData.TR_SSM ? true: false,
                 });
             } catch (err) {
                 setError('Failed to parse user data');
@@ -130,7 +144,7 @@ const ApplicantDetailsPage: React.FC = () => {
         } else {
             setError('No user data found');
         }
-    }, [formData]);
+    }, []);
 
     return (
 

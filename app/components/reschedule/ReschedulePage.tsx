@@ -180,7 +180,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
                 <div className={rescheduleContentstyles.appointmentDetailContainer}>
                     <div className={rescheduleContentstyles.header}>
-                        <div className={globalStyleCss.header1}>
+                        <div className={globalStyleCss.header2}>
                             Appointment details
                         </div>
                         <div className={globalStyleCss.regular}>

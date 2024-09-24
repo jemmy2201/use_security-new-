@@ -9,9 +9,16 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format, parseISO } from 'date-fns';
 import { useFormContext } from '.././FormContext';
+import globalStyleCss from '../globalstyle/Global.module.css';
 
 type DisabledDatesResponse = string[]; // Array of ISO date strings
-
+export interface userInfo {
+    name?: string;
+    nric?: string;
+    textNric?: string;
+    email?: string;
+    mobileno?: string;
+}
 const BookAppointmentPage: React.FC = () => {
 
     const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
@@ -20,6 +27,31 @@ const BookAppointmentPage: React.FC = () => {
     const [disabledDates, setDisabledDates] = useState<Date[]>([]);
     const [bookingSchedules, setBookingSchedules] = useState<bookingDetail[]>([]);
     const router = useRouter();
+    const [users, setUsers] = useState<userInfo>();
+    const [fullyBookedDates, setFullyBookedDates] = useState<Date[]>([]);
+
+    const formatDate = (date: Date | null) => {
+        if (!date) return "";
+        const day = date.getDate();
+        const month = date.toLocaleString('default', { month: 'long' }); // e.g., "September"
+        const year = date.getFullYear();
+        return `${day} ${month} ${year}`;
+    };
+    const formattedDate = formatDate(startDate);
+
+    const isFullyBooked = (date: Date) => {
+        return fullyBookedDates.some(
+            (bookedDate) => bookedDate.toDateString() === date.toDateString()
+        );
+    };
+
+
+
+    // Handler for button click to set the selected timeslot
+    const handleTimeSlotClick = (text: string) => {
+        console.log('timeslot', text);
+        setSelectedTimeSlot(text);
+    };
 
     // State variables to store the input values
     const [contactNumber, setContactNumber] = useState('');
@@ -95,48 +127,65 @@ const BookAppointmentPage: React.FC = () => {
     };
 
     return (
-
-        <div>
-            <div className={bookAppointmentContentstyles.bookAppointmentContainer}>
-                <div className={bookAppointmentContentstyles.bookAppointmentDetailsContainer}>
-                    <div className={bookAppointmentContentstyles.applicantDetailsHeaderCard}>
-                        <div className={bookAppointmentContentstyles.applicantDetailsHeaderCardContent}>
-                            Appointment Details
-                        </div>
-                        <div className={bookAppointmentContentstyles.applicantDetailsHeaderCardContentDetail}>
-                            Please choose a date and time to book your appointment to collect your pass card.
-                        </div>
+        <form>
+            <div className={bookAppointmentContentstyles.mainContainer}>
+                <div className={bookAppointmentContentstyles.stepContentContainer}>
+                    <div className={globalStyleCss.header2}>
+                        Appointment Details
                     </div>
-                </div>
 
-                <div className={bookAppointmentContentstyles.bookAppointmentDetailsContainer}>
-
-                    <div className={bookAppointmentContentstyles.bookAppointmentDetailsContainerSide}>
-                        <span className={bookAppointmentContentstyles.DivDateContainer}>
-                            <div className={bookAppointmentContentstyles.DivDateOfAppintment}>
+                    <div className={globalStyleCss.regular}>
+                        Please choose a date and time to book your appointment to collect your pass card.
+                    </div>
+                    <div className={bookAppointmentContentstyles.appointmentBox}>
+                        <div>
+                            <div className={globalStyleCss.regularBold}>
                                 Date of appointment
                             </div>
-                            <div>
+                            <div className={bookAppointmentContentstyles.displayDateTextBox}>
+                                <input
+                                    type="text"
+                                    value={formattedDate}
+                                    readOnly
+                                />
+                            </div>
+                            <div className={bookAppointmentContentstyles.displayDateBox}>
                                 <DatePicker
                                     selected={startDate}
-                                    onChange={handleDateChange} 
+                                    onChange={handleDateChange}
                                     dateFormat="yyyy-MM-dd"
                                     isClearable
                                     placeholderText="Choose a date"
-                                    excludeDates={disabledDates} 
+                                    excludeDates={disabledDates}
+                                    renderDayContents={(day, date) => {
+                                        const isBooked = isFullyBooked(date);
+                                        return (
+                                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                                                <span>{day}</span>
+                                                {isBooked && (
+                                                    <div style={{ fontSize: "8px", color: "red", marginTop: "0px" }}>
+                                                        Full
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    }}
+                                    inline
                                 />
                             </div>
-                        </span>
+                        </div>
 
-                        <span>
-                            <div className={bookAppointmentContentstyles.DivDateOfAppintment}>  Time slot </div>
+                        <div>
+                            <div className={globalStyleCss.regularBold}>
+                                Available Time slot
+                            </div>
                             <div>
                                 <ul>
                                     {buttonTexts.map((text, index) => (
-                                        <li key={index} className={bookAppointmentContentstyles.timeSlotLayout}>
-                                            <button
+                                        <li key={index}>
+                                            <button type='button'
                                                 className={`${bookAppointmentContentstyles.timeSlotText} ${selectedTimeSlot === text ? bookAppointmentContentstyles.selected : ''}`}
-                                                onClick={() => handleButtonClick(text)}
+                                                onClick={() => handleTimeSlotClick(text)}
                                             >
                                                 {text}
                                             </button>
@@ -144,54 +193,55 @@ const BookAppointmentPage: React.FC = () => {
                                     ))}
                                 </ul>
                             </div>
-                        </span>
+                        </div>
                     </div>
+
                 </div>
 
-            </div>
 
 
-
-            <div className={bookAppointmentContentstyles.bookAppointmentContainer}>
-                <div className={bookAppointmentContentstyles.bookAppointmentDetailsContainer}>
-                    <div className={bookAppointmentContentstyles.applicantDetailsHeaderCard}>
-                        <div className={bookAppointmentContentstyles.applicantDetailsHeaderCardContent}>
-                            Collection Details
+                <div className={bookAppointmentContentstyles.stepContentContainer}>
+                    <div className={globalStyleCss.header2}>
+                        Collection Details
+                    </div>
+                    <hr className={bookAppointmentContentstyles.bookAppointmentBoxLine}></hr>
+                    <div className={bookAppointmentContentstyles.DivStyle}>
+                        <div className={bookAppointmentContentstyles.collectionText}>
+                            <div className={globalStyleCss.regularBold}>
+                                Monday to Friday
+                            </div>
                         </div>
-                        <hr className={bookAppointmentContentstyles.bookAppointmentBoxLine}></hr>
-                        <div className={bookAppointmentContentstyles.DivStyle}>
-                            <span>
-                                <div className={bookAppointmentContentstyles.collectionText}>
-                                    Monday to Friday
-                                </div>
-                            </span>
-                            <span className={bookAppointmentContentstyles.montoFriTimings}>
-                                9:30am - 4:30pm (last walk-in at 4:30pm)
-                            </span>
+                        <div className={bookAppointmentContentstyles.montoFriTimings}>
+                            <div className={globalStyleCss.regular}>
+                                9:30am - 4:30pm (last walk-in at 4:30pm)</div>
                         </div>
-                        <hr className={bookAppointmentContentstyles.bookAppointmentBoxLine}></hr>
+                    </div>
+                    <hr className={bookAppointmentContentstyles.bookAppointmentBoxLine}></hr>
 
-                        <div className={bookAppointmentContentstyles.DivStyle}>
-                            <span>
-                                <div className={bookAppointmentContentstyles.collectionText}>Last Tuesday of the month & selected eves of Public Holidays (New Year’s Day, Chinese New Year & Christmas Day)
-                                </div>
-                            </span>
-                            <span className={bookAppointmentContentstyles.montoFriTimings}>
+                    <div className={bookAppointmentContentstyles.DivStyle}>
+                        <div className={bookAppointmentContentstyles.collectionText}>
+                            <div className={globalStyleCss.regularBold}>
+                                Last Tuesday of the month & selected eves of Public Holidays (New Year’s Day, Chinese New Year & Christmas Day)
+                            </div>
+                        </div>
+                        <div className={bookAppointmentContentstyles.montoFriTimings}>
+                            <div className={globalStyleCss.regular}> 
                                 9:30am - 4:30pm (last walk-in at 12:30pm)
-                            </span>
-                        </div>
-                        <hr className={bookAppointmentContentstyles.bookAppointmentBoxLine}></hr>
-                        <div>
-                            <span className={bookAppointmentContentstyles.collectionText}>
-                                Closed on Saturdays, Sundays & Public Holidays                            </span>
-
+                            </div>
                         </div>
                     </div>
+                    <hr className={bookAppointmentContentstyles.bookAppointmentBoxLine}></hr>
+                    <div>
+                        <div className={bookAppointmentContentstyles.collectionText}>
+                        <div className={globalStyleCss.regularBold}> Closed on Saturdays, Sundays & Public Holidays </div>
+                        </div>
+                    </div>
+
+
+
                 </div>
-
-
             </div>
-        </div>
+        </form>
     );
 };
 

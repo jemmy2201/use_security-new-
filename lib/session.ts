@@ -24,10 +24,10 @@ export async function encrypt(payload: SessionPayload) {
 }
 
 export async function decrypt(session: string | undefined = '') {
-    console.log('decrypt: session:', session);
+    console.log('inside decrypt: session:');
 
     const decoded = decodeJwt(session);
-    console.log('Decoded JWT:', decoded);
+    console.log('Decoded JWT:');
 
     const currentTime = Math.floor(Date.now() / 1000);
     console.log('currentTime:', currentTime);

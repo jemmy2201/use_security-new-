@@ -38,6 +38,7 @@ interface FormData {
     appointmentDate?: Date;
     timeSlot?: string;
     isAppointmentConfirmed?:boolean;
+    isDataLoaded?: boolean;
     [key: string]: any;
 }
 

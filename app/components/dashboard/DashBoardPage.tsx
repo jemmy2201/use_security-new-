@@ -450,11 +450,11 @@ const DashBoardPage: React.FC = () => {
                         <table>
                             <thead>
                                 <tr className={globalStyleCss.regularBold}>
-                                    <th className={dashBoardContentstyles.item}>Application type</th>
+                                    <th className={dashBoardContentstyles.item2}>Application type</th>
                                     <th className={dashBoardContentstyles.item}>License type</th>
-                                    <th className={dashBoardContentstyles.item}>Grade</th>
-                                    <th className={dashBoardContentstyles.item}>Collection date</th>
-                                    <th className={dashBoardContentstyles.item}>Application Status</th>
+                                    <th className={dashBoardContentstyles.item1}>Grade</th>
+                                    <th className={dashBoardContentstyles.item3}>Collection date</th>
+                                    <th className={dashBoardContentstyles.item3}>Application Status</th>
                                     <th className={dashBoardContentstyles.item}>Actions</th>
                                 </tr>
                                 <tr className={dashBoardContentstyles.hrBox}>
@@ -470,11 +470,11 @@ const DashBoardPage: React.FC = () => {
                                     bookingSchedules.map((booking) =>
                                     (
                                         <tr key={booking.id} className={globalStyleCss.regular}>
-                                            <td className={dashBoardContentstyles.item}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
+                                            <td className={dashBoardContentstyles.item2}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
                                             <td className={dashBoardContentstyles.item}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
-                                            <td className={dashBoardContentstyles.item}>{gradeTypeMap[booking.grade_id || ''] || ''}</td>
-                                            <td className={dashBoardContentstyles.item}>{formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}</td>
-                                            <td className={dashBoardContentstyles.item}>{statusTypeMap[booking.Status_app || ''] || ''}</td>
+                                            <td className={dashBoardContentstyles.item1}>{gradeTypeMap[booking.grade_id || ''] || ''}</td>
+                                            <td className={dashBoardContentstyles.item3}>{formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}</td>
+                                            <td className={dashBoardContentstyles.item3}>{statusTypeMap[booking.Status_app || ''] || ''}</td>
                                             <td className={dashBoardContentstyles.item}>
                                                 {booking.Status_app == '0' ? (
                                                     <>

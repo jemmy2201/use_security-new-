@@ -16,7 +16,7 @@ const REDIRECT_URL_SINGPASS_CURL = process.env.SINGPASS_REDIRECT_URI;
 
 // Convert the private_key_jwt function
 const privateKeyJwt = async () => {
-    const expEncode = Math.floor(Date.now() / 1000) + 10 * 60;
+    const expEncode = Math.floor(Date.now() / 1000) + 20 * 60;
     const iatEncode = Math.floor(Date.now() / 1000);
 
     const clientIdSinpass = CLIENT_ID;

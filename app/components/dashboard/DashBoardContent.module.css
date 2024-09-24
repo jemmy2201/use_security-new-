@@ -98,11 +98,29 @@
             background: #D5D5D5;
           }
         }
-
         .item {
           padding-right: 20px;
           text-align: left;
           flex-wrap: wrap;
+          width:20%;
+        }
+        .item1 {
+          padding-right: 20px;
+          text-align: left;
+          flex-wrap: wrap;
+          width:5%;
+        }
+        .item2 {
+          padding-right: 20px;
+          text-align: left;
+          flex-wrap: wrap;
+          width:13%;
+        }
+        .item3 {
+          padding-right: 20px;
+          text-align: left;
+          flex-wrap: wrap;
+          width:13%;
         }
 
         .collectionHeader {
