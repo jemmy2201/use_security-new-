@@ -122,6 +122,9 @@ const ApplicantDetailsPage: React.FC = () => {
                     trHcta: parsedBookingData.TR_HCTA || false,
                     trRtt: parsedBookingData.TR_RTT || false,
                     trXray: parsedBookingData.TR_X_RAY || false,
+                    trNota: parsedBookingData.TR_NOTA || false,
+                    trObse: parsedBookingData.TR_OBSE || false,
+                    trSsm: parsedBookingData.TR_SSM || false,
                     imageUrl: `/uploads/${fileName}.png`,
                 }));
                 setCheckboxes({
@@ -131,11 +134,13 @@ const ApplicantDetailsPage: React.FC = () => {
                     trHcta: parsedBookingData?.TR_HCTA || false,
                     trXray: parsedBookingData?.TR_X_RAY || false,
                     trAvso: parsedBookingData?.TR_AVSO || false,
+                    trNota: parsedBookingData.TR_NOTA || false,
+                    trObse: parsedBookingData.TR_OBSE || false,
+                    trSsm: parsedBookingData.TR_SSM || false,
                 });
             } catch (err) {
                 setError('Failed to parse user data');
             }
-            sessionStorage.removeItem('bookingSchedule');
         } else {
             setError('No user data found');
         }
@@ -228,8 +233,8 @@ const ApplicantDetailsPage: React.FC = () => {
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
-                                    name="trObsa"
-                                    checked={checkboxes.trObsa}
+                                    name="trObse"
+                                    checked={checkboxes.trObse}
                                     onChange={handleCheckboxChange}
                                 /></div>
                                 <div>

@@ -392,8 +392,8 @@ const ReviewDetailsPage: React.FC = () => {
                                         <label className={reviewDetailsContentstyles.checkboxes}>
                                             <div className={globalStyleCss.regular}><input
                                                 type="checkbox"
-                                                name="trObsa"
-                                                checked={checkboxes.trObsa}
+                                                name="trObse"
+                                                checked={checkboxes.trObse}
                                                 onChange={handleCheckboxChange}
                                             /></div>
                                             <div>

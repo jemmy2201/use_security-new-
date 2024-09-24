@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+
+.mainContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  background: #F5F6F7;
+
+  .contactusContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 40px;
+
+    @media screen and (max-width: 769px) {
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .bodyContainer {
+      display: flex;
+      flex-direction: column;
+      padding: 40px;
+      align-items: flex-start;
+      gap: 16px;
+      background: white;
+      flex-wrap: wrap;
+      @media screen and (max-width: 769px) {
+        gap: 12px;
+        padding: 20px;
+      }
+
+      .hrLine {
+        display: flex;
+        height: 1px;
+        justify-content: center;
+        align-items: center;
+        align-self: stretch;
+        background: #D5D5D5;
+      }
+
+      .box1 {
+        display: flex;
+        align-items: flex-start;
+        gap: 40px;
+        align-self: stretch;
+        flex-wrap: wrap;
+        @media screen and (max-width: 769px) {
+          gap: 20px;
+        }
+        .leftText{
+          width: 400px;
+          @media screen and (max-width: 769px) {
+            width: 200px;
+          }
+        }
+        .rightText{
+          width: 332px;
+          @media screen and (max-width: 769px) {
+            width: 160px;
+          }
+        }
+      }
+    }
+  }
+}

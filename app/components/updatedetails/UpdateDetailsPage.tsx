@@ -147,6 +147,9 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                     trHcta: formData.trHcta ? 'YES' : '',
                     trXray: formData.trXray ? 'YES' : '',
                     trAvso: formData.trAvso ? 'YES' : '',
+                    trNota: formData.trNota ? 'YES' : '',
+                    trSsm: formData.trSsm ? 'YES' : '',
+                    trObse: formData.trObse ? 'YES' : '',
                 }),
             });
             if (!response.ok) {
@@ -198,6 +201,9 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                     trHcta: dataBookingSchedule.TR_HCTA || false,
                     trRtt: dataBookingSchedule.TR_RTT || false,
                     trXray: dataBookingSchedule.TR_X_RAY || false,
+                    trNota: dataBookingSchedule.TR_NOTA || false,
+                    trObse: dataBookingSchedule.TR_OBSE || false,
+                    trSsm: dataBookingSchedule.TR_SSM || false,
                 });
 
                 setCheckboxes({
@@ -210,6 +216,9 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                     trNota: dataBookingSchedule?.TR_X_RAY || false,
                     trObse: dataBookingSchedule?.TR_X_RAY || false,
                     trSsm: dataBookingSchedule?.TR_X_RAY || false,
+                    trNota: dataBookingSchedule.TR_NOTA || false,
+                    trObse: dataBookingSchedule.TR_OBSE || false,
+                    trSsm: dataBookingSchedule.TR_SSM || false,
                 });
             } catch (error) {
                 console.error('Error fetching disabled dates:', error);
@@ -356,8 +365,8 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
-                                    name="trObsa"
-                                    checked={checkboxes.trObsa}
+                                    name="trObse"
+                                    checked={checkboxes.trObse}
                                     onChange={handleCheckboxChange}
                                 />
                                     Operate Basic Security Equipment</div>

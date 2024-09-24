@@ -7,12 +7,13 @@ export async function POST(req: NextRequest) {
     try {
         console.log('handle-applicant-details, replace');
         const body = await req.json();
-        const { bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, actionType } = body;
+        const { image, bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso,
+            trNota, trSsm, trObse, actionType } = body;
         console.log('actionType:applicationType:cardId', actionType, applicationType, cardId);
         const encryptedNric = await getEncryptedNricFromSession(req);
         if (encryptedNric instanceof NextResponse) {
             return encryptedNric; // Return the redirect response if necessary
-          }
+        }
         console.log('encrypted nric:', encryptedNric);
 
         if (!encryptedNric || !applicationType || !cardId) {
@@ -71,6 +72,9 @@ export async function POST(req: NextRequest) {
                     TR_X_RAY: trXray,
                     Status_app: '0',
                     Status_draft: '0',
+                    TR_NOTA: trNota,
+                    TR_OBSE: trObse,
+                    TR_SSM: trSsm,
                 },
             });
             console.log('Schedule updated:', updatedSchedule);

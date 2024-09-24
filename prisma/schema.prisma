@@ -64,6 +64,9 @@ model booking_schedules {
   union_member           Int?
   stripe_session_id      String?   @unique(map: "stripeid_UNIQUE") @db.VarChar(255)
   stripe_payment_id      String?   @unique(map: "stripepaymentid_UNIQUE") @db.VarChar(255)
+  TR_NOTA                String?   @db.VarChar(3)
+  TR_OBSE                String?   @db.VarChar(3)
+  TR_SSM                 String?   @db.VarChar(3)
 
 }
 

@@ -1,5 +1,5 @@
 import 'server-only'
-import { SignJWT, jwtVerify, JWTPayload } from 'jose'
+import { SignJWT, jwtVerify, JWTPayload, decodeJwt } from 'jose'
 import { cookies } from 'next/headers'
 import encryptDecrypt from '@/utils/encryptDecrypt';
 import { NextResponse } from 'next/server';
@@ -23,13 +23,21 @@ export async function encrypt(payload: SessionPayload) {
 }
 
 export async function decrypt(session: string | undefined = '') {
-
     console.log('decrypt: session:', session);
+
+    const decoded = decodeJwt(session);
+    console.log('Decoded JWT:', decoded);
+
+    const currentTime = Math.floor(Date.now() / 1000);
+    console.log('currentTime:', currentTime);
+    if (decoded.exp && decoded.exp < currentTime) {
+        throw new Error('JWT token has expired');
+    }
+
     const { payload } = await jwtVerify(session, encodedKey, {
         algorithms: ['HS256'],
-    })
-    return payload
-
+    });
+    return payload;
 }
 
 export async function decryptSession(session: string | undefined = '') {

@@ -252,6 +252,9 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                         trHcta: formData.trHcta ? 'YES' : '',
                         trXray: formData.trXray ? 'YES' : '',
                         trAvso: formData.trAvso ? 'YES' : '',
+                        trNota: formData.trNota ? 'YES' : '',
+                        trObse: formData.trObse ? 'YES' : '',
+                        trSsm: formData.trSsm ? 'YES' : '',
                         actionType: actionType,
                         image: formData.image,
                     }),
@@ -281,6 +284,9 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                         trHcta: formData.trHcta ? 'YES' : '',
                         trXray: formData.trXray ? 'YES' : '',
                         trAvso: formData.trAvso ? 'YES' : '',
+                        trNota: formData.trNota ? 'YES' : '',
+                        trObse: formData.trObse ? 'YES' : '',
+                        trSsm: formData.trSsm ? 'YES' : '',
                         actionType: actionType,
                     }),
                 });
@@ -309,6 +315,9 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                         trHcta: formData.trHcta ? 'YES' : '',
                         trXray: formData.trXray ? 'YES' : '',
                         trAvso: formData.trAvso ? 'YES' : '',
+                        trNota: formData.trNota ? 'YES' : '',
+                        trObse: formData.trObse ? 'YES' : '',
+                        trSsm: formData.trSsm ? 'YES' : '',
                         actionType: actionType,
                     }),
                 });
@@ -355,7 +364,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             saveUserDetails();
             toast.success('Your draft has been saved', {
                 position: 'top-right',
-                autoClose: 10000,
+                autoClose: 3000,
             });
         }
 
@@ -372,7 +381,9 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 alert('There is problem with photo. Please upload again correct photo.');
                 return;
             }
-            if (!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta && !formData.trRtt && !formData.trXray) {
+            if (!formData.trAvso && !formData.trCctc && !formData.trCsspb 
+                && !formData.trHcta && !formData.trRtt && !formData.trXray
+                && !formData.trNota && !formData.trObse && !formData.trSsmy) {
                 alert('Training record is required');
                 return;
             }
@@ -380,7 +391,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             await saveApplicantDetails();
             toast.success('Your draft has been saved', {
                 position: 'top-right',
-                autoClose: 10000,
+                autoClose: 3000,
             });
         }
 
@@ -390,7 +401,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             await saveReviewDetails();
             toast.success('Your draft has been saved', {
                 position: 'top-right',
-                autoClose: 10000,
+                autoClose: 3000,
             });
         }
     };

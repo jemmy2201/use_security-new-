@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { bookingId, mobileno, email, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso } = body;
+        const { bookingId, mobileno, email, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, trNota, trObse, trSsm } = body;
 
         const encryptedNric = await getEncryptedNricFromSession(req);
         if (encryptedNric instanceof NextResponse) {
@@ -59,6 +59,9 @@ export async function POST(req: NextRequest) {
                     TR_HCTA: trHcta,
                     TR_RTT: trRtt,
                     TR_X_RAY: trXray,
+                    TR_NOTA: trNota,
+                    TR_OBSE: trObse,
+                    TR_SSM: trSsm,
                 },
             });
 

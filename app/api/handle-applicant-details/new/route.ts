@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     try {
         console.log('handle-applicant-details, new');
         const body = await req.json();
-        const { image, bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, actionType } = body;
+        const { image, bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, trNota, trSsm, trObse, actionType, } = body;
         console.log('actionType:applicationType:cardId', actionType, applicationType, cardId);
 
         const encryptedNric = await getEncryptedNricFromSession(req);
@@ -18,8 +18,6 @@ export async function POST(req: NextRequest) {
           }
         console.log('encrypted nric:', encryptedNric);
 
-        console.log('image :', image);
-        // Validate required fields
         if (!encryptedNric || !applicationType || !cardId) {
             return NextResponse.json(
                 { error: 'nric / fin, cardId and application type are required' },
@@ -27,14 +25,6 @@ export async function POST(req: NextRequest) {
             );
         }
         
-        const base64Data = image.replace(/^data:image\/\w+;base64,/, '');
-        const buffer = Buffer.from(base64Data, 'base64');
-    
-        // Define a path to save the image
-        const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-        if (!fs.existsSync(uploadsDir)) {
-          fs.mkdirSync(uploadsDir, { recursive: true });
-        }
 
         const schedule = await prisma.booking_schedules.findFirst({
             where: {
@@ -74,7 +64,7 @@ export async function POST(req: NextRequest) {
             };
             // If a schedule is found, update it
             const updatedSchedule = await prisma.booking_schedules.update({
-                where: { id: schedule.id }, // Using the unique identifier for update
+                where: { id: schedule.id }, 
                 data: {
                     Status_app: '0',
                     Status_draft: '0',
@@ -84,15 +74,28 @@ export async function POST(req: NextRequest) {
                     TR_HCTA: trHcta,
                     TR_RTT: trRtt,
                     TR_X_RAY: trXray,
+                    TR_NOTA: trNota,
+                    TR_OBSE: trObse,
+                    TR_SSM: trSsm
                 },
             });
             console.log('Schedule updated:', updatedSchedule);
 
+            if(image){
+                const base64Data = image.replace(/^data:image\/\w+;base64,/, '');
+                const buffer = Buffer.from(base64Data, 'base64');
+            
+                // Define a path to save the image
+                const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+                if (!fs.existsSync(uploadsDir)) {
+                  fs.mkdirSync(uploadsDir, { recursive: true });
+                }
+                const fileName = schedule?.passid + encryptedNric.slice(-4);
+                console.log('file name:', fileName);
+                const filePath = path.join(uploadsDir, fileName + '.png');
+                fs.writeFileSync(filePath, buffer);
+            }
 
-            const fileName = schedule?.passid + encryptedNric.slice(-4);
-            console.log('file name:', fileName);
-            const filePath = path.join(uploadsDir, fileName + '.png');
-            fs.writeFileSync(filePath, buffer);
 
             const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
             return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });

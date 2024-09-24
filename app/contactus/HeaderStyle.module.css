@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+
+@media screen and (max-width: 769px) {
+  .headerContainer {
+    display: flex;
+    width: 100%;
+    padding: 16px 32px;
+    align-items: center;
+    gap: 32px;
+    background: #000;
+
+    .companyName {
+      color: #FFF;
+      font-family: Poppins;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px;
+      display: none;
+    }
+
+    .leftBox {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 16px;
+      flex: 1 0 0;
+
+      .loginButton {
+        display: flex;
+        align-content: end;
+        padding: 16px 20px;
+        align-items: center;
+        gap: 4px;
+        border-radius: 28px;
+        background: #CC0C00;
+        color: #FFF;
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 24px;
+      }
+
+      .phoneSvg {
+        display: flex;
+        width: 24px;
+        height: 24px;
+      }
+
+      .contactUs {
+        flex-direction: column;
+        align-items: center;
+        padding: 8px;
+        color: #FFFFFF;
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 24px;
+        display: none;
+
+      }
+    }
+
+    .contactUs {
+      flex-direction: column;
+      align-items: center;
+      padding: 8px;
+      color: #FFFFFF;
+      font-family: Roboto;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px;
+      display: none;
+
+    }
+  }
+}
+
+.headerContainer {
+  display: flex;
+  width: 100%;
+  padding: 16px 32px;
+  align-items: center;
+  gap: 32px;
+  background: #000;
+
+  .logo {
+    width: 55.539px;
+    height: 58px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    @media screen and (max-width: 769px) {
+      width: 44px;
+    }
+  }
+
+  .leftBox {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    flex: 1 0 0;
+
+    .loginButton {
+      display: flex;
+      padding: 16px 20px;
+      align-items: center;
+      gap: 4px;
+      border-radius: 28px;
+      background: #CC0C00;
+      color: #FFF;
+      font-family: Roboto;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px;
+    }
+
+    .phoneSvg {
+      display: none;
+    }
+
+    .contactUs {
+      align-items: center;
+      padding: 8px;
+      color: #FFFFFF;
+      /* Regular Bold */
+      font-family: Roboto;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px;
+    }
+  }
+
+  .companyName {
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+  }
+
+}

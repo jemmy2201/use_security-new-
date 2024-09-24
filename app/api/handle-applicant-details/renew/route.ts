@@ -7,7 +7,8 @@ export async function POST(req: NextRequest) {
     try {
         console.log('handle-applicant-details, renew');
         const body = await req.json();
-        const { bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, actionType } = body;
+        const { image, bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, 
+            trNota, trSsm, trObse, actionType } = body;
         console.log('actionType:applicationType:cardId', actionType, applicationType, cardId);
         const encryptedNric = await getEncryptedNricFromSession(req);
         if (encryptedNric instanceof NextResponse) {
@@ -73,6 +74,9 @@ export async function POST(req: NextRequest) {
                     TR_HCTA: trHcta,
                     TR_RTT: trRtt,
                     TR_X_RAY: trXray,
+                    TR_NOTA: trNota,
+                    TR_OBSE: trObse,
+                    TR_SSM: trSsm,
                 },
             });
             console.log('Schedule updated:', updatedSchedule);
