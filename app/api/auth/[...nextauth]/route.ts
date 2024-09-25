@@ -6,10 +6,8 @@ import jwt from 'jsonwebtoken';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-// Read the private and public keys from the file system
 const privateKey = readFileSync(resolve('PrivateKey.pem'), 'utf8');
 
-// Define the SingPass provider configuration
 const SingPassProvider: OAuthConfig<any> = {
   id: 'singpass',
   name: 'SingPass',
@@ -61,7 +59,6 @@ async function fetchMyInfoData(accessToken: string) {
   return myInfoData;
 }
 
-// Function to verify JWT using the public key
 async function verifyToken(token: string) {
   return new Promise<any>((resolve, reject) => {
     //jwt.verify(token, publicKey, { algorithms: ['RS256'] }, (err, decoded) => {
@@ -79,8 +76,8 @@ const authOptions: NextAuthOptions = {
   providers: [SingPassProvider],
   callbacks: {
     async redirect({ url, baseUrl }) {
-      console.log('inside redirect call');
-      return `${baseUrl}/dashboard`; 
+      console.log('inside redirect call', url, baseUrl);
+      return `${baseUrl}/xyz`; 
     },
     async signIn({ user, account, profile }) {
       console.log('sign in------', user, account, profile);
