@@ -119,13 +119,14 @@ const DashBoardPage: React.FC = () => {
             }
             sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(data));
 
-            const responseMyInfo = await fetch('/api/myinfo');
-            if (!responseMyInfo.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const dataMyInfo: userInfo = await responseMyInfo.json();
-            router.push('/myinfoterms');
-
+            // const responseMyInfo = await fetch('/api/myinfo');
+            // if (!responseMyInfo.ok) {
+            //     throw new Error('Network response was not ok');
+            // }
+            // const dataMyInfo: userInfo = await responseMyInfo.json();
+            // router.push('/myinfoterms');
+            sessionStorage.setItem('actionTypeValue', 'New');
+            router.push('/passcard?actionType=New');
 
         } catch (err) {
             setError('Failed to fetch user details');
@@ -149,12 +150,15 @@ const DashBoardPage: React.FC = () => {
             }
             sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(data));
 
-            const responseMyInfo = await fetch('/api/myinfo');
-            if (!responseMyInfo.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const dataMyInfo: userInfo = await responseMyInfo.json();
-            router.push('/myinfoterms');
+            // const responseMyInfo = await fetch('/api/myinfo');
+            // if (!responseMyInfo.ok) {
+            //     throw new Error('Network response was not ok');
+            // }
+            // const dataMyInfo: userInfo = await responseMyInfo.json();
+            // router.push('/myinfoterms');
+
+            sessionStorage.setItem('actionTypeValue', 'New');
+            router.push('/passcard?actionType=New');
 
         } catch (err) {
             setError('Failed to fetch user details');
@@ -469,151 +473,169 @@ const DashBoardPage: React.FC = () => {
                                 {
                                     bookingSchedules.map((booking) =>
                                     (
-                                        <tr key={booking.id} className={globalStyleCss.regular}>
-                                            <td className={dashBoardContentstyles.item2}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
-                                            <td className={dashBoardContentstyles.item}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
-                                            <td className={dashBoardContentstyles.item1}>{gradeTypeMap[booking.grade_id || ''] || ''}</td>
-                                            <td className={dashBoardContentstyles.item3}>{formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}</td>
-                                            <td className={dashBoardContentstyles.item3}>{statusTypeMap[booking.Status_app || ''] || ''}</td>
-                                            <td className={dashBoardContentstyles.item}>
-                                                {booking.Status_app == '0' ? (
-                                                    <>
-                                                        <a
-                                                            href="/edit"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleDraftContinuePasscardClick(booking.id);
-                                                            }}
-                                                            className={globalStyleCss.blueLink}>
-                                                            Continue &nbsp;
-                                                        </a>
-                                                        <a
-                                                            href="/edit"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleDeletePasscardClick(booking.id);
-                                                            }}
-                                                            className={globalStyleCss.blueLink}>
-                                                            Delete
-                                                        </a>
-                                                    </>
-                                                ) : null}
+                                        <>
+                                            <tr key={booking.id} className={globalStyleCss.regular}>
+                                                <td className={dashBoardContentstyles.item2}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
+                                                <td className={dashBoardContentstyles.item}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
+                                                <td className={dashBoardContentstyles.item1}>{gradeTypeMap[booking.grade_id || ''] || ''}</td>
+                                                <td className={dashBoardContentstyles.item3}>{formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}</td>
+                                                <td className={dashBoardContentstyles.item3}>{statusTypeMap[booking.Status_app || ''] || ''}</td>
+                                                <td className={dashBoardContentstyles.item}>
+                                                    {booking.Status_app == '0' ? (
+                                                        <>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleDraftContinuePasscardClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                Continue &nbsp;
+                                                            </a>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleDeletePasscardClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                Delete
+                                                            </a>
+                                                        </>
+                                                    ) : null}
 
 
-                                                {booking.Status_app == '1'
-                                                    && booking.status_payment
-                                                    && !booking.appointment_date ? (
-                                                    <>
+                                                    {booking.Status_app == '1'
+                                                        && booking.status_payment
+                                                        && !booking.appointment_date ? (
+                                                        <>
 
-                                                        <a
-                                                            href="/edit"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleViewReceiptClick(booking.id);
-                                                            }}
-                                                            className={globalStyleCss.blueLink}>
-                                                            View Receipt &nbsp;
-                                                        </a>
-                                                        <a
-                                                            href="/edit"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleBookAppointmentClick(booking.id);
-                                                            }}
-                                                            className={globalStyleCss.blueLink}>
-                                                            Book Appointment
-                                                        </a>
-                                                    </>
-                                                ) : null}
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleViewReceiptClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                View Receipt &nbsp;
+                                                            </a>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleBookAppointmentClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                Book Appointment
+                                                            </a>
+                                                        </>
+                                                    ) : null}
 
 
-                                                {(booking.Status_app == '1' || booking.Status_app == '2') && booking.appointment_date ? (
-                                                    <>
-                                                        <a
-                                                            href="/edit"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleViewReceiptClick(booking.id);
-                                                            }}
-                                                            className={globalStyleCss.blueLink}>
-                                                            View Receipt &nbsp;
-                                                        </a>
-                                                        <a
-                                                            href="/edit"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleBookAppointmentClick(booking.id);
-                                                            }}
-                                                            className={globalStyleCss.blueLink}>
-                                                            Change Appointment
-                                                        </a>
-                                                    </>
-                                                ) : null}
+                                                    {(booking.Status_app == '1' || booking.Status_app == '2') && booking.appointment_date ? (
+                                                        <>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleViewReceiptClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                View Receipt &nbsp;
+                                                            </a>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleBookAppointmentClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                Change Appointment
+                                                            </a>
+                                                        </>
+                                                    ) : null}
 
-                                                {booking.Status_app == '4' ? (
-                                                    <>
-                                                        <a
-                                                            href="/edit"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleResubmitPhotoClick(booking.id);
-                                                            }}
-                                                            className={globalStyleCss.blueLink}>
-                                                            Upload photo &nbsp;
-                                                        </a>
-                                                        <a
-                                                            href="/edit"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleViewReceiptClick(booking.id);
-                                                            }}
-                                                            className={globalStyleCss.blueLink}>
-                                                            View receipt
-                                                        </a>
-                                                    </>
-                                                ) : null}
+                                                    {booking.Status_app == '4' ? (
+                                                        <>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleResubmitPhotoClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                Upload photo &nbsp;
+                                                            </a>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleViewReceiptClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                View receipt
+                                                            </a>
+                                                        </>
+                                                    ) : null}
 
-                                                {booking.Status_app == '6' ? (
-                                                    <>
-                                                        <a
-                                                            href="/edit"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleUpdateClick(booking.id);
-                                                            }}
-                                                            className={globalStyleCss.blueLink}>
-                                                            Update &nbsp;
-                                                        </a>
-                                                        <a
-                                                            href="/edit"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleRenewClick(booking.id);
-                                                            }}
-                                                            className={globalStyleCss.blueLink}>
-                                                            Renew &nbsp;
-                                                        </a>
-                                                        <a
-                                                            href="/edit"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleReplaceClick(booking.id);
-                                                            }}
-                                                            className={globalStyleCss.blueLink}>
-                                                            Replace
-                                                        </a>
-                                                    </>
-                                                ) : null}
-                                            </td>
-                                        </tr>
-
+                                                    {booking.Status_app == '6' ? (
+                                                        <>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleUpdateClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                Update &nbsp;
+                                                            </a>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleRenewClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                Renew &nbsp;
+                                                            </a>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleReplaceClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                Replace
+                                                            </a>
+                                                        </>
+                                                    ) : null}
+                                                </td>
+                                            </tr>
+                                            {booking.Status_app == '1' && booking.appointment_date && (<tr style={{ backgroundColor: '#F5F6F7' }}>
+                                                <td colSpan={6} >
+                                                    <div className={dashBoardContentstyles.collectionHeader}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                            <g clipPath="url(#clip0_1402_6733)">
+                                                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 16C13 16.55 12.55 17 12 17C11.45 17 11 16.55 11 16V12C11 11.45 11.45 11 12 11C12.55 11 13 11.45 13 12V16ZM12 9C11.45 9 11 8.55 11 8C11 7.45 11.45 7 12 7C12.55 7 13 7.45 13 8C13 8.55 12.55 9 12 9Z" fill="#546E7A" />
+                                                            </g>
+                                                            <defs>
+                                                                <clipPath id="clip0_1402_6733">
+                                                                    <rect width="24" height="24" fill="white" />
+                                                                </clipPath>
+                                                            </defs>
+                                                        </svg>
+                                                        You have made an appointment to collect your new pass card on {formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}, {booking.time_start_appointment} - {booking.time_end_appointment}
+                                                    </div>
+                                                </td>
+                                            </tr>)}
+                                        </>
 
                                     )
 
                                     )
                                 }
 
-                                {
+                                {/* {
                                     bookingSchedules.map((booking) =>
                                     (
                                         booking.Status_app == '1' && booking.appointment_date ? (
@@ -641,7 +663,7 @@ const DashBoardPage: React.FC = () => {
                                     )
 
                                     )
-                                }
+                                } */}
                             </tbody>
                         </table>
 

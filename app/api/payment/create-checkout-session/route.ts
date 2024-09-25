@@ -61,7 +61,6 @@ export async function POST(req: NextRequest) {
         where: {
           app_type: schedule?.app_type,
           card_type: schedule?.card_id,
-          grade_id: schedule?.grade_id,
         },
       });
       const gst = await prisma.gsts.findFirst({});

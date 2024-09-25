@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
             const updatedSchedule = await prisma.booking_schedules.update({
                 where: { id: schedule.id },
                 data: {
-                    Status_app: '2',
+                    Status_app: '1',
                     appointment_date: appointmentDate,
                     time_start_appointment: startTime,
                     time_end_appointment: endTime

@@ -154,8 +154,9 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                         }),
                     });
 
-                    if (!response.ok) {
-                        throw new Error('Appointment: Failed to save');
+                    if (!response.ok && response.status === 401) {
+                        router.push('/signin');
+                        throw new Error('Personal Details: Failed to save draft');
                     }
                     const result = await response.json();
                     setFormData(prevFormData => ({
@@ -434,6 +435,11 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                     nric: formData.nric,
                 }),
             });
+
+            if (!response.ok && response.status === 401) {
+                router.push('/signin');
+                throw new Error('token expired in stripe session');
+            }
 
             const { sessionId } = await response.json();
             const stripe = await stripePromise;

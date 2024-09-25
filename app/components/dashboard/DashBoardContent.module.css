@@ -103,6 +103,7 @@
           text-align: left;
           flex-wrap: wrap;
           width:20%;
+          padding:10px;
         }
         .item1 {
           padding-right: 20px;
@@ -114,13 +115,13 @@
           padding-right: 20px;
           text-align: left;
           flex-wrap: wrap;
-          width:13%;
+          width:11%;
         }
         .item3 {
           padding-right: 20px;
           text-align: left;
           flex-wrap: wrap;
-          width:13%;
+          width:12%;
         }
 
         .collectionHeader {

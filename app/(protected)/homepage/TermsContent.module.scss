@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+
+.mainContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 80px -507px;
+  flex-wrap: wrap;
+  background: #F5F6F7;
+
+  .termsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 40px;
+    @media screen and (max-width: 769px) {
+      gap: 20px;
+      padding: 20px;
+    }
+    .headerText {
+      color: #000;
+      font-family: Poppins;
+      font-size: 36px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 42px;
+    }
+
+    .bodyContainer {
+      display: flex;
+      flex-direction: column;
+      height: 350px;
+      padding: 40px;
+      align-items: flex-start;
+      gap: 16px;
+      background: white;
+      @media screen and (max-width: 769px) {
+        gap: 12px;
+        padding: 20px;
+      }
+
+      .detailContainer {
+        display: flex;
+        padding-left: 40px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        align-self: stretch;
+        @media screen and (max-width: 769px) {
+          padding: 20px;
+        }
+        .termsConditionArea {
+          flex: 1 0 0;
+          color: #000;
+          font-family: Roboto;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 24px;
+        }
+      }
+
+    }
+
+    .options {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 8px;
+
+      .text {
+        color: #000;
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+        padding-left: 5px;
+      }
+    }
+
+  }
+
+  .buttonBox {
+    display: flex;
+    padding-left: 19%;
+    gap: 10px;
+    padding-bottom: 4%;
+  }
+
+  .saveDraft {
+    padding: 16px 20px;
+    align-items: flex-start;
+    gap: 8px;
+    border-radius: 28px;
+    border: 1px solid #546E7A;
+    background: #FFF;
+  }
+
+  .continue {
+    padding: 16px 20px;
+    align-items: flex-start;
+    gap: 8px;
+    border-radius: 28px;
+    background: #CC0C00;
+    color: white;
+  }
+}
+
+
+
+.applicantDetails {
+  display: flex;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  align-self: stretch;
+  background: #FFF;
+}
+
+.applicantDetailsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.applicantDetailsHeaderCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.applicantDetailsHeaderCardContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  flex: 1 0 0;
+  color: #000;
+  font-family: Poppins;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 42px;
+  /* 150% */
+}
+
+.applicantDetailsHeaderCardContentDetail {
+  color: #000;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 150% */
+}
+
+
+
+.optionsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.optionsHeaderText {
+  color: #000;
+  display: flex;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.divGap {
+  padding-bottom: 30px;
+}
+
+.uploadPhoto {
+  display: flex;
+  width: 122px;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  background: #FFF;
+}
+
+.trainingRecord {
+  display: flex;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  align-self: stretch;
+  background: #FFF;
+}
+
+.checkboxesText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1 0 0;
+}
+
+.checkboxes {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.paymentContainer {
+  display: flex;
+  padding: 0px;
+  width: 90%;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #FFF;
+  justify-content: center;
+}
+
+.paymentContainer2 {
+  display: flex;
+  padding: 0px;
+  width: 90%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.paymentContainerBackground {
+  display: flex;
+  padding: 3%;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #F5F6F7;
+  justify-content: center;
+}
+
+
+
+.declareText {
+  flex: 1 0 0;
+  color: #000;
+  padding-left: 10px;
+  /* Regular */
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 150% */
+}
+
+.alignFles {
+  display: flex;
+  gap: 180px;
+}
+
+.termsBox {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  flex-shrink: 0;
+  background: #F5F6F7;
+  justify-content: center;
+  padding-top: 2%;
+  padding-left: 10%;
+  padding-bottom: 3%;
+}
+
+.box2 {
+  align-self: stretch;
+  color: #000;
+  font-family: Poppins;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 50px;
+  justify-content: center;
+}
+
+.box3 {
+  display: flex;
+  padding-left: 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}

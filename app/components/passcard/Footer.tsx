@@ -35,23 +35,24 @@ const Footer: React.FC<FooterProps> =
 
                             )}
 
-                            <div className={stepBarFooterStyle.continue}>
-                                <div>
-                                    <button
-                                        onClick={onNext}>
-                                        <div className={globalStyleCss.buttonText}>
-                                            {activeStep === 0 ? 'Application details' : ''}
-                                            {activeStep === 1 ? 'Review details' : ''}
-                                            {activeStep === 2 ? 'Make payment' : ''}
-                                            {activeStep === 3 && !formData.paymentProcessed ? 'Proceed to pay' : ''}
-                                            {activeStep === 3 && formData.paymentProcessed ? 'Book appointment' : ''}
-                                            {activeStep === 4 && !formData.isAppointmentConfirmed ? 'Confirm appointment' : ''}
-                                            {activeStep === 4 && formData.isAppointmentConfirmed ? 'Complete' : ''}
-                                        </div>
-                                    </button>
+                            {activeStep != 4 && formData.isAppointmentConfirmed && (
+                                <div className={stepBarFooterStyle.continue}>
+                                    <div>
+                                        <button
+                                            onClick={onNext}>
+                                            <div className={globalStyleCss.buttonText}>
+                                                {activeStep === 0 ? 'Application details' : ''}
+                                                {activeStep === 1 ? 'Review details' : ''}
+                                                {activeStep === 2 ? 'Make payment' : ''}
+                                                {activeStep === 3 && !formData.paymentProcessed ? 'Proceed to pay' : ''}
+                                                {activeStep === 3 && formData.paymentProcessed ? 'Book appointment' : ''}
+                                                {activeStep === 4 && !formData.isAppointmentConfirmed ? 'Confirm appointment' : ''}
+                                                {activeStep === 4 && formData.isAppointmentConfirmed ? 'Complete' : ''}
+                                            </div>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-
+                            )}
                             {activeStep != 0 && !formData.paymentProcessed && (
                                 <div className={stepBarFooterStyle.saveDraft}>
                                     <button

@@ -11,7 +11,7 @@ import { format, parseISO } from 'date-fns';
 import { useFormContext } from '.././FormContext';
 import globalStyleCss from '../globalstyle/Global.module.css';
 
-type DisabledDatesResponse = string[]; // Array of ISO date strings
+type DisabledDatesResponse = string[];
 export interface userInfo {
     name?: string;
     nric?: string;
@@ -51,6 +51,10 @@ const BookAppointmentPage: React.FC = () => {
     const handleTimeSlotClick = (text: string) => {
         console.log('timeslot', text);
         setSelectedTimeSlot(text);
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            ['timeSlot']: text,
+        }));
     };
 
     // State variables to store the input values
@@ -95,7 +99,7 @@ const BookAppointmentPage: React.FC = () => {
         const storedData = sessionStorage.getItem('users');
         if (storedData) {
             try {
-                const parsedData: users = JSON.parse(storedData);
+                const parsedData: userInfo = JSON.parse(storedData);
                 setUsers(parsedData);
             } catch (err) {
                 setError('Failed to parse user data');
