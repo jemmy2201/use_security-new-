@@ -51,15 +51,8 @@ export async function sendSms() {
       });
       const mobileno = userRecord?.mobileno;
       const smsMessage = `Please upload recent photo to complete your application`;
-      const apiUrl = `http://gateway.onewaysms.sg:10002/api.aspx?&languagetype=1&apiusername=${username}&apipassword=${password}&mobile=${mobileno}&message=${encodeURIComponent(smsMessage)}&senderid=${senderId}`;
       console.log('sending sms to mobile, smsMessage:', mobileno, smsMessage);
-      // const response = await fetch(apiUrl, {
-      //     method: 'GET',
-      // });
-
-      // const result = await response.text();
-      // console.log('SMS API Response:', result);
-
+  
     });
 
   } catch (error) {
@@ -88,10 +81,10 @@ const sendSMS = async (phoneNumber: string, message: string) => {
     const response = await axios.get(apiUrl, {
       params: {
         ...apiCredentials,
-        mobileno: phoneNumber,     
-        message: message,        
+        mobileno: phoneNumber,
+        message: message,
         senderid: 'USE',
-        languagetype: '1',  
+        languagetype: '1',
       },
     });
     console.log('SMS sent successfully data:', response.data);
