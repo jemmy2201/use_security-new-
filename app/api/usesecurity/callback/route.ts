@@ -14,7 +14,6 @@ const AUD_URL = process.env.SINGPASS_AUD_URL;
 const AUTH_API_URL = process.env.SINGPASS_AUTH_API_URL as string;
 const REDIRECT_URL_SINGPASS_CURL = process.env.SINGPASS_REDIRECT_URI;
 
-// Convert the private_key_jwt function
 const privateKeyJwt = async () => {
     const expEncode = Math.floor(Date.now() / 1000) + 20 * 60;
     const iatEncode = Math.floor(Date.now() / 1000);
@@ -33,7 +32,6 @@ const privateKeyJwt = async () => {
     return token;
 };
 
-// Convert the id_token function
 const idToken = async (jwtToken: string, code: string) => {
     const reqBody = {
         client_id: CLIENT_ID,
@@ -70,11 +68,9 @@ async function privateKeyJwe(code: string) {
         alg: "ECDH-ES+A128KW"
     };
 
-    // Import the JWK
     const key = await importJWK(jwk);
 
     try {
-        // Decrypt the JWE using the imported key
         const { plaintext } = await compactDecrypt(code, key);
         const decodedToken = decodeJwt(new TextDecoder().decode(plaintext));
         const subject = decodedToken.sub;
@@ -86,7 +82,6 @@ async function privateKeyJwe(code: string) {
     }
 }
 
-// Convert the convert_sub function
 const convertSub = (sub: string) => {
     const parts = sub.split(',');
     const finalSub = parts[0].substring(2);
@@ -95,7 +90,6 @@ const convertSub = (sub: string) => {
 
 export async function GET(request: NextRequest, res: NextResponse) {
     try {
-        // Extract the `code` query parameter from the URL
         const { searchParams } = new URL(request.url);
         const code = searchParams.get('code');
 
@@ -105,16 +99,13 @@ export async function GET(request: NextRequest, res: NextResponse) {
 
         console.log('Callback from Singpass login, auth code:', code);
 
-        // Step 1: Obtain JWT token using privateKeyJwt (assuming this is your custom function)
         const jwtToken = await privateKeyJwt();
 
-        // Step 2: Obtain ID token using the authorization code and JWT token
         const response = await idToken(jwtToken, code);
         const dataToken = response.id_token;
 
         console.log('id token received: ', dataToken);
 
-        // Step 3: Decrypt the JWE token (assuming apiPrivateKeyJwe is your custom decryption function)
         const jweDecoded = await privateKeyJwe(dataToken) as string;
 
         const userId = convertSub(jweDecoded);
