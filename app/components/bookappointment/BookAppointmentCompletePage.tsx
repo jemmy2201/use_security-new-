@@ -36,7 +36,7 @@ const BookAppointmentCompletePage: React.FC = () => {
     };
 
     const onComplete = async () => {
-        router.push('/dashboard');
+        router.push('/homepage');
     };
 
     useEffect(() => {

@@ -34,7 +34,7 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
     };
 
     const onComplete = async () => {
-        router.push('/dashboard');
+        router.push('/homepage');
     };
 
     useEffect(() => {
