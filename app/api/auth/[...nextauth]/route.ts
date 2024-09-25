@@ -75,13 +75,12 @@ async function verifyToken(token: string) {
   });
 }
 
-// Define NextAuth options
 const authOptions: NextAuthOptions = {
   providers: [SingPassProvider],
   callbacks: {
     async redirect({ url, baseUrl }) {
       console.log('inside redirect call');
-      return `${baseUrl}/dashboard`; // Adjust to your dashboard route
+      return `${baseUrl}/dashboard`; 
     },
     async signIn({ user, account, profile }) {
       console.log('sign in------', user, account, profile);
@@ -98,13 +97,10 @@ const authOptions: NextAuthOptions = {
         token.accessToken = account.access_token;
 
         try {
-          // Fetch MyInfo data using access token
           const myInfoData = await fetchMyInfoData(token.accessToken as string);
 
-          // Attach MyInfo data to the JWT token
           token.myInfo = myInfoData;
 
-          // Verify JWT if needed (Example)
           const decoded = await verifyToken(token.accessToken as string);
           console.log('Decoded JWT:', decoded);
         } catch (error) {
@@ -114,10 +110,9 @@ const authOptions: NextAuthOptions = {
       return token;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET as string, // Type assertion
+  secret: process.env.NEXTAUTH_SECRET as string, 
 };
 
-// Define the handler for GET and POST requests
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

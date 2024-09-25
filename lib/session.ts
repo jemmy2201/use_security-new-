@@ -4,7 +4,6 @@ import { cookies } from 'next/headers'
 import encryptDecrypt from '@/utils/encryptDecrypt';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
-import { redirect } from "next/navigation";
 
 export interface SessionPayload extends JWTPayload {
     userId?: string;
@@ -15,14 +14,6 @@ export interface SessionPayload extends JWTPayload {
 const secretKey = process.env.SESSION_SECRET
 const encodedKey = new TextEncoder().encode(secretKey)
 
-export async function encrypt(payload: SessionPayload) {
-    return new SignJWT(payload)
-        .setProtectedHeader({ alg: 'HS256' })
-        .setIssuedAt()
-        .setExpirationTime('5min')
-        .sign(encodedKey)
-}
-
 export async function decrypt(session: string | undefined = '') {
     console.log('inside decrypt: session:');
 
@@ -31,6 +22,11 @@ export async function decrypt(session: string | undefined = '') {
 
     const currentTime = Math.floor(Date.now() / 1000);
     console.log('currentTime:', currentTime);
+    console.log('decoded.exp:', decoded.exp);
+    const createSessionTimeReadable = convertUnixToDateTime(currentTime);
+    const decodedExpTimeReadable = convertUnixToDateTime(decoded.exp as number);
+    console.log('createSession, currentTime:', createSessionTimeReadable);
+    console.log('createSession, decoded.exp:', decodedExpTimeReadable);
     if (decoded.exp && decoded.exp < currentTime) {
         throw new Error('JWT token has expired');
     }
@@ -48,6 +44,7 @@ export async function decryptSession(session: string | undefined = '') {
         })
         return payload
     } catch (error) {
+        console.log(error);
         console.log('Failed to verify session')
     }
 
@@ -57,7 +54,21 @@ export async function createSession(userId: string, userToken: string) {
     const expiresAt = new Date(Date.now() + 70 * 24 * 60 * 60 * 1000)
     const session = await encrypt({ userId, expiresAt, userToken })
 
-    console.log('expiresAt:', expiresAt);
+    console.log('createSession, session', session);
+    const decoded = decodeJwt(session);
+    console.log('createSession, decoded', decoded);
+
+    const currentTime = Math.floor(Date.now() / 1000);
+    console.log('createSession, currentTime:', currentTime);
+    console.log('createSession, decoded.exp:', decoded.exp);
+
+    const createSessionTimeReadable = convertUnixToDateTime(currentTime);
+    const decodedExpTimeReadable = convertUnixToDateTime(decoded.exp as number);
+
+    console.log('createSession, currentTime:', createSessionTimeReadable);
+    console.log('createSession, decoded.exp:', decodedExpTimeReadable);
+
+    console.log('createSession, cookie expiresAt:', expiresAt);
     cookies().set('session', session, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -66,6 +77,19 @@ export async function createSession(userId: string, userToken: string) {
         path: '/',
     })
 }
+
+export async function encrypt(payload: SessionPayload) {
+    return new SignJWT(payload)
+        .setProtectedHeader({ alg: 'HS256' })
+        .setIssuedAt()
+        .setExpirationTime('20min')
+        .sign(encodedKey)
+}
+
+export const convertUnixToDateTime = (unixTimestamp: number): string => {
+    const date = new Date(unixTimestamp * 1000);
+    return date.toISOString();
+};
 
 export async function updateSession() {
     const session = cookies().get('session')?.value
@@ -85,20 +109,6 @@ export async function updateSession() {
     })
 }
 
-export async function isJwtTokenExpired(session: any) {
-    // console.log('===========session', session);
-    // console.log('===========session:exp', session.exp);
-
-    return !session;
-
-    // const exp = session.exp;
-    
-    // console.log('=======exp:', exp);
-
-    // const currentTime = Math.floor(Date.now() / 1000);
-    // console.log('===========exp cond', exp && exp < currentTime);
-    // return !(exp && exp < currentTime)
-}
 
 export function deleteSession() {
     cookies().delete('session')
@@ -118,7 +128,6 @@ export async function getEncryptedNricFromSession(req: NextRequest) {
         return NextResponse.json({ error: 'Error-01' }, { status: 401 });
 
     }
-    // console.log('session user id:', session?.userId);
     return encryptDecrypt(session?.userId as string, 'encrypt');
 }
 

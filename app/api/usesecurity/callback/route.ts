@@ -57,16 +57,19 @@ const idToken = async (jwtToken: string, code: string) => {
 
 
 async function privateKeyJwe(code: string) {
-    const jwk = {
-        kty: "EC",
-        d: "7FaRgw1cJmzGA1hss0YcLK4483zkKJ6JPafOwEoMlIw",
-        use: "enc",
-        crv: "P-256",
-        kid: "idx-enc",
-        x: "9Is-VbNwtijojiwRxWAbXxg-UTndznGFISU0RlQpfoY",
-        y: "t67FS3cT-sohO_x5qsBvAnM5HTNkk_wNQza32YJg-6A",
-        alg: "ECDH-ES+A128KW"
-    };
+
+    const jwkEnv = process.env.SINGPASS_PRIVATE_JWE;
+
+    if (!jwkEnv) {
+        throw new Error('JWK not found in environment variables');
+    }
+
+    let jwk;
+    try {
+        jwk = JSON.parse(jwkEnv);
+    } catch (error) {
+        throw new Error('Error parsing JWK from environment variables');
+    }
 
     const key = await importJWK(jwk);
 
@@ -104,9 +107,10 @@ export async function GET(request: NextRequest, res: NextResponse) {
         const response = await idToken(jwtToken, code);
         const dataToken = response.id_token;
 
-        console.log('id token received: ', dataToken);
+        console.log('id token received (first 10 char): ', dataToken.substring(0,10));
 
         const jweDecoded = await privateKeyJwe(dataToken) as string;
+        console.log('Id Token decoded:', jweDecoded);
 
         const userId = convertSub(jweDecoded);
         console.log('nric / userId : ', userId);
