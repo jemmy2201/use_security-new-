@@ -1,8 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { PrismaClient } from '@prisma/client';
+import { booking_schedules, PrismaClient } from '@prisma/client';
+import { PDFDocument, rgb } from 'pdf-lib';
+import fs from 'fs';
+import path from 'path';
+import encryptDecrypt from '@/utils/encryptDecrypt';
+import { NEW, REPLACEMENT, RENEWAL } from '../../../constant/constant';
+import { SO_APP, AVSO_APP, PI_APP } from '../../../constant/constant';
+import { SO, SSO, SS, SSS, CSO } from '../../../constant/constant';
 
 const prisma = new PrismaClient();
+
+const cardTypeMap: { [key: string]: string } = {
+    [SO_APP]: 'Security Officer (SO)/Aviation Security Officer (AVSO)',
+    [PI_APP]: 'Personal Investigator',
+};
+
+const appTypeMap: { [key: string]: string } = {
+    [NEW]: 'New',
+    [REPLACEMENT]: 'Replace',
+    [RENEWAL]: 'Renew',
+};
+
+const gradeTypeMap: { [key: string]: string } = {
+    [SO]: 'SO',
+    [SSO]: 'SSO',
+    [SS]: 'SS',
+    [SSS]: 'SSS',
+    [CSO]: 'CSO',
+};
 
 function getStripeKey(): string {
     const key = process.env.STRIPE_SECRET_KEY;
@@ -24,8 +50,6 @@ export async function GET(req: NextRequest) {
     }
     try {
         const session = await stripe.checkout.sessions.retrieve(session_id);
-        //console.log('String session id:', session_id);
-        //console.log('String session:', session);
 
         const schedule = await prisma.booking_schedules.findFirst({
             where: { stripe_session_id: session.id },
@@ -50,7 +74,9 @@ export async function GET(req: NextRequest) {
                 }
                 return value;
             };
-
+            console.log('generating pdf:', schedule.id);
+            generatePdfReceipt(schedule);
+            console.log('pdf generated:', schedule.id);
             return new Response(JSON.stringify(schedule, replacer), {
                 status: 200,
                 headers: { 'Content-Type': 'application/json' },
@@ -75,3 +101,74 @@ export async function GET(req: NextRequest) {
         return `${day}-${month}-${year}`;
     }
 }
+
+const generatePdfReceipt = async (schedule: booking_schedules) => {
+    try {
+        // Create a new PDF document
+        const pdfDoc = await PDFDocument.create();
+        const page = pdfDoc.addPage([600, 400]);
+
+        const { width, height } = page.getSize();
+        const tableTop = height - 50;
+
+        const nric = encryptDecrypt(schedule.nric, 'decrypt');
+
+        const appTypeString = appTypeMap[schedule.app_type] + '-' + cardTypeMap[schedule.card_id ? schedule.card_id : ''];
+
+        const gradeTypeString = gradeTypeMap[schedule.grade_id?schedule.grade_id:''];
+        const userRecord = await prisma.users.findFirst({
+            where: {
+                ...(schedule.nric && { nric: schedule.nric }),
+            },
+        });
+
+        const tableData = [
+            { column1: 'Transaction reference no.', column2: schedule.stripe_payment_id },
+            { column1: 'Transaction date', column2: schedule.trans_date },
+            { column1: 'Amount paid (inclusive of GST)', column2: schedule.grand_total },
+            { column1: 'Type of application', column2: appTypeString },
+            { column1: 'Grade', column2: gradeTypeString },
+            { column1: 'Pass card no.', column2: schedule.passid },
+            { column1: 'Pass card date of expiry', column2: schedule.expired_date },
+            { column1: 'Full name', column2: userRecord?.name },
+            { column1: 'NRIC / FIN no.', column2: nric },
+        ];
+
+        const columnWidths = [300, 300];
+
+        tableData.forEach((row, index) => {
+            const yPosition = tableTop - index * 20;
+            page.drawText(row.column1, {
+                x: 50,
+                y: yPosition,
+                size: 12,
+                color: rgb(0, 0, 0),
+            });
+            page.drawText(row.column2 ? row.column2 : '', {
+                x: 350,
+                y: yPosition,
+                size: 12,
+                color: rgb(0, 0, 0),
+            });
+        });
+
+        const pdfBytes = await pdfDoc.save();
+
+        const folderPath = path.join(process.cwd(), 'public', 'receipts');
+        const filePath = path.join(folderPath, schedule.passid + '.pdf');
+
+        fs.mkdirSync(folderPath, { recursive: true });
+
+        fs.writeFileSync(filePath, pdfBytes);
+
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+    } finally {
+        await prisma.$disconnect();
+        fs.close;
+    }
+};
+
+
+
+

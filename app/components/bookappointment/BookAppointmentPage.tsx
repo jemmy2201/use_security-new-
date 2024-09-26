@@ -110,7 +110,8 @@ const BookAppointmentPage: React.FC = () => {
 
         const fetchDisabledDates = async () => {
             try {
-                const response = await fetch('/api/appointment-dates'); // Replace with your API endpoint
+                const response = await fetch(`/api/appointment-dates?bookingId=${encodeURIComponent(formData.bookingId?formData.bookingId:'')}`);
+
                 if (!response.ok) {
                     throw new Error('Failed to fetch disabled dates');
                 }
@@ -125,7 +126,6 @@ const BookAppointmentPage: React.FC = () => {
     }, []);
 
 
-    // Check if a date is disabled
     const isDisabled = (date: Date) => {
         return disabledDates.some(disabledDate => format(disabledDate, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'));
     };
@@ -245,9 +245,6 @@ const BookAppointmentPage: React.FC = () => {
                         <div className={globalStyleCss.regularBold}> Closed on Saturdays, Sundays & Public Holidays </div>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </form>
