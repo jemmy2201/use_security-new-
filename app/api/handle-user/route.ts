@@ -19,6 +19,11 @@ export async function POST(req: NextRequest) {
             );
         }
 
+        const validatedPhone = validatePhoneNumber(mobileno);
+        if (validatedPhone.length !== 10) {
+            return NextResponse.json({ success: false, message: 'Invalid mobile number' }, { status: 400 });
+        }
+        console.log('savinguser details, validated mobile no:', validatePhoneNumber);
         const userRecord = await prisma.users.findFirst({
             where: {
                 ...(encryptedNric && { nric: encryptedNric }),
@@ -45,7 +50,7 @@ export async function POST(req: NextRequest) {
             const updatedUserRecord = await prisma.users.update({
                 where: { id: userRecord.id }, // Using the unique identifier for update
                 data: {
-                    mobileno: mobileno,
+                    mobileno: validatedPhone,
                     email: email,
                 },
             });
@@ -68,4 +73,16 @@ export async function POST(req: NextRequest) {
     } finally {
         await prisma.$disconnect();
     }
+}
+
+function validatePhoneNumber(phoneNumber: string): string {
+    if (phoneNumber.startsWith('+')) {
+        phoneNumber = phoneNumber.slice(1);
+    }
+
+    if (phoneNumber.length !== 10 && !phoneNumber.startsWith('65')) {
+        phoneNumber = '65' + phoneNumber;
+    }
+    const digitsOnly = phoneNumber.replace(/\D/g, '');
+    return digitsOnly;
 }

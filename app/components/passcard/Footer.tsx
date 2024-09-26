@@ -35,7 +35,7 @@ const Footer: React.FC<FooterProps> =
 
                             )}
 
-                            {activeStep != 4 && formData.isAppointmentConfirmed && (
+                            {activeStep != 4 && !formData.isAppointmentConfirmed && (
                                 <div className={stepBarFooterStyle.continue}>
                                     <div>
                                         <button

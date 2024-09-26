@@ -183,22 +183,26 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                         setActiveStep(prevStep => prevStep + 1);
                     }
                 } else {
-                    console.log('mobile changed');
+                    console.log('mobile changed', formData.mobileno);
                     const response = await fetch('/api/sms/send-sms', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(formData.mobileno),
+                        body: JSON.stringify({
+                            mobile: formData.mobileno,
+                        }),
                     });
                     const result = await response.json();
 
+                    console.log('send sms result:', result);
+
                     if (result.success) {
                         console.log('SMS sent:', result);
+                        setIsOtpPopupOpen(true);
                     } else {
-                        console.error('Failed to send SMS:', result.message);
+                        alert(result.message);
                     }
-                    setIsOtpPopupOpen(true);
 
                 }
             }

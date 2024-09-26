@@ -9,20 +9,31 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
     try {
         const { mobile } = await request.json();
+        console.log('mobile no:', mobile);
+        if (!mobile) {
+            return NextResponse.json({ success: false, message: 'Invalid mobile number' }, { status: 400 });
+          }
 
+        const validatedPhone = validatePhoneNumber(mobile);
+        console.log('sending otp, validated mobile no:', validatedPhone);
+        if (validatedPhone.length !== 10) {
+            return NextResponse.json({ success: false, message: 'Invalid mobile number' }, { status: 400 });
+        }
+        console.log('sending otp, validated mobile no:', validatedPhone);
         const username = process.env.GATEWAY_SMS_USERNAME;
         const password = process.env.GATEWAY_SMS_PASSWOD;
         const senderId = process.env.GATEWAY_SMS_SENDER;
         const apiUrl = process.env.GATEWAY_SMS_URL;
         const otpNumber = Math.floor(1000 + Math.random() * 9000);
-        const smsMessage = `Use OTP  ${otpNumber}  to verify your phone number`;
+        const smsMessage = `Use OTP ${otpNumber} to verify your phone number`;
+        console.log('otp message:', smsMessage);
 
         const apiCredentials = { apiusername: username, apipassword: password, };
 
-        const response = await axios.get(apiUrl ? '' : '', {
+        const response = await axios.get(apiUrl ? apiUrl : '', {
             params: {
                 ...apiCredentials,
-                mobileno: mobile,
+                mobileno: validatedPhone,
                 message: smsMessage,
                 senderid: senderId,
                 languagetype: '1',
@@ -32,7 +43,7 @@ export async function POST(request: NextRequest) {
 
         const encryptedNric = await getEncryptedNricFromSession(request);
         if (encryptedNric instanceof NextResponse) {
-            return encryptedNric; 
+            return encryptedNric;
         }
 
         await prisma.activation_phones.create({
@@ -58,5 +69,22 @@ export async function POST(request: NextRequest) {
         await prisma.$disconnect();
     }
 }
+
+
+
+function validatePhoneNumber(phoneNumber: string): string {
+    if (phoneNumber.startsWith('+')) {
+        phoneNumber = phoneNumber.slice(1);
+    }
+
+    if (phoneNumber.length !== 10 && !phoneNumber.startsWith('65')) {
+        phoneNumber = '65' + phoneNumber;
+    }
+
+    const digitsOnly = phoneNumber.replace(/\D/g, '');
+    console.log('digitsOnly', digitsOnly);
+    return digitsOnly;
+}
+
 
 
