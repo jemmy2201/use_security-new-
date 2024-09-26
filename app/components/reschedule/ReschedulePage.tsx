@@ -139,8 +139,11 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             setLoading(false);
         }
     };
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 769);
 
     useEffect(() => {
+
+
         const fetchDisabledDates = async () => {
             try {
                 const response = await fetch(`/api/appointment-dates?bookingId=${encodeURIComponent(bookingId)}`);
@@ -163,6 +166,13 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             }
         };
         fetchDisabledDates();
+
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 769);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     return (
@@ -188,9 +198,15 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                         </div>
                     </div>
                     <div className={rescheduleContentstyles.appointmentBox}>
-                        <div>
-                            <div className={globalStyleCss.regularBold}>
-                                Date of appointment
+                        <div style={{
+                            width: isMobile ? '100%' : '45%',
+                            borderRight: isMobile ? 'none' : '1px solid lightgrey',
+                            height: '500px', // Set your desired height
+                        }}>
+                            <div className={rescheduleContentstyles.displayHeaderTextBox}>
+                                <div className={globalStyleCss.regularBold}>
+                                    Date of appointment
+                                </div>
                             </div>
                             <div className={rescheduleContentstyles.displayDateTextBox}>
                                 <input
@@ -230,9 +246,12 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                             </div>
                         </div>
 
-                        <div>
-                            <div className={globalStyleCss.regularBold}>
-                                Available Time slot
+                        <div style={{ width: '45%' }}>
+
+                            <div className={rescheduleContentstyles.displayHeaderTextBox}>
+                                <div className={globalStyleCss.regularBold}>
+                                    Available Time slot
+                                </div>
                             </div>
                             <div>
                                 <ul>

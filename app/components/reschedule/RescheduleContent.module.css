@@ -86,6 +86,10 @@
       align-items: flex-start;
       gap: 8px;
       align-self: stretch;
+      width: 100%;
+      @media screen and (max-width: 769px) {
+        width: 240px;
+      }
     }
 
     .appointmentBox {
@@ -93,9 +97,26 @@
       align-items: flex-start;
       gap: 80px;
       flex-wrap: wrap;
+      width: 100%;
+
+      .displayHeaderTextBox {
+        margin-top: 10px;
+        display: flex;
+        width: 58%;
+        align-items: flex-start;
+        gap: 16px;
+        align-self: stretch;
+        flex-wrap: wrap;
+        @media screen and (max-width: 769px) {
+          width: 240px;
+        }
+      }
+
       .displayDateTextBox {
+        margin-top: 10px;
         display: flex;
         padding: 12px 16px;
+        width: 58%;
         align-items: flex-start;
         gap: 16px;
         align-self: stretch;
@@ -103,16 +124,21 @@
         border: 1px solid #546E7A;
         background: #FFF;
         flex-wrap: wrap;
+        @media screen and (max-width: 769px) {
+          width: 240px;
+        }
       }
 
       .displayDateBox {
+        margin-top: 10px;
         flex-shrink: 0;
         background: lightgray 50% cover no-repeat;
+        width: 60%;
         flex-wrap: wrap;
       }
 
       .timeSlotText {
-        margin: 15px;
+        margin-top: 10px;
         width: 300px;
         display: flex;
         padding: 12px 16px;
@@ -131,7 +157,7 @@
       }
 
       .timeSlotText.selected {
-        margin: 15px;
+        margin-top: 10px;        
         width: 300px;
         display: flex;
         padding: 12px 16px;
