@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const bookingIdString = url.searchParams.get('bookingId');
     const encryptedNric = await getEncryptedNricFromSession(request);
     if (encryptedNric instanceof NextResponse) {
-      return encryptedNric; // Return the redirect response if necessary
+      return encryptedNric; 
     }
     console.log('get-booking-schedule, bookingIdString:encryptedNric', bookingIdString, encryptedNric);
     if (!bookingIdString) {

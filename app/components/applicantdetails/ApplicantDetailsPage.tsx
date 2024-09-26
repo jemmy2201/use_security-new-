@@ -112,7 +112,6 @@ const ApplicantDetailsPage: React.FC = () => {
                 const parsedBookingData: booking_schedules = JSON.parse(storedBookingData);
                 const fileName = parsedBookingData?.passid + parsedBookingData.nric.slice(-4);
                 console.log('image file name:', fileName);
-                // Initialize formData only if it's empty
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     isDataLoaded: true,

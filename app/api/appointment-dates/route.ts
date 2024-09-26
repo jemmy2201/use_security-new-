@@ -1,8 +1,8 @@
 
-import { NextResponse } from 'next/server';
 import { booking_schedules, PrismaClient } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server';
+import { getEncryptedNricFromSession } from '../../../lib/session';
 
-// Initialize Prisma Client
 const prisma = new PrismaClient();
 
 const timeSlots: string[] = [
@@ -22,14 +22,26 @@ export interface bookingDate {
 }
 
 // API Handler for GET request to fetch disabled dates
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    // Fetch dates from the `dateholiday` table
+    const url = new URL(request.url);
+    const bookingIdString = url.searchParams.get('bookingId');
+    const encryptedNric = await getEncryptedNricFromSession(request);
+    if (encryptedNric instanceof NextResponse) {
+      return encryptedNric; 
+    }
+    if (!bookingIdString) {
+      return new Response(JSON.stringify({ error: 'Booking Id reqquire' }), { status: 400 });
+    }
+    const bookingId = BigInt(bookingIdString) as bigint;
+
     const holidays = await prisma.dateholidays.findMany({
       select: {
         date: true, // Select only the date field
       },
     });
+
+
 
     const disabledDates = holidays
       .map((holiday) => {
@@ -44,7 +56,7 @@ export async function GET() {
       })
       .filter((date) => date !== null);
 
-    console.log('disabledDates', disabledDates);
+    console.log('disabledDates after holiday:', disabledDates);
 
     const today = new Date();
     const dateFrom = new Date(today);
@@ -84,7 +96,24 @@ export async function GET() {
         dateFrom.setDate(today.getDate() + 1);
       }
     }
+
+    const schedules = await prisma.booking_schedules.findUnique({
+      where: {
+        ...(encryptedNric && { nric: encryptedNric }),
+        id: bookingId,
+      } as any,
+    });
+
+    const transDate = schedules?.trans_date;
+    if(transDate){
+      const transactionDate = parseDateString(transDate); 
+      const nextSixDays = getNextSixDays(transactionDate);
+      const allDisabledDates = [...disabledDates, ...nextSixDays];
+      return NextResponse.json(allDisabledDates);
+    }
+
     return NextResponse.json(disabledDates);
+    
   } catch (error) {
     console.error('Error fetching disabled dates:', error);
     return NextResponse.json({ error: 'Failed to fetch disabled dates' }, { status: 500 });
@@ -92,5 +121,23 @@ export async function GET() {
 
   function checkTimeSlot(slot: string): boolean {
     return timeSlots.includes(slot);
-  }
+  };
+
+
 }
+
+const parseDateString = (dateString: string): Date => {
+  const [day, month, year] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day); // month is 0-based in JavaScript Date
+};
+
+const getNextSixDays = (startDate: Date) => {
+  const dates = [];
+  for (let i = 0; i < 7; i++) {
+    const nextDate = new Date(startDate);
+    nextDate.setDate(startDate.getDate() + i); // Add i days to the transaction date
+    dates.push(nextDate.toISOString().split('T')[0]); // Format as 'YYYY-MM-DD'
+  }
+  return dates;
+};
+

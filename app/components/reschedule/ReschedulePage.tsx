@@ -143,7 +143,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     useEffect(() => {
         const fetchDisabledDates = async () => {
             try {
-                const response = await fetch('/api/appointment-dates'); // Replace with your API endpoint
+                const response = await fetch(`/api/appointment-dates?bookingId=${encodeURIComponent(bookingId)}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch disabled dates');
                 }
@@ -207,6 +207,11 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                                     isClearable
                                     placeholderText="Choose a date"
                                     excludeDates={disabledDates}
+                                    minDate={new Date()}
+                                    filterDate={(date) => {
+                                        const day = date.getDay();
+                                        return day !== 0 && day !== 6;
+                                    }}
                                     renderDayContents={(day, date) => {
                                         const isBooked = isFullyBooked(date);
                                         return (
@@ -273,7 +278,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                             </div>
                         </div>
                         <div className={rescheduleContentstyles.montoFriTimings}>
-                            <div className={globalStyleCss.regular}> 9:30am - 4:30pm (last walk-in at 12:30pm)
+                            <div className={globalStyleCss.regular}> 9:30am - 12:30pm (last walk-in at 12:30pm)
                             </div>
                         </div>
                     </div>

@@ -160,7 +160,12 @@ const BookAppointmentPage: React.FC = () => {
                                     dateFormat="yyyy-MM-dd"
                                     isClearable
                                     placeholderText="Choose a date"
+                                    minDate={new Date()}
                                     excludeDates={disabledDates}
+                                    filterDate={(date) => {
+                                        const day = date.getDay();
+                                        return day !== 0 && day !== 6; 
+                                      }}
                                     renderDayContents={(day, date) => {
                                         const isBooked = isFullyBooked(date);
                                         return (
@@ -230,7 +235,7 @@ const BookAppointmentPage: React.FC = () => {
                         </div>
                         <div className={bookAppointmentContentstyles.montoFriTimings}>
                             <div className={globalStyleCss.regular}> 
-                                9:30am - 4:30pm (last walk-in at 12:30pm)
+                                9:30am - 12:30pm (last walk-in at 12:30pm)
                             </div>
                         </div>
                     </div>
