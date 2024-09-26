@@ -93,14 +93,14 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
     const handleNext = async () => {
 
         if (activeStep == 0) {
-            let validStepOne = true;
+            let validStepZero = true;
             if (!formData.email) {
                 alert('Email is required.');
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     errorEmail: 'Please enter the email',
                 }))
-                validStepOne = false;
+                validStepZero = false;
             } else {
                 setFormData(prevFormData => ({
                     ...prevFormData,
@@ -113,35 +113,64 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                     ...prevFormData,
                     errorMobileNumber: 'Please enter the mobile number',
                 }))
-                validStepOne = false;
+                validStepZero = false;
             } else {
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     errorMobileNumber: '',
                 }))
             }
-            if (!validStepOne) return;
+            if (!validStepZero) return;
         }
 
         if (activeStep == 1) {
-            if (!formData.applicationType) {
-                alert('Application type is required.');
-                return;
-            }
+            let validStepOne = true;
+
             if (!formData.image && !formData.imageUrl) {
                 alert('Photo is required.');
-                return;
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: 'Photo is required',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: '',
+                }))
             }
+
             if (!formData.isFaceDetected || !formData.isBgColorMatch) {
-                alert('There is problem with photo. Please upload again correct photo.');
-                return;
+                alert('Photo is required.');
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: 'Photo have some problem',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: '',
+                }))
             }
-            if (!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta 
+
+            if (!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta
                 && !formData.trRtt && !formData.trXray
                 && !formData.trNota && !formData.Ssm && !formData.trObse) {
-                alert('Training record is required');
-                return;
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorTrainingRecords: 'Training records are missing',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorTrainingRecords: '',
+                }))
             }
+
+            if (!validStepOne) return;
+
         }
 
         if (activeStep == 2) {
@@ -170,14 +199,41 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
         if (activeStep == 4) {
 
             if (!formData.isAppointmentConfirmed) {
+
+                let validStepFour = true;
+                if (!formData.appointmentDate) {
+                    setFormData(prevFormData => ({
+                        ...prevFormData,
+                        errorAppointmentDate: 'Appointment date is required.',
+                    }))
+                    validStepFour = false;
+                } else {
+                    setFormData(prevFormData => ({
+                        ...prevFormData,
+                        errorAppointmentDate: '',
+                    }))
+                }
+
+                if (!formData.timeSlot) {
+                    setFormData(prevFormData => ({
+                        ...prevFormData,
+                        errorAppointmentSlot: 'Please choose the time slot.',
+                    }))
+                    validStepFour = false;
+                } else {
+                    setFormData(prevFormData => ({
+                        ...prevFormData,
+                        errorAppointmentSlot: '',
+                    }))
+                }
+
+                if (!validStepFour) return;
+
                 if (!formData.appointmentDate) {
                     alert('Appointment date is required.');
                     return;
                 }
-                if (!formData.timeSlot) {
-                    alert('Please choose the time slot');
-                    return;
-                }
+
                 const formatedAppointmentDate = formatDateSlots(formData.appointmentDate);
                 try {
                     const response = await fetch('/api/handle-appointment', {

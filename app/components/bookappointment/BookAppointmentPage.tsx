@@ -163,6 +163,7 @@ const BookAppointmentPage: React.FC = () => {
                             <div className={globalStyleCss.regularBold}>
                                 Date of appointment
                             </div>
+                            {formData.errorAppointmentDate && <p style={{ color: 'red' }}>{formData.errorAppointmentDate}</p>}
                             <div className={bookAppointmentContentstyles.displayDateTextBox}>
                                 <input
                                     type="text"
@@ -205,6 +206,7 @@ const BookAppointmentPage: React.FC = () => {
                             <div className={globalStyleCss.regularBold}>
                                 Available Time slot
                             </div>
+                            {formData.errorAppointmentSlot && <p style={{ color: 'red' }}>{formData.errorAppointmentSlot}</p>}
                             <div>
                                 <ul>
                                     {buttonTexts.map((text, index) => (

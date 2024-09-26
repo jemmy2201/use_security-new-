@@ -44,6 +44,8 @@ interface FormData {
     errorTrainingRecords?: string;
     errorPhoto?: string;
     errorDeclaration?: string;
+    errorAppointmentDate?: string;
+    errorAppointmentSlot?: string;
     [key: string]: any;
 }
 
