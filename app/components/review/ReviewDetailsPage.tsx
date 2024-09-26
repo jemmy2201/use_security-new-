@@ -488,6 +488,7 @@ const ReviewDetailsPage: React.FC = () => {
                             I hereby certify that the information and photograph provided are accurate and complete. I acknowledge that should any of this information be found to be false, misleading, or misrepresentative, I may be held legally responsible.
                         </div>
                     </div>
+                    {formData.errorDeclaration && <p style={{ color: 'red' }}>{formData.errorDeclaration}</p>}
                 </div>
 
             </div>

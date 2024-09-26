@@ -8,7 +8,7 @@ interface FormData {
     bookingId?: string;
     cardId?: string;
     actionType?: string;
-    passId?:string;
+    passId?: string;
     name?: string;
     nric?: string;
     nricText?: string;
@@ -37,10 +37,13 @@ interface FormData {
     imageUrl?: string;
     appointmentDate?: Date;
     timeSlot?: string;
-    isAppointmentConfirmed?:boolean;
+    isAppointmentConfirmed?: boolean;
     isDataLoaded?: boolean;
     errorMobileNumber?: string;
     errorEmail?: string;
+    errorTrainingRecords?: string;
+    errorPhoto?: string;
+    errorDeclaration?: string;
     [key: string]: any;
 }
 

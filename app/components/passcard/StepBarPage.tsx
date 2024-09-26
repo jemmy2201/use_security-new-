@@ -145,10 +145,22 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
         }
 
         if (activeStep == 2) {
+
+            let validStepTwo = true;
             if (!formData.isTermsAndConditionSigned) {
-                alert('Please tick the declaration');
-                return;
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorDeclaration: 'Please accept the declaration',
+                }))
+                validStepTwo = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorDeclaration: '',
+                }))
             }
+            if (!validStepTwo) return;
+
             await saveUserDetails();
             await saveApplicantDetails();
             await saveReviewDetails();
