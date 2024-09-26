@@ -107,7 +107,6 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
     const onNext = async () => {
         try {
 
-
             if (formData.originalMobileno === formData.mobileno
                 || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
                 console.log('same mobile');
@@ -119,16 +118,19 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(formData.mobileno),
+                    body: JSON.stringify({
+                        mobile: formData.mobileno,
+                    }),
                 });
                 const result = await response.json();
 
                 if (result.success) {
                     console.log('SMS sent:', result);
+                    setIsOtpPopupOpen(true);
                 } else {
-                    console.error('Failed to send SMS:', result.message);
+                    alert(result.message);
                 }
-                setIsOtpPopupOpen(true);
+
                 return;
             }
 

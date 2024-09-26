@@ -494,7 +494,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                    <div className={globalStyleCss.regularLinkBlack}><Link href="/signin">&nbsp;Back to Personal details</Link></div>
+                                    <div className={globalStyleCss.regularLinkBlack}>&nbsp;Back to Personal details</div>
                                 </button>
                             </div>
                         </div>
@@ -519,7 +519,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                    <div className={globalStyleCss.regularLinkBlack}><Link href="/signin">&nbsp;Back to Applicant details</Link></div>
+                                    <div className={globalStyleCss.regularLinkBlack}>&nbsp;Back to Applicant details</div>
                                 </button>
                             </div>
                         </div>
@@ -543,7 +543,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                    <div className={globalStyleCss.regularLinkBlack}><Link href="/signin">&nbsp;Back to Review details</Link></div>
+                                    <div className={globalStyleCss.regularLinkBlack}>&nbsp;Back to Review details</div>
                                 </button>
                             </div>
                         </div>
