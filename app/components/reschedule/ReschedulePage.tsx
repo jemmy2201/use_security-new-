@@ -12,7 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { format, parseISO } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
 
-type DisabledDatesResponse = string[]; // Array of ISO date strings
+type DisabledDatesResponse = string[];
 
 interface ReschedulePageProps {
     bookingId: string;
@@ -27,13 +27,13 @@ export interface userInfo {
 }
 
 const buttonTexts = [
-    '9:30am - 10:30am',
-    '10:30am - 11:30am',
-    '11:30am - 12:30pm',
-    '12:30pm - 1:30pm',
-    '1:30pm - 2:30pm',
-    '2:30pm - 3:30pm',
-    '3:30pm - 4:30pm',
+    '09:30 - 10:30',
+    '10:30 - 11:30',
+    '11:30 - 12:30',
+    '12:30 - 13:30',
+    '13:30 - 14:30',
+    '14:30 - 15:30',
+    '15:30 - 16:30',
 ];
 
 const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
@@ -44,6 +44,9 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     const [fullyBookedDates, setFullyBookedDates] = useState<Date[]>([]);
     const [disabledDates, setDisabledDates] = useState<Date[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    
+    const [startDateError, setStartDateError] = useState<string>("");
+    const [selectedTimeSlotError, setSelectedTimeSlotError] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState('');
 
     const formatDate = (date: Date | null) => {
@@ -53,7 +56,15 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
         const year = date.getFullYear();
         return `${day} ${month} ${year}`;
     };
+
+    const formatDateSlots = (date: Date | null) => {
+        if (!date) return "";
+        const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return offsetDate.toISOString().split('T')[0];
+    };
+
     const formattedDate = formatDate(startDate);
+
 
     const isFullyBooked = (date: Date) => {
         return fullyBookedDates.some(
@@ -61,9 +72,20 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
         );
     };
 
-    // Function to handle date change
-    const handleDateChange = (date: Date | null) => {
+    const handleDateChange = async (date: Date | null) => {
         setStartDate(date);
+        const formattedDateForSlots = formatDateSlots(date);
+
+        const response = await fetch(`/api/day-slots?selectedDate=${encodeURIComponent(formattedDateForSlots)}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch disabled dates');
+        }
+        const data: DisabledDatesResponse = await response.json();
+        console.log('response, /api/day-slots', data);
+        if (data.length > 0) {
+            const parsedSlots = data.map(dateStr => dateStr);
+            console.log('parsedSlots:', parsedSlots);
+        }
     };
 
     // Handler for button click to set the selected timeslot
@@ -107,7 +129,23 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     };
 
     const onNext = async () => {
+        let valid = true;
         try {
+
+            if (!startDate) {
+                setStartDateError("Please select the appointment start date");
+                valid = false;
+            } else {
+                setStartDateError(""); 
+            }
+
+            if (!selectedTimeSlot) {
+                setSelectedTimeSlotError("Please select the time slot");
+                valid = false;
+            } else {
+                setSelectedTimeSlotError(""); 
+            }
+            if (!valid) return;
             const response = await fetch('/api/reschedule-appointment', {
                 method: 'POST',
                 headers: {
@@ -187,7 +225,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                         Reschedule Appointment
                     </div>
                 </div>
-
+                
                 <div className={rescheduleContentstyles.appointmentDetailContainer}>
                     <div className={rescheduleContentstyles.header}>
                         <div className={globalStyleCss.header2}>
@@ -196,6 +234,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                         <div className={globalStyleCss.regular}>
                             Please choose a date and time to book your appointment to collect your pass card.
                         </div>
+
                     </div>
                     <div className={rescheduleContentstyles.appointmentBox}>
                         <div style={{
@@ -207,6 +246,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                                 <div className={globalStyleCss.regularBold}>
                                     Date of appointment
                                 </div>
+                                {startDateError && <p style={{ color: 'red' }}>{startDateError}</p>}
                             </div>
                             <div className={rescheduleContentstyles.displayDateTextBox}>
                                 <input
@@ -252,6 +292,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                                 <div className={globalStyleCss.regularBold}>
                                     Available Time slot
                                 </div>
+                                {selectedTimeSlotError && <p style={{ color: 'red' }}>{selectedTimeSlotError}</p>}
                             </div>
                             <div>
                                 <ul>

@@ -14,9 +14,8 @@ export async function POST(req: NextRequest) {
         }
         console.log('bookingId:encryptedNric', bookingId, encryptedNric);
         console.log('timeSlot:appointmentDate', timeSlot, appointmentDate);
-
+        const formattedDate = new Date(appointmentDate).toISOString().split('T')[0];
         const [startTime, endTime] = timeSlot.split(" - ");
-        // Validate required fields
         if (!encryptedNric || !appointmentDate) {
             return NextResponse.json(
                 { error: 'nric / fin, appointment date are required' },
@@ -42,7 +41,6 @@ export async function POST(req: NextRequest) {
 
         if (schedule) {
 
-            // Convert userRecord BigInt fields to strings
             const serializeBigInt = (obj: any) => {
                 const serialized: any = {};
                 for (const [key, value] of Object.entries(obj)) {
@@ -61,19 +59,16 @@ export async function POST(req: NextRequest) {
                 where: { id: schedule.id },
                 data: {
                     Status_app: '1',
-                    appointment_date: appointmentDate,
+                    appointment_date: formattedDate,
                     time_start_appointment: startTime,
                     time_end_appointment: endTime
                 },
             });
-            //console.log('Schedule updated:', updatedSchedule);
             const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
             return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });
 
         } else {
-
             return NextResponse.json({ error: 'Record not found' }, { status: 400 });
-
         }
 
     } catch (error) {

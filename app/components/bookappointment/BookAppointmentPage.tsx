@@ -33,7 +33,7 @@ const BookAppointmentPage: React.FC = () => {
     const formatDate = (date: Date | null) => {
         if (!date) return "";
         const day = date.getDate();
-        const month = date.toLocaleString('default', { month: 'long' }); // e.g., "September"
+        const month = date.toLocaleString('default', { month: 'long' });
         const year = date.getFullYear();
         return `${day} ${month} ${year}`;
     };

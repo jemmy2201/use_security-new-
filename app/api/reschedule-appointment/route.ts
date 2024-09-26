@@ -13,8 +13,9 @@ export async function POST(req: NextRequest) {
         }
         console.log('bookingId:encryptedNric', bookingId, encryptedNric);
         console.log('appointmentDate:timeSlot', appointmentDate, timeSlot);
+        const formattedDate = new Date(appointmentDate).toISOString().split('T')[0];
+        console.log('formated date:', formattedDate);
         const [startTime, endTime] = timeSlot.split(" - ");
-        // Validate required fields
         if (!bookingId || !appointmentDate) {
             return NextResponse.json(
                 { error: 'bookingId, appointment date are required' },
@@ -48,7 +49,7 @@ export async function POST(req: NextRequest) {
             const updatedSchedule = await prisma.booking_schedules.update({
                 where: { id: schedule.id }, // Using the unique identifier for update
                 data: {
-                    appointment_date: appointmentDate,
+                    appointment_date: formattedDate,
                     time_start_appointment: startTime,
                     time_end_appointment: endTime
                 },
