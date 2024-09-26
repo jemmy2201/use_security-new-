@@ -150,6 +150,7 @@ const PersonalDetailsPage: React.FC = () => {
                                     className={personalDetailsContentstyles.inputBox}
                                     required placeholder="Enter your mobile number"
                                 /></div>
+                                {formData.errorMobileNumber && <p style={{ color: 'red' }}>{formData.errorMobileNumber}</p>}
                         </div>
                         <div className={personalDetailsContentstyles.item}>
                             <div className={globalStyleCss.regularBold}>Email Address. </div>
@@ -162,6 +163,7 @@ const PersonalDetailsPage: React.FC = () => {
                                     className={personalDetailsContentstyles.inputBox}
                                     required placeholder="Enter your email"
                                 /></div>
+                                {formData.errorEmail && <p style={{ color: 'red' }}>{formData.errorEmail}</p>}
                         </div>
                     </div>
                 </div>

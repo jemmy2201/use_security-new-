@@ -146,6 +146,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 setSelectedTimeSlotError(""); 
             }
             if (!valid) return;
+            const formattedDateForSlots = formatDateSlots(startDate);
             const response = await fetch('/api/reschedule-appointment', {
                 method: 'POST',
                 headers: {
@@ -153,12 +154,13 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 },
                 body: JSON.stringify({
                     bookingId: bookingId,
-                    appointmentDate: startDate,
+                    appointmentDate: formattedDateForSlots,
                     timeSlot: selectedTimeSlot,
                 }),
             });
-            if (!response.ok) {
-                throw new Error('reschedule: Failed to save');
+            if (!response.ok && response.status === 401) {
+                router.push('/signin');
+                throw new Error('Personal Details: Failed to save draft');
             }
             const result = await response.json();
             console.log("reschedule: Saved successfully:", result);

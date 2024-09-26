@@ -426,7 +426,7 @@ const DashBoardPage: React.FC = () => {
                                 }}>
                                     {options.map((option, index) => (
                                         <li
-                                            key={index}
+                                            key={`op-${index}`}
                                             onClick={() => handleSelect(option)}
                                             style={{
                                                 padding: '4px',
@@ -474,7 +474,7 @@ const DashBoardPage: React.FC = () => {
                                     bookingSchedules.map((booking) =>
                                     (
                                         <>
-                                            <tr key={booking.id} className={globalStyleCss.regular}>
+                                            <tr key={`b-${booking.id}`} className={globalStyleCss.regular}>
                                                 <td className={dashBoardContentstyles.item2}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
                                                 <td className={dashBoardContentstyles.item}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
                                                 <td className={dashBoardContentstyles.item1}>{gradeTypeMap[booking.grade_id || ''] || ''}</td>
@@ -645,7 +645,7 @@ const DashBoardPage: React.FC = () => {
 
 
                     {bookingSchedules.map((booking) => (
-                        <div key={booking.id} className={dashBoardContentstyles.recordContainerMobile}>
+                        <div key={`bs-${booking.id}`} className={dashBoardContentstyles.recordContainerMobile}>
                             <div className={dashBoardContentstyles.item}>
                                 <div className={dashBoardContentstyles.cell}>
                                     <div className={globalStyleCss.regularBold}>

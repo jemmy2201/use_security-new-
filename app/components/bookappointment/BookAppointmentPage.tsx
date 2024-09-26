@@ -30,6 +30,12 @@ const BookAppointmentPage: React.FC = () => {
     const [users, setUsers] = useState<userInfo>();
     const [fullyBookedDates, setFullyBookedDates] = useState<Date[]>([]);
 
+    const formatDateSlots = (date: Date | null) => {
+        if (!date) return "";
+        const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return offsetDate.toISOString().split('T')[0];
+    };
+
     const formatDate = (date: Date | null) => {
         if (!date) return "";
         const day = date.getDate();
@@ -67,22 +73,33 @@ const BookAppointmentPage: React.FC = () => {
 
     // Array of button texts
     const buttonTexts = [
-        '9:30am - 10:30am',
-        '10:30am - 11:30am',
-        '11:30am - 12:30pm',
-        '12:30pm - 1:30pm',
-        '1:30pm - 2:30pm',
-        '2:30pm - 3:30pm',
-        '3:30pm - 4:30pm',
+        '09:30 - 10:30',
+        '10:30 - 11:30',
+        '11:30 - 12:30',
+        '12:30 - 13:30',
+        '13:30 - 14:30',
+        '14:30 - 15:30',
+        '15:30 - 16:30',
     ];
 
     // Function to handle date change
-    const handleDateChange = (date: Date | null) => {
+    const handleDateChange = async (date: Date | null) => {
         setStartDate(date);
         setFormData(prevFormData => ({
             ...prevFormData,
             ['appointmentDate']: date,
         }));
+        const formattedDateForSlots = formatDateSlots(date);
+        const response = await fetch(`/api/day-slots?selectedDate=${encodeURIComponent(formattedDateForSlots)}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch disabled dates');
+        }
+        const data: DisabledDatesResponse = await response.json();
+        console.log('response, /api/day-slots', data);
+        if (data.length > 0) {
+            const parsedSlots = data.map(dateStr => dateStr);
+            console.log('parsedSlots:', parsedSlots);
+        }
     };
 
     // Handler for button click to set the selected timeslot

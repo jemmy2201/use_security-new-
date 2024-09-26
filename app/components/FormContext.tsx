@@ -39,6 +39,8 @@ interface FormData {
     timeSlot?: string;
     isAppointmentConfirmed?:boolean;
     isDataLoaded?: boolean;
+    errorMobileNumber?: string;
+    errorEmail?: string;
     [key: string]: any;
 }
 

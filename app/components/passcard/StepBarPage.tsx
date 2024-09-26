@@ -54,7 +54,11 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
     const [isPaymentSuccessful, setIsPaymentSuccessful] = useState<boolean>(false);
     const router = useRouter();
     const searchParams = useSearchParams();
-
+    const formatDateSlots = (date: Date | null) => {
+        if (!date) return "";
+        const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return offsetDate.toISOString().split('T')[0];
+    };
 
 
     useEffect(() => {
@@ -89,14 +93,34 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
     const handleNext = async () => {
 
         if (activeStep == 0) {
+            let validStepOne = true;
             if (!formData.email) {
                 alert('Email is required.');
-                return;
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorEmail: 'Please enter the email',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorEmail: '',
+                }))
             }
             if (!formData.mobileno) {
                 alert('Mobile number is required.');
-                return;
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorMobileNumber: 'Please enter the mobile number',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorMobileNumber: '',
+                }))
             }
+            if (!validStepOne) return;
         }
 
         if (activeStep == 1) {
@@ -112,7 +136,9 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 alert('There is problem with photo. Please upload again correct photo.');
                 return;
             }
-            if (!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta && !formData.trRtt && !formData.trXray) {
+            if (!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta 
+                && !formData.trRtt && !formData.trXray
+                && !formData.trNota && !formData.Ssm && !formData.trObse) {
                 alert('Training record is required');
                 return;
             }
@@ -140,6 +166,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                     alert('Please choose the time slot');
                     return;
                 }
+                const formatedAppointmentDate = formatDateSlots(formData.appointmentDate);
                 try {
                     const response = await fetch('/api/handle-appointment', {
                         method: 'POST',
@@ -147,7 +174,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            appointmentDate: formData.appointmentDate,
+                            appointmentDate: formatedAppointmentDate,
                             timeSlot: formData.timeSlot,
                             applicationType: formData.applicationType,
                             bookingId: formData.id,
@@ -364,7 +391,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                     applicationType: formData.applicationType,
                 }),
             });
-            
+
             if (!response.ok && response.status === 401) {
                 router.push('/signin');
                 throw new Error('Review Details: Failed to save draft');
@@ -402,7 +429,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             }
             if (!formData.trAvso && !formData.trCctc && !formData.trCsspb
                 && !formData.trHcta && !formData.trRtt && !formData.trXray
-                && !formData.trNota && !formData.trObse && !formData.trSsmy) {
+                && !formData.trNota && !formData.trObse && !formData.trSsm) {
                 alert('Training record is required');
                 return;
             }

@@ -30,16 +30,16 @@ export async function POST(request: NextRequest) {
 
         const apiCredentials = { apiusername: username, apipassword: password, };
 
-        const response = await axios.get(apiUrl ? apiUrl : '', {
-            params: {
-                ...apiCredentials,
-                mobileno: validatedPhone,
-                message: smsMessage,
-                senderid: senderId,
-                languagetype: '1',
-            },
-        });
-        console.log('SMS sent successfully data:', response.data);
+        // const response = await axios.get(apiUrl ? apiUrl : '', {
+        //     params: {
+        //         ...apiCredentials,
+        //         mobileno: validatedPhone,
+        //         message: smsMessage,
+        //         senderid: senderId,
+        //         languagetype: '1',
+        //     },
+        // });
+        // console.log('SMS sent successfully data:', response.data);
 
         const encryptedNric = await getEncryptedNricFromSession(request);
         if (encryptedNric instanceof NextResponse) {
