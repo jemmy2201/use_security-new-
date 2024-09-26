@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { booking_schedules, PrismaClient } from '@prisma/client';
-import { PDFDocument, rgb } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import fs from 'fs';
 import path from 'path';
 import encryptDecrypt from '@/utils/encryptDecrypt';
 import { NEW, REPLACEMENT, RENEWAL } from '../../../constant/constant';
 import { SO_APP, AVSO_APP, PI_APP } from '../../../constant/constant';
 import { SO, SSO, SS, SSS, CSO } from '../../../constant/constant';
+import fontkit from '@pdf-lib/fontkit';
 
 const prisma = new PrismaClient();
 
@@ -106,22 +107,61 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
     try {
         // Create a new PDF document
         const pdfDoc = await PDFDocument.create();
-        const page = pdfDoc.addPage([600, 400]);
+        pdfDoc.registerFontkit(fontkit);
 
-        const { width, height } = page.getSize();
-        const tableTop = height - 50;
 
         const nric = encryptDecrypt(schedule.nric, 'decrypt');
 
         const appTypeString = appTypeMap[schedule.app_type] + '-' + cardTypeMap[schedule.card_id ? schedule.card_id : ''];
 
-        const gradeTypeString = gradeTypeMap[schedule.grade_id?schedule.grade_id:''];
+        const gradeTypeString = gradeTypeMap[schedule.grade_id ? schedule.grade_id : ''];
         const userRecord = await prisma.users.findFirst({
             where: {
                 ...(schedule.nric && { nric: schedule.nric }),
             },
         });
 
+
+
+        const page = pdfDoc.addPage([600, 800]); // Adjusted height for better layout
+
+        // Load the logo image
+        const logoImagePath = path.resolve('public/images', 'logo_pdf.png');
+        const logoImageBytes = fs.readFileSync(logoImagePath);
+        const logoImage = await pdfDoc.embedPng(logoImageBytes);
+        const logoDims = logoImage.scale(0.25);
+      
+        // Draw the logo on the left side
+        page.drawImage(logoImage, {
+          x: 50,
+          y: page.getHeight() - logoDims.height - 30, // Adjust Y position for the top
+          width: logoDims.width,
+          height: logoDims.height,
+        });
+      
+        // Load the custom font for the address
+        const fontPath = path.resolve('public/font', 'Roboto-Regular.ttf'); 
+        const fontBytes = fs.readFileSync(fontPath);
+        const customFont = await pdfDoc.embedFont(fontBytes);
+      
+        // Address text
+        const addressText = "Union of Security Employees (USE) \n200 Jalan Sultan \n#03-24 Textile Centre \nSingapore 199018";
+        const fontSize = 12;
+        const textWidth = customFont.widthOfTextAtSize(addressText, fontSize);
+      
+        // Draw the address text on the right side
+        page.drawText(addressText, {
+          x: page.getWidth() - textWidth - 50, // Adjust x position for the right side
+          y: page.getHeight() - 30, // Adjust y position near the top
+          size: fontSize,
+          font: customFont,
+          color: rgb(0, 0, 0), // Black text color
+        });
+      
+        // Calculate the vertical position for the table
+        const tableTop = page.getHeight() - logoDims.height - 30 - 40; // Below the logo and address
+      
+        // Table data
         const tableData = [
             { column1: 'Transaction reference no.', column2: schedule.stripe_payment_id },
             { column1: 'Transaction date', column2: schedule.trans_date },
@@ -133,23 +173,23 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
             { column1: 'Full name', column2: userRecord?.name },
             { column1: 'NRIC / FIN no.', column2: nric },
         ];
-
+      
+        // Draw the table
         const columnWidths = [300, 300];
-
         tableData.forEach((row, index) => {
-            const yPosition = tableTop - index * 20;
-            page.drawText(row.column1, {
-                x: 50,
-                y: yPosition,
-                size: 12,
-                color: rgb(0, 0, 0),
-            });
-            page.drawText(row.column2 ? row.column2 : '', {
-                x: 350,
-                y: yPosition,
-                size: 12,
-                color: rgb(0, 0, 0),
-            });
+          const yPosition = tableTop - index * 20; // Calculate Y position for each row
+          page.drawText(row.column1, {
+            x: 50,
+            y: yPosition,
+            size: 12,
+            color: rgb(0, 0, 0),
+          });
+          page.drawText(row.column2 ? row.column2 : '', {
+            x: 350,
+            y: yPosition,
+            size: 12,
+            color: rgb(0, 0, 0),
+          });
         });
 
         const pdfBytes = await pdfDoc.save();
