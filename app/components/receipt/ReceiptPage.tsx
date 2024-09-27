@@ -56,17 +56,23 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
     const generatePdf = async () => {
         const input = pdfRef.current;
         if (input) {
-            const canvas = await html2canvas(input);
+            const canvas = await html2canvas(input, {
+                scale: window.devicePixelRatio || 2, 
+                width: input.offsetWidth, 
+                height: input.offsetHeight, 
+            });
+
+            // Convert the canvas to an image
             const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
 
-            // Calculate the width and height of the image for the PDF page
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+            // Create a new jsPDF instance (use 'px' for better control over sizes on mobile)
+            const pdf = new jsPDF('p', 'px', [canvas.width, canvas.height]);
 
-            // Add the image to the PDF and save it
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save(bookingId + '.pdf');
+            // Add the image to the PDF with calculated dimensions
+            pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+
+            // Save the generated PDF
+            pdf.save(`${bookingId}.pdf`);
         }
     };
 

@@ -67,6 +67,7 @@
       align-items: flex-start;
       padding: 20px;
       gap: 10px;
+      overflow-wrap: anywhere;
       align-self: stretch;
       @media screen and (max-width: 769px) {
         padding: 5px;
