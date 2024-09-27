@@ -44,7 +44,8 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     const [fullyBookedDates, setFullyBookedDates] = useState<Date[]>([]);
     const [disabledDates, setDisabledDates] = useState<Date[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    
+    const [disabledSlots, setDisabledSlots] = useState<string[]>([]);
+
     const [startDateError, setStartDateError] = useState<string>("");
     const [selectedTimeSlotError, setSelectedTimeSlotError] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState('');
@@ -77,15 +78,13 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
         const formattedDateForSlots = formatDateSlots(date);
 
         const response = await fetch(`/api/day-slots?selectedDate=${encodeURIComponent(formattedDateForSlots)}`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch disabled dates');
+        if (!response.ok && response.status === 401) {
+            router.push('/signin');
+            throw new Error('token expired in stripe session');
         }
-        const data: DisabledDatesResponse = await response.json();
+        const data = await response.json();
         console.log('response, /api/day-slots', data);
-        if (data.length > 0) {
-            const parsedSlots = data.map(dateStr => dateStr);
-            console.log('parsedSlots:', parsedSlots);
-        }
+        setDisabledSlots(data.disabledSlots);
     };
 
     // Handler for button click to set the selected timeslot
@@ -136,14 +135,14 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 setStartDateError("Please select the appointment start date");
                 valid = false;
             } else {
-                setStartDateError(""); 
+                setStartDateError("");
             }
 
             if (!selectedTimeSlot) {
                 setSelectedTimeSlotError("Please select the time slot");
                 valid = false;
             } else {
-                setSelectedTimeSlotError(""); 
+                setSelectedTimeSlotError("");
             }
             if (!valid) return;
             const formattedDateForSlots = formatDateSlots(startDate);
@@ -227,7 +226,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                         Reschedule Appointment
                     </div>
                 </div>
-                
+
                 <div className={rescheduleContentstyles.appointmentDetailContainer}>
                     <div className={rescheduleContentstyles.header}>
                         <div className={globalStyleCss.header2}>
@@ -301,10 +300,19 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                                     {buttonTexts.map((text, index) => (
                                         <li key={index}>
                                             <button type='button'
-                                                className={`${rescheduleContentstyles.timeSlotText} ${selectedTimeSlot === text ? rescheduleContentstyles.selected : ''}`}
+                                                className={`${rescheduleContentstyles.timeSlotText} ${selectedTimeSlot === text
+                                                    ? rescheduleContentstyles.selected : ''} ${disabledSlots.includes(text)
+                                                        ? rescheduleContentstyles.disabled : ''}`}
                                                 onClick={() => handleTimeSlotClick(text)}
+                                                disabled={disabledSlots.includes(text)}
                                             >
-                                                {text}
+                                                {disabledSlots.includes(text) ? (
+                                                    <>
+                                                        {text} <br /> Fully Booked
+                                                    </>
+                                                ) : (
+                                                    text
+                                                )}
                                             </button>
                                         </li>
                                     ))}

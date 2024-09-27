@@ -66,6 +66,7 @@ const BookAppointmentPage: React.FC = () => {
     // State variables to store the input values
     const [contactNumber, setContactNumber] = useState('');
     const [email, setEmail] = useState('');
+    const [disabledSlots, setDisabledSlots] = useState<string[]>([]); // Array of disabled slots
 
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -82,7 +83,6 @@ const BookAppointmentPage: React.FC = () => {
         '15:30 - 16:30',
     ];
 
-    // Function to handle date change
     const handleDateChange = async (date: Date | null) => {
         setStartDate(date);
         setFormData(prevFormData => ({
@@ -94,22 +94,9 @@ const BookAppointmentPage: React.FC = () => {
         if (!response.ok) {
             throw new Error('Failed to fetch disabled dates');
         }
-        const data: DisabledDatesResponse = await response.json();
+        const data = await response.json();
         console.log('response, /api/day-slots', data);
-        if (data.length > 0) {
-            const parsedSlots = data.map(dateStr => dateStr);
-            console.log('parsedSlots:', parsedSlots);
-        }
-    };
-
-    // Handler for button click to set the selected timeslot
-    const handleButtonClick = (text: string) => {
-        console.log('timeslot', text);
-        setSelectedTimeSlot(text);
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            ['timeSlot']: text,
-        }));
+        setDisabledSlots(data.disabledSlots);
     };
 
     useEffect(() => {
@@ -212,10 +199,19 @@ const BookAppointmentPage: React.FC = () => {
                                     {buttonTexts.map((text, index) => (
                                         <li key={index}>
                                             <button type='button'
-                                                className={`${bookAppointmentContentstyles.timeSlotText} ${selectedTimeSlot === text ? bookAppointmentContentstyles.selected : ''}`}
+                                                className={`${bookAppointmentContentstyles.timeSlotText} ${selectedTimeSlot === text
+                                                    ? bookAppointmentContentstyles.selected : ''} ${disabledSlots.includes(text)
+                                                        ? bookAppointmentContentstyles.disabled : ''}`}
                                                 onClick={() => handleTimeSlotClick(text)}
+                                                disabled={disabledSlots.includes(text)}
                                             >
-                                                {text}
+                                                {disabledSlots.includes(text) ? (
+                                                    <>
+                                                        {text} <br /> Fully Booked
+                                                    </>
+                                                ) : (
+                                                    text
+                                                )}
                                             </button>
                                         </li>
                                     ))}

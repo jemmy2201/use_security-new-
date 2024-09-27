@@ -58,10 +58,13 @@ export async function GET(request: NextRequest) {
       })
       .filter((timeSlot) => timeSlot !== null);
 
+    // return NextResponse.json({fullSlotTime}, {status: 200});
 
-    console.log('returning full time slots for day:', selectedDateString, fullSlotTime);
+    const disabledSlots = convertTimeSlots(fullSlotTime);;
 
-    return NextResponse.json({fullSlotTime}, {status: 200});
+    console.log('returning full time slots for day:', selectedDateString, disabledSlots);
+  
+    return NextResponse.json({ disabledSlots });
 
   } catch (error) {
     console.error('Error fetching disabled dates:', error);
@@ -72,8 +75,21 @@ export async function GET(request: NextRequest) {
     return timeSlots.includes(slot);
   };
 
-
 }
+
+const convertTimeSlots = (timeSlots: string[]): string[] => {
+  return timeSlots.map((time) => {
+    const [hours, minutes] = time.split(':').map(Number); // Split the time string into hours and minutes
+    const endHours = (hours + 1) % 24; // Add one hour and handle 24-hour wrap-around
+
+    const startTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    const endTime = `${endHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+    return `${startTime} - ${endTime}`;
+  });
+};
+
+
 
 
 

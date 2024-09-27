@@ -135,6 +135,13 @@
           width: 227px;
         }
       }
+
+      .timeSlotText.disabled {
+        background-color: #F5F6F7; 
+        border: 1px solid #CFD8DC;
+        color: #a9a9a9; 
+        cursor: not-allowed; 
+      }
     }    
 
     .headingText {
