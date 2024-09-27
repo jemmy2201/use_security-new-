@@ -6,7 +6,7 @@ import footerstyles from './FooterStyle.module.css';
 const FooterPage: React.FC = () => {
     return (<div className={footerstyles.footerContainer}>
         <div className={footerstyles.boxUnderLine}>
-            <div>Privacy Notice</div>
+            <div>User Guide</div>
             <div>|</div>
             <div>Terms & Conditions</div>
             <div>|</div>

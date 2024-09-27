@@ -134,32 +134,29 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
         // Draw the logo on the left side
         page.drawImage(logoImage, {
           x: 50,
-          y: page.getHeight() - logoDims.height - 30, // Adjust Y position for the top
+          y: page.getHeight() - logoDims.height - 30, 
           width: logoDims.width,
           height: logoDims.height,
         });
       
-        // Load the custom font for the address
         const fontPath = path.resolve('public/font', 'Roboto-Regular.ttf'); 
         const fontBytes = fs.readFileSync(fontPath);
         const customFont = await pdfDoc.embedFont(fontBytes);
       
-        // Address text
-        const addressText = "Union of Security Employees (USE) \n200 Jalan Sultan \n#03-24 Textile Centre \nSingapore 199018";
+        // const addressText = "Union of Security Employees (USE) \n200 Jalan Sultan \n#03-24 Textile Centre \nSingapore 199018";
+        const addressText = '';
         const fontSize = 12;
         const textWidth = customFont.widthOfTextAtSize(addressText, fontSize);
       
-        // Draw the address text on the right side
         page.drawText(addressText, {
-          x: page.getWidth() - textWidth - 50, // Adjust x position for the right side
-          y: page.getHeight() - 30, // Adjust y position near the top
+          x: page.getWidth() - textWidth - 50, 
+          y: page.getHeight() - 30, 
           size: fontSize,
           font: customFont,
-          color: rgb(0, 0, 0), // Black text color
+          color: rgb(0, 0, 0), 
         });
       
-        // Calculate the vertical position for the table
-        const tableTop = page.getHeight() - logoDims.height - 30 - 40; // Below the logo and address
+        const tableTop = page.getHeight() - logoDims.height - 30 - 40; 
       
         // Table data
         const tableData = [
@@ -174,10 +171,11 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
             { column1: 'NRIC / FIN no.', column2: nric },
         ];
       
-        // Draw the table
-        const columnWidths = [300, 300];
+        const rowHeight = 40; 
+        const rowGap = 10;        
+
         tableData.forEach((row, index) => {
-          const yPosition = tableTop - index * 20; // Calculate Y position for each row
+          const yPosition = tableTop - index * (rowHeight + rowGap);
           page.drawText(row.column1, {
             x: 50,
             y: yPosition,
