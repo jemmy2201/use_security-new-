@@ -59,8 +59,8 @@ const PersonalDetailsPage: React.FC = () => {
                     console.log('Action type value:', typeof actionTypeValue);
                     const parsedData: userInfo = JSON.parse(storedData);
                     setUsers(parsedData);
-                    if (actionTypeValue && (actionTypeValue === 'Edit' 
-                                || actionTypeValue === 'Replace' || actionTypeValue === 'Renew')) {
+                    if (actionTypeValue && (actionTypeValue === 'Edit'
+                        || actionTypeValue === 'Replace' || actionTypeValue === 'Renew')) {
                         const storedBookingSchedule = sessionStorage.getItem('bookingSchedule');
                         console.log('storedBookingSchedule:', storedBookingSchedule);
                         if (storedBookingSchedule) {
@@ -88,7 +88,7 @@ const PersonalDetailsPage: React.FC = () => {
                         if (storedNewPassResponseData) {
                             const parsedNewPassData: createNewPassApiResponse = JSON.parse(storedNewPassResponseData);
                             const bookingPassId = parsedNewPassData.passId;
-                            const image4char = parsedData.nric?.slice(-4) || ''; 
+                            const image4char = parsedData.nric?.slice(-4) || '';
                             const fileName = bookingPassId + image4char;
                             setFormData({
                                 email: parsedData?.email ?? '',
@@ -139,7 +139,10 @@ const PersonalDetailsPage: React.FC = () => {
 
                     <div className={personalDetailsContentstyles.contentBox}>
                         <div className={personalDetailsContentstyles.item}>
-                            <div className={globalStyleCss.regularBold}>Mobile number: </div>
+                            <div className={globalStyleCss.regularBold}>
+                                Mobile number:                                 
+                                {formData.errorMobileNumber && <p style={{ color: 'red' }}>{formData.errorMobileNumber}</p>}
+                            </div>
                             <div className={globalStyleCss.regular}>
                                 <input
                                     type="number"
@@ -149,10 +152,12 @@ const PersonalDetailsPage: React.FC = () => {
                                     className={personalDetailsContentstyles.inputBox}
                                     required placeholder="Enter your mobile number"
                                 /></div>
-                                {formData.errorMobileNumber && <p style={{ color: 'red' }}>{formData.errorMobileNumber}</p>}
                         </div>
                         <div className={personalDetailsContentstyles.item}>
-                            <div className={globalStyleCss.regularBold}>Email Address. </div>
+                            <div className={globalStyleCss.regularBold}>
+                                Email Address. 
+                            {formData.errorEmail && <p style={{ color: 'red' }}>{formData.errorEmail}</p>}
+                            </div>
                             <div className={globalStyleCss.regular}>
                                 <input
                                     type="text"
@@ -162,7 +167,6 @@ const PersonalDetailsPage: React.FC = () => {
                                     className={personalDetailsContentstyles.inputBox}
                                     required placeholder="Enter your email"
                                 /></div>
-                                {formData.errorEmail && <p style={{ color: 'red' }}>{formData.errorEmail}</p>}
                         </div>
                     </div>
                 </div>

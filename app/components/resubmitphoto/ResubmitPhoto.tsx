@@ -8,6 +8,7 @@ import globalStyleCss from '../globalstyle/Global.module.css';
 import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import { useRouter } from 'next/navigation';
+import { booking_schedules } from '@prisma/client';
 
 interface ResubmitPhotoPageProps {
   bookingId: string;
@@ -24,8 +25,24 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  const [bookingSchedule, setBookingSchedule] = useState<booking_schedules>();
 
   useEffect(() => {
+
+    const fetchBookingSchedule = async () => {
+      try {
+        const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
+        if (!responseBookingSchedule.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const dataBookingSchedule: booking_schedules = await responseBookingSchedule.json();
+        setBookingSchedule(dataBookingSchedule);
+      } catch (error) {
+        console.error('Error fetching disabled dates:', error);
+      }
+    };
+    fetchBookingSchedule();
+
     const loadModels = async () => {
       try {
         await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
@@ -35,7 +52,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
         console.error('Error loading models:', error);
       }
     };
-
+    
     loadModels();
   }, []);
 
@@ -43,11 +60,11 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     setLoading(true);
     console.log('bookingId', bookingId);
     try {
-        router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);
+      router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);
     } catch (err) {
       setErrorMessage('Failed to open resubmit appointment');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -120,10 +137,8 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           const eyeDistance = Math.hypot(leftEye[3].x - rightEye[3].x, leftEye[3].y - rightEye[3].y);
           const noseWidth = Math.hypot(nose[2].x - nose[1].x, nose[2].y - nose[1].y);
 
-          // Example refined heuristic: Adjust these values based on actual data
           const isGlassesDetected = eyeDistance < 40 && noseWidth > 20;
 
-          // Additional checks can be added here
           console.log('Glasses detected:', isGlassesDetected);
           return isGlassesDetected;
         }
@@ -173,13 +188,11 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     // Calculate the percentage of white pixels
     const whitePixelPercentage = (whitePixelCount / totalPixelCount) * 100;
 
-    // Adjust percentage threshold based on your requirement
-    return whitePixelPercentage > 40; // This threshold can be adjusted
+    return whitePixelPercentage > 40; 
   };
 
   const checkBrightnessContrast = (image: HTMLImageElement) => {
-    // Placeholder logic for checking brightness and contrast
-    return { brightness: 75, contrast: 85 }; // Example values
+    return { brightness: 75, contrast: 85 }; 
   };
 
   const resizeImage = (image: HTMLImageElement, width: number, height: number) => {
@@ -245,38 +258,39 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           </div>
 
           <hr className={resubmitPhotoContentstyles.photoHrLine}></hr>
-          {!faceDetected || !bgColorMatch ? (
-            <div className={resubmitPhotoContentstyles.photoUploadError}>
-              <div className={resubmitPhotoContentstyles.photoUploadErrorBox}>
-                <div>
-                  <h1>Your photo has been rejected for the following reasons:</h1>
-                </div>
-                {faceDetected ? (
-                  <p></p>
-                ) : (
-                  <div> .  The face is not clearly visible</div>
-                )}
-                {bgColorMatch ? (
-                  <p></p>
-                ) : (
-                  <div> .  The background is not white</div>
-                )}
-
-                {spectacleDetected ? (
-                  <p>Eyewear has been detected</p>
-                ) : (
-                  <p></p>
-                )}
-              </div>
+          
+          {image && (!faceDetected || !bgColorMatch) ? (
+        <div className={resubmitPhotoContentstyles.photoUploadError}>
+          <div className={resubmitPhotoContentstyles.photoUploadErrorBox}>
+            <div>
+              <h1>Your photo has been rejected for the following reasons:</h1>
             </div>
-          ) : (
-            <p></p>
-          )}
+            {faceDetected ? (
+              <p></p>
+            ) : (
+              <div> .  The face is not clearly visible</div>
+            )}
+            {bgColorMatch ? (
+              <p></p>
+            ) : (
+              <div> .  The background is not white</div>
+            )}
+
+            {spectacleDetected ? (
+              <p>. Eyewear has been detected</p>
+            ) : (
+              <p></p>
+            )}
+          </div>
+        </div>
+      ) : (
+        <p></p>
+      )}
 
           <div className={resubmitPhotoContentstyles.photoContainer}>
             <div className={resubmitPhotoContentstyles.uploadBox}>
               <div className={resubmitPhotoContentstyles.uploadPhotoContainerBox}>
-                {<img src={image} alt="Processed" />}
+                {<img src={image} />}
               </div>
 
               <div className={globalStyleCss.regular}>

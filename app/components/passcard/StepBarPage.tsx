@@ -64,6 +64,8 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
     useEffect(() => {
         const sessionId = searchParams.get('session_id');
         if (sessionId) {
+            setLoading(true);
+            setActiveStep(3);
             console.log('inside stepbar page:');
             fetch(`/api/payment/success?session_id=${sessionId}`)
                 .then((res) => res.json())
@@ -83,10 +85,10 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                         ['paymentSuccess']: true,
                     }))
                     setIsPaymentSuccessful(true);
-                    setActiveStep(3);
                 }
                 )
                 .catch((err) => console.error(err));
+            setLoading(false);
         }
     }, [searchParams]);
 

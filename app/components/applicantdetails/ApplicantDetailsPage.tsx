@@ -156,9 +156,9 @@ const ApplicantDetailsPage: React.FC = () => {
                     <div className={globalStyleCss.header2}>
                         Training records
                     </div>
-                    {formData.errorTrainingRecords && <p style={{ color: 'red' }}>{formData.errorTrainingRecords}</p>}
                     <div className={globalStyleCss.regularBold}>
                         Types of trainings
+                        {formData.errorTrainingRecords && <p style={{ color: 'red' }}>{formData.errorTrainingRecords}</p>}
                     </div>
                     <div className={applicantDetailsContentstyles.trainingOptionContainer}>
                         <div className={applicantDetailsContentstyles.trainingOptionBox}>

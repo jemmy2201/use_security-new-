@@ -603,6 +603,53 @@ const DashBoardPage: React.FC = () => {
                                                         </>
                                                     ) : null}
 
+                                                    {booking.Status_app == '5' && !booking.appointment_date ? (
+                                                        <>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleBookAppointmentClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                Book Appointment
+                                                            </a>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleViewReceiptClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                View Receipt 
+                                                            </a>
+                                                        </>
+                                                    ) : null}
+
+                                                    {booking.Status_app == '5' && booking.appointment_date ? (
+                                                        <>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleViewReceiptClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                View Receipt 
+                                                            </a>
+                                                            <a
+                                                                href="/edit"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleBookAppointmentClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                &nbsp; Change Appointment
+                                                            </a>
+
+                                                        </>
+                                                    ) : null}
+
                                                     {booking.Status_app == '6' ? (
                                                         <>
                                                             <a
@@ -636,7 +683,7 @@ const DashBoardPage: React.FC = () => {
                                                     ) : null}
                                                 </td>
                                             </tr>
-                                            {booking.Status_app == '1' && booking.appointment_date && (<tr key={booking.passid} style={{ backgroundColor: '#F5F6F7' }}>
+                                            {(booking.Status_app == '1' || booking.Status_app == '5') && booking.appointment_date && (<tr key={booking.passid} style={{ backgroundColor: '#F5F6F7' }}>
                                                 <td colSpan={6} >
                                                     <div className={dashBoardContentstyles.collectionHeader}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -660,7 +707,7 @@ const DashBoardPage: React.FC = () => {
                                     )
                                 }
 
-                    
+
                             </tbody>
                         </table>
 

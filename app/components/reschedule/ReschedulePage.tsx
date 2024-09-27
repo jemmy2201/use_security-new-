@@ -246,8 +246,8 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                             <div className={rescheduleContentstyles.displayHeaderTextBox}>
                                 <div className={globalStyleCss.regularBold}>
                                     Date of appointment
+                                    {startDateError && <p style={{ color: 'red' }}>{startDateError}</p>}
                                 </div>
-                                {startDateError && <p style={{ color: 'red' }}>{startDateError}</p>}
                             </div>
                             <div className={rescheduleContentstyles.displayDateTextBox}>
                                 <input
@@ -292,8 +292,8 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                             <div className={rescheduleContentstyles.displayHeaderTextBox}>
                                 <div className={globalStyleCss.regularBold}>
                                     Available Time slot
+                                    {selectedTimeSlotError && <p style={{ color: 'red' }}>{selectedTimeSlotError}</p>}
                                 </div>
-                                {selectedTimeSlotError && <p style={{ color: 'red' }}>{selectedTimeSlotError}</p>}
                             </div>
                             <div>
                                 <ul>

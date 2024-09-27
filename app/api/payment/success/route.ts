@@ -123,13 +123,13 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
 
 
 
-        const page = pdfDoc.addPage([600, 800]); // Adjusted height for better layout
+        const page = pdfDoc.addPage([600, 800]); 
 
         // Load the logo image
         const logoImagePath = path.resolve('public/images', 'logo_pdf.png');
         const logoImageBytes = fs.readFileSync(logoImagePath);
         const logoImage = await pdfDoc.embedPng(logoImageBytes);
-        const logoDims = logoImage.scale(0.25);
+        const logoDims = logoImage.scale(0.1);
       
         // Draw the logo on the left side
         page.drawImage(logoImage, {
@@ -144,21 +144,20 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
         const customFont = await pdfDoc.embedFont(fontBytes);
       
         // const addressText = "Union of Security Employees (USE) \n200 Jalan Sultan \n#03-24 Textile Centre \nSingapore 199018";
-        const addressText = '';
-        const fontSize = 12;
+        const addressText = 'Union of Security Employees (USE)';
+        const fontSize = 18;
         const textWidth = customFont.widthOfTextAtSize(addressText, fontSize);
-      
+  
         page.drawText(addressText, {
-          x: page.getWidth() - textWidth - 50, 
-          y: page.getHeight() - 30, 
+          x: page.getWidth() - textWidth - 50,
+          y: page.getHeight() - 62,
           size: fontSize,
           font: customFont,
-          color: rgb(0, 0, 0), 
+          color: rgb(1, 0, 0),
         });
       
         const tableTop = page.getHeight() - logoDims.height - 30 - 40; 
       
-        // Table data
         const tableData = [
             { column1: 'Transaction reference no.', column2: schedule.stripe_payment_id },
             { column1: 'Transaction date', column2: schedule.trans_date },

@@ -2,11 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { booking_schedules as bookingDetail } from '@prisma/client';
-import { users as users } from '@prisma/client';
 import CompleteContentstyles from './CompleteContent.module.css';
 import 'react-datepicker/dist/react-datepicker.css';
-import { format, parseISO } from 'date-fns';
 import { useFormContext } from '../FormContext';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { booking_schedules } from '@prisma/client';
