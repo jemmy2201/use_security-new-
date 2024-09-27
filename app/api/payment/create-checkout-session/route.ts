@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
           data: {
             gst_id: gst.id.toString(),
             transaction_amount_id: transaction_amount_id?.id.toString(),
-            grand_total: total.toString(),
+            grand_total: grandTotal.toString(),
             stripe_session_id: session.id,
           },
         });

@@ -77,6 +77,8 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                         id: bookingData.id,
                         passId: bookingData.passid,
                         bookingId: bookingData.id,
+                        grandTotal: bookingData.grand_total,
+                        transactionReference: bookingData.stripe_payment_id,
                         ['paymentProcessed']: true,
                         ['paymentSuccess']: true,
                     }))

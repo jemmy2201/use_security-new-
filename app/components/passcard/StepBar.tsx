@@ -82,7 +82,7 @@ const StepBar: React.FC<StepBarProps> = ({ actionType, steps, activeStep }) => {
                             if (index === activeStep) {
                                 return (
                                     <li
-                                        key={index}
+                                        key={`stepbar-${index}`}
                                         className={`${styleBarModule.stepItem} ${styleBarModule.active}`}
                                     >
                                         <div className={styleBarModule.stepNumber}>{number}</div>

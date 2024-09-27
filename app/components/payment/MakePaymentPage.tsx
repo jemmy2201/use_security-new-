@@ -10,7 +10,7 @@ import { useFormContext } from '.././FormContext';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 type MakePaymentPageProps = {
-    onSuccess: () => void; // Callback prop to handle success
+    onSuccess: () => void; 
 };
 
 const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
@@ -52,12 +52,12 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
                     <div className={makePaymentContentstyles.contentBox}>
                         <div className={makePaymentContentstyles.item}>
                             <div className={globalStyleCss.regularBold}>Amount payable (inclusive of GST) </div>
-                            <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>22.50</div></div>
+                            <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>S${formData.grandTotal}</div></div>
 
                         </div>
                         <div className={makePaymentContentstyles.item}>
                             <div className={globalStyleCss.regularBold}>Type of application </div>
-                            <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.cardId == '1' ? 'Security Officer' : 'Private Investigator'}</div></div>
+                            <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.cardId == '1' ? 'Security Officer (SO)/Aviation Security Officer (AVSO)' : 'Private Investigator (PI)'}</div></div>
                         </div>
                     </div>
                 </div>

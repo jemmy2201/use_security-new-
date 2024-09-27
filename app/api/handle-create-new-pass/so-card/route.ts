@@ -14,6 +14,7 @@ export interface createNewPassApiResponse {
   passId?: string;
   recordId: string;
   cardId: string;
+  grandTotal: string;
 }
 
 const mapToCreateNewPassApiResponse = (
@@ -28,6 +29,7 @@ const mapToCreateNewPassApiResponse = (
     passId: '',
     recordId: '',
     cardId: '',
+    grandTotal: '',
   };
 };
 
@@ -73,6 +75,7 @@ export async function GET(request: NextRequest) {
       responseData.canCreateSoApplication = true;
       responseData.passId = booking_schedules.passid;
       responseData.recordId = booking_schedules.id.toString();
+      responseData.grandTotal = booking_schedules.grand_total ? booking_schedules.grand_total : '';
       responseData.cardId = booking_schedules.card_id ? booking_schedules.card_id : '';
       return new Response(JSON.stringify(responseData), { status: 200 });
     }

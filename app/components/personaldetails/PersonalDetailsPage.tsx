@@ -18,6 +18,7 @@ export interface createNewPassApiResponse {
     passId?: string;
     recordId: string;
     cardId: string;
+    grandTotal: string;
 }
 
 export interface userInfo {
@@ -103,13 +104,11 @@ const PersonalDetailsPage: React.FC = () => {
                                 applicationType: '1',
                                 cardId: parsedNewPassData.cardId,
                                 imageUrl: `/uploads/${fileName}.png`,
+                                grandTotal: parsedNewPassData.grandTotal,
                             });
                         }
                     }
-
-
                     console.log('Parsed data:', parsedData);
-
                 } catch (err) {
                     setError('Failed to parse user data');
                 }

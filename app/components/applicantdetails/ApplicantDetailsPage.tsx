@@ -22,6 +22,7 @@ export interface createNewPassApiResponse {
     passId?: string;
     recordId: string;
     cardId: string;
+    grandTotal: string;
 }
 
 const ApplicantDetailsPage: React.FC = () => {
@@ -89,7 +90,6 @@ const ApplicantDetailsPage: React.FC = () => {
 
 
     useEffect(() => {
-        // Set the selected option from formData if available
         console.log('ApplicantDetailsPage: Action Type', formData.actionType);
 
         console.log('form data', formData);
@@ -125,6 +125,7 @@ const ApplicantDetailsPage: React.FC = () => {
                     trObse: parsedBookingData.TR_OBSE || false,
                     trSsm: parsedBookingData.TR_SSM || false,
                     imageUrl: `/uploads/${fileName}.png`,
+                    grandTotal: parsedBookingData.grand_total,
                 }));
                 setCheckboxes({
                     trRtt: parsedBookingData?.TR_RTT ? true: false,

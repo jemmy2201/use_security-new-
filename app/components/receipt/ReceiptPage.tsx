@@ -103,12 +103,14 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
 
     const formatAppointmentDate = (dateString: string) => {
-        const date = new Date(dateString); // Create a Date object from the string
+        if(!dateString){
+            return '';
+        }
+        const date = new Date(dateString); 
 
-        // Format the date to '24 Sept 2024'
         return date.toLocaleDateString('en-GB', {
             day: 'numeric',
-            month: 'short', // 'short' gives abbreviated month names like 'Jan', 'Feb', 'Sept', etc.
+            month: 'short', 
             year: 'numeric'
         });
     };
@@ -151,8 +153,6 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                     <div className={globalStyleCss.header1}>
                         Payment receipt
                     </div>
-
-
                     <div className={receiptContentstyles.printContainer}>
                         <button type='button' onClick={generatePdf} style={{ display: 'inline-flex', alignItems: 'left' }}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -202,7 +202,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                             <div className={globalStyleCss.regularBold}> Amount paid (inclusive of GST)</div>
                         </div>
                         <div className={receiptContentstyles.boxWidth}>
-                            <div className={globalStyleCss.regular}>  {bookingSchedule?.grand_total}</div>
+                            <div className={globalStyleCss.regular}> S${bookingSchedule?.grand_total}</div>
                         </div>
                     </div>
                     <hr className={receiptContentstyles.customhr}></hr>
@@ -291,8 +291,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                                 </defs>
                             </svg>
                             <div className={globalStyleCss.regular} >
-
-                                &nbsp; Please note that the appointment details shown here are from your original booking and will not be updated on this receipt should you reschedule.
+                                &nbsp;Please note that the appointment details shown here are from your original booking and will not be updated on this receipt should you reschedule.
                             </div>
                             </div>
                         </div>

@@ -18,7 +18,6 @@ const StepFour: React.FC = () => {
         console.log('inside step 4:');
         const sessionId = searchParams.get('session_id');
         if (sessionId) {
-            // Handle success
             setIsPaymentSuccessful(true);
         }
     }, [searchParams]);

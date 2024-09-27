@@ -23,6 +23,7 @@ export interface createNewPassApiResponse {
     passId?: string;
     recordId: string;
     cardId: string;
+    grandTotal: string;
 }
 
 export interface userInfo {
@@ -39,11 +40,35 @@ const cardTypeMap: { [key: string]: string } = {
     [PI_APP]: 'Personal Investigator',
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const appTypeMap: { [key: string]: string } = {
     [NEW]: 'New',
     [REPLACEMENT]: 'Replace',
     [RENEWAL]: 'Renew',
 };
+
+
+
+
+
+
+
 
 const gradeTypeMap: { [key: string]: string } = {
     [SO]: 'SO',
@@ -624,7 +649,7 @@ const DashBoardPage: React.FC = () => {
                                                                 </clipPath>
                                                             </defs>
                                                         </svg>
-                                                        You have made an appointment to collect your new pass card on {formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}, {booking.time_start_appointment} - {booking.time_end_appointment}
+                                                        &nbsp;You have made an appointment to collect your new pass card on {formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}, {booking.time_start_appointment} - {booking.time_end_appointment}
                                                     </div>
                                                 </td>
                                             </tr>)}

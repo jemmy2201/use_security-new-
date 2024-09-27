@@ -16,6 +16,7 @@ export interface createNewPassApiResponse {
     passId?: string;
     recordId: string;
     cardId: string;
+    grandTotal: string;
 }
 
 export interface userInfo {
@@ -206,7 +207,7 @@ const FirstTimePage: React.FC = () => {
                                 }}>
                                     {options.map((option, index) => (
                                         <li
-                                            key={index}
+                                            key={`ft-${index}`}
                                             onClick={() => handleSelect(option)}
                                             style={{
                                                 padding: '4px',

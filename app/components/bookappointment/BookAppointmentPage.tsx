@@ -197,7 +197,7 @@ const BookAppointmentPage: React.FC = () => {
                             <div>
                                 <ul>
                                     {buttonTexts.map((text, index) => (
-                                        <li key={index}>
+                                        <li key={`bt-${index}`}>
                                             <button type='button'
                                                 className={`${bookAppointmentContentstyles.timeSlotText} ${selectedTimeSlot === text
                                                     ? bookAppointmentContentstyles.selected : ''} ${disabledSlots.includes(text)

@@ -12,7 +12,7 @@ const Stepper: React.FC<StepperProps> = ({ currentStep, steps, onStepClick }) =>
     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
       {steps.map((step, index) => (
         <div
-          key={index}
+          key={`stepper-${index}`}
           style={{
             padding: '10px 20px',
             cursor: 'pointer',

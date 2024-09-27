@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation';
 import makePaymentContentstyles from './MakePaymentContent.module.css';
 import { loadStripe } from '@stripe/stripe-js';
 import globalStyleCss from '../globalstyle/Global.module.css';
-
+import { useFormContext } from '.././FormContext';
 
 type MakePaymentPageProps = {
-    onSuccess: () => void; // Callback prop to handle success
+    onSuccess: () => void; 
 };
 
 const SuccessPaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
-
+    const { formData, setFormData } = useFormContext();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
@@ -50,19 +50,17 @@ const SuccessPaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
                         <div className={makePaymentContentstyles.contentBox}>
                             <div className={makePaymentContentstyles.item}>
                                 <div className={globalStyleCss.regularBold}>Amount paid (inclusive of GST) </div>
-                                <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>22.50</div></div>
-
+                                <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>S${formData.grandTotal}</div></div>
                             </div>
                             <div className={makePaymentContentstyles.item}>
                                 <div className={globalStyleCss.regularBold}>Transaction reference no. </div>
-                                <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}></div></div>
+                                <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.transactionReference}</div></div>
                             </div>
                         </div>
                         <div className={makePaymentContentstyles.contentBox}>
                             <div className={makePaymentContentstyles.item}>
                                 <div className={globalStyleCss.regularBold}>Type of application </div>
-                                <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>Security Officer</div></div>
-
+                                <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.cardId == '1' ? 'Security Officer (SO)/Aviation Security Officer (AVSO)' : 'Private Investigator (PI)'}</div></div>
                             </div>
 
                         </div>

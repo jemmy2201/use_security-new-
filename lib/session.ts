@@ -54,9 +54,9 @@ export async function createSession(userId: string, userToken: string) {
     const expiresAt = new Date(Date.now() + 70 * 24 * 60 * 60 * 1000)
     const session = await encrypt({ userId, expiresAt, userToken })
 
-    console.log('createSession, session', session);
+    // console.log('createSession, session', session);
     const decoded = decodeJwt(session);
-    console.log('createSession, decoded', decoded);
+    // console.log('createSession, decoded', decoded);
 
     const currentTime = Math.floor(Date.now() / 1000);
     console.log('createSession, currentTime:', currentTime);

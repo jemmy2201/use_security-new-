@@ -98,7 +98,7 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
                         <div className={OtpModuleStyle.otpField}>
                             {otp.map((value, index) => (
                                 <input
-                                    key={index}
+                                    key={`otp2-${index}`}
                                     type="text"
                                     className={OtpModuleStyle.otpNumber}
                                     value={value}
