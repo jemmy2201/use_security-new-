@@ -201,7 +201,8 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
             console.log('bookingId', bookingId);
             try {
-                router.push(`/complete?bookingId=${encodeURIComponent(bookingId)}`);
+                const reschedule = bookingSchedule?.appointment_date ? 'Yes' : '';
+                router.push(`/complete?bookingId=${encodeURIComponent(bookingId)}&reschedule=${encodeURIComponent(reschedule)}`);
             } catch (err) {
                 setErrorMessage('Failed to fetch user details');
             } finally {

@@ -203,7 +203,7 @@ const DashBoardPage: React.FC = () => {
         setLoading(true);
         setError(null);
         console.log('id', id);
-        const bookingId = id.toString(); 
+        const bookingId = id.toString();
         console.log('bookingId', bookingId);
         try {
             router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);
@@ -325,10 +325,8 @@ const DashBoardPage: React.FC = () => {
             }
             const data: userInfo = await response.json();
             sessionStorage.setItem('users', JSON.stringify(data));
-            // Process the data or store it in state/context
-            console.log('data from api', data);
 
-            const bookingId = id.toString(); // Replace with your actual bookingId
+            const bookingId = id.toString();
             const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
 
             if (!responseBookingSchedule.ok) {
@@ -349,7 +347,7 @@ const DashBoardPage: React.FC = () => {
     const handleRenewClick = async (id: bigint) => {
         setLoading(true);
         setError(null);
-        console.log('id', id);
+        console.log('inside renew,id', id);
         try {
             const response = await fetch('/api/myinfo');
             if (!response.ok) {
@@ -357,10 +355,9 @@ const DashBoardPage: React.FC = () => {
             }
             const data: userInfo = await response.json();
             sessionStorage.setItem('users', JSON.stringify(data));
-            // Process the data or store it in state/context
             console.log('data from api', data);
 
-            const bookingId = id.toString(); // Replace with your actual bookingId
+            const bookingId = id.toString();
             const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
 
             if (!responseBookingSchedule.ok) {
@@ -506,6 +503,21 @@ const DashBoardPage: React.FC = () => {
                                                 <td className={dashBoardContentstyles.item3}>{formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}</td>
                                                 <td className={dashBoardContentstyles.item3}>{statusTypeMap[booking.Status_app || ''] || ''}</td>
                                                 <td className={dashBoardContentstyles.item}>
+
+                                                    {booking.app_type == '3' && !booking.Status_app ? (
+                                                        <>
+                                                            <a
+                                                                href="/renew"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleRenewClick(booking.id);
+                                                                }}
+                                                                className={globalStyleCss.blueLink}>
+                                                                Renew
+                                                            </a>
+                                                        </>
+                                                    ) : null}
+
                                                     {booking.Status_app == '0' ? (
                                                         <>
                                                             <a
@@ -661,7 +673,7 @@ const DashBoardPage: React.FC = () => {
                                                                 className={globalStyleCss.blueLink}>
                                                                 Update &nbsp;
                                                             </a>
-                                                            <a
+                                                            {/* <a
                                                                 href="/edit"
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
@@ -669,7 +681,7 @@ const DashBoardPage: React.FC = () => {
                                                                 }}
                                                                 className={globalStyleCss.blueLink}>
                                                                 Renew &nbsp;
-                                                            </a>
+                                                            </a> */}
                                                             <a
                                                                 href="/edit"
                                                                 onClick={(e) => {
@@ -899,7 +911,7 @@ const DashBoardPage: React.FC = () => {
                                                     className={globalStyleCss.blueLink}>
                                                     Update <br></br>
                                                 </a>
-                                                <a
+                                                {/* <a
                                                     href="/edit"
                                                     onClick={(e) => {
                                                         e.preventDefault();
@@ -907,7 +919,7 @@ const DashBoardPage: React.FC = () => {
                                                     }}
                                                     className={globalStyleCss.blueLink}>
                                                     Renew <br></br>
-                                                </a>
+                                                </a> */}
                                                 <a
                                                     href="/edit"
                                                     onClick={(e) => {

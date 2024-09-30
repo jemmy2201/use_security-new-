@@ -11,9 +11,10 @@ import { booking_schedules } from '@prisma/client';
 
 interface CompletePageProps {
     bookingId: string;
+    reschedule: string;
 }
 
-const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
+const CompletePage: React.FC<CompletePageProps> = ({ bookingId, reschedule }) => {
     console.log('Booking ID:', bookingId);
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
@@ -41,14 +42,14 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
 
     const formatAppointmentDate = (dateString: string) => {
-        if(!dateString){
+        if (!dateString) {
             return '';
         }
-        const date = new Date(dateString); 
+        const date = new Date(dateString);
 
         return date.toLocaleDateString('en-GB', {
             day: 'numeric',
-            month: 'short', 
+            month: 'short',
             year: 'numeric'
         });
     };
@@ -95,9 +96,23 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
                 <HeaderPageLink />
             </div>
             <div className={CompleteContentstyles.container}>
-                <div className={globalStyleCss.header1}>
-                    Reschedule Appointment
-                </div>
+
+                {reschedule && (
+                    <>
+                        <div className={globalStyleCss.header1}>
+                            Reschedule Appointment
+                        </div>
+                    </>
+                )}
+
+                {!reschedule && (
+                    <>
+                        <div className={globalStyleCss.header1}>
+                            Book Appointment
+                        </div>
+                    </>
+                )}
+
                 <div className={CompleteContentstyles.innerContainer}>
                     <div className={CompleteContentstyles.appointmentDetails}>
                         <span>
@@ -129,7 +144,7 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
                                     Collection Date
                                 </div>
                                 <div className={globalStyleCss.regular}>
-                                {formatAppointmentDate(bookingSchedule?.appointment_date ? bookingSchedule.appointment_date : '') || ''}
+                                    {formatAppointmentDate(bookingSchedule?.appointment_date ? bookingSchedule.appointment_date : '') || ''}
                                 </div>
                             </span>
 
@@ -158,13 +173,13 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
                                     Pass card date of expiry
                                 </div>
                                 <div className={globalStyleCss.regular}>
-                                {formatExpiryDate(bookingSchedule?.expired_date ? bookingSchedule.expired_date : '')}
+                                    {formatExpiryDate(bookingSchedule?.expired_date ? bookingSchedule.expired_date : '')}
                                 </div>
                             </span>
 
                         </div>
                         <div className={CompleteContentstyles.collectionCenterContainer}>
-                            <div className={globalStyleCss.regular}>
+                            <div className={globalStyleCss.regularBold}>
                                 Collection centre
                             </div>
                             <div className={globalStyleCss.regular}>

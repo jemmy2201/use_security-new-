@@ -245,6 +245,7 @@ const ImageProcessing = () => {
       </div>
       <div className={globalStyleCss.regular}>
         This photo will be used for your pass card
+        {formData.errorPhoto && <p style={{ color: 'red' }}>{formData.errorPhoto}</p>}
       </div>
       <div className={applicantDetailsContentstyles.warningBox}>
         <div>

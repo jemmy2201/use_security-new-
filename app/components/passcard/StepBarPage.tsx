@@ -99,7 +99,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
         if (activeStep == 0) {
             let validStepZero = true;
             if (!formData.email) {
-                alert('Email is required.');
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     errorEmail: 'Please enter the email',
@@ -112,7 +111,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 }))
             }
             if (!formData.mobileno) {
-                alert('Mobile number is required.');
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     errorMobileNumber: 'Please enter the mobile number',
@@ -131,7 +129,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             let validStepOne = true;
 
             if (!formData.image && !formData.imageUrl) {
-                alert('Photo is required.');
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     errorPhoto: 'Photo is required',
@@ -145,7 +142,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             }
 
             if (!formData.isFaceDetected || !formData.isBgColorMatch) {
-                alert('Photo is required.');
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     errorPhoto: 'Photo have some problem',
@@ -421,24 +417,50 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
         }
 
         if (activeStep == 1) {
-            if (!formData.applicationType) {
-                alert('Application type is required.');
-                return;
-            }
+            let validStepOne = true;
+
             if (!formData.image && !formData.imageUrl) {
-                alert('Photo is required.');
-                return;
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: 'Photo is required',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: '',
+                }))
             }
+
             if (!formData.isFaceDetected || !formData.isBgColorMatch) {
-                alert('There is problem with photo. Please upload again correct photo.');
-                return;
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: 'Photo have some problem',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: '',
+                }))
             }
-            if (!formData.trAvso && !formData.trCctc && !formData.trCsspb
-                && !formData.trHcta && !formData.trRtt && !formData.trXray
-                && !formData.trNota && !formData.trObse && !formData.trSsm) {
-                alert('Training record is required');
-                return;
+
+            if (!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta
+                && !formData.trRtt && !formData.trXray
+                && !formData.trNota && !formData.Ssm && !formData.trObse) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorTrainingRecords: 'Training records are missing',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorTrainingRecords: '',
+                }))
             }
+
+            if (!validStepOne) return;
             await saveUserDetails();
             await saveApplicantDetails();
             toast.success('Your draft has been saved', {
@@ -560,7 +582,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 </>
             )}
 
-            {activeStep == 3 && (
+            {activeStep == 3 && !formData.paymentSuccess && (
                 <>
                     <div className={mainPageModule.bodyContainer}>
                         <div className={mainPageModule.headerContainer}>

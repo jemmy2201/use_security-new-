@@ -9,12 +9,15 @@ export async function GET(request: NextRequest) {
     const url = new URL(request.url);
     const encryptedNric = await getEncryptedNricFromSession(request);
     if (encryptedNric instanceof NextResponse) {
-      return encryptedNric; 
+      return encryptedNric;
     }
-    // Find records with optional filters
+
     const schedules = await prisma.booking_schedules.findMany({
       where: {
         ...(encryptedNric && { nric: encryptedNric }),
+        app_type: {
+          not: '3',
+        },
         AND: [
           {
             OR: [
@@ -30,6 +33,29 @@ export async function GET(request: NextRequest) {
         ],
       },
     });
+
+
+    const renewSchedules = await prisma.booking_schedules.findMany({
+      where: {
+        ...(encryptedNric && { nric: encryptedNric }),
+        app_type: '3',
+      },
+    });
+
+    if (renewSchedules) {
+      const replacer = (key: string, value: any) => {
+        if (typeof value === 'bigint') {
+          return value.toString();
+        }
+        return value;
+      };
+      const allSchedule = [...schedules, ...renewSchedules];
+      console.log('allSchedule pass cards: ', allSchedule.length);
+      return new Response(JSON.stringify(allSchedule, replacer), {
+        status: 200, headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
     console.log('total pass cards: ', schedules.length);
     const replacer = (key: string, value: any) => {
       if (typeof value === 'bigint') {
@@ -39,8 +65,7 @@ export async function GET(request: NextRequest) {
     };
 
     return new Response(JSON.stringify(schedules, replacer), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      status: 200, headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
     console.log('error ', error);

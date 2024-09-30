@@ -10,10 +10,12 @@ const Complete: React.FC = () => {
   const searchParams = useSearchParams()
   const bookingId = searchParams.get('bookingId')
   const bookingIdString = typeof bookingId === 'string' ? bookingId : '';
+  const reschedule = searchParams.get('reschedule')
+  const rescheduleString = typeof reschedule === 'string' ? reschedule : '';
 
   return (
     <div>
-      <CompletePage bookingId={bookingIdString} />
+      <CompletePage bookingId={bookingIdString} reschedule={rescheduleString} />
     </div>
   );
 };
