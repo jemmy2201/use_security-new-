@@ -106,6 +106,32 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
 
     const onNext = async () => {
         try {
+            let validStepZero = true;
+            if (!formData.email) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorEmail: 'Please enter the email',
+                }))
+                validStepZero = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorEmail: '',
+                }))
+            }
+            if (!formData.mobileno) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorMobileNumber: 'Please enter the mobile number',
+                }))
+                validStepZero = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorMobileNumber: '',
+                }))
+            }
+            if (!validStepZero) return;        
 
             if (formData.originalMobileno === formData.mobileno
                 || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
@@ -172,7 +198,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
     };
 
     const handleOtpCancel = () => {
-        setIsOtpPopupOpen(false); // Close OTP popup if user cancels
+        setIsOtpPopupOpen(false); 
     };
 
     useEffect(() => {
@@ -246,7 +272,9 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                         </div>
                         <div className={updateDetailsContentstyles.contentBox}>
                             <div className={updateDetailsContentstyles.item}>
-                                <div className={globalStyleCss.regularBold}>Mobile number: </div>
+                                <div className={globalStyleCss.regularBold}>Mobile number: 
+                                {formData.errorMobileNumber && <p style={{ color: 'red' }}>{formData.errorMobileNumber}</p>}
+                                </div>
                                 <div className={globalStyleCss.regular}>
                                     <input
                                         type="text"
@@ -258,7 +286,9 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     /></div>
                             </div>
                             <div className={updateDetailsContentstyles.item}>
-                                <div className={globalStyleCss.regularBold}>Email Address. </div>
+                                <div className={globalStyleCss.regularBold}>Email Address. 
+                                {formData.errorEmail && <p style={{ color: 'red' }}>{formData.errorEmail}</p>}
+                                </div>
                                 <div className={globalStyleCss.regular}>
                                     <input
                                         type="text"

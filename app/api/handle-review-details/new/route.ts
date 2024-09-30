@@ -56,12 +56,31 @@ export async function POST(req: NextRequest) {
             };
 
             const currentDate = formatDateToDDMMYYYY(new Date());
-            const updatedSchedule = await prisma.booking_schedules.update({
-                where: { id: schedule.id },
-                data: {
-                    declaration_date: currentDate,
-                },
-            });
+
+            let updatedSchedule;
+            if (schedule.app_type == '2') {
+                updatedSchedule = await prisma.booking_schedules.update({
+                    where: { id: schedule.id },
+                    data: {
+                        declaration_date: currentDate,
+                        appointment_date: '',
+                        time_start_appointment: '',
+                        time_end_appointment: '',
+                        trans_date: '',
+                        status_payment: '',
+                        stripe_payment_id: '',
+                        stripe_session_id: '',
+                    },
+                });
+            } else {
+                updatedSchedule = await prisma.booking_schedules.update({
+                    where: { id: schedule.id },
+                    data: {
+                        declaration_date: currentDate,
+                    },
+                });
+            }
+
             console.log('Schedule updated:', updatedSchedule);
             const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
             return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });

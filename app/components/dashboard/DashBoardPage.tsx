@@ -621,7 +621,7 @@ const DashBoardPage: React.FC = () => {
                                                                     handleViewReceiptClick(booking.id);
                                                                 }}
                                                                 className={globalStyleCss.blueLink}>
-                                                                View Receipt 
+                                                                View Receipt
                                                             </a>
                                                         </>
                                                     ) : null}
@@ -635,7 +635,7 @@ const DashBoardPage: React.FC = () => {
                                                                     handleViewReceiptClick(booking.id);
                                                                 }}
                                                                 className={globalStyleCss.blueLink}>
-                                                                View Receipt 
+                                                                View Receipt
                                                             </a>
                                                             <a
                                                                 href="/edit"
