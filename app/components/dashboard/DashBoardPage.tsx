@@ -203,7 +203,7 @@ const DashBoardPage: React.FC = () => {
         setLoading(true);
         setError(null);
         console.log('id', id);
-        const bookingId = id.toString(); // Correctly call the toString method
+        const bookingId = id.toString(); 
         console.log('bookingId', bookingId);
         try {
             router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);

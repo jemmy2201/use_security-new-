@@ -21,7 +21,6 @@ export interface bookingDate {
   totalCount: number;
 }
 
-// API Handler for GET request to fetch disabled dates
 export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);
@@ -37,7 +36,7 @@ export async function GET(request: NextRequest) {
 
     const holidays = await prisma.dateholidays.findMany({
       select: {
-        date: true, // Select only the date field
+        date: true, 
       },
     });
 
@@ -46,7 +45,6 @@ export async function GET(request: NextRequest) {
     const disabledDates = holidays
       .map((holiday) => {
         if (holiday.date) {
-          // Assume holiday.date is string or Date
           const date = new Date(holiday.date);
           if (!isNaN(date.getTime())) { // Check if date is valid
             return date.toISOString().split('T')[0];
@@ -61,17 +59,19 @@ export async function GET(request: NextRequest) {
     const today = new Date();
     const dateFrom = new Date(today);
     dateFrom.setDate(today.getDate() + 6);
+    
     const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
     for (let i = 0; i < 7; i++) {
       const formattedDate = dateFrom.toISOString().slice(0, 10);
       console.log('formattedDate:', formattedDate);
+      
       const dateSchedules: bookingDate[] = await prisma.$queryRaw`
         select appointment_date as appointmentDate, time_start_appointment as timeStartAppointment, count(*) as totalCount 
         FROM booking_schedules
         where appointment_date = ${formattedDate}
-        group by appointment_date, time_start_appointment; 
-    `;
+        group by appointment_date, time_start_appointment; `;
+      
       console.log('dateSchedules', dateSchedules);
 
       if (dateSchedules.length == 7) {
@@ -128,15 +128,15 @@ export async function GET(request: NextRequest) {
 
 const parseDateString = (dateString: string): Date => {
   const [day, month, year] = dateString.split('-').map(Number);
-  return new Date(year, month - 1, day); // month is 0-based in JavaScript Date
+  return new Date(year, month - 1, day); 
 };
 
 const getNextSixDays = (startDate: Date) => {
   const dates = [];
   for (let i = 0; i < 7; i++) {
     const nextDate = new Date(startDate);
-    nextDate.setDate(startDate.getDate() + i); // Add i days to the transaction date
-    dates.push(nextDate.toISOString().split('T')[0]); // Format as 'YYYY-MM-DD'
+    nextDate.setDate(startDate.getDate() + i); 
+    dates.push(nextDate.toISOString().split('T')[0]); 
   }
   return dates;
 };

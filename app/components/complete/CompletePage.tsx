@@ -20,6 +20,39 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
     const [error, setError] = useState<string | null>(null);
     const [bookingSchedule, setBookingSchedule] = useState<booking_schedules>();
 
+    const formatExpiryDate = (dateStringExpiryDate: string) => {
+        console.log('dateStringExpiryDate:', dateStringExpiryDate);
+        if (!dateStringExpiryDate) {
+            return '';
+        }
+        const [day, month, year] = dateStringExpiryDate.split('/').map(Number);
+
+
+        const date = new Date(year, month - 1, day);
+
+        const formattedDate = new Intl.DateTimeFormat('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }).format(date);
+
+        return formattedDate;
+    };
+
+
+    const formatAppointmentDate = (dateString: string) => {
+        if(!dateString){
+            return '';
+        }
+        const date = new Date(dateString); 
+
+        return date.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short', 
+            year: 'numeric'
+        });
+    };
+
     const onReschedule = () => {
         setLoading(true);
         setError(null);
@@ -96,7 +129,7 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
                                     Collection Date
                                 </div>
                                 <div className={globalStyleCss.regular}>
-                                    {bookingSchedule?.appointment_date}
+                                {formatAppointmentDate(bookingSchedule?.appointment_date ? bookingSchedule.appointment_date : '') || ''}
                                 </div>
                             </span>
 
@@ -125,7 +158,7 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId }) => {
                                     Pass card date of expiry
                                 </div>
                                 <div className={globalStyleCss.regular}>
-                                    {bookingSchedule?.expired_date}
+                                {formatExpiryDate(bookingSchedule?.expired_date ? bookingSchedule.expired_date : '')}
                                 </div>
                             </span>
 

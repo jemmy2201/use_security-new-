@@ -84,8 +84,9 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
             console.log('data from api', dataUser);
 
             const response = await fetch('/api/dashboard');
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            if (!response.ok && response.status === 401) {
+                router.push('/signin');
+                throw new Error('Personal Details: Failed to save draft');
             }
             const data: bookingDetail[] = await response.json();
             console.log('booking card list: ', data.length);

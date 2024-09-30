@@ -35,7 +35,7 @@ export async function GET() {
 
     for (let i = 0; i < 7; i++) {
       const formattedDate = dateFrom.toISOString().slice(0, 10);
-      console.log('formattedDate:', formattedDate);
+      //console.log('formattedDate:', formattedDate);
       const dateSchedules: bookingDate[] = await prisma.$queryRaw`
         select appointment_date as appointmentDate, time_start_appointment as timeStartAppointment, count(*) as totalCount 
         FROM booking_schedules
@@ -59,10 +59,10 @@ export async function GET() {
           .filter((date) => date !== null);
         console.log('fullSlotDay:', fullSlotDay);
         if (fullSlotDay) {
-          console.log('add to disable date because slots are full', fullSlotDay);
+          //console.log('add to disable date because slots are full', fullSlotDay);
           disabledDates.push(formattedDate);
         }
-        console.log(fullSlotDay);
+        //console.log(fullSlotDay);
         dateFrom.setDate(today.getDate() + 1);
       }
     }

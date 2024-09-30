@@ -21,8 +21,6 @@ export async function decrypt(session: string | undefined = '') {
     console.log('Decoded JWT:');
 
     const currentTime = Math.floor(Date.now() / 1000);
-    console.log('currentTime:', currentTime);
-    console.log('decoded.exp:', decoded.exp);
     const createSessionTimeReadable = convertUnixToDateTime(currentTime);
     const decodedExpTimeReadable = convertUnixToDateTime(decoded.exp as number);
     console.log('createSession, currentTime:', createSessionTimeReadable);
@@ -59,8 +57,6 @@ export async function createSession(userId: string, userToken: string) {
     // console.log('createSession, decoded', decoded);
 
     const currentTime = Math.floor(Date.now() / 1000);
-    console.log('createSession, currentTime:', currentTime);
-    console.log('createSession, decoded.exp:', decoded.exp);
 
     const createSessionTimeReadable = convertUnixToDateTime(currentTime);
     const decodedExpTimeReadable = convertUnixToDateTime(decoded.exp as number);

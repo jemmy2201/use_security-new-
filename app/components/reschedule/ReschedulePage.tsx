@@ -11,6 +11,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format, parseISO } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
+import { booking_schedules } from '@prisma/client';
 
 type DisabledDatesResponse = string[];
 
@@ -49,11 +50,12 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     const [startDateError, setStartDateError] = useState<string>("");
     const [selectedTimeSlotError, setSelectedTimeSlotError] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState('');
+    const [bookingSchedule, setBookingSchedule] = useState<booking_schedules>();
 
     const formatDate = (date: Date | null) => {
         if (!date) return "";
         const day = date.getDate();
-        const month = date.toLocaleString('default', { month: 'long' }); // e.g., "September"
+        const month = date.toLocaleString('default', { month: 'long' }); 
         const year = date.getFullYear();
         return `${day} ${month} ${year}`;
     };
@@ -87,10 +89,42 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
         setDisabledSlots(data.disabledSlots);
     };
 
-    // Handler for button click to set the selected timeslot
     const handleTimeSlotClick = (text: string) => {
         console.log('timeslot', text);
         setSelectedTimeSlot(text);
+    };
+
+    const formatExpiryDate = (dateStringExpiryDate: string) => {
+        console.log('dateStringExpiryDate:', dateStringExpiryDate);
+        if (!dateStringExpiryDate) {
+            return '';
+        }
+        const [day, month, year] = dateStringExpiryDate.split('/').map(Number);
+
+
+        const date = new Date(year, month - 1, day);
+
+        const formattedDate = new Intl.DateTimeFormat('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }).format(date);
+
+        return formattedDate;
+    };
+
+
+    const formatAppointmentDate = (dateString: string) => {
+        if(!dateString){
+            return '';
+        }
+        const date = new Date(dateString); 
+
+        return date.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short', 
+            year: 'numeric'
+        });
     };
 
     const onBack = async () => {
@@ -107,8 +141,9 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             console.log('data from api', dataUser);
 
             const response = await fetch('/api/dashboard');
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            if (!response.ok && response.status === 401) {
+                router.push('/signin');
+                throw new Error('Personal Details: Failed to save draft');
             }
             const data: bookingDetail[] = await response.json();
             console.log('booking card list: ', data.length);
@@ -183,6 +218,19 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     useEffect(() => {
 
 
+        const fetchBookingSchedule = async () => {
+            try {
+                const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
+                if (!responseBookingSchedule.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const dataBookingSchedule: booking_schedules = await responseBookingSchedule.json();
+                setBookingSchedule(dataBookingSchedule);
+            } catch (error) {
+                console.error('Error fetching disabled dates:', error);
+            }
+        };
+
         const fetchDisabledDates = async () => {
             try {
                 const response = await fetch(`/api/appointment-dates?bookingId=${encodeURIComponent(bookingId)}`);
@@ -191,12 +239,12 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 }
                 const data: DisabledDatesResponse = await response.json();
                 const parsedDates = data.map(dateStr => parseISO(dateStr));
+                console.log('parsed date:', parsedDates);
                 setDisabledDates(parsedDates);
 
                 const responseFullBooked = await fetch("/api/get-fully-booked-dates");
                 const dataFullyNooked = await responseFullBooked.json();
 
-                // Assuming the API returns dates in ISO format
                 const bookedDates = dataFullyNooked.map((dateStr: string) => new Date(dateStr));
                 setFullyBookedDates(bookedDates);
 
@@ -205,6 +253,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             }
         };
         fetchDisabledDates();
+        fetchBookingSchedule();
 
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 769);
@@ -222,9 +271,27 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             </div>
             <div className={rescheduleContentstyles.mainContainer}>
                 <div className={rescheduleContentstyles.headerBox}>
-                    <div className={globalStyleCss.header1}>
-                        Reschedule Appointment
-                    </div>
+                    {bookingSchedule && bookingSchedule.appointment_date && (
+                        <>
+                            <div className={globalStyleCss.header1}>
+                                Reschedule Appointment 
+                                <div className={globalStyleCss.regularBold}>Current appointment is on {formatAppointmentDate(bookingSchedule?.appointment_date ? bookingSchedule.appointment_date : '') || ''} 
+                                 &nbsp; at {bookingSchedule.time_start_appointment} - {bookingSchedule.time_end_appointment}</div>
+                            </div>
+
+                        </>
+                    )}
+
+                    {bookingSchedule && !bookingSchedule.appointment_date && (
+                        <>
+                            <div className={globalStyleCss.header1}>
+                                Book Appointment
+                            </div>
+
+                        </>
+                    )}
+
+
                 </div>
 
                 <div className={rescheduleContentstyles.appointmentDetailContainer}>
@@ -241,7 +308,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                         <div style={{
                             width: isMobile ? '100%' : '45%',
                             borderRight: isMobile ? 'none' : '1px solid lightgrey',
-                            height: '500px', // Set your desired height
+                            height: '500px',
                         }}>
                             <div className={rescheduleContentstyles.displayHeaderTextBox}>
                                 <div className={globalStyleCss.regularBold}>

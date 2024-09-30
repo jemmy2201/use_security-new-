@@ -111,12 +111,14 @@ const BookAppointmentCompletePage: React.FC = () => {
                         <div className={CompleteContentstyles.contentBox}>
                             <div className={CompleteContentstyles.item}>
                                 <div className={globalStyleCss.regularBold}>Collection centre </div>
-                                <div className={CompleteContentstyles.inputText}>                          <div className={globalStyleCss.regular}>
-                                    Union of Security Employees (USE)<br></br>
-                                    200 Jalan Sultan<br></br>
-                                    #03-24 Textile Centre<br></br>
-                                    Singapore 199018<br></br>
-                                </div></div>
+                                <div className={CompleteContentstyles.inputText}>
+                                    <div className={globalStyleCss.regular}>
+                                        Union of Security Employees (USE)<br></br>
+                                        200 Jalan Sultan<br></br>
+                                        #03-24 Textile Centre<br></br>
+                                        Singapore 199018<br></br>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
