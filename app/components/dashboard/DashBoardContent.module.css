@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
 
 .mainContainer {
-  background: #F5F6F7;
+  background: #3e7fc1;
   flex-wrap: wrap;
 
   .container {

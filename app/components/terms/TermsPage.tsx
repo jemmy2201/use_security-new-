@@ -94,7 +94,7 @@ const TermsPage: React.FC = () => {
 
     return (
 
-        <form>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
 
             <div >
                 <HeaderPageLink />
@@ -179,7 +179,7 @@ const TermsPage: React.FC = () => {
                 <FooterPageLink />
             </div>
 
-        </form>
+        </div>
     );
 };
 

@@ -6,9 +6,9 @@ import DashBoardPage from '../../components/dashboard/DashBoardPage';
 const Dashboard: React.FC = () => {
 
   return (
-  <div>
+  
     <DashBoardPage />
-  </div>
+  
 
   );
 };

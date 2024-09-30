@@ -6,11 +6,11 @@ import { FormProvider } from './components/FormContext';
 
 const UseHomePage: React.FC = () => {
     return (
-        <div>
+        <>
             <FormProvider>
                 <SignIn />
             </FormProvider>
-        </div>
+        </>
     );
 };
 

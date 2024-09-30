@@ -309,7 +309,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                         <div style={{
                             width: isMobile ? '100%' : '45%',
                             borderRight: isMobile ? 'none' : '1px solid lightgrey',
-                            height: '500px',
+                            height: isMobile ? '300px' : '45%',
                         }}>
                             <div className={rescheduleContentstyles.displayHeaderTextBox}>
                                 <div className={globalStyleCss.regularBold}>
