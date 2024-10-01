@@ -22,7 +22,7 @@ import { booking_schedules } from '@prisma/client';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import Link from 'next/link';
 import mainPageModule from './MainPage.module.css';
-import CircularProgress from '@mui/material/CircularProgress'; 
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface ActionTypeProps {
     actionType: string;
@@ -614,15 +614,16 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
 
             <main>
                 <StepBar actionType={actionType} steps={steps} activeStep={activeStep} />
+                <Footer
+                    onNext={handleNext}
+                    onBack={handleBack}
+                    onSaveDraft={handleSaveDraft}
+                    hasNext={activeStep < steps.length - 1}
+                    hasBack={activeStep > 0}
+                    activeStep={activeStep}
+                />
             </main>
-            <Footer
-                onNext={handleNext}
-                onBack={handleBack}
-                onSaveDraft={handleSaveDraft}
-                hasNext={activeStep < steps.length - 1}
-                hasBack={activeStep > 0}
-                activeStep={activeStep}
-            />
+
             <ToastContainer />
             <FooterPageLink></FooterPageLink>
             <OtpPopup

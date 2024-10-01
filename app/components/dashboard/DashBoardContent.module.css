@@ -1,9 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
 
 .mainContainer {
-  background: #3e7fc1;
-  flex-wrap: wrap;
-
+  flex-grow: 1;
   .container {
     display: flex;
     padding: 20px;

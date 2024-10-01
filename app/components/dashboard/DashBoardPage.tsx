@@ -939,10 +939,11 @@ const DashBoardPage: React.FC = () => {
 
                     </div>
                 </div>
-                <div>
+
+            </div>
+            <div>
                     <FooterPageLink />
                 </div>
-            </div>
         </div>
     );
 };
