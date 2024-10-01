@@ -69,8 +69,9 @@ const TermsPage: React.FC = () => {
 
 
                 const response = await fetch('/api/dashboard');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                if (!response.ok && response.status === 401) {
+                    router.push('/signin');
+                    throw new Error('token expired in stripe session');
                 }
                 const data: bookingDetail[] = await response.json();
                 console.log('booking card list: ', data.length);

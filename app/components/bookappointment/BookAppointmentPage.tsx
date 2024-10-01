@@ -55,7 +55,7 @@ const BookAppointmentPage: React.FC = () => {
 
     // Handler for button click to set the selected timeslot
     const handleTimeSlotClick = (text: string) => {
-        console.log('timeslot', text);
+        console.log('click on timeslot', text);
         setSelectedTimeSlot(text);
         setFormData(prevFormData => ({
             ...prevFormData,
@@ -67,7 +67,7 @@ const BookAppointmentPage: React.FC = () => {
     const [contactNumber, setContactNumber] = useState('');
     const [email, setEmail] = useState('');
     const [disabledSlots, setDisabledSlots] = useState<string[]>([]); // Array of disabled slots
-
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 769);
 
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -91,8 +91,9 @@ const BookAppointmentPage: React.FC = () => {
         }));
         const formattedDateForSlots = formatDateSlots(date);
         const response = await fetch(`/api/day-slots?selectedDate=${encodeURIComponent(formattedDateForSlots)}`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch disabled dates');
+        if (!response.ok && response.status === 401) {
+            router.push('/signin');
+            throw new Error('token expired in stripe session');
         }
         const data = await response.json();
         console.log('response, /api/day-slots', data);
@@ -114,7 +115,7 @@ const BookAppointmentPage: React.FC = () => {
 
         const fetchDisabledDates = async () => {
             try {
-                const response = await fetch(`/api/appointment-dates?bookingId=${encodeURIComponent(formData.bookingId?formData.bookingId:'')}`);
+                const response = await fetch(`/api/appointment-dates?bookingId=${encodeURIComponent(formData.bookingId ? formData.bookingId : '')}`);
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch disabled dates');
@@ -127,6 +128,13 @@ const BookAppointmentPage: React.FC = () => {
             }
         };
         fetchDisabledDates();
+
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 769);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
 
@@ -138,15 +146,21 @@ const BookAppointmentPage: React.FC = () => {
         <form>
             <div className={bookAppointmentContentstyles.mainContainer}>
                 <div className={bookAppointmentContentstyles.stepContentContainer}>
-                    <div className={globalStyleCss.header2}>
-                        Appointment Details
-                    </div>
+                    <div className={bookAppointmentContentstyles.header}>
+                        <div className={globalStyleCss.header2}>
+                            Appointment details
+                        </div>
+                        <div className={globalStyleCss.regular}>
+                            Please choose a date and time to book your appointment to collect your pass card.
+                        </div>
 
-                    <div className={globalStyleCss.regular}>
-                        Please choose a date and time to book your appointment to collect your pass card.
                     </div>
                     <div className={bookAppointmentContentstyles.appointmentBox}>
-                        <div>
+                        <div style={{
+                            width: isMobile ? '100%' : '45%',
+                            borderRight: isMobile ? 'none' : '1px solid lightgrey',
+                            height: isMobile ? '300px' : '45%',
+                        }}>
                             <div className={globalStyleCss.regularBold}>
                                 Date of appointment
                                 {formData.errorAppointmentDate && <p style={{ color: 'red' }}>{formData.errorAppointmentDate}</p>}
@@ -169,8 +183,8 @@ const BookAppointmentPage: React.FC = () => {
                                     excludeDates={disabledDates}
                                     filterDate={(date) => {
                                         const day = date.getDay();
-                                        return day !== 0 && day !== 6; 
-                                      }}
+                                        return day !== 0 && day !== 6;
+                                    }}
                                     renderDayContents={(day, date) => {
                                         const isBooked = isFullyBooked(date);
                                         return (
@@ -189,7 +203,7 @@ const BookAppointmentPage: React.FC = () => {
                             </div>
                         </div>
 
-                        <div>
+                        <div style={{ width: '35%' }}>
                             <div className={globalStyleCss.regularBold}>
                                 Available Time slot
                                 {formData.errorAppointmentSlot && <p style={{ color: 'red' }}>{formData.errorAppointmentSlot}</p>}
@@ -197,7 +211,7 @@ const BookAppointmentPage: React.FC = () => {
                             <div>
                                 <ul>
                                     {buttonTexts.map((text, index) => (
-                                        <li key={`bt-${index}`}>
+                                        <li key={index}>
                                             <button type='button'
                                                 className={`${bookAppointmentContentstyles.timeSlotText} ${selectedTimeSlot === text
                                                     ? bookAppointmentContentstyles.selected : ''} ${disabledSlots.includes(text)
@@ -249,7 +263,7 @@ const BookAppointmentPage: React.FC = () => {
                             </div>
                         </div>
                         <div className={bookAppointmentContentstyles.montoFriTimings}>
-                            <div className={globalStyleCss.regular}> 
+                            <div className={globalStyleCss.regular}>
                                 9:30am - 12:30pm (last walk-in at 12:30pm)
                             </div>
                         </div>
@@ -257,7 +271,7 @@ const BookAppointmentPage: React.FC = () => {
                     <hr className={bookAppointmentContentstyles.bookAppointmentBoxLine}></hr>
                     <div>
                         <div className={bookAppointmentContentstyles.collectionText}>
-                        <div className={globalStyleCss.regularBold}> Closed on Saturdays, Sundays & Public Holidays </div>
+                            <div className={globalStyleCss.regularBold}> Closed on Saturdays, Sundays & Public Holidays </div>
                         </div>
                     </div>
                 </div>

@@ -9,6 +9,7 @@ import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import { useRouter } from 'next/navigation';
 import { booking_schedules } from '@prisma/client';
+import CircularProgress from '@mui/material/CircularProgress'; 
 
 interface ResubmitPhotoPageProps {
   bookingId: string;
@@ -52,25 +53,51 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
         console.error('Error loading models:', error);
       }
     };
-    
+
     loadModels();
   }, []);
 
   const onNext = async () => {
     setLoading(true);
     console.log('bookingId', bookingId);
-    try {
-      router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);
-    } catch (err) {
-      setErrorMessage('Failed to open resubmit appointment');
-    } finally {
-      setLoading(false);
+
+    if (bgColorMatch && faceDetected) {
+      try {
+        const response = await axios.post('/api/handle-resubmit-image', {
+          image,
+          bookingId,
+        });
+  
+        console.log('API Response:', response.data);
+        router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);
+  
+      } catch (error) {
+        console.error('Error sending data to API:', error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      alert('Plese upload correct photo.');
     }
+    setLoading(false);
   };
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLoading(true);
     const file = event.target.files?.[0];
     if (file) {
+
+      const fileSizeInBytes = file.size;
+
+      const maxSizeInBytes = 5 * 1024 * 1024; // 2MB in bytes
+      const minSizeInBytes = 25 * 1024; // 100KB in bytes
+
+      // if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
+      //   alert('Image size should be less then 5MB and greater then 25kb');
+      //   console.error('File size is out of the allowed range.');
+      //   return; 
+      // }
+
       const img = URL.createObjectURL(file);
       setImage(img);
 
@@ -102,10 +129,12 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           console.log('isFaceDetected', isFaceDetected);
           console.log('isBgColorMatch', isBgColorMatch);
           if (isBgColorMatch && isFaceDetected) {
-            await sendImageToAPI(resizedImage, bookingId);
+            //await sendImageToAPI(resizedImage, bookingId);
           }
         } catch (error) {
           console.error('Error processing image:', error);
+        } finally {
+          setLoading(false);
         }
       };
     }
@@ -188,11 +217,11 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     // Calculate the percentage of white pixels
     const whitePixelPercentage = (whitePixelCount / totalPixelCount) * 100;
 
-    return whitePixelPercentage > 40; 
+    return whitePixelPercentage > 40;
   };
 
   const checkBrightnessContrast = (image: HTMLImageElement) => {
-    return { brightness: 75, contrast: 85 }; 
+    return { brightness: 75, contrast: 85 };
   };
 
   const resizeImage = (image: HTMLImageElement, width: number, height: number) => {
@@ -223,6 +252,11 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   return (
 
     <form>
+      {loading && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <CircularProgress /> 
+        </div>
+      )}
       <div >
         <HeaderPageLink />
       </div>
@@ -243,7 +277,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             <div>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <g clipPath="url(#clip0_1358_8175)">
-                  <path fillRule="evenodd" clip-rule="evenodd" d="M22.1719 18.295C22.7419 19.235 22.3119 20.005 21.2119 20.005H3.21191C2.11191 20.005 1.68191 19.235 2.25191 18.295L11.1619 3.705C11.7419 2.765 12.6819 2.765 13.2519 3.705L22.1719 18.295ZM12.2119 14.005C11.6619 14.005 11.2119 13.555 11.2119 13.005V9.005C11.2119 8.455 11.6619 8.005 12.2119 8.005C12.7619 8.005 13.2119 8.455 13.2119 9.005V13.005C13.2119 13.555 12.7619 14.005 12.2119 14.005ZM12.2119 18.005C12.7642 18.005 13.2119 17.5573 13.2119 17.005C13.2119 16.4527 12.7642 16.005 12.2119 16.005C11.6596 16.005 11.2119 16.4527 11.2119 17.005C11.2119 17.5573 11.6596 18.005 12.2119 18.005Z" fill="#FF8F00" />
+                  <path fillRule="evenodd" clipRule="evenodd" d="M22.1719 18.295C22.7419 19.235 22.3119 20.005 21.2119 20.005H3.21191C2.11191 20.005 1.68191 19.235 2.25191 18.295L11.1619 3.705C11.7419 2.765 12.6819 2.765 13.2519 3.705L22.1719 18.295ZM12.2119 14.005C11.6619 14.005 11.2119 13.555 11.2119 13.005V9.005C11.2119 8.455 11.6619 8.005 12.2119 8.005C12.7619 8.005 13.2119 8.455 13.2119 9.005V13.005C13.2119 13.555 12.7619 14.005 12.2119 14.005ZM12.2119 18.005C12.7642 18.005 13.2119 17.5573 13.2119 17.005C13.2119 16.4527 12.7642 16.005 12.2119 16.005C11.6596 16.005 11.2119 16.4527 11.2119 17.005C11.2119 17.5573 11.6596 18.005 12.2119 18.005Z" fill="#FF8F00" />
                 </g>
                 <defs>
                   <clipPath id="clip0_1358_8175">
@@ -258,34 +292,34 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           </div>
 
           <hr className={resubmitPhotoContentstyles.photoHrLine}></hr>
-          
-          {image && (!faceDetected || !bgColorMatch) ? (
-        <div className={resubmitPhotoContentstyles.photoUploadError}>
-          <div className={resubmitPhotoContentstyles.photoUploadErrorBox}>
-            <div>
-              <h1>Your photo has been rejected for the following reasons:</h1>
-            </div>
-            {faceDetected ? (
-              <p></p>
-            ) : (
-              <div> .  The face is not clearly visible</div>
-            )}
-            {bgColorMatch ? (
-              <p></p>
-            ) : (
-              <div> .  The background is not white</div>
-            )}
 
-            {spectacleDetected ? (
-              <p>. Eyewear has been detected</p>
-            ) : (
-              <p></p>
-            )}
-          </div>
-        </div>
-      ) : (
-        <p></p>
-      )}
+          {image && (!faceDetected || !bgColorMatch) ? (
+            <div className={resubmitPhotoContentstyles.photoUploadError}>
+              <div className={resubmitPhotoContentstyles.photoUploadErrorBox}>
+                <div>
+                  <h1>Your photo has been rejected for the following reasons:</h1>
+                </div>
+                {faceDetected ? (
+                  <p></p>
+                ) : (
+                  <div> .  The face is not clearly visible</div>
+                )}
+                {bgColorMatch ? (
+                  <p></p>
+                ) : (
+                  <div> .  The background is not white</div>
+                )}
+
+                {spectacleDetected ? (
+                  <p>. Eyewear has been detected</p>
+                ) : (
+                  <p></p>
+                )}
+              </div>
+            </div>
+          ) : (
+            <p></p>
+          )}
 
           <div className={resubmitPhotoContentstyles.photoContainer}>
             <div className={resubmitPhotoContentstyles.uploadBox}>
@@ -381,7 +415,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                   <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                       <circle cx="24" cy="24" r="20" fill="#CC0C00" />
-                      <path fillRule="evenodd" clip-rule="evenodd" d="M18.4142 15.5858C17.6332 14.8047 16.3668 14.8047 15.5858 15.5858C14.8047 16.3668 14.8047 17.6332 15.5858 18.4142L21.2429 24.0713L15.5862 29.7279C14.8052 30.509 14.8052 31.7753 15.5862 32.5563C16.3673 33.3374 17.6336 33.3374 18.4147 32.5563L24.0713 26.8997L29.7279 32.5563C30.509 33.3374 31.7753 33.3374 32.5563 32.5563C33.3374 31.7753 33.3374 30.509 32.5563 29.7279L26.8997 24.0713L32.5568 18.4142C33.3378 17.6332 33.3378 16.3668 32.5568 15.5858C31.7757 14.8047 30.5094 14.8047 29.7284 15.5858L24.0713 21.2429L18.4142 15.5858Z" fill="white" />
+                      <path fillRule="evenodd" clipRule="evenodd" d="M18.4142 15.5858C17.6332 14.8047 16.3668 14.8047 15.5858 15.5858C14.8047 16.3668 14.8047 17.6332 15.5858 18.4142L21.2429 24.0713L15.5862 29.7279C14.8052 30.509 14.8052 31.7753 15.5862 32.5563C16.3673 33.3374 17.6336 33.3374 18.4147 32.5563L24.0713 26.8997L29.7279 32.5563C30.509 33.3374 31.7753 33.3374 32.5563 32.5563C33.3374 31.7753 33.3374 30.509 32.5563 29.7279L26.8997 24.0713L32.5568 18.4142C33.3378 17.6332 33.3378 16.3668 32.5568 15.5858C31.7757 14.8047 30.5094 14.8047 29.7284 15.5858L24.0713 21.2429L18.4142 15.5858Z" fill="white" />
                     </svg>
                   </div>
                 </div>
@@ -392,7 +426,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                   <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                       <circle cx="24" cy="24" r="20" fill="#CC0C00" />
-                      <path fillRule="evenodd" clip-rule="evenodd" d="M18.4142 15.5858C17.6332 14.8047 16.3668 14.8047 15.5858 15.5858C14.8047 16.3668 14.8047 17.6332 15.5858 18.4142L21.2429 24.0713L15.5862 29.7279C14.8052 30.509 14.8052 31.7753 15.5862 32.5563C16.3673 33.3374 17.6336 33.3374 18.4147 32.5563L24.0713 26.8997L29.7279 32.5563C30.509 33.3374 31.7753 33.3374 32.5563 32.5563C33.3374 31.7753 33.3374 30.509 32.5563 29.7279L26.8997 24.0713L32.5568 18.4142C33.3378 17.6332 33.3378 16.3668 32.5568 15.5858C31.7757 14.8047 30.5094 14.8047 29.7284 15.5858L24.0713 21.2429L18.4142 15.5858Z" fill="white" />
+                      <path fillRule="evenodd" clipRule="evenodd" d="M18.4142 15.5858C17.6332 14.8047 16.3668 14.8047 15.5858 15.5858C14.8047 16.3668 14.8047 17.6332 15.5858 18.4142L21.2429 24.0713L15.5862 29.7279C14.8052 30.509 14.8052 31.7753 15.5862 32.5563C16.3673 33.3374 17.6336 33.3374 18.4147 32.5563L24.0713 26.8997L29.7279 32.5563C30.509 33.3374 31.7753 33.3374 32.5563 32.5563C33.3374 31.7753 33.3374 30.509 32.5563 29.7279L26.8997 24.0713L32.5568 18.4142C33.3378 17.6332 33.3378 16.3668 32.5568 15.5858C31.7757 14.8047 30.5094 14.8047 29.7284 15.5858L24.0713 21.2429L18.4142 15.5858Z" fill="white" />
                     </svg>
                   </div>
                 </div>
@@ -403,7 +437,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                   <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                       <circle cx="24" cy="24" r="20" fill="#CC0C00" />
-                      <path fillRule="evenodd" clip-rule="evenodd" d="M18.4142 15.5858C17.6332 14.8047 16.3668 14.8047 15.5858 15.5858C14.8047 16.3668 14.8047 17.6332 15.5858 18.4142L21.2429 24.0713L15.5862 29.7279C14.8052 30.509 14.8052 31.7753 15.5862 32.5563C16.3673 33.3374 17.6336 33.3374 18.4147 32.5563L24.0713 26.8997L29.7279 32.5563C30.509 33.3374 31.7753 33.3374 32.5563 32.5563C33.3374 31.7753 33.3374 30.509 32.5563 29.7279L26.8997 24.0713L32.5568 18.4142C33.3378 17.6332 33.3378 16.3668 32.5568 15.5858C31.7757 14.8047 30.5094 14.8047 29.7284 15.5858L24.0713 21.2429L18.4142 15.5858Z" fill="white" />
+                      <path fillRule="evenodd" clipRule="evenodd" d="M18.4142 15.5858C17.6332 14.8047 16.3668 14.8047 15.5858 15.5858C14.8047 16.3668 14.8047 17.6332 15.5858 18.4142L21.2429 24.0713L15.5862 29.7279C14.8052 30.509 14.8052 31.7753 15.5862 32.5563C16.3673 33.3374 17.6336 33.3374 18.4147 32.5563L24.0713 26.8997L29.7279 32.5563C30.509 33.3374 31.7753 33.3374 32.5563 32.5563C33.3374 31.7753 33.3374 30.509 32.5563 29.7279L26.8997 24.0713L32.5568 18.4142C33.3378 17.6332 33.3378 16.3668 32.5568 15.5858C31.7757 14.8047 30.5094 14.8047 29.7284 15.5858L24.0713 21.2429L18.4142 15.5858Z" fill="white" />
                     </svg>
                   </div>
                 </div>

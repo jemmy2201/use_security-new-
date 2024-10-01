@@ -36,6 +36,39 @@ const BookAppointmentCompletePage: React.FC = () => {
         router.push('/homepage');
     };
 
+    const formatExpiryDate = (dateStringExpiryDate: string) => {
+        console.log('dateStringExpiryDate:', dateStringExpiryDate);
+        if (!dateStringExpiryDate) {
+            return '';
+        }
+        const [day, month, year] = dateStringExpiryDate.split('/').map(Number);
+
+
+        const date = new Date(year, month - 1, day);
+
+        const formattedDate = new Intl.DateTimeFormat('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }).format(date);
+
+        return formattedDate;
+    };
+
+
+    const formatAppointmentDate = (dateString: string) => {
+        if (!dateString) {
+            return '';
+        }
+        const date = new Date(dateString);
+
+        return date.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+    };
+
     useEffect(() => {
         const fetchBookingSchedule = async () => {
             try {
@@ -87,7 +120,7 @@ const BookAppointmentCompletePage: React.FC = () => {
                         <div className={CompleteContentstyles.contentBox}>
                             <div className={CompleteContentstyles.item}>
                                 <div className={globalStyleCss.regularBold}>Collection Date </div>
-                                <div className={CompleteContentstyles.inputText}>{bookingSchedule?.appointment_date}</div>
+                                <div className={CompleteContentstyles.inputText}>{formatAppointmentDate(bookingSchedule?.appointment_date ? bookingSchedule.appointment_date : '') || ''}</div>
 
                             </div>
                             <div className={CompleteContentstyles.item}>
@@ -104,7 +137,7 @@ const BookAppointmentCompletePage: React.FC = () => {
                             </div>
                             <div className={CompleteContentstyles.item}>
                                 <div className={globalStyleCss.regularBold}>Pass card date of expiry </div>
-                                <div className={CompleteContentstyles.inputText}>{bookingSchedule?.expired_date}</div>
+                                <div className={CompleteContentstyles.inputText}>{formatExpiryDate(bookingSchedule?.expired_date ? bookingSchedule.expired_date : '')}</div>
                             </div>
                         </div>
 

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import StepBar from './StepBar';
 import Footer from './Footer';
 
-// Import the step components
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
 import StepThree from './StepThree';
@@ -23,6 +22,7 @@ import { booking_schedules } from '@prisma/client';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import Link from 'next/link';
 import mainPageModule from './MainPage.module.css';
+import CircularProgress from '@mui/material/CircularProgress'; 
 
 interface ActionTypeProps {
     actionType: string;
@@ -530,6 +530,11 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
 
     return (
         <div>
+            {loading && (
+                <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <CircularProgress />
+                </div>
+            )}
             <HeaderPageLink></HeaderPageLink>
 
 

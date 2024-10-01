@@ -17,7 +17,8 @@ const ContactusPage: React.FC = () => {
 
     return (
 
-        <form>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+
 
             <div className={headerstyles.headerContainer}>
                 <div className={headerstyles.logo}><Link href="/signin"><img src="/images/logo.png" alt="Logo" /></Link></div>
@@ -98,8 +99,8 @@ const ContactusPage: React.FC = () => {
             <div >
                 <FooterPageLink />
             </div>
+        </div>
 
-        </form>
     );
 };
 
