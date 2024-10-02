@@ -684,7 +684,7 @@ const DashBoardPage: React.FC = () => {
                                                                         handleBookAppointmentClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Book Appointment
+                                                                    Book Appointment &nbsp;&nbsp;
                                                                 </a>
                                                                 <a
                                                                     href="/edit"

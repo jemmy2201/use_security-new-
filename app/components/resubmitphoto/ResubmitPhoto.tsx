@@ -9,7 +9,7 @@ import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import { useRouter } from 'next/navigation';
 import { booking_schedules } from '@prisma/client';
-import CircularProgress from '@mui/material/CircularProgress'; 
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface ResubmitPhotoPageProps {
   bookingId: string;
@@ -21,6 +21,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const [image, setImage] = useState<string | null>(null);
   const [faceDetected, setFaceDetected] = useState<boolean>(false);
   const [bgColorMatch, setBgColorMatch] = useState<boolean>(false);
+  const [showBookingAppointment, setShowBookingAppointment] = useState<boolean>();
   const [brightnessContrast, setBrightnessContrast] = useState<{ brightness: number; contrast: number } | null>(null);
   const [spectacleDetected, setSpectacleDetected] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -29,7 +30,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const [bookingSchedule, setBookingSchedule] = useState<booking_schedules>();
 
   useEffect(() => {
-
+    setLoading(true);
     const fetchBookingSchedule = async () => {
       try {
         const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
@@ -38,6 +39,26 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
         }
         const dataBookingSchedule: booking_schedules = await responseBookingSchedule.json();
         setBookingSchedule(dataBookingSchedule);
+        const appointment_date = bookingSchedule?.appointment_date;
+        if (appointment_date) {
+          console.log('appointment_date:', appointment_date);
+          const currentDate = new Date();
+          const appointmentDate = new Date(appointment_date);
+          const diffInTime = appointmentDate.getTime() - currentDate.getTime();
+          const diffInDays = diffInTime / (1000 * 3600 * 24);
+
+          if (appointmentDate > currentDate && diffInDays > 2) {
+            setShowBookingAppointment(false);
+          } else {
+            setShowBookingAppointment(true);
+          }
+          console.log('setShowBookingAppointment:', showBookingAppointment);
+        } else {
+          console.log('setShowBookingAppointment to true:', showBookingAppointment);
+          setShowBookingAppointment(true);
+        }
+
+        console.log('setShowBookingAppointment:', showBookingAppointment);
       } catch (error) {
         console.error('Error fetching disabled dates:', error);
       }
@@ -55,7 +76,36 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     };
 
     loadModels();
+
+    setLoading(false);
+
   }, []);
+
+
+  const onComplete = async () => {
+    setLoading(true);
+    console.log('bookingId', bookingId);
+
+    if (bgColorMatch && faceDetected) {
+      try {
+        const response = await axios.post('/api/handle-resubmit-image', {
+          image,
+          bookingId,
+        });
+
+        console.log('API Response:', response.data);
+        router.push('/homepage');
+
+      } catch (error) {
+        console.error('Error sending data to API:', error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      alert('Plese upload correct photo.');
+    }
+    setLoading(false);
+  };
 
   const onNext = async () => {
     setLoading(true);
@@ -67,10 +117,10 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           image,
           bookingId,
         });
-  
+
         console.log('API Response:', response.data);
         router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);
-  
+
       } catch (error) {
         console.error('Error sending data to API:', error);
       } finally {
@@ -80,6 +130,17 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
       alert('Plese upload correct photo.');
     }
     setLoading(false);
+  };
+
+  const onBack = async () => {
+
+    try {
+      router.push('/homepage');
+    } catch (err) {
+      setErrorMessage('Failed to fetch users');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -254,7 +315,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     <form>
       {loading && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <CircularProgress /> 
+          <CircularProgress />
         </div>
       )}
       <div >
@@ -406,6 +467,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                   </div>
                 </div>
               </div>
+
               <div className={resubmitPhotoContentstyles.photosDosDontContainerPicsBox}>
                 <div className={resubmitPhotoContentstyles.picBox}>
                   <div className={resubmitPhotoContentstyles.picFrame}>
@@ -442,13 +504,42 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                   </div>
                 </div>
               </div>
+              <div className={resubmitPhotoContentstyles.dosDontDoText}>
+                <div className={globalStyleCss.blueLink}><a href="/content/photo_guideline.pdf" target="_blank" rel="noopener noreferrer">View photo guidelines</a></div>
+              </div>
             </div>
+
           </div>
         </div>
         <div className={resubmitPhotoContentstyles.buttonContainer}>
-          <button className={resubmitPhotoContentstyles.continue} type='button' onClick={onNext}>
-            <div className={globalStyleCss.buttonText}>Continue to book appointment</div>
+          <button className={resubmitPhotoContentstyles.cancel} type='button' onClick={onBack} style={{ marginRight: '10px' }}>
+            <div className={globalStyleCss.regular}>Cancel</div>
           </button>
+
+          {showBookingAppointment ? (
+            <>
+
+              <button className={resubmitPhotoContentstyles.continue} type='button' onClick={onNext}>
+                <div className={globalStyleCss.buttonText}>Book appointment</div>
+              </button>
+            </>
+
+          ) : null
+          }
+
+          {showBookingAppointment ? (
+            null
+
+          ) : <>
+
+            <button className={resubmitPhotoContentstyles.continue} type='button' onClick={onComplete}>
+              <div className={globalStyleCss.buttonText}>Complete</div>
+            </button>
+          </>
+          }
+
+
+
         </div>
       </div>
       <div >

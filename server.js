@@ -18,6 +18,9 @@ app.prepare().then(() => {
         await app.render(req, res, "/a", query);
       } else if (pathname === "/b") {
         await app.render(req, res, "/b", query);
+      } else if (pathname === "/user/login") {
+        res.writeHead(302, { Location: "https://xyz.com/login" });
+        res.end();
       } else {
         await handle(req, res, parsedUrl);
       }

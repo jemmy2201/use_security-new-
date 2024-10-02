@@ -4,7 +4,10 @@ const nextConfig = {
         config.resolve.fallback = {
             ...config.resolve.fallback, // preserve existing fallbacks
             fs: false, // Disable 'fs' for client-side
+
         };
+
+        
 
         return config;
     },
