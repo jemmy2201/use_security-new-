@@ -12,12 +12,33 @@ export async function GET(request: NextRequest) {
       return encryptedNric;
     }
 
+    // const schedules = await prisma.booking_schedules.findMany({
+    //   where: {
+    //     ...(encryptedNric && { nric: encryptedNric }),
+    //     app_type: {
+    //       not: '3',
+    //     },
+    //     AND: [
+    //       {
+    //         OR: [
+    //           { Status_app: '0' },
+    //           { Status_app: '1' },
+    //           { Status_app: '2' },
+    //           { Status_app: '3' },
+    //           { Status_app: '4' },
+    //           { Status_app: '5' },
+    //           { Status_app: '6' },
+    //         ]
+    //       }
+    //     ],
+    //   },
+    // });
+
     const schedules = await prisma.booking_schedules.findMany({
       where: {
         ...(encryptedNric && { nric: encryptedNric }),
-        app_type: {
-          not: '3',
-        },
+        app_type: '1',
+        licence_status: 'Y',
         AND: [
           {
             OR: [
@@ -38,7 +59,15 @@ export async function GET(request: NextRequest) {
     const renewSchedules = await prisma.booking_schedules.findMany({
       where: {
         ...(encryptedNric && { nric: encryptedNric }),
-        app_type: '3',
+        licence_status: 'Y',
+        AND: [
+          {
+            OR: [
+              { app_type: '2' },
+              { app_type: '3' },
+            ]
+          }
+        ],
       },
     });
 

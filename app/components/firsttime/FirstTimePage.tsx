@@ -149,33 +149,35 @@ const FirstTimePage: React.FC = () => {
 
     return (
 
-        <div className={firstTimeContentstyles.mainContainer}>
-            <div >
-                <HeaderPageLink />
-            </div>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
 
-            <div className={firstTimeContentstyles.container}>
-                <span className={firstTimeContentstyles.welcome}>
-                    Welcome
-                </span>
-                <span className={firstTimeContentstyles.name}>
-                    {users?.name}
-                </span>
 
-            </div>
-            <div className={firstTimeContentstyles.myApplication}>
-                <div className={firstTimeContentstyles.myApplicationText}>
-                    My applications
+
+            <HeaderPageLink />
+
+            <div className={firstTimeContentstyles.mainContainer}>
+                <div className={firstTimeContentstyles.container}>
+                    <span className={firstTimeContentstyles.welcome}>
+                        Welcome
+                    </span>
+                    <span className={firstTimeContentstyles.name}>
+                        {users?.name}
+                    </span>
+
                 </div>
-                <div className={firstTimeContentstyles.recordContainer}>
-                    <div className={firstTimeContentstyles.recordBox}>
-                        <div className={firstTimeContentstyles.recordBoxText}>
-                            No records
-                        </div>
-                        <div className={firstTimeContentstyles.recordBoxText2}>
-                            Your application will be displayed here
-                        </div>
-                        {/* <div className={firstTimeContentstyles.buttonBackground}>
+                <div className={firstTimeContentstyles.myApplication}>
+                    <div className={firstTimeContentstyles.myApplicationText}>
+                        My applications
+                    </div>
+                    <div className={firstTimeContentstyles.recordContainer}>
+                        <div className={firstTimeContentstyles.recordBox}>
+                            <div className={firstTimeContentstyles.recordBoxText}>
+                                No records
+                            </div>
+                            <div className={firstTimeContentstyles.recordBoxText2}>
+                                Your application will be displayed here
+                            </div>
+                            {/* <div className={firstTimeContentstyles.buttonBackground}>
                             <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewSoPasscardClick}>
                                 Create new SO pass card
                             </button>
@@ -183,49 +185,50 @@ const FirstTimePage: React.FC = () => {
                                 <Modal message={modalMessage} onClose={handleCloseModal} />
                             )}
                         </div> */}
-                        <div className={firstTimeContentstyles.buttonBackground}>
-                            {/* <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewPiPasscardClick}>
+                            <div className={firstTimeContentstyles.buttonBackground}>
+                                {/* <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewPiPasscardClick}>
                                 Create new PI pass card
                             </button> */}
 
-                            <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={toggleDropdown}>
-                                Apply for new pass card
-                            </button>
+                                <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={toggleDropdown}>
+                                    Apply for new pass card
+                                </button>
 
-                            {isDropdownOpen && (
-                                <ul style={{
-                                    listStyle: 'none',
-                                    padding: 0,
-                                    margin: 0,
-                                    position: 'absolute',
-                                    background: 'white',
-                                    border: '1px solid #ccc',
-                                    zIndex: 1,
-                                    width: '250px', 
-                                    maxHeight: '100px', 
-                                    overflowY: 'auto'   
-                                }}>
-                                    {options.map((option, index) => (
-                                        <li
-                                            key={`ft-${index}`}
-                                            onClick={() => handleSelect(option)}
-                                            style={{
-                                                padding: '4px',
-                                                cursor: 'pointer',
-                                                whiteSpace: 'normal',  
-                                                wordWrap: 'break-word' 
-                                            }}
-                                        >
-                                            {option}
-                                        </li>
-                                    ))}
-                                </ul>
+                                {isDropdownOpen && (
+                                    <ul style={{
+                                        listStyle: 'none',
+                                        padding: 0,
+                                        margin: 0,
+                                        position: 'absolute',
+                                        background: 'white',
+                                        border: '1px solid #ccc',
+                                        zIndex: 1,
+                                        width: '250px',
+                                        maxHeight: '100px',
+                                        overflowY: 'auto'
+                                    }}>
+                                        {options.map((option, index) => (
+                                            <li
+                                                key={`ft-${index}`}
+                                                onClick={() => handleSelect(option)}
+                                                style={{
+                                                    padding: '4px',
+                                                    cursor: 'pointer',
+                                                    whiteSpace: 'normal',
+                                                    wordWrap: 'break-word'
+                                                }}
+                                            >
+                                                {option}
+                                            </li>
+                                        ))}
+                                    </ul>
 
-                            )}
+                                )}
 
-                            {showModal && (
-                                <Modal message={modalMessage} onClose={handleCloseModal} />
-                            )}
+                                {showModal && (
+                                    <Modal message={modalMessage} onClose={handleCloseModal} />
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -235,7 +238,6 @@ const FirstTimePage: React.FC = () => {
                 <FooterPageLink />
             </div>
         </div>
-
     );
 };
 

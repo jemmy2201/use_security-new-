@@ -15,16 +15,15 @@ const secretKey = process.env.SESSION_SECRET
 const encodedKey = new TextEncoder().encode(secretKey)
 
 export async function decrypt(session: string | undefined = '') {
-    console.log('inside decrypt: session:');
+    //console.log('inside decrypt: session:');
 
     const decoded = decodeJwt(session);
-    console.log('Decoded JWT:');
+    //console.log('Decoded JWT:');
 
     const currentTime = Math.floor(Date.now() / 1000);
     const createSessionTimeReadable = convertUnixToDateTime(currentTime);
     const decodedExpTimeReadable = convertUnixToDateTime(decoded.exp as number);
-    console.log('createSession, currentTime:', createSessionTimeReadable);
-    console.log('createSession, decoded.exp:', decodedExpTimeReadable);
+    console.log('createSession: currentTime, expiry time:', createSessionTimeReadable, decodedExpTimeReadable);
     if (decoded.exp && decoded.exp < currentTime) {
         throw new Error('JWT token has expired');
     }
@@ -78,7 +77,7 @@ export async function encrypt(payload: SessionPayload) {
     return new SignJWT(payload)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
-        .setExpirationTime('20min')
+        .setExpirationTime('30min')
         .sign(encodedKey)
 }
 

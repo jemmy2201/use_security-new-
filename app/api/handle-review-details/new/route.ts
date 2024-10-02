@@ -24,7 +24,6 @@ export async function POST(req: NextRequest) {
         const schedule = await prisma.booking_schedules.findFirst({
             where: {
                 ...(encryptedNric && { nric: encryptedNric }),
-                app_type: applicationType,
                 id: bookingId,
                 AND: [
                     {

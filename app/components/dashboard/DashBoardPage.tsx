@@ -245,15 +245,6 @@ const DashBoardPage: React.FC = () => {
         console.log('id', id);
         const bookingId = id.toString(); // Correctly call the toString method
         console.log('bookingId', bookingId);
-
-        // const response = await fetch('/api/generate-pdf?bookingId=${bookingId}');
-        // const blob = await response.blob();
-        // const url = window.URL.createObjectURL(blob);
-        // const link = document.createElement('a');
-        // link.href = url;
-        // link.download = 'generated.pdf';
-        // link.click();
-
         try {
             router.push(`/receipt?bookingId=${encodeURIComponent(bookingId)}`);
         } catch (err) {
@@ -364,6 +355,11 @@ const DashBoardPage: React.FC = () => {
                 throw new Error('Network response was not ok');
             }
             const dataBookingSchedule: booking_schedules = await responseBookingSchedule.json();
+
+            if (dataBookingSchedule.app_type != '3') {
+                setShowModal(true);
+                return;
+            }
             sessionStorage.setItem('bookingSchedule', JSON.stringify(dataBookingSchedule));
             console.log('booking data from api', dataBookingSchedule);
             sessionStorage.setItem('actionTypeValue', 'Renew');
@@ -496,12 +492,77 @@ const DashBoardPage: React.FC = () => {
                                         (
                                             <>
                                                 <tr key={`b-${booking.id}`} className={globalStyleCss.regular}>
-                                                    <td className={dashBoardContentstyles.item2}>{appTypeMap[booking.app_type || ''] || 'Unknown'}</td>
+                                                    <td className={dashBoardContentstyles.item2}>{booking.app_type == '1' ? 'New' : 'Existing'}</td>
                                                     <td className={dashBoardContentstyles.item}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
                                                     <td className={dashBoardContentstyles.item1}>{gradeTypeMap[booking.grade_id || ''] || ''}</td>
                                                     <td className={dashBoardContentstyles.item3}>{formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}</td>
-                                                    <td className={dashBoardContentstyles.item3}>{statusTypeMap[booking.Status_app || ''] || ''}</td>
+
+                                                    <td className={dashBoardContentstyles.item3}>
+
+                                                        {booking.app_type == '1' ? (
+                                                            <>
+                                                                {statusTypeMap[booking.Status_app || ''] || ''}
+                                                            </>
+                                                        ) : null}
+
+                                                        {booking.app_type != '1' && booking.app_type != '3' ? (
+                                                            <>
+                                                                Issued
+                                                            </>
+                                                        ) : null}
+
+                                                        {booking.app_type == '3' ? (
+                                                            <>
+                                                                Renew
+                                                            </>
+                                                        ) : null}
+
+
+                                                        {booking.app_type == '3' ? (
+                                                            <>
+                                                                &nbsp;- {statusTypeMap[booking.Status_app || ''] || ''}
+
+                                                            </>
+                                                        ) : null}
+
+                                                    </td>
                                                     <td className={dashBoardContentstyles.item}>
+
+
+                                                        {booking.app_type == '2' ? (
+                                                            <>
+
+                                                                <a
+                                                                    href="/edit"
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault();
+                                                                        handleReplaceClick(booking.id);
+                                                                    }}
+                                                                    className={globalStyleCss.blueLink}>
+                                                                    Replace &nbsp;&nbsp;
+                                                                </a>
+                                                                <a
+                                                                    href="/renew"
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault();
+                                                                        handleRenewClick(booking.id);
+                                                                    }}
+                                                                    className={globalStyleCss.blueLink}>
+                                                                    Renew &nbsp;&nbsp;
+                                                                </a>
+                                                                <a
+                                                                    href="/edit"
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault();
+                                                                        handleUpdateClick(booking.id);
+                                                                    }}
+                                                                    className={globalStyleCss.blueLink}>
+                                                                    Update
+                                                                </a>
+                                                            </>
+
+                                                        ) : null}
+
 
                                                         {booking.app_type == '3' && !booking.Status_app ? (
                                                             <>
@@ -663,15 +724,17 @@ const DashBoardPage: React.FC = () => {
 
                                                         {booking.Status_app == '6' ? (
                                                             <>
+
                                                                 <a
                                                                     href="/edit"
                                                                     onClick={(e) => {
                                                                         e.preventDefault();
-                                                                        handleUpdateClick(booking.id);
+                                                                        handleRenewClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Update &nbsp;
+                                                                    Renew &nbsp;&nbsp;
                                                                 </a>
+
                                                                 {/* <a
                                                                 href="/edit"
                                                                 onClick={(e) => {
@@ -688,7 +751,16 @@ const DashBoardPage: React.FC = () => {
                                                                         handleReplaceClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Replace
+                                                                    Replace &nbsp;&nbsp;
+                                                                </a>
+                                                                <a
+                                                                    href="/edit"
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault();
+                                                                        handleUpdateClick(booking.id);
+                                                                    }}
+                                                                    className={globalStyleCss.blueLink}>
+                                                                    Update
                                                                 </a>
                                                             </>
                                                         ) : null}
@@ -737,7 +809,7 @@ const DashBoardPage: React.FC = () => {
                                     </div>
                                     <div className={dashBoardContentstyles.cell}>
                                         <div className={globalStyleCss.regular}>
-                                            {appTypeMap[booking.app_type || ''] || 'Unknown'}
+                                            {booking.app_type == '1' ? 'New' : 'Existing'}
                                         </div>
                                     </div>
                                 </div>
@@ -942,8 +1014,8 @@ const DashBoardPage: React.FC = () => {
 
             </div>
             <div>
-                    <FooterPageLink />
-                </div>
+                <FooterPageLink />
+            </div>
         </div>
     );
 };
