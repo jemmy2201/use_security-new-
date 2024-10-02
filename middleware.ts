@@ -14,7 +14,8 @@ export default async function middleware(req: NextRequest) {
   if (path == '/api/jwks' || path == '/api/auth/signin/singpass' 
     || path == '/api/usesecurity/callback'
     || path == '/api/auth/csrf' 
-    || path == '/api/auth/providers') {
+    || path == '/api/auth/providers'
+    || path == '/api/scheduler') {
     return NextResponse.next()
   }
 

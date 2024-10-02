@@ -1,48 +1,65 @@
-// /app/api/scheduler/route.ts (or pages/api/scheduler.ts if using the old structure)
 
 import { NextApiRequest, NextApiResponse } from 'next';
 import { booking_schedules, PrismaClient } from '@prisma/client';
+import axios from 'axios';
 
 import cron from 'node-cron';
 
 let taskStarted = false;
 const prisma = new PrismaClient();
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(request: NextApiRequest, res: NextApiResponse) {
+  console.log('scheduler starting');
+  console.log('process.env.ENABLE_PHOTO_REJECTON_SMS:', process.env.ENABLE_PHOTO_REJECTON_SMS);
+  const isEnable = process.env.ENABLE_PHOTO_REJECTON_SMS === 'true';
+
   if (!taskStarted) {
     taskStarted = true;
 
-    // Schedule a task to run at 10:00 AM every day
-    cron.schedule('0 10 * * *', () => {
-
-      console.log('Running the scheduled task at 10:00 AM every day');
-
-
-
+    // Schedule a task to run at 08:00 AM every day
+    cron.schedule('0 15 * * *', () => {
+      console.log('Running the scheduled task at 15:00 AM every day');
+      if (isEnable) {
+        sendSms();
+      } else {
+        console.log('sending sms for photo rejection is disabled');
+      }
     });
-
     console.log('Cron job scheduled');
   }
 
-  res.status(200).json({ message: 'Scheduler is running' });
+  return new Response(JSON.stringify('scheduler started'), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
 }
 
 export async function sendSms() {
 
   try {
-
     const username = process.env.GATEWAY_SMS_USERNAME;
     const password = process.env.GATEWAY_SMS_PASSWOD;
     const senderId = process.env.GATEWAY_SMS_SENDER;
+    const apiUrl = process.env.GATEWAY_SMS_URL;
 
+    const apiCredentials = {
+      apiusername: username,
+      apipassword: password,
+    };
+
+    const today = new Date();
+    const dateFrom = new Date(today);
+    dateFrom.setDate(today.getDate() - 2);
     const schedules = await prisma.booking_schedules.findMany({
       where: {
         Status_app: '4',
+        updated_at: {
+          gte: dateFrom,
+        },
       },
     });
 
-
-    schedules.map((booking) => {
+    schedules.map(async (booking) => {
       const encryptedNric = booking.nric;
       const userRecord = await prisma.users.findFirst({
         where: {
@@ -52,7 +69,18 @@ export async function sendSms() {
       const mobileno = userRecord?.mobileno;
       const smsMessage = `Please upload recent photo to complete your application`;
       console.log('sending sms to mobile, smsMessage:', mobileno, smsMessage);
-  
+      if (mobileno) {
+        // const response = await axios.get(apiUrl?apiUrl:'', {
+        //   params: {
+        //     ...apiCredentials,
+        //     mobileno: mobileno,
+        //     message: smsMessage,
+        //     senderid: senderId,
+        //     languagetype: '1',
+        //   },
+        // });
+        //console.log('SMS sent successfully data:', response.data);
+      }
     });
 
   } catch (error) {
@@ -63,32 +91,3 @@ export async function sendSms() {
   }
 
 }
-
-import axios from 'axios';
-
-const sendSMS = async (phoneNumber: string, message: string) => {
-
-  const username = process.env.GATEWAY_SMS_USERNAME;
-  const password = process.env.GATEWAY_SMS_PASSWOD;
-  const senderId = process.env.GATEWAY_SMS_SENDER;
-  const apiUrl = 'http://gateway.onewaysms.sg:10002/api.aspx';
-  const apiCredentials = {
-    apiusername: username,
-    apipassword: password,
-  };
-
-  try {
-    const response = await axios.get(apiUrl, {
-      params: {
-        ...apiCredentials,
-        mobileno: phoneNumber,
-        message: message,
-        senderid: 'USE',
-        languagetype: '1',
-      },
-    });
-    console.log('SMS sent successfully data:', response.data);
-  } catch (error) {
-    console.error('Error sending SMS:', error);
-  }
-};

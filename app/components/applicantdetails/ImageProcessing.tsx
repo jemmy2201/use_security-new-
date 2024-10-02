@@ -54,9 +54,9 @@ const ImageProcessing = () => {
 
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    
-    
-    
+
+
+
     const file = event.target.files?.[0];
     if (file) {
 
@@ -68,9 +68,9 @@ const ImageProcessing = () => {
       if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
         alert('Image size should be less then 5MB and greater then 25kb');
         console.error('File size is out of the allowed range.');
-        return; 
+        return;
       }
-      
+
       const img = URL.createObjectURL(file);
       setImage(img);
       setFormData(prevFormData => ({
@@ -139,27 +139,27 @@ const ImageProcessing = () => {
     try {
       await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
       await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
-  
+
       const detections = await faceapi.detectAllFaces(imageElement, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
       console.log('Glass detections:', detections);
-  
+
       if (detections.length > 0) {
         const landmarks = detections[0].landmarks;
         console.log('Landmarks:', landmarks);
-  
+
         const leftEye = landmarks.getLeftEye();
         const rightEye = landmarks.getRightEye();
         const nose = landmarks.getNose();
-  
+
         if (leftEye.length > 0 && rightEye.length > 0 && nose.length > 0) {
           const eyeDistance = Math.hypot(leftEye[3].x - rightEye[3].x, leftEye[3].y - rightEye[3].y);
           const noseWidth = Math.hypot(nose[2].x - nose[1].x, nose[2].y - nose[1].y);
-  
+
           console.log('Eye Distance:', eyeDistance, 'Nose Width:', noseWidth);
-  
+
           // Updated heuristic based on your data
           let isGlassesDetected = false;
-  
+
           if (eyeDistance > 40) {
             // Strong likelihood of spectacles if eye distance is large enough
             isGlassesDetected = noseWidth > 8; // Refine based on nose width
@@ -167,7 +167,7 @@ const ImageProcessing = () => {
             // Lower likelihood, but nose width can refine the decision
             isGlassesDetected = noseWidth > 6.5 && noseWidth < 8.5; // Allow some leeway here
           }
-  
+
           console.log('Glasses detected:', isGlassesDetected);
           return isGlassesDetected;
         }
@@ -178,7 +178,7 @@ const ImageProcessing = () => {
       return false;
     }
   };
-  
+
 
 
   const verifyBackgroundColor = (image: HTMLImageElement, targetColor: string) => {
@@ -207,7 +207,7 @@ const ImageProcessing = () => {
       const b = data[i + 2];
       const a = data[i + 3];
 
-      if (a > 0) { 
+      if (a > 0) {
         totalPixelCount++;
         if (Math.abs(r - targetRGB.r) < 30 && Math.abs(g - targetRGB.g) < 30 && Math.abs(b - targetRGB.b) < 30) {
           whitePixelCount++;
@@ -218,7 +218,7 @@ const ImageProcessing = () => {
     // Calculate the percentage of white pixels
     const whitePixelPercentage = (whitePixelCount / totalPixelCount) * 100;
     console.log('whitePixelPercentage:', whitePixelPercentage);
-    return whitePixelPercentage > 40; 
+    return whitePixelPercentage > 40;
   };
 
   const checkBrightnessContrast = (image: HTMLImageElement) => {
@@ -442,6 +442,9 @@ const ImageProcessing = () => {
                 </svg>
               </div>
             </div>
+          </div>
+          <div className={applicantDetailsContentstyles.dosDontDoText}>
+            <div className={globalStyleCss.blueLink}><a href="/content/photo_guideline.pdf" target="_blank" rel="noopener noreferrer">View photo guidelines</a></div>
           </div>
         </div>
       </div>
