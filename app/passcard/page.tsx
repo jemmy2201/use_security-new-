@@ -13,11 +13,11 @@ const PassCard: React.FC = () => {
   const actionType = searchParams.get('actionType')
   const actionTypeString = typeof actionType === 'string' ? actionType : '';
   return (
-    <div>
+    
       <FormProvider>
         <StepBarHomePage actionType={actionTypeString} />
       </FormProvider>
-    </div>
+    
   );
 };
 

@@ -5,9 +5,9 @@ import PersonalDetailsPageLink from '../personaldetails/PersonalDetailsPage'
 const StepOne: React.FC = () => {
 
     return (
-        <div>
+        
             <PersonalDetailsPageLink></PersonalDetailsPageLink>
-        </div>
+        
     );
 };
 
