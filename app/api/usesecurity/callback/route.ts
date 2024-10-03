@@ -93,6 +93,8 @@ const convertSub = (sub: string) => {
 
 export async function GET(request: NextRequest, res: NextResponse) {
     try {
+        const redirectUrlToTerms = process.env.NEXT_PUBLIC_URL + '/terms';
+        console.log('redirect url to terms and condition:', redirectUrlToTerms);
         const { searchParams } = new URL(request.url);
         const code = searchParams.get('code');
 
@@ -115,7 +117,7 @@ export async function GET(request: NextRequest, res: NextResponse) {
         const userId = convertSub(jweDecoded);
         console.log('nric / userId : ', userId);
         await createSession(userId, dataToken);
-        return NextResponse.redirect(new URL('/terms', request.url));
+        return NextResponse.redirect(new URL(redirectUrlToTerms, request.url));
 
     } catch (error) {
         console.error('Error processing Singpass callback:', error);
