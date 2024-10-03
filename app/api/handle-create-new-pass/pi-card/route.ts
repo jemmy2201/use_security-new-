@@ -46,7 +46,6 @@ export async function GET(request: NextRequest) {
         ...(encryptedNric && { nric: encryptedNric }),
         app_type: '1',
         card_id: '2',
-        licence_status: 'Y',
         card_issue:'Y',
         AND: [
           {
