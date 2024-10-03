@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
     const schedule = await prisma.booking_schedules.findFirst({
       where: {
-        ...(encryptedNric && { nric: encryptedNric }),  
+        ...(encryptedNric && { nric: encryptedNric }),
         id: bookingId,
         AND: [
           {
@@ -51,6 +51,9 @@ export async function POST(req: NextRequest) {
     });
 
     if (schedule) {
+
+      schedule.data_barcode_paynow = '';
+
       const fileName = schedule?.passid + encryptedNric.slice(-4);
       console.log('file name:', fileName);
       const filePath = path.join(uploadsDir, fileName + '.png');

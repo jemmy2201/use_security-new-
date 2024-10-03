@@ -55,6 +55,8 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    schedules.forEach(s => s.data_barcode_paynow = "");
+    
 
     const renewSchedules = await prisma.booking_schedules.findMany({
       where: {
@@ -72,6 +74,8 @@ export async function GET(request: NextRequest) {
     });
 
     if (renewSchedules) {
+
+      renewSchedules.forEach(s => s.data_barcode_paynow = "");
       const replacer = (key: string, value: any) => {
         if (typeof value === 'bigint') {
           return value.toString();

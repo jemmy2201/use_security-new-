@@ -34,6 +34,11 @@ export async function GET(request: NextRequest) {
       }
       return value;
     };
+    
+    if(schedules){
+      schedules.data_barcode_paynow= '';
+    }
+
 
     return new Response(JSON.stringify(schedules, replacer), {
       status: 200,

@@ -66,13 +66,15 @@ export async function POST(req: NextRequest) {
             });
 
             const updatedUserRecord = await prisma.users.update({
-                where: { id: userRecord.id }, // Using the unique identifier for update
+                where: { id: userRecord.id }, 
                 data: {
                     mobileno: mobileno,
                     email: email,
                 },
             });
-
+            if (updatedSchedule) {
+                updatedSchedule.data_barcode_paynow = '';
+            }
             console.log('Schedule updated:', updatedSchedule);
             const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
             return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });

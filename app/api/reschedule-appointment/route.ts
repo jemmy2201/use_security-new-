@@ -52,7 +52,9 @@ export async function POST(req: NextRequest) {
                     time_end_appointment: endTime
                 },
             });
-
+            if (updatedSchedule) {
+                updatedSchedule.data_barcode_paynow = '';
+            }
             const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
             return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });
 

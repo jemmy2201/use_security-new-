@@ -88,7 +88,9 @@ export async function POST(req: NextRequest) {
                     fs.writeFileSync(filePath, buffer);
                 }
 
-
+                if (updatedSchedule) {
+                    updatedSchedule.data_barcode_paynow = '';
+                }
                 const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
                 return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });
 
@@ -167,7 +169,9 @@ export async function POST(req: NextRequest) {
                     fs.writeFileSync(filePath, buffer);
                 }
 
-
+                if (updatedSchedule) {
+                    updatedSchedule.data_barcode_paynow = '';
+                }
                 const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
                 return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });
 

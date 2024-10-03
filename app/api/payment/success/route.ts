@@ -78,7 +78,10 @@ export async function GET(req: NextRequest) {
             console.log('generating pdf:', schedule.id);
             generatePdfReceipt(schedule);
             console.log('pdf generated:', schedule.id);
-            return new Response(JSON.stringify(schedule, replacer), {
+            if (updatedSchedule) {
+                updatedSchedule.data_barcode_paynow = '';
+            }
+            return new Response(JSON.stringify(updatedSchedule, replacer), {
                 status: 200,
                 headers: { 'Content-Type': 'application/json' },
             });

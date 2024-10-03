@@ -79,7 +79,9 @@ export async function POST(req: NextRequest) {
                     },
                 });
             }
-
+            if (updatedSchedule) {
+                updatedSchedule.data_barcode_paynow = '';
+            }
             console.log('Schedule updated:', updatedSchedule);
             const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
             return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });

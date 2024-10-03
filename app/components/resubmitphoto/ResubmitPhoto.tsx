@@ -79,6 +79,13 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
     setLoading(false);
 
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 769);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+
   }, []);
 
 
@@ -310,6 +317,9 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     }
   };
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 769);
+
+
   return (
 
     <form>
@@ -383,7 +393,9 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           )}
 
           <div className={resubmitPhotoContentstyles.photoContainer}>
+
             <div className={resubmitPhotoContentstyles.uploadBox}>
+
               <div className={resubmitPhotoContentstyles.uploadPhotoContainerBox}>
                 {<img src={image} />}
               </div>
