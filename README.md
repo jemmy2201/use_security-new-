@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a USE Portal Application
 
-## Getting Started
+## Setup
 
-First, run the development server:
+
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+git clone https://use-security@github.com/use-security/use-portal.git 
+
+npm install
+
+npm i sass
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost](http://localhost:3000) with your browser to see the login page.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Mockpass
 
-To learn more about Next.js, take a look at the following resources:
+We are using mockpass in local to test. In UAT and production it will connect to actual Singpass.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Setup mockpass 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash 
+npm install @opengovsg/mockpass
 
-## Deploy on Vercel
+set SHOW_LOGIN_PAGE=true
+set MOCKPASS_NRIC=S8979373D
+set SP_RP_JWKS_ENDPOINT=http://localhost/api/jwks
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Deploy 
+
+
