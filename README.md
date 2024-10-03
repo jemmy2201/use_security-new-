@@ -18,9 +18,11 @@ Open [http://localhost](http://localhost:3000) with your browser to see the logi
 
 ## Database
 
-Install MySQL
+Install MySQL Local
 
 In repository we have db folder with schema creation so execute this into MySQL db.
+
+To add new columns execute this sql after importing db from above step: add_columns_1.sql
 
 
 ## Mockpass
