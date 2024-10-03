@@ -39,6 +39,7 @@ export async function GET(request: NextRequest) {
         ...(encryptedNric && { nric: encryptedNric }),
         app_type: '1',
         licence_status: 'Y',
+        card_issue:'Y',
         AND: [
           {
             OR: [
@@ -60,6 +61,7 @@ export async function GET(request: NextRequest) {
       where: {
         ...(encryptedNric && { nric: encryptedNric }),
         licence_status: 'Y',
+        card_issue:'Y',
         AND: [
           {
             OR: [

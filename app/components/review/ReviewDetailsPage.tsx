@@ -356,16 +356,6 @@ const ReviewDetailsPage: React.FC = () => {
                                         <label className={reviewDetailsContentstyles.checkboxes}>
                                             <div className={globalStyleCss.regular}><input
                                                 type="checkbox"
-                                                name="trXray"
-                                                checked={checkboxes.trXray}
-                                                onChange={handleCheckboxChange}
-                                            />
-                                            </div> <div>Conduct Screening using X-ray Machine (X-RAY)</div>
-                                        </label>
-
-                                        <label className={reviewDetailsContentstyles.checkboxes}>
-                                            <div className={globalStyleCss.regular}><input
-                                                type="checkbox"
                                                 name="trNota"
                                                 checked={checkboxes.trNota}
                                                 onChange={handleCheckboxChange}
@@ -380,6 +370,16 @@ const ReviewDetailsPage: React.FC = () => {
                                         <label className={reviewDetailsContentstyles.checkboxes}>
                                             <div className={globalStyleCss.regular}><input
                                                 type="checkbox"
+                                                name="trXray"
+                                                checked={checkboxes.trXray}
+                                                onChange={handleCheckboxChange}
+                                            />
+                                            </div> <div>Conduct Screening using X-ray Machine (X-RAY)</div>
+                                        </label>
+
+                                        <label className={reviewDetailsContentstyles.checkboxes}>
+                                            <div className={globalStyleCss.regular}><input
+                                                type="checkbox"
                                                 name="trHcta"
                                                 checked={checkboxes.trHcta}
                                                 onChange={handleCheckboxChange}
@@ -387,7 +387,7 @@ const ReviewDetailsPage: React.FC = () => {
                                             <div>
                                                 Handle Counter Terrorist Activities (HCTA)</div>
                                         </label>
-                                        <label className={reviewDetailsContentstyles.checkboxes}>
+                                        {/* <label className={reviewDetailsContentstyles.checkboxes}>
                                             <div className={globalStyleCss.regular}><input
                                                 type="checkbox"
                                                 name="trObse"
@@ -405,7 +405,7 @@ const ReviewDetailsPage: React.FC = () => {
                                                 onChange={handleCheckboxChange}
                                             /> </div>
                                             <div> Security Surveillance Management</div>
-                                        </label>
+                                        </label> */}
 
                                         <label className={reviewDetailsContentstyles.checkboxes}>
                                             <div className={globalStyleCss.regular}> <input

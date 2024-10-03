@@ -47,6 +47,7 @@ export async function GET(request: NextRequest) {
         app_type: '1',
         card_id: '2',
         licence_status: 'Y',
+        card_issue:'Y',
         AND: [
           {
             OR: [

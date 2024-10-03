@@ -199,16 +199,6 @@ const ApplicantDetailsPage: React.FC = () => {
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
-                                    name="trXray"
-                                    checked={checkboxes.trXray}
-                                    onChange={handleCheckboxChange}
-                                />
-                                </div> <div>Conduct Screening using X-ray Machine (X-RAY)</div>
-                            </label>
-
-                            <label className={applicantDetailsContentstyles.checkboxes}>
-                                <div className={globalStyleCss.regular}><input
-                                    type="checkbox"
                                     name="trNota"
                                     checked={checkboxes.trNota}
                                     onChange={handleCheckboxChange}
@@ -223,6 +213,16 @@ const ApplicantDetailsPage: React.FC = () => {
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
+                                    name="trXray"
+                                    checked={checkboxes.trXray}
+                                    onChange={handleCheckboxChange}
+                                />
+                                </div> <div>Conduct Screening using X-ray Machine (X-RAY)</div>
+                            </label>
+
+                            <label className={applicantDetailsContentstyles.checkboxes}>
+                                <div className={globalStyleCss.regular}><input
+                                    type="checkbox"
                                     name="trHcta"
                                     checked={checkboxes.trHcta}
                                     onChange={handleCheckboxChange}
@@ -230,7 +230,7 @@ const ApplicantDetailsPage: React.FC = () => {
                                 <div>
                                     Handle Counter Terrorist Activities (HCTA)</div>
                             </label>
-                            <label className={applicantDetailsContentstyles.checkboxes}>
+                            {/* <label className={applicantDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trObse"
@@ -239,8 +239,8 @@ const ApplicantDetailsPage: React.FC = () => {
                                 /></div>
                                 <div>
                                     Operate Basic Security Equipment</div>
-                            </label>
-                            <label className={applicantDetailsContentstyles.checkboxes}>
+                            </label> */}
+                            {/* <label className={applicantDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trSsm"
@@ -248,7 +248,7 @@ const ApplicantDetailsPage: React.FC = () => {
                                     onChange={handleCheckboxChange}
                                 /> </div>
                                 <div> Security Surveillance Management</div>
-                            </label>
+                            </label> */}
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}> <input

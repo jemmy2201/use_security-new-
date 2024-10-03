@@ -132,7 +132,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                     errorMobileNumber: '',
                 }))
             }
-            if (!validStepZero) return;        
+            if (!validStepZero) return;
 
             if (formData.originalMobileno === formData.mobileno
                 || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
@@ -199,7 +199,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
     };
 
     const handleOtpCancel = () => {
-        setIsOtpPopupOpen(false); 
+        setIsOtpPopupOpen(false);
     };
 
     useEffect(() => {
@@ -224,15 +224,15 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                     mobileno: dataMyInfo?.mobileno ?? '',
                     nric: dataBookingSchedule?.nric ?? '',
                     passId: dataBookingSchedule.passid,
-                    trAvso: dataBookingSchedule.TR_AVSO? 'YES' : '',
-                    trCctc: dataBookingSchedule.TR_CCTC? 'YES' : '',
-                    trCsspb: dataBookingSchedule.TR_CSSPB? 'YES' : '',
-                    trHcta: dataBookingSchedule.TR_HCTA? 'YES' : '',
-                    trRtt: dataBookingSchedule.TR_RTT? 'YES' : '',
-                    trXray: dataBookingSchedule.TR_X_RAY? 'YES' : '',
-                    trNota: dataBookingSchedule.TR_NOTA? 'YES' : '',
-                    trObse: dataBookingSchedule.TR_OBSE? 'YES' : '',
-                    trSsm: dataBookingSchedule.TR_SSM? 'YES' : '',
+                    trAvso: dataBookingSchedule.TR_AVSO ? 'YES' : '',
+                    trCctc: dataBookingSchedule.TR_CCTC ? 'YES' : '',
+                    trCsspb: dataBookingSchedule.TR_CSSPB ? 'YES' : '',
+                    trHcta: dataBookingSchedule.TR_HCTA ? 'YES' : '',
+                    trRtt: dataBookingSchedule.TR_RTT ? 'YES' : '',
+                    trXray: dataBookingSchedule.TR_X_RAY ? 'YES' : '',
+                    trNota: dataBookingSchedule.TR_NOTA ? 'YES' : '',
+                    trObse: dataBookingSchedule.TR_OBSE ? 'YES' : '',
+                    trSsm: dataBookingSchedule.TR_SSM ? 'YES' : '',
                 });
 
                 setCheckboxes({
@@ -273,8 +273,8 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                         </div>
                         <div className={updateDetailsContentstyles.contentBox}>
                             <div className={updateDetailsContentstyles.item}>
-                                <div className={globalStyleCss.regularBold}>Mobile number: 
-                                {formData.errorMobileNumber && <p style={{ color: 'red' }}>{formData.errorMobileNumber}</p>}
+                                <div className={globalStyleCss.regularBold}>Mobile number:
+                                    {formData.errorMobileNumber && <p style={{ color: 'red' }}>{formData.errorMobileNumber}</p>}
                                 </div>
                                 <div className={globalStyleCss.regular}>
                                     <input
@@ -287,8 +287,8 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     /></div>
                             </div>
                             <div className={updateDetailsContentstyles.item}>
-                                <div className={globalStyleCss.regularBold}>Email Address. 
-                                {formData.errorEmail && <p style={{ color: 'red' }}>{formData.errorEmail}</p>}
+                                <div className={globalStyleCss.regularBold}>Email Address.
+                                    {formData.errorEmail && <p style={{ color: 'red' }}>{formData.errorEmail}</p>}
                                 </div>
                                 <div className={globalStyleCss.regular}>
                                     <input
@@ -357,19 +357,6 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     Conduct Security Screening of Person and Bag (CSSPB)</div>
                             </label>
 
-
-
-                            <label className={updateDetailsContentstyles.checkboxes}>
-                                <div className={globalStyleCss.regular}><input
-                                    type="checkbox"
-                                    name="trXray"
-                                    checked={checkboxes.trXray}
-                                    onChange={handleCheckboxChange}
-                                />
-                                    Conduct Screening using X-ray Machine (X-RAY)</div>
-                            </label>
-
-
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
@@ -386,13 +373,22 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
+                                    name="trXray"
+                                    checked={checkboxes.trXray}
+                                    onChange={handleCheckboxChange}
+                                />
+                                    Conduct Screening using X-ray Machine (X-RAY)</div>
+                            </label>
+                            <label className={updateDetailsContentstyles.checkboxes}>
+                                <div className={globalStyleCss.regular}><input
+                                    type="checkbox"
                                     name="trHcta"
                                     checked={checkboxes.trHcta}
                                     onChange={handleCheckboxChange}
                                 />
                                     Handle Counter Terrorist Activities (HCTA)</div>
                             </label>
-                            <label className={updateDetailsContentstyles.checkboxes}>
+                            {/* <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trObse"
@@ -409,7 +405,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     onChange={handleCheckboxChange}
                                 />
                                     Security Surveillance Management</div>
-                            </label>
+                            </label> */}
 
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}> <input
