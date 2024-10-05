@@ -30,6 +30,11 @@ const DefaultHomePage: React.FC = () => {
 
         const fetchHomePage = async () => {
             try {
+                sessionStorage.removeItem('createNewPassApiResponse');
+                sessionStorage.removeItem('users');
+                sessionStorage.removeItem('bookingSchedule');
+                sessionStorage.removeItem('bookingSchedules');
+                sessionStorage.removeItem('actionTypeValue');
                 const responseUser = await fetch('/api/myinfo');
                 if (!responseUser.ok) {
                     console.log('no user detail found hence redirecting to firsttime page');

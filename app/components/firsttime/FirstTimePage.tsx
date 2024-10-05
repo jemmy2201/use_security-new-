@@ -6,6 +6,7 @@ import firstTimeContentstyles from './FirstTimeContent.module.css';
 import FooterPageLink from '../footer/FooterPage'
 import HeaderPageLink from '../header/HeaderPage'
 import Modal from './Modal';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export interface createNewPassApiResponse {
     errorCode?: string;
@@ -54,10 +55,9 @@ const FirstTimePage: React.FC = () => {
     };
 
     const handleNewSoPasscardClick = async () => {
-        setLoading(true);
         setError(null);
         try {
-
+            setLoading(true);
             // const response = await fetch('/api/myinfo');
             // if (!response.ok) {
             //     throw new Error('Network response was not ok');
@@ -94,10 +94,9 @@ const FirstTimePage: React.FC = () => {
     };
 
     const handleNewPiPasscardClick = async () => {
-        setLoading(true);
         setError(null);
         try {
-
+            setLoading(true);
             const responseNewPass = await fetch('/api/handle-create-new-pass/pi-card');
             console.log('response from handle-create-new-pass', responseNewPass);
 
@@ -131,7 +130,6 @@ const FirstTimePage: React.FC = () => {
     };
 
     useEffect(() => {
-
         const storedUserData = sessionStorage.getItem('users');
         if (storedUserData) {
             try {
@@ -151,7 +149,11 @@ const FirstTimePage: React.FC = () => {
 
         <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
 
-
+            {loading && (
+                <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <CircularProgress />
+                </div>
+            )}
 
             <HeaderPageLink />
 

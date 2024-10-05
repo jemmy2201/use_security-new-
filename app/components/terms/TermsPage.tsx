@@ -8,6 +8,7 @@ import HeaderPageLink from '../header/HeaderPage';
 import { booking_schedules as bookingDetail } from '@prisma/client';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { logout } from '@/actions/auth';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export interface userInfo {
     name?: string;
@@ -45,17 +46,20 @@ const TermsPage: React.FC = () => {
             sessionStorage.removeItem('createNewPassApiResponse');
             sessionStorage.removeItem('users');
             sessionStorage.removeItem('bookingSchedule');
+            sessionStorage.removeItem('bookingSchedules');
+            sessionStorage.removeItem('actionTypeValue');
         } catch (error) {
             console.error('Logout failed', error);
         }
     };
 
     const onContinue = async () => {
-
+        
         if (!isChecked) {
             setErrorMessage('Please accept the terms and conditions of use.');
         } else {
             try {
+                setLoading(true);
                 const responseUser = await fetch('/api/myinfo');
                 if (!responseUser.ok) {
                     console.log('no user detail found hence redirecting to firsttime page');
@@ -96,7 +100,11 @@ const TermsPage: React.FC = () => {
     return (
 
         <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-
+            {loading && (
+                <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <CircularProgress />
+                </div>
+            )}
             <div >
                 <HeaderPageLink />
             </div>

@@ -6,6 +6,7 @@ import * as faceapi from 'face-api.js';
 import { useFormContext } from '.././FormContext';
 import applicantDetailsContentstyles from './ApplicantDetailsContent.module.css';
 import globalStyleCss from '../globalstyle/Global.module.css';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ImageProcessing = () => {
 
@@ -15,10 +16,12 @@ const ImageProcessing = () => {
   const [bgColorMatch, setBgColorMatch] = useState<boolean>(false);
   const [brightnessContrast, setBrightnessContrast] = useState<{ brightness: number; contrast: number } | null>(null);
   const [spectacleDetected, setSpectacleDetected] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const loadModels = async () => {
       try {
+        setLoading(true);
         await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
         await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
         await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
@@ -45,6 +48,8 @@ const ImageProcessing = () => {
 
       } catch (error) {
         console.error('Error loading models:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -55,11 +60,9 @@ const ImageProcessing = () => {
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
 
-
-
     const file = event.target.files?.[0];
     if (file) {
-
+      setLoading(true);
       const fileSizeInBytes = file.size;
 
       const maxSizeInBytes = 5 * 1024 * 1024; // 2MB in bytes
@@ -68,6 +71,7 @@ const ImageProcessing = () => {
       if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
         alert('Image size should be less then 5MB and greater then 25kb');
         console.error('File size is out of the allowed range.');
+        setLoading(false);
         return;
       }
 
@@ -119,6 +123,8 @@ const ImageProcessing = () => {
           }
         } catch (error) {
           console.error('Error processing image:', error);
+        } finally {
+          setLoading(false);
         }
       };
     }
@@ -255,6 +261,11 @@ const ImageProcessing = () => {
 
 
     <div className={applicantDetailsContentstyles.stepContentContainer}>
+      {loading && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <CircularProgress />
+        </div>
+      )}
       <div className={globalStyleCss.header2}>
         Photo
       </div>

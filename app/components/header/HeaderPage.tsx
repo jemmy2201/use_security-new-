@@ -15,6 +15,8 @@ const HeaderPage: React.FC = () => {
             sessionStorage.removeItem('createNewPassApiResponse');
             sessionStorage.removeItem('users');
             sessionStorage.removeItem('bookingSchedule');
+            sessionStorage.removeItem('bookingSchedules');
+            sessionStorage.removeItem('actionTypeValue');
         } catch (error) {
             console.error('Logout failed', error);
         }

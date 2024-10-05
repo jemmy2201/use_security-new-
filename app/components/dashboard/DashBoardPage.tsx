@@ -8,7 +8,7 @@ import { NEW, REPLACEMENT, RENEWAL } from '../../constant/constant';
 import { SO_APP, AVSO_APP, PI_APP } from '../../constant/constant';
 import { DRAFT, PROCESSING, READY_FOR_ID_CARD_PRINTING, ID_CARD_READY_FOR_COLLECTION, RESUBMISSION, RESUBMITTED, COMPLETED } from '../../constant/constant';
 import { SO, SSO, SS, SSS, CSO } from '../../constant/constant';
-
+import CircularProgress from '@mui/material/CircularProgress';
 import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import Modal from '../model/Modal';
@@ -40,35 +40,11 @@ const cardTypeMap: { [key: string]: string } = {
     [PI_APP]: 'Personal Investigator',
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const appTypeMap: { [key: string]: string } = {
     [NEW]: 'New',
     [REPLACEMENT]: 'Replace',
     [RENEWAL]: 'Renew',
 };
-
-
-
-
-
-
-
 
 const gradeTypeMap: { [key: string]: string } = {
     [SO]: 'SO',
@@ -130,9 +106,9 @@ const DashBoardPage: React.FC = () => {
     };
 
     const handleSONewPasscardClick = async () => {
-        setLoading(true);
         setError(null);
         try {
+            setLoading(true);
             const response = await fetch('/api/handle-create-new-pass/so-card');
             console.log('response from handle-create-new-pass/so-card', response);
 
@@ -161,9 +137,9 @@ const DashBoardPage: React.FC = () => {
     };
 
     const handlePINewPasscardClick = async () => {
-        setLoading(true);
         setError(null);
         try {
+            setLoading(true);
             const response = await fetch('/api/handle-create-new-pass/pi-card');
             console.log('response from handle-create-new-pass/pi-card', response);
 
@@ -375,6 +351,7 @@ const DashBoardPage: React.FC = () => {
 
 
     useEffect(() => {
+        setLoading(true);
         const storedUserData = sessionStorage.getItem('users');
         if (storedUserData) {
             try {
@@ -398,12 +375,18 @@ const DashBoardPage: React.FC = () => {
         } else {
             setError('No user data found');
         }
+        setLoading(false);
+
     }, []);
 
 
     return (
         <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-
+            {loading && (
+                <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <CircularProgress />
+                </div>
+            )}
             <HeaderPageLink />
 
             <div className={dashBoardContentstyles.mainContainer}>

@@ -7,6 +7,7 @@ import reviewPhotoContentstyles from './ReviewPhotoContent.module.css';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from '.././FormContext';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ReviewImageProcessing: React.FC = () => {
 
@@ -20,17 +21,11 @@ const ReviewImageProcessing: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-
-  
-
   useEffect(() => {
-
-
-
-
 
     const loadModels = async () => {
       try {
+        setLoading(true);
         await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
         await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
         await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
@@ -55,6 +50,8 @@ const ReviewImageProcessing: React.FC = () => {
 
       } catch (error) {
         console.error('Error loading models:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -65,7 +62,7 @@ const ReviewImageProcessing: React.FC = () => {
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-
+      setLoading(true);
       const fileSizeInBytes = file.size;
 
       const maxSizeInBytes = 5 * 1024 * 1024; // 2MB in bytes
@@ -74,7 +71,8 @@ const ReviewImageProcessing: React.FC = () => {
       if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
         alert('Image size should be less then 5MB and greater then 25kb');
         console.error('File size is out of the allowed range.');
-        return; 
+        setLoading(false);
+        return;
       }
 
       const img = URL.createObjectURL(file);
@@ -123,6 +121,8 @@ const ReviewImageProcessing: React.FC = () => {
           }
         } catch (error) {
           console.error('Error processing image:', error);
+        } finally {
+          setLoading(false);
         }
       };
     }
@@ -243,9 +243,12 @@ const ReviewImageProcessing: React.FC = () => {
 
   return (
 
-
-
     <div className={reviewPhotoContentstyles.mainContainer}>
+      {loading && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <CircularProgress />
+        </div>
+      )}
       <div className={reviewPhotoContentstyles.stepContentContainer}>
 
         <div className={globalStyleCss.regular}>

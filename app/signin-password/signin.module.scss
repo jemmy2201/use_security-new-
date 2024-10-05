@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+@media screen and (max-width: 769px) {
+    .text {
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        line-height: 24px;
+    }
+
+    .bodyBox {
+
+        justify-content: center;
+        align-items: center;
+        .title {
+            flex-wrap: wrap;
+            align-self: stretch;
+            color: #F5F6F7;
+            text-align: center;
+            font-family: Poppins;
+            font-size: 36px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 42px;
+        }
+    
+        .serviceWrapper {
+            .services {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+    
+                .box {
+                    order: 1;
+                    padding: 24px;
+                    background-color: #fff;
+                    margin: 12px;
+                    width: 236px;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: nowrap;
+                    align-items: center;
+    
+                    .svgBox {
+                        margin-bottom: 24px;
+    
+                        svg {
+                            stroke-width: 2px;
+                            stroke: #546E7A;
+                            width: 48px;
+                            height: 48px;
+                        }
+                    }
+    
+                    .boxHeader {
+                        @extend .text;
+                        font-weight: 700;
+                        margin-bottom: 8px;
+                    }
+    
+                    .boxContent {
+                        @extend .text;
+                        font-weight: 400;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+    
+}
+
+
+
+.bodyBox {
+    justify-content: center;
+    align-items: center;
+    padding: 5%;
+    .title {
+        flex-wrap: wrap;
+        align-self: stretch;
+        color: #F5F6F7;
+        text-align: center;
+        font-family: Poppins;
+        font-size: 26px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 32px;
+        padding-bottom: 5%;
+    }
+    
+    .serviceWrapper {
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding-bottom: 5%;
+            .box {
+                order: 1;
+                padding: 24px;
+                background-color: #fff;
+                margin: 12px;
+                width: 236px;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                align-items: center;
+                padding-bottom: 5%;
+                .svgBox {
+                    margin-bottom: 24px;
+    
+                    svg {
+                        stroke-width: 2px;
+                        stroke: #546E7A;
+                        width: 24px;
+                        height: 24px;
+                    }
+                }
+    
+                .boxHeader {
+                    font-family: Roboto;
+                    font-size: 16px;
+                    font-style: normal;
+                    line-height: 24px;
+                    font-weight: 700;
+                    margin-bottom: 8px;
+                }
+    
+                .boxContent {
+                    font-family: Roboto;
+                    font-size: 16px;
+                    font-style: normal;
+                    line-height: 24px;
+                    font-weight: 400;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
