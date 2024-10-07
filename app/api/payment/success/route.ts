@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
 
         if (schedule && session.payment_status == 'paid') {
             const paymentIntentId = session.payment_intent as string;
-            const currentDate = formatDateToDDMMYYYY(new Date());
+            const formattedDate = formatDate();
             const updatedSchedule = await prisma.booking_schedules.update({
                 where: { id: schedule.id },
                 data: {
@@ -66,7 +66,8 @@ export async function GET(req: NextRequest) {
                     Status_draft: '1',
                     stripe_payment_id: paymentIntentId,
                     status_payment: '1',
-                    trans_date: currentDate,
+                    trans_date: formattedDate,
+                    receiptNo: paymentIntentId,
                 },
             });
             const replacer = (key: string, value: any) => {
@@ -98,12 +99,20 @@ export async function GET(req: NextRequest) {
         await prisma.$disconnect();
     }
 
-    function formatDateToDDMMYYYY(date: Date): string {
+    function formatDate() {
+        const date = new Date();
+      
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
         const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-    }
+      
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+      
+        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+      }
+      
 }
 
 const generatePdfReceipt = async (schedule: booking_schedules) => {

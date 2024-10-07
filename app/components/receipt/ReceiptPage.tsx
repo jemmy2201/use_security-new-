@@ -57,9 +57,9 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
         const input = pdfRef.current;
         if (input) {
             const canvas = await html2canvas(input, {
-                scale: window.devicePixelRatio || 2, 
-                width: input.offsetWidth, 
-                height: input.offsetHeight, 
+                scale: window.devicePixelRatio || 2,
+                width: input.offsetWidth,
+                height: input.offsetHeight,
             });
 
             // Convert the canvas to an image
@@ -77,15 +77,20 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
     };
 
     const formatDate = (dateString: string) => {
-        const [day, month, year] = dateString.split('-').map(Number);
-        const date = new Date(year, month - 1, day);
+        // Split the date and time
+        const [datePart] = dateString.split(" ");
 
-        // Format the date
-        return date.toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
-        });
+        // Split the date part into day, month, and year
+        const [day, month, year] = datePart.split("/");
+
+        // Create an array for month names
+        const monthNames = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        // Return the formatted date
+        return `${day} ${monthNames[parseInt(month) - 1]} ${year}`;
     };
 
     const formatExpiryDate = (dateStringExpiryDate: string) => {
@@ -109,14 +114,14 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
 
     const formatAppointmentDate = (dateString: string) => {
-        if(!dateString){
+        if (!dateString) {
             return '';
         }
-        const date = new Date(dateString); 
+        const date = new Date(dateString);
 
         return date.toLocaleDateString('en-GB', {
             day: 'numeric',
-            month: 'short', 
+            month: 'short',
             year: 'numeric'
         });
     };
@@ -188,7 +193,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                             <div className={globalStyleCss.regularBold}>Transaction reference no.</div>
                         </div>
                         <div className={receiptContentstyles.boxWidth}>
-                            <div className={globalStyleCss.regular}>{bookingSchedule?.stripe_payment_id}</div>
+                            <div className={globalStyleCss.regular}>{bookingSchedule?.stripe_payment_id ? bookingSchedule?.stripe_payment_id: bookingSchedule?.receiptNo }</div>
                         </div>
                     </div>
                     <hr className={receiptContentstyles.customhr}></hr>
@@ -285,20 +290,20 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                     </div>
                     <div className={receiptContentstyles.receiptTextBox}>
                         <div className={receiptContentstyles.warningBox}>
-                        <div className={globalStyleCss.regular} style={{ display: 'inline-flex' }}>
-                            <svg style={{ display: 'inline-flex' }} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <g clipPath="url(#clip0_1433_2507)">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 16C13 16.55 12.55 17 12 17C11.45 17 11 16.55 11 16V12C11 11.45 11.45 11 12 11C12.55 11 13 11.45 13 12V16ZM12 9C11.45 9 11 8.55 11 8C11 7.45 11.45 7 12 7C12.55 7 13 7.45 13 8C13 8.55 12.55 9 12 9Z" fill="#0277BD" />
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0_1433_2507">
-                                        <rect width="24" height="24" fill="white" />
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                            <div className={globalStyleCss.regular} >
-                                &nbsp;Please note that the appointment details shown here are from your original booking and will not be updated on this receipt should you reschedule.
-                            </div>
+                            <div className={globalStyleCss.regular} style={{ display: 'inline-flex' }}>
+                                <svg style={{ display: 'inline-flex' }} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <g clipPath="url(#clip0_1433_2507)">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 16C13 16.55 12.55 17 12 17C11.45 17 11 16.55 11 16V12C11 11.45 11.45 11 12 11C12.55 11 13 11.45 13 12V16ZM12 9C11.45 9 11 8.55 11 8C11 7.45 11.45 7 12 7C12.55 7 13 7.45 13 8C13 8.55 12.55 9 12 9Z" fill="#0277BD" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_1433_2507">
+                                            <rect width="24" height="24" fill="white" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                                <div className={globalStyleCss.regular} >
+                                    &nbsp;Please note that the appointment details shown here are from your original booking and will not be updated on this receipt should you reschedule.
+                                </div>
                             </div>
                         </div>
                     </div>
