@@ -13,15 +13,18 @@ app.prepare().then(() => {
     try {
       const parsedUrl = parse(req.url, true);
       const { pathname, query } = parsedUrl;
-
+      const redirectHost = req.headers.host;  
+	  const redirectHostname = redirectHost.split(':')[0]; 
       if (pathname === "/a") {
         await app.render(req, res, "/a", query);
       } else if (pathname === "/b") {
         await app.render(req, res, "/b", query);
-      } else if (pathname === "/user/login") {
-        res.writeHead(302, { Location: "https://xyz.com/login" });
+      }else if (pathname === "/login") {
+        const protocol = req.connection.encrypted ? 'https' : 'http';  
+        const redirectUrl = `https://${redirectHostname}:8443/login`;
+        res.writeHead(302, { Location: redirectUrl });
         res.end();
-      } else {
+      }  else {
         await handle(req, res, parsedUrl);
       }
     } catch (err) {
