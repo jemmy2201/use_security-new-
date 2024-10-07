@@ -68,12 +68,12 @@ const ImageProcessing = () => {
       const maxSizeInBytes = 5 * 1024 * 1024; // 2MB in bytes
       const minSizeInBytes = 25 * 1024; // 100KB in bytes
 
-      if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
-        alert('Image size should be less then 5MB and greater then 25kb');
-        console.error('File size is out of the allowed range.');
-        setLoading(false);
-        return;
-      }
+      // if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
+      //   alert('Image size should be less then 5MB and greater then 25kb');
+      //   console.error('File size is out of the allowed range.');
+      //   setLoading(false);
+      //   return;
+      // }
 
       const img = URL.createObjectURL(file);
       setImage(img);

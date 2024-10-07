@@ -124,7 +124,7 @@ const ApplicantDetailsPage: React.FC = () => {
                     trNota: parsedBookingData.TR_NOTA || false,
                     trObse: parsedBookingData.TR_OBSE || false,
                     trSsm: parsedBookingData.TR_SSM || false,
-                    imageUrl: `/uploads/${fileName}.png`,
+                    imageUrl: `/userdocs/img_users/${fileName}.png`,
                     grandTotal: parsedBookingData.grand_total,
                 }));
                 setCheckboxes({

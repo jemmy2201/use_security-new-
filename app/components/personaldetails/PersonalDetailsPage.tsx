@@ -79,7 +79,7 @@ const PersonalDetailsPage: React.FC = () => {
                                 bookingId: parsedBookingSchedule.id.toString(),
                                 id: parsedBookingSchedule.id.toString(),
                                 actionType: actionTypeValue,
-                                imageUrl: `/uploads/${fileName}.png`,
+                                imageUrl: `/userdocs/img_users/${fileName}.png`,
                                 cardId: parsedBookingSchedule.card_id ? parsedBookingSchedule.card_id : '',
                             });
                         }
@@ -103,7 +103,7 @@ const PersonalDetailsPage: React.FC = () => {
                                 actionType: actionTypeValue ? actionTypeValue : '',
                                 applicationType: '1',
                                 cardId: parsedNewPassData.cardId,
-                                imageUrl: `/uploads/${fileName}.png`,
+                                imageUrl: `/userdocs/img_users/${fileName}.png`,
                                 grandTotal: parsedNewPassData.grandTotal,
                             });
                         }

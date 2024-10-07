@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     const base64Data = image.replace(/^data:image\/\w+;base64,/, '');
     const buffer = Buffer.from(base64Data, 'base64');
 
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+    const uploadsDir = path.join(process.cwd(), 'public', 'userdocs/img_users');
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir, { recursive: true });
     }
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     if (schedule) {
       const fileName = schedule?.passid + encryptedNric?.slice(-4);
       console.log('file name:', fileName);
-      const filePath = path.join(uploadsDir, fileName + '.png');
+      const filePath = path.join(uploadsDir+'/userdocs/img_users', fileName + '.png');
       fs.writeFileSync(filePath, buffer);
 
       const updatedSchedule = await prisma.booking_schedules.update({

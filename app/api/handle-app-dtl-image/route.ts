@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(base64Data, 'base64');
 
     // Define a path to save the image
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+    const uploadsDir = path.join(process.cwd(), 'public', 'userdocs/img_users');
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir, { recursive: true });
     }

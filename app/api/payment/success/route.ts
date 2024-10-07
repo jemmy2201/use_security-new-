@@ -194,7 +194,7 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
 
         const pdfBytes = await pdfDoc.save();
 
-        const folderPath = path.join(process.cwd(), 'public', 'receipts');
+        const folderPath = path.join(process.cwd(), 'public', 'userdocs/img_users/invoice');
         const filePath = path.join(folderPath, schedule.passid + '.pdf');
 
         fs.mkdirSync(folderPath, { recursive: true });
