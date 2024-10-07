@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
 import { getEncryptedNricFromSession } from "../../../lib/session";
+import { schedule } from "node-cron";
 
 const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { bookingId, mobileno, email, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, trNota, trObse, trSsm } = body;
+        const { bookingId, mobileno, email, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, trNota, trObse, trSsm, pwmGrade } = body;
 
         const encryptedNric = await getEncryptedNricFromSession(req);
         if (encryptedNric instanceof NextResponse) {
-            return encryptedNric; // Return the redirect response if necessary
-          }
+            return encryptedNric;
+        }
         if (!encryptedNric || !mobileno) {
             return NextResponse.json(
                 { error: 'nric / fin, application type are required' },
@@ -29,13 +30,12 @@ export async function POST(req: NextRequest) {
 
         const userRecord = await prisma.users.findFirst({
             where: {
-                ...(encryptedNric && { nric: encryptedNric }), // Conditionally adds the `nric` filter if `nric` is provided
+                ...(encryptedNric && { nric: encryptedNric }),
             },
         });
 
         if (schedule && userRecord) {
 
-            // Convert userRecord BigInt fields to strings
             const serializeBigInt = (obj: any) => {
                 const serialized: any = {};
                 for (const [key, value] of Object.entries(obj)) {
@@ -49,36 +49,71 @@ export async function POST(req: NextRequest) {
                 }
                 return serialized;
             };
-            // If a schedule is found, update it
-            const updatedSchedule = await prisma.booking_schedules.update({
-                where: { id: schedule.id }, // Using the unique identifier for update
-                data: {
-                    TR_AVSO: trAvso,
-                    TR_CCTC: trCctc,
-                    TR_CSSPB: trCsspb,
-                    TR_HCTA: trHcta,
-                    TR_RTT: trRtt,
-                    TR_X_RAY: trXray,
-                    TR_NOTA: trNota,
-                    TR_OBSE: trObse,
-                    TR_SSM: trSsm,
+
+            const grade = await prisma.t_grades.findFirst({
+                where: {
+                    id: schedule.grade_id,
+                } as any,
+            });
+
+
+            const updatedInfoRecord = await prisma.so_update_info.findFirst({
+                where: {
+                    ...(encryptedNric && { NRIC: encryptedNric }),
+                    PassID: schedule.passid,
                 },
             });
 
-            const updatedUserRecord = await prisma.users.update({
-                where: { id: userRecord.id }, 
+            if (updatedInfoRecord) {
+                await prisma.so_update_info.update({
+                    where: { id: updatedInfoRecord.id },
+                    data: {
+                        TR_CCTC: trCctc,
+                        TR_CSSPB: trCsspb,
+                        TR_HCTA: trHcta,
+                        TR_RTT: trRtt,
+                        TR_X_RAY: trXray,
+                        TR_NOTA: trNota,
+                        TR_OBSE: trObse,
+                        TR_SSM: trSsm,                        
+                        Grade: grade?.name,
+                        New_Grade: pwmGrade,
+                        NRIC: encryptedNric,
+                        PassID: schedule.passid,
+                        Name: userRecord.name,
+                        updated_at: new Date(),
+                    },
+                });
+            } else {
+                await prisma.so_update_info.create({
+                    data: {
+                        TR_CCTC: trCctc,
+                        TR_CSSPB: trCsspb,
+                        TR_HCTA: trHcta,
+                        TR_RTT: trRtt,
+                        TR_X_RAY: trXray,
+                        TR_NOTA: trNota,
+                        TR_OBSE: trObse,
+                        TR_SSM: trSsm,
+                        Grade: grade?.name,
+                        New_Grade: pwmGrade,
+                        NRIC: encryptedNric,
+                        PassID: schedule.passid,
+                        Name: userRecord.name,
+                        updated_at: new Date(),
+                    },
+                });
+            }
+
+            await prisma.users.update({
+                where: { id: userRecord.id },
                 data: {
                     mobileno: mobileno,
                     email: email,
                 },
             });
-            if (updatedSchedule) {
-                updatedSchedule.data_barcode_paynow = '';
-                updatedSchedule.QRstring= '';
-            }
-            console.log('Schedule updated:', updatedSchedule);
-            const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
-            return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });
+
+            return NextResponse.json({ message: 'Record updated' }, { status: 200 });
 
         } else {
             return NextResponse.json({ error: 'Record not found' }, { status: 400 });

@@ -10,6 +10,9 @@ import globalStyleCss from '../globalstyle/Global.module.css';
 import { useFormContext } from '.././FormContext';
 import { booking_schedules } from '@prisma/client';
 import OtpPopup from './OtpPopup';
+import UpdateModel from './UpdateModel';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface UpdateDetailsPageProps {
     bookingId: string;
@@ -33,7 +36,19 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState('');
     const { formData, setFormData } = useFormContext();
-    const [isOtpPopupOpen, setIsOtpPopupOpen] = useState<boolean>(false); // State for OTP popup
+    const [isOtpPopupOpen, setIsOtpPopupOpen] = useState<boolean>(false);
+    const [isModelPopupOpen, setIsModelPopupOpen] = useState<boolean>(false);
+    const [selectedValue, setSelectedValue] = useState<string>("");
+
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedValue(event.target.value);
+        console.log("Selected:", event.target.value);
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            pwmGrade: event.target.value,
+        }));
+    };
+
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
@@ -71,33 +86,8 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
 
 
     const onBack = async () => {
-
         try {
-            const responseUser = await fetch('/api/myinfo');
-            if (!responseUser.ok) {
-                console.log('no user detail found hence redirecting to firsttime page');
-                router.push('/firsttime');
-            }
-            const dataUser: userInfo = await responseUser.json();
-
-            sessionStorage.setItem('users', JSON.stringify(dataUser));
-            console.log('data from api', dataUser);
-
-            const response = await fetch('/api/dashboard');
-            if (!response.ok && response.status === 401) {
-                router.push('/signin');
-                throw new Error('Personal Details: Failed to save draft');
-            }
-            const data: bookingDetail[] = await response.json();
-            console.log('booking card list: ', data.length);
-            if (data.length === 0) {
-                console.log('No booking details found.');
-                router.push('/firsttime');
-            } else {
-                sessionStorage.setItem('bookingSchedules', JSON.stringify(data));
-                console.log('data from api', data);
-                router.push('/dashboard');
-            }
+            router.push('/homepage');
         } catch (err) {
             setErrorMessage('Failed to fetch users');
         } finally {
@@ -106,6 +96,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
     };
 
     const onNext = async () => {
+
         try {
             let validStepZero = true;
             if (!formData.email) {
@@ -160,36 +151,8 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
 
                 return;
             }
-
-            const response = await fetch('/api/update-personal-details', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    bookingId: bookingId,
-                    mobileno: formData.mobileno,
-                    email: formData.email,
-                    trRtt: formData.trRtt ? 'YES' : '',
-                    trCsspb: formData.trCsspb ? 'YES' : '',
-                    trCctc: formData.trCctc ? 'YES' : '',
-                    trHcta: formData.trHcta ? 'YES' : '',
-                    trXray: formData.trXray ? 'YES' : '',
-                    trAvso: formData.trAvso ? 'YES' : '',
-                    trNota: formData.trNota ? 'YES' : '',
-                    trSsm: formData.trSsm ? 'YES' : '',
-                    trObse: formData.trObse ? 'YES' : '',
-                }),
-            });
-            if (!response.ok) {
-                throw new Error('Update personal details: Failed to save');
-            }
-            const result = await response.json();
-            console.log("Update personal details: Saved successfully:", result);
-
+            setIsModelPopupOpen(true);
             console.log('bookingId', bookingId);
-
-            onBack();
 
         } catch (err) {
             setErrorMessage('Failed to fetch reschedule');
@@ -200,6 +163,20 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
 
     const handleOtpCancel = () => {
         setIsOtpPopupOpen(false);
+    };
+
+    useEffect(() => {
+        if (formData.isUpdated) {
+            toast.success('Details successfully updated', {
+                position: 'top-right',
+                autoClose: 3000,
+                onClose: () => onBack()
+            });
+        }
+    }, [formData.isUpdated]);
+
+    const handleModelOtpCancel = () => {
+        setIsModelPopupOpen(false);
     };
 
     useEffect(() => {
@@ -256,6 +233,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
     return (
 
         <form>
+            <ToastContainer />
             <div >
                 <HeaderPageLink />
             </div>
@@ -310,6 +288,63 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
 
                 </div>
 
+                <div className={updateDetailsContentstyles.appointmentDetailContainer}>
+                    <div className={globalStyleCss.header2}>
+                        PWM Grade
+                    </div>
+
+                    <div className={globalStyleCss.regularBold}>
+                        PWM Grade
+                    </div>
+                    <div className={updateDetailsContentstyles.trainingOptionContainer}>
+                        <div className={updateDetailsContentstyles.trainingOptionBox}>
+
+                            <label className={updateDetailsContentstyles.checkboxes}>
+                                <div className={globalStyleCss.regular}><input
+                                    type="radio"
+                                    value="SSO"
+                                    checked={selectedValue === 'SSO'}
+                                    onChange={handleRadioChange}
+                                />
+                                    Senior Security Officier</div>
+                            </label>
+
+                            <label className={updateDetailsContentstyles.checkboxes}>
+                                <div className={globalStyleCss.regular}><input
+                                    type="radio"
+                                    value="SS"
+                                    checked={selectedValue === 'SS'}
+                                    onChange={handleRadioChange}
+                                />
+                                    Security Supervisor</div>
+                            </label>
+
+                            <label className={updateDetailsContentstyles.checkboxes}>
+                                <div className={globalStyleCss.regular}><input
+                                    type="radio"
+                                    value="SSS"
+                                    checked={selectedValue === 'SSS'}
+                                    onChange={handleRadioChange}
+                                />
+                                    Senior Security Supervisor</div>
+                            </label>
+
+
+                            <label className={updateDetailsContentstyles.checkboxes}>
+                                <div className={globalStyleCss.regular}><input
+                                    type="radio"
+                                    value="CSO"
+                                    checked={selectedValue === 'CSO'}
+                                    onChange={handleRadioChange}
+                                />
+                                    Chief Security Officer</div>
+                            </label>
+
+                        </div>
+
+                    </div>
+                </div>
+
 
                 <div className={updateDetailsContentstyles.appointmentDetailContainer}>
                     <div className={globalStyleCss.header2}>
@@ -330,7 +365,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                         checked={checkboxes.trAvso}
                                         onChange={handleCheckboxChange}
                                     />
-                                    Airport Screener Deployment</div>
+                                    </div> <div>Airport Screener Deployment</div>
                             </label>
 
 
@@ -341,11 +376,8 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     checked={checkboxes.trCctc}
                                     onChange={handleCheckboxChange}
                                 />
-                                    Conduct Crowd and Traffic Control (CCTC)</div>
+                                    </div> <div>Conduct Crowd and Traffic Control (CCTC)</div>
                             </label>
-
-
-
 
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
@@ -354,22 +386,8 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     checked={checkboxes.trCsspb}
                                     onChange={handleCheckboxChange}
                                 />
-                                    Conduct Security Screening of Person and Bag (CSSPB)</div>
+                                    </div> <div>Conduct Security Screening of Person and Bag (CSSPB)</div>
                             </label>
-
-                            <label className={updateDetailsContentstyles.checkboxes}>
-                                <div className={globalStyleCss.regular}><input
-                                    type="checkbox"
-                                    name="trNota"
-                                    checked={checkboxes.trNota}
-                                    onChange={handleCheckboxChange}
-                                />
-                                    None of the above (SO)</div>
-                            </label>
-
-                        </div>
-                        <div className={updateDetailsContentstyles.trainingOptionBox}>
-
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
@@ -377,7 +395,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     checked={checkboxes.trXray}
                                     onChange={handleCheckboxChange}
                                 />
-                                    Conduct Screening using X-ray Machine (X-RAY)</div>
+                                    </div> <div>Conduct Screening using X-ray Machine (X-RAY)</div>
                             </label>
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
@@ -386,16 +404,18 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     checked={checkboxes.trHcta}
                                     onChange={handleCheckboxChange}
                                 />
-                                    Handle Counter Terrorist Activities (HCTA)</div>
+                                    </div> <div>Handle Counter Terrorist Activities (HCTA)</div>
                             </label>
-                            {/* <label className={updateDetailsContentstyles.checkboxes}>
+
+
+                            <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trObse"
                                     checked={checkboxes.trObse}
                                     onChange={handleCheckboxChange}
                                 />
-                                    Operate Basic Security Equipment</div>
+                                    </div> <div>Operate Basic Security Equipment</div>
                             </label>
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
@@ -404,8 +424,8 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     checked={checkboxes.trSsm}
                                     onChange={handleCheckboxChange}
                                 />
-                                    Security Surveillance Management</div>
-                            </label> */}
+                                    </div> <div>Security Surveillance Management</div>
+                            </label>
 
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}> <input
@@ -414,9 +434,19 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     checked={checkboxes.trRtt}
                                     onChange={handleCheckboxChange}
                                 />
-                                    Recognise Terrorist Threat (RTT)</div>
+                                    </div> <div>Recognise Terrorist Threat (RTT)</div>
+                            </label>
+                            <label className={updateDetailsContentstyles.checkboxes}>
+                                <div className={globalStyleCss.regular}><input
+                                    type="checkbox"
+                                    name="trNota"
+                                    checked={checkboxes.trNota}
+                                    onChange={handleCheckboxChange}
+                                /></div>
+                                <div> None of the above (SO)</div>
                             </label>
                         </div>
+
                     </div>
                 </div>
 
@@ -427,6 +457,10 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                     <button className={updateDetailsContentstyles.continue} type='button' onClick={onNext}>
                         <div className={globalStyleCss.buttonText}>Save changes</div>
                     </button>
+                    <UpdateModel
+                        isOpen={isModelPopupOpen}
+                        onClose={handleModelOtpCancel}
+                    />
                 </div>
             </div>
 

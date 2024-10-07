@@ -33,10 +33,12 @@ interface FormData {
     verifiedMobileNo?: string;
     isFaceDetected?: boolean;
     isBgColorMatch?: boolean;
+    isUpdated?: boolean;
     isTermsAndConditionSigned?: boolean;
     imageUrl?: string;
     appointmentDate?: Date;
     timeSlot?: string;
+    pwmGrade?: string;
     isAppointmentConfirmed?: boolean;
     isDataLoaded?: boolean;
     grandTotal?: string;

@@ -47,7 +47,7 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
         const result = await response.json();
 
         console.log('send sms result:', result);
-        toast.success('Mobile number successfully verified', {
+        toast.success('OTP resent', {
             position: 'top-right',
             autoClose: 3000,
         });

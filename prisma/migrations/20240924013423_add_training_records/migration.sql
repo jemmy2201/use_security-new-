@@ -6,7 +6,8 @@
 
 */
 -- AlterTable
-ALTER TABLE `booking_schedules` ADD COLUMN `TR_NOTA` VARCHAR(3) NULL,
+ALTER TABLE `booking_schedules` 
+    ADD COLUMN `TR_NOTA` VARCHAR(3) NULL,
     ADD COLUMN `TR_OBSE` VARCHAR(3) NULL,
     ADD COLUMN `TR_SSM` VARCHAR(3) NULL;
 

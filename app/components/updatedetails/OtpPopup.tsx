@@ -3,6 +3,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import OtpModuleStyle from './OtpPopup.module.css';
 import { useFormContext } from '.././FormContext';
+import globalStyleCss from '../globalstyle/Global.module.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface OtpPopupProps {
     isOpen: boolean;
@@ -14,10 +17,8 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
     const [errorMessage, setErrorMessage] = useState(''); // State for error message
     const { formData, setFormData } = useFormContext();
 
-    // Create references for each OTP input field
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-    // Function to handle OTP input changes
     const handleOtpChange = (index: number, value: string) => {
         if (value.length > 1) return; // Restrict input to a single character
         const newOtp = [...otp];
@@ -30,9 +31,34 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
         }
     };
 
+    const handleResend = async (event: React.MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
+        const response = await fetch('/api/sms/send-sms', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                mobile: formData.mobileno,
+            }),
+        });
+        const result = await response.json();
+
+        console.log('send sms result:', result);
+        toast.success('OTP resent', {
+            position: 'top-right',
+            autoClose: 3000,
+        });
+        if (result.success) {
+            console.log('SMS sent:', result);
+        } else {
+            alert(result.message);
+        }
+    };    
+
     // Function to handle form submission
     const handleSubmit = async () => {
-        const otpValue = otp.join(''); // Combine the OTP values into a single string
+        const otpValue = otp.join(''); 
         try {
             const response = await fetch('/api/sms/verify-sms', {
                 method: 'POST',
@@ -45,21 +71,20 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
             if (response.ok) {
                 const data = await response.json();
                 console.log('OTP verified successfully:', data);
-                // Handle success
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     isOtpVerified: true,
                     verifiedMobileNo: formData.mobileno,
                 }));
-                setErrorMessage(''); // Clear any previous error messages
+                setErrorMessage(''); 
                 onClose();
             } else {
                 console.error('Failed to verify OTP');
-                setErrorMessage('Wrong OTP. Please try again.'); // Set error message
+                setErrorMessage('Wrong OTP. Please try again.'); 
             }
         } catch (error) {
             console.error('An error occurred:', error);
-            setErrorMessage('An error occurred. Please try again later.'); // Set error message
+            setErrorMessage('An error occurred. Please try again later.'); 
         }
     };
 
@@ -119,10 +144,11 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
 
                     <div>
                         <span className={OtpModuleStyle.otpText}>
-                            <h2>Didn't receive the code? </h2>
-                        </span>
-                        <span className={OtpModuleStyle.resendCodeText}>
-                            <h2>Click to resend?</h2>
+                        <div className={globalStyleCss.regular}>Didn't receive the code? &nbsp;
+                                <a href="#" onClick={handleResend} className={globalStyleCss.blueLink}>
+                                    Click to resend
+                                </a>
+                            </div>
                         </span>
                     </div>
 
@@ -130,6 +156,7 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
                         <button onClick={onClose} className={OtpModuleStyle.cancelButton}><h2>Cancel</h2></button>
                         <button onClick={handleSubmit} type='button' className={OtpModuleStyle.validateButton}><h2>Validate</h2></button>
                     </div>
+                    <ToastContainer />
                 </div>
             </div>
         </div>

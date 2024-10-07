@@ -74,9 +74,8 @@ const HomePage: React.FC = () => {
                                     Apply new pass card
                                 </div>
                                 <div className={s.boxContent}>
-                                Application To Renew ID Card
-                                For soon to expire ID
 
+                                Application For New ID Card
                                 </div>
 
                             </div>
@@ -95,7 +94,8 @@ const HomePage: React.FC = () => {
                                     Renew pass card
                                 </div>
                                 <div className={s.boxContent}>
-                                    Renew your pass card before it expires.
+                                Application To Renew ID Card
+                                For soon to expire ID
                                 </div>
 
                             </div>

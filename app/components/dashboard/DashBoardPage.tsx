@@ -488,9 +488,15 @@ const DashBoardPage: React.FC = () => {
                                                             </>
                                                         ) : null}
 
-                                                        {booking.app_type != '1' && booking.app_type != '3' ? (
+                                                        {booking.app_type == '2' && booking.Status_app == '' ? (
                                                             <>
                                                                 Issued
+                                                            </>
+                                                        ) : null}
+
+                                                        {booking.app_type == '2' && booking.Status_app ? (
+                                                            <>
+                                                                Replace - {statusTypeMap[booking.Status_app || ''] || ''}
                                                             </>
                                                         ) : null}
 
@@ -512,7 +518,7 @@ const DashBoardPage: React.FC = () => {
                                                     <td className={dashBoardContentstyles.item}>
 
 
-                                                        {booking.app_type == '2' ? (
+                                                        {booking.app_type == '2' && booking.Status_app == '' ? (
                                                             <>
 
                                                                 <a
@@ -844,7 +850,37 @@ const DashBoardPage: React.FC = () => {
                                     </div>
                                     <div className={dashBoardContentstyles.cell}>
                                         <div className={globalStyleCss.regular}>
-                                            {statusTypeMap[booking.Status_app || ''] || 'Unknown'}
+                                            {booking.app_type == '1' ? (
+                                                <>
+                                                    {statusTypeMap[booking.Status_app || ''] || ''}
+                                                </>
+                                            ) : null}
+
+                                            {booking.app_type == '2' && booking.Status_app == '' ? (
+                                                <>
+                                                    Issued
+                                                </>
+                                            ) : null}
+
+                                            {booking.app_type == '2' && booking.Status_app ? (
+                                                <>
+                                                    Replace - {statusTypeMap[booking.Status_app || ''] || ''}
+                                                </>
+                                            ) : null}
+
+                                            {booking.app_type == '3' ? (
+                                                <>
+                                                    Renew
+                                                </>
+                                            ) : null}
+
+
+                                            {booking.app_type == '3' ? (
+                                                <>
+                                                    &nbsp;- {statusTypeMap[booking.Status_app || ''] || ''}
+
+                                                </>
+                                            ) : null}
                                         </div>
                                     </div>
                                 </div>
@@ -857,6 +893,55 @@ const DashBoardPage: React.FC = () => {
                                     </div>
                                     <div className={dashBoardContentstyles.cell}>
                                         <div className={globalStyleCss.regular}>
+                                            {booking.app_type == '2' && booking.Status_app == '' ? (
+                                                <>
+
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleReplaceClick(booking.id);
+                                                        }}
+                                                        className={globalStyleCss.blueLink}>
+                                                        Replace <br></br>
+                                                    </a>
+                                                    <a
+                                                        href="/renew"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleRenewClick(booking.id);
+                                                        }}
+                                                        className={globalStyleCss.blueLink}>
+                                                        Renew <br></br>
+                                                    </a>
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleUpdateClick(booking.id);
+                                                        }}
+                                                        className={globalStyleCss.blueLink}>
+                                                        Update
+                                                    </a>
+                                                </>
+
+                                            ) : null}
+
+
+                                            {booking.app_type == '3' && !booking.Status_app ? (
+                                                <>
+                                                    <a
+                                                        href="/renew"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleRenewClick(booking.id);
+                                                        }}
+                                                        className={globalStyleCss.blueLink}>
+                                                        Renew
+                                                    </a>
+                                                </>
+                                            ) : null}
+
                                             {booking.Status_app == '0' ? (
                                                 <>
                                                     <a
@@ -954,26 +1039,67 @@ const DashBoardPage: React.FC = () => {
                                                 </>
                                             ) : null}
 
-                                            {booking.Status_app == '6' ? (
+                                            {booking.Status_app == '5' && !booking.appointment_date ? (
                                                 <>
                                                     <a
                                                         href="/edit"
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            handleUpdateClick(booking.id);
+                                                            handleBookAppointmentClick(booking.id);
                                                         }}
                                                         className={globalStyleCss.blueLink}>
-                                                        Update <br></br>
+                                                        Book Appointment <br></br>
                                                     </a>
-                                                    {/* <a
-                                                    href="/edit"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        handleRenewClick(booking.id);
-                                                    }}
-                                                    className={globalStyleCss.blueLink}>
-                                                    Renew <br></br>
-                                                </a> */}
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleViewReceiptClick(booking.id);
+                                                        }}
+                                                        className={globalStyleCss.blueLink}>
+                                                        View Receipt
+                                                    </a>
+                                                </>
+                                            ) : null}
+
+                                            {booking.Status_app == '5' && booking.appointment_date ? (
+                                                <>
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleViewReceiptClick(booking.id);
+                                                        }}
+                                                        className={globalStyleCss.blueLink}>
+                                                        View Receipt <br></br>
+                                                    </a>
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleBookAppointmentClick(booking.id);
+                                                        }}
+                                                        className={globalStyleCss.blueLink}>
+                                                        Change Appointment
+                                                    </a>
+
+                                                </>
+                                            ) : null}
+
+                                            {booking.Status_app == '6' ? (
+                                                <>
+
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleRenewClick(booking.id);
+                                                        }}
+                                                        className={globalStyleCss.blueLink}>
+                                                        Renew <br></br>
+                                                    </a>
+
+
                                                     <a
                                                         href="/edit"
                                                         onClick={(e) => {
@@ -981,7 +1107,16 @@ const DashBoardPage: React.FC = () => {
                                                             handleReplaceClick(booking.id);
                                                         }}
                                                         className={globalStyleCss.blueLink}>
-                                                        Replace
+                                                        Replace <br></br>
+                                                    </a>
+                                                    <a
+                                                        href="/edit"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleUpdateClick(booking.id);
+                                                        }}
+                                                        className={globalStyleCss.blueLink}>
+                                                        Update
                                                     </a>
                                                 </>
                                             ) : null}
