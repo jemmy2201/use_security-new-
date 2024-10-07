@@ -38,7 +38,9 @@ export async function GET(request: NextRequest) {
       where: {
         ...(encryptedNric && { nric: encryptedNric }),
         app_type: '1',
-        card_issue:'Y',
+        card_issue: {
+          not: 'N',
+        },
         AND: [
           {
             OR: [
@@ -56,12 +58,14 @@ export async function GET(request: NextRequest) {
     });
 
     schedules.forEach(s => s.data_barcode_paynow = "");
-    
+
 
     const renewSchedules = await prisma.booking_schedules.findMany({
       where: {
         ...(encryptedNric && { nric: encryptedNric }),
-        card_issue:'Y',
+        card_issue: {
+          not: 'N',
+        },
         AND: [
           {
             OR: [
