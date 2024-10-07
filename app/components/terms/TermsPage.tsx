@@ -54,7 +54,7 @@ const TermsPage: React.FC = () => {
     };
 
     const onContinue = async () => {
-        
+
         if (!isChecked) {
             setErrorMessage('Please accept the terms and conditions of use.');
         } else {
@@ -167,8 +167,7 @@ const TermsPage: React.FC = () => {
                             </svg>
                         </div>
                         <div className={termsContentstyles.text}>
-                            By checking this box, you acknowledge that you have read and agree to the Union of Security Employees (USE) website’s terms and conditions of use and that the website retains your data only as long as necessary to fulfill the purposes for which it was collected.
-                        </div>
+                            By checking this box, you acknowledge that you have read and agree to the terms and conditions of use for the Union of Security Employees (USE) website. You also consent to the collection and retention of your data only for as long as necessary to fulfil the purposes of processing and issuing the ID card for which it was collected.                        </div>
                     </div>
 
 

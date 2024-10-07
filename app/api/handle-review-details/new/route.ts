@@ -81,6 +81,7 @@ export async function POST(req: NextRequest) {
             }
             if (updatedSchedule) {
                 updatedSchedule.data_barcode_paynow = '';
+                updatedSchedule.QRstring= '';
             }
             console.log('Schedule updated:', updatedSchedule);
             const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);

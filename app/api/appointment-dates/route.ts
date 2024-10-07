@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     const bookingIdString = url.searchParams.get('bookingId');
     const encryptedNric = await getEncryptedNricFromSession(request);
     if (encryptedNric instanceof NextResponse) {
-      return encryptedNric; 
+      return encryptedNric;
     }
     if (!bookingIdString) {
       return new Response(JSON.stringify({ error: 'Booking Id reqquire' }), { status: 400 });
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
 
     const holidays = await prisma.dateholidays.findMany({
       select: {
-        date: true, 
+        date: true,
       },
     });
 
@@ -59,19 +59,19 @@ export async function GET(request: NextRequest) {
     const today = new Date();
     const dateFrom = new Date(today);
     dateFrom.setDate(today.getDate() + 6);
-    
+
     const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
     for (let i = 0; i < 7; i++) {
       const formattedDate = dateFrom.toISOString().slice(0, 10);
       console.log('formattedDate:', formattedDate);
-      
+
       const dateSchedules: bookingDate[] = await prisma.$queryRaw`
         select appointment_date as appointmentDate, time_start_appointment as timeStartAppointment, count(*) as totalCount 
         FROM booking_schedules
         where appointment_date = ${formattedDate}
         group by appointment_date, time_start_appointment; `;
-      
+
       console.log('dateSchedules', dateSchedules);
 
       if (dateSchedules.length == 7) {
@@ -105,15 +105,15 @@ export async function GET(request: NextRequest) {
     });
 
     const transDate = schedules?.trans_date;
-    if(transDate){
-      const transactionDate = parseDateString(transDate); 
+    if (transDate) {
+      const transactionDate = parseDateString(transDate);
       const nextSixDays = getNextSixDays(transactionDate);
       const allDisabledDates = [...disabledDates, ...nextSixDays];
       return NextResponse.json(allDisabledDates);
     }
 
     return NextResponse.json(disabledDates);
-    
+
   } catch (error) {
     console.error('Error fetching disabled dates:', error);
     return NextResponse.json({ error: 'Failed to fetch disabled dates' }, { status: 500 });
@@ -127,16 +127,18 @@ export async function GET(request: NextRequest) {
 }
 
 const parseDateString = (dateString: string): Date => {
-  const [day, month, year] = dateString.split('-').map(Number);
-  return new Date(year, month - 1, day); 
+  const [datePart, timePart] = dateString.split(" ");
+  const [day, month, year] = datePart.split("/").map(Number);
+  const [hours, minutes, seconds] = timePart.split(":").map(Number);
+  return new Date(year, month - 1, day, hours, minutes, seconds);
 };
 
 const getNextSixDays = (startDate: Date) => {
   const dates = [];
   for (let i = 0; i < 7; i++) {
     const nextDate = new Date(startDate);
-    nextDate.setDate(startDate.getDate() + i); 
-    dates.push(nextDate.toISOString().split('T')[0]); 
+    nextDate.setDate(startDate.getDate() + i);
+    dates.push(nextDate.toISOString().split('T')[0]);
   }
   return dates;
 };

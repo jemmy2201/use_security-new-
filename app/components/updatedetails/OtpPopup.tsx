@@ -89,11 +89,11 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
             <div className={OtpModuleStyle.container}>
                 <div className={OtpModuleStyle.content}>
                     <div className={OtpModuleStyle.verifyMobileNumber}>
-                        <h2>Verify your mobile number</h2>
+                        <h2>Mobile Number Verification</h2>
                     </div>
                     <div className={OtpModuleStyle.textDetails}>
-                        <h2>Before you continue, you are required to verify your mobile number. Enter the 4-digit OTP sent to your mobile number.</h2>
-                    </div>
+                        <h2>You are required to verify your mobile number before proceeding. Enter the 4-digit OTP sent to your mobile number.</h2>
+                        <br></br>Enter the 4-digit OTP sent to your mobile number.                    </div>
                     <div className={OtpModuleStyle.otpBox}>
                         <div className={OtpModuleStyle.otpField}>
                             {otp.map((value, index) => (
@@ -119,10 +119,10 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
 
                     <div>
                         <span className={OtpModuleStyle.otpText}>
-                            <h2>Didn’t get the code?</h2>
+                            <h2>Didn't receive the code? </h2>
                         </span>
                         <span className={OtpModuleStyle.resendCodeText}>
-                           <h2> Resend code</h2>
+                            <h2>Click to resend?</h2>
                         </span>
                     </div>
 

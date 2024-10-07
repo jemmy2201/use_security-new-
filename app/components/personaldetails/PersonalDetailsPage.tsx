@@ -145,7 +145,7 @@ const PersonalDetailsPage: React.FC = () => {
                             </div>
                             <div className={globalStyleCss.regular}>
                                 <input
-                                    type="number"
+                                    type="text"
                                     id="mobileno"
                                     value={formData.mobileno || ''}
                                     onChange={handleChange}

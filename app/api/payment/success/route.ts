@@ -81,6 +81,7 @@ export async function GET(req: NextRequest) {
             console.log('pdf generated:', schedule.id);
             if (updatedSchedule) {
                 updatedSchedule.data_barcode_paynow = '';
+                updatedSchedule.QRstring= '';
             }
             return new Response(JSON.stringify(updatedSchedule, replacer), {
                 status: 200,

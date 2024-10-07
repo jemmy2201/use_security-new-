@@ -8,6 +8,7 @@ import { NEW, REPLACEMENT, RENEWAL } from '../../constant/constant';
 import { SO_APP, AVSO_APP, PI_APP } from '../../constant/constant';
 import { SO, SSO, SS, SSS, CSO } from '../../constant/constant';
 import fontkit from '@pdf-lib/fontkit';
+import bcrypt from 'bcrypt';
 
 
 const prisma = new PrismaClient();
@@ -31,6 +32,8 @@ const gradeTypeMap: { [key: string]: string } = {
   [CSO]: 'CSO',
 };
 
+const SALT_ROUNDS = 10;
+
 export async function GET() {
 
   const jwksEnv = process.env.SINGPASS_PUBLIC_JWKS;
@@ -46,7 +49,7 @@ export async function GET() {
     return NextResponse.json({ error: 'Error parsing JWKS from environment variables' }, { status: 500 });
   }
 
-  generatePdfReceipt();
+  //generatePdfReceipt();
 
   return NextResponse.json(jwks);
 }
@@ -148,7 +151,7 @@ const generatePdfReceipt = async () => {
 
       const pdfBytes = await pdfDoc.save();
 
-      const folderPath = path.join(process.cwd(), 'public', 'receipts');
+      const folderPath = path.join(process.cwd(), 'public', 'userdocs/img_users/invoice');
       const filePath = path.join(folderPath, schedule.passid + '.pdf');
 
       fs.mkdirSync(folderPath, { recursive: true });

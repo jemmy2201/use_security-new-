@@ -53,6 +53,7 @@ export async function POST(req: NextRequest) {
     if (schedule) {
 
       schedule.data_barcode_paynow = '';
+      schedule.QRstring= '';
 
       const fileName = schedule?.passid + encryptedNric.slice(-4);
       console.log('file name:', fileName);

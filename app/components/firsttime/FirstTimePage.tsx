@@ -38,7 +38,7 @@ const FirstTimePage: React.FC = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [modalMessage, setModalMessage] = useState<string>('');
 
-    const options = ['Security Officer (SO)/Aviation Security Officer (AVSO)', 'Private Investigator (PI)'];
+    const options = ['Security Officer (SO) / Aviation Security Officer (AVSO)', 'Private Investigator'];
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -46,7 +46,7 @@ const FirstTimePage: React.FC = () => {
 
     const handleSelect = (option: string) => {
         console.log('Selected:', option);
-        if (option == 'Private Investigator (PI)') {
+        if (option == 'Private Investigator') {
             handleNewPiPasscardClick();
         } else {
             handleNewSoPasscardClick();
@@ -193,7 +193,7 @@ const FirstTimePage: React.FC = () => {
                             </button> */}
 
                                 <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={toggleDropdown}>
-                                    Apply for new pass card
+                                    Application for New ID Card
                                 </button>
 
                                 {isDropdownOpen && (

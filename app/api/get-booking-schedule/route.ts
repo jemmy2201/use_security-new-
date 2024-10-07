@@ -37,6 +37,7 @@ export async function GET(request: NextRequest) {
     
     if(schedules){
       schedules.data_barcode_paynow= '';
+      schedules.QRstring= '';
     }
 
 
