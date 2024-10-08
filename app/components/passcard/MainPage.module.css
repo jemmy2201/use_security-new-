@@ -4,28 +4,32 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
-    width: 100%;
-    padding-top: 20px;
-    background: #F5F6F7;
+    gap: 20px;
     flex-wrap: wrap;
+    width: 100%;
+    background: #F5F6F7;
 
     @media screen and (max-width: 769px) {
-        gap: 20px;
+        width: 100%;
+        align-items: flex-start;
     }
 
     .headerContainer {
-        flex-wrap: wrap;
         display: flex;
+        padding-top: 20px;
+        padding-left: 10px;
+        width: 1016px;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+        gap: 40px;
+        background: #F5F6F7;
+        flex-wrap: wrap;
 
-        .linkBox {
-            flex-wrap: wrap;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        @media screen and (max-width: 769px) {
+            padding-top: 20px;
+            width: 100%;
         }
+
 
     }
 

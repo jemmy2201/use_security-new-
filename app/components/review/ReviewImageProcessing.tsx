@@ -341,7 +341,7 @@ const ReviewImageProcessing: React.FC = () => {
             </div>
 
             <div className={globalStyleCss.regular}>
-              Maximum file size: 5 MB <br></br>
+              Maximum file size: 2 MB <br></br>
               Supported file types: JPG / PNG
             </div>
 

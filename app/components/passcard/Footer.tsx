@@ -6,6 +6,7 @@ import { useFormContext } from '.././FormContext';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Link from 'next/link';
 
 interface FooterProps {
     onNext: () => void;
@@ -23,7 +24,12 @@ const Footer: React.FC<FooterProps> =
             <footer>
                 <div className={stepBarFooterStyle.bodyContainer}>
                     <div className={stepBarFooterStyle.headerContainer}>
-
+                        {/* <div className={globalStyleCss.regularLinkBlack}><Link href="/homepage">Cancel</Link></div> */}
+                        <div className={stepBarFooterStyle.saveDraft}>
+                        <Link href="/homepage">
+                                    <div className={globalStyleCss.regular}>Cancel</div>
+                                    </Link>
+                            </div>
 
                         {!formData.paymentProcessed && (
                             <div className={stepBarFooterStyle.saveDraft}>
@@ -34,7 +40,6 @@ const Footer: React.FC<FooterProps> =
                             </div>
 
                         )}
-
                         {!formData.isAppointmentConfirmed && (
                             <div className={stepBarFooterStyle.continue}>
                                 <div>
