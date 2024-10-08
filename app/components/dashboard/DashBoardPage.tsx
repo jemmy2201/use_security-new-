@@ -337,7 +337,6 @@ const DashBoardPage: React.FC = () => {
                 return;
             }
             sessionStorage.setItem('bookingSchedule', JSON.stringify(dataBookingSchedule));
-            console.log('booking data from api', dataBookingSchedule);
             sessionStorage.setItem('actionTypeValue', 'Renew');
             router.push('/passcard?actionType=Renew');
 

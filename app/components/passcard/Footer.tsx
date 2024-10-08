@@ -26,14 +26,14 @@ const Footer: React.FC<FooterProps> =
                     <div className={stepBarFooterStyle.headerContainer}>
                         {/* <div className={globalStyleCss.regularLinkBlack}><Link href="/homepage">Cancel</Link></div> */}
                         <div className={stepBarFooterStyle.saveDraft}>
-                        <Link href="/homepage">
-                                    <div className={globalStyleCss.regular}>Cancel</div>
-                                    </Link>
-                            </div>
+                            <Link href="/homepage">
+                                <div className={globalStyleCss.regular}>Cancel</div>
+                            </Link>
+                        </div>
 
                         {!formData.paymentProcessed && (
                             <div className={stepBarFooterStyle.saveDraft}>
-                                <button onClick={onSaveDraft}>
+                                <button type='button' onClick={onSaveDraft}>
                                     <div className={globalStyleCss.regular}>Save draft</div>
                                 </button>
                                 <ToastContainer />
@@ -43,7 +43,7 @@ const Footer: React.FC<FooterProps> =
                         {!formData.isAppointmentConfirmed && (
                             <div className={stepBarFooterStyle.continue}>
                                 <div>
-                                    <button
+                                    <button type='button'
                                         onClick={onNext}>
                                         <div className={globalStyleCss.buttonText}>
                                             {activeStep === 0 ? 'Application details' : ''}
@@ -60,7 +60,7 @@ const Footer: React.FC<FooterProps> =
                         )}
                         {activeStep != 0 && !formData.paymentProcessed && (
                             <div className={stepBarFooterStyle.saveDraft}>
-                                <button
+                                <button type='button'
                                     onClick={onBack}
                                     disabled={!hasBack}>
                                     <div className={globalStyleCss.regular}>Back</div>

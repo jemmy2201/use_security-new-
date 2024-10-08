@@ -45,12 +45,13 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
         const result = await response.json();
 
         console.log('send sms result:', result);
-        toast.success('OTP resent', {
-            position: 'top-right',
-            autoClose: 3000,
-        });
+
         if (result.success) {
             console.log('SMS sent:', result);
+            toast.success('OTP resent', {
+                position: 'top-right',
+                autoClose: 3000,
+            });
         } else {
             alert(result.message);
         }

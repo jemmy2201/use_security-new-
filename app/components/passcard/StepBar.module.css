@@ -74,7 +74,7 @@
         align-items: center;
         cursor: pointer;
         position: relative;
-        margin: 0 40px;
+        margin: 0 55px;
     }
 
     .stepNumber {
@@ -107,7 +107,7 @@
     }
 
     .connectorLine {
-        width: 200px;
+        width: 230px;
         /* Adjust width as needed */
         height: 2px;
         background-color: #ddd;
@@ -272,7 +272,7 @@
     align-items: center;
     cursor: pointer;
     position: relative;
-    margin: 0 40px;
+    margin: 0 55px;
 }
 
 .stepNumber {
@@ -305,7 +305,7 @@
 }
 
 .connectorLine {
-    width: 200px;
+    width: 230px;
     /* Adjust width as needed */
     height: 2px;
     background-color: #ddd;
