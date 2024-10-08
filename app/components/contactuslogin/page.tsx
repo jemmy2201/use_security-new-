@@ -25,7 +25,7 @@ const ContactusPage: React.FC = () => {
             <div className={contactusContentstyles.mainContainer}>
                 <div className={contactusContentstyles.contactusContainer}>
                     <div className={globalStyleCss.header2}>
-                        Contact us
+                        Contact Us
                     </div>
 
                     <div className={contactusContentstyles.bodyContainer}>
