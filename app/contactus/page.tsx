@@ -17,7 +17,7 @@ const ContactusPage: React.FC = () => {
 
     return (
 
-        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%', background:'#F5F6F7' }}>
 
 
             <div className={headerstyles.headerContainer}>
