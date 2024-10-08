@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import * as faceapi from 'face-api.js';
 import { useFormContext } from '.././FormContext';
@@ -12,7 +12,11 @@ const ImageProcessing = () => {
 
   const { formData, setFormData } = useFormContext();
   const [image, setImage] = useState<string | null>(null);
+  const [detectionResult, setDetectionResult] = useState<faceapi.WithFaceLandmarks<{ detection: faceapi.FaceDetection }> | null>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [faceDetected, setFaceDetected] = useState<boolean>(false);
+  const [straightFaceDetected, setStraightFaceDetected] = useState<boolean>(false);
   const [bgColorMatch, setBgColorMatch] = useState<boolean>(false);
   const [brightnessContrast, setBrightnessContrast] = useState<{ brightness: number; contrast: number } | null>(null);
   const [spectacleDetected, setSpectacleDetected] = useState<boolean>(false);
@@ -37,6 +41,7 @@ const ImageProcessing = () => {
             setFormData(prevFormData => ({
               ...prevFormData,
               isFaceDetected: true,
+              isStraightFaceDetected: true,
               isBgColorMatch: true,
             }));
           };
@@ -65,15 +70,15 @@ const ImageProcessing = () => {
       setLoading(true);
       const fileSizeInBytes = file.size;
 
-      const maxSizeInBytes = 5 * 1024 * 1024; // 2MB in bytes
-      const minSizeInBytes = 25 * 1024; // 100KB in bytes
+      const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
+      const minSizeInBytes = 20 * 1024; // 20kb in bytes
 
-      // if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
-      //   alert('Image size should be less then 5MB and greater then 25kb');
-      //   console.error('File size is out of the allowed range.');
-      //   setLoading(false);
-      //   return;
-      // }
+      if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
+        alert('Image size should be less then 5MB and greater then 25kb');
+        console.error('File size is out of the allowed range.');
+        setLoading(false);
+        return;
+      }
 
       const img = URL.createObjectURL(file);
       setImage(img);
@@ -85,7 +90,24 @@ const ImageProcessing = () => {
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
-          // Detect face
+          const detectionSingleFace = await faceapi.detectSingleFace(imageElement).withFaceLandmarks();
+          console.log('detectionSingleFace', detectionSingleFace);
+          let isStraight = true;
+          if (detectionSingleFace) {
+            setDetectionResult(detectionSingleFace);
+
+            const landmarks = detectionSingleFace.landmarks;
+            const { x: eyeLeftX, y: eyeLeftY } = landmarks.getLeftEye()[0]; // Get the left eye position
+            const { x: eyeRightX, y: eyeRightY } = landmarks.getRightEye()[0]; // Get the right eye position
+            const { x: noseX, y: noseY } = landmarks.getNose()[3]; // Get the nose position
+            const eyeLineSlope = (eyeRightY - eyeLeftY) / (eyeRightX - eyeLeftX);
+            const angle = Math.atan(eyeLineSlope) * (180 / Math.PI); // Convert radians to degrees
+            console.log('Face angle:', angle);
+            isStraight = Math.abs(angle) < 10;
+            console.log('Is the face straight?', isStraight);
+            setStraightFaceDetected(isStraight);
+          }
+
           const isFaceDetected = await detectFace(imageElement);
           setFaceDetected(isFaceDetected);
 
@@ -110,17 +132,15 @@ const ImageProcessing = () => {
             ...prevFormData,
             ['image']: resizedImage,
             ['isFaceDetected']: isFaceDetected,
+            ['isStraightFaceDetected']: isStraight,
             ['isBgColorMatch']: isBgColorMatch,
             ['imageUrl']: fileName,
           }));
-          // Call API with processed image data
+
           console.log('isFaceDetected', isFaceDetected);
           console.log('isBgColorMatch', isBgColorMatch);
-          if (isBgColorMatch && isFaceDetected) {
-            // await sendImageToAPI(resizedImage, formData.nric ? formData.nric : '', 
-            //     formData.applicationType ? formData.applicationType : '', 
-            //     formData.bookingId ? formData.bookingId : '');
-          }
+          console.log('isStraight', isStraight);
+
         } catch (error) {
           console.error('Error processing image:', error);
         } finally {
@@ -173,7 +193,6 @@ const ImageProcessing = () => {
             // Lower likelihood, but nose width can refine the decision
             isGlassesDetected = noseWidth > 6.5 && noseWidth < 8.5; // Allow some leeway here
           }
-
           console.log('Glasses detected:', isGlassesDetected);
           return isGlassesDetected;
         }
@@ -184,7 +203,6 @@ const ImageProcessing = () => {
       return false;
     }
   };
-
 
 
   const verifyBackgroundColor = (image: HTMLImageElement, targetColor: string) => {
@@ -221,15 +239,60 @@ const ImageProcessing = () => {
       }
     }
 
-    // Calculate the percentage of white pixels
     const whitePixelPercentage = (whitePixelCount / totalPixelCount) * 100;
     console.log('whitePixelPercentage:', whitePixelPercentage);
     return whitePixelPercentage > 40;
   };
 
   const checkBrightnessContrast = (image: HTMLImageElement) => {
-    // Placeholder logic for checking brightness and contrast
-    return { brightness: 75, contrast: 85 }; // Example values
+    // Create a canvas element
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return { brightness: 0, contrast: 0 };
+
+    // Set canvas size to the size of the image
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    // Draw the image onto the canvas
+    ctx.drawImage(image, 0, 0);
+
+    // Get pixel data from the canvas
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    let totalBrightness = 0;
+    const brightnessValues: number[] = [];
+    const pixelCount = data.length / 4; // Each pixel has 4 values (RGBA)
+
+    // Calculate the total brightness and collect brightness values
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i];     // Red
+      const g = data[i + 1]; // Green
+      const b = data[i + 2]; // Blue
+
+      // Calculate brightness using the luminance formula
+      const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      totalBrightness += brightness;
+      brightnessValues.push(brightness);
+    }
+
+    // Calculate average brightness
+    const averageBrightness = totalBrightness / pixelCount;
+
+    // Calculate contrast using the standard deviation
+    const mean = averageBrightness;
+    let variance = 0;
+
+    for (const brightness of brightnessValues) {
+      variance += (brightness - mean) ** 2;
+    }
+    variance /= pixelCount;
+
+    const contrast = Math.sqrt(variance); // Standard deviation as contrast
+    console.log(' averageBrightness, contrast', averageBrightness, contrast);
+    return { brightness: averageBrightness, contrast };
   };
 
   const resizeImage = (image: HTMLImageElement, width: number, height: number) => {
@@ -258,7 +321,6 @@ const ImageProcessing = () => {
   };
 
   return (
-
 
     <div className={applicantDetailsContentstyles.stepContentContainer}>
       {loading && (
@@ -293,27 +355,28 @@ const ImageProcessing = () => {
 
       <hr className={applicantDetailsContentstyles.photoHrLine}></hr>
 
-      {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch) ? (
+      {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch || !formData.isStraightFaceDetected) ? (
         <div className={applicantDetailsContentstyles.photoUploadError}>
           <div className={applicantDetailsContentstyles.photoUploadErrorBox}>
-            <div>
-              <h1>Your photo has been rejected for the following reasons:</h1>
+            <div className={globalStyleCss.regularBold}>
+              Your photo has been rejected for the following reasons:
             </div>
+
+            {formData.isStraightFaceDetected ? (
+              <p></p>
+            ) : (
+              <div className={globalStyleCss.regular}> .  The face is not straight </div>
+            )}
+
             {formData.isFaceDetected ? (
               <p></p>
             ) : (
-              <div> .  The face is not clearly visible</div>
+              <div className={globalStyleCss.regular}> .  The face is not clearly visible</div>
             )}
             {formData.isBgColorMatch ? (
               <p></p>
             ) : (
-              <div> .  The background is not white</div>
-            )}
-
-            {spectacleDetected ? (
-              <p>. Eyewear has been detected</p>
-            ) : (
-              <p></p>
+              <div className={globalStyleCss.regular}> .  The background is not white</div>
             )}
           </div>
         </div>
@@ -325,22 +388,22 @@ const ImageProcessing = () => {
         <div className={applicantDetailsContentstyles.uploadBox}>
           <div className={applicantDetailsContentstyles.uploadPhotoContainerBox}>
 
-            {formData.image ? (
-              <>
-                {formData.image && <img src={formData.image} />}
-              </>
-            ) : (
-              <>
-                {formData.imageUrl && <img src={formData.imageUrl} />}
-              </>
-            )
-
+            {
+              formData.image ? (
+                <>
+                  {formData.image && <img src={formData.image} />}
+                </>
+              ) : (
+                <>
+                  {formData.imageUrl && <img src={formData.imageUrl} />}
+                </>
+              )
             }
 
           </div>
 
           <div className={globalStyleCss.regular}>
-            Maximum file size: 5 MB <br></br>
+            Minimum file size: 20 KB <br></br> Maximum file size: 2 MB <br></br>
             Supported file types: JPG / PNG
           </div>
 
@@ -421,7 +484,7 @@ const ImageProcessing = () => {
           <div className={applicantDetailsContentstyles.photosDosDontContainerPicsBox}>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <img src='/images/specs.jpg'></img>
+                <img src='/images/2.png'></img>
 
               </div>
               <div>
@@ -433,7 +496,7 @@ const ImageProcessing = () => {
             </div>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <img src='/images/no_face.png'></img>
+                <img src='/images/5.png'></img>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -444,7 +507,7 @@ const ImageProcessing = () => {
             </div>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <img src='/images/noface.jpeg'></img>
+                <img src='/images/6.png'></img>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -464,7 +527,6 @@ const ImageProcessing = () => {
           Brightness: {brightnessContrast.brightness}, Contrast: {brightnessContrast.contrast}
         </p>
       )} */}
-
     </div>
 
   );

@@ -32,6 +32,7 @@ interface FormData {
     isOtpVerified?: boolean;
     verifiedMobileNo?: string;
     isFaceDetected?: boolean;
+    isStraightFaceDetected?: boolean;
     isBgColorMatch?: boolean;
     isUpdated?: boolean;
     isTermsAndConditionSigned?: boolean;

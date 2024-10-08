@@ -11,10 +11,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 const ReviewImageProcessing: React.FC = () => {
 
+  const [detectionResult, setDetectionResult] = useState<faceapi.WithFaceLandmarks<{ detection: faceapi.FaceDetection }> | null>(null);
   const { formData, setFormData } = useFormContext();
   const [image, setImage] = useState<string | null>(null);
   const [faceDetected, setFaceDetected] = useState<boolean>(false);
   const [bgColorMatch, setBgColorMatch] = useState<boolean>(false);
+  const [straightFaceDetected, setStraightFaceDetected] = useState<boolean>(false);
   const [brightnessContrast, setBrightnessContrast] = useState<{ brightness: number; contrast: number } | null>(null);
   const [spectacleDetected, setSpectacleDetected] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -29,7 +31,8 @@ const ReviewImageProcessing: React.FC = () => {
         await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
         await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
         await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
-
+        await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+        console.log('Review Image processing image url:', formData.imageUrl);
         if (formData.imageUrl) {
           const img = new Image();
           img.src = formData.imageUrl;
@@ -60,29 +63,50 @@ const ReviewImageProcessing: React.FC = () => {
 
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+
     const file = event.target.files?.[0];
     if (file) {
       setLoading(true);
       const fileSizeInBytes = file.size;
 
-      const maxSizeInBytes = 5 * 1024 * 1024; // 2MB in bytes
-      const minSizeInBytes = 25 * 1024; // 100KB in bytes
+      const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
+      const minSizeInBytes = 20 * 1024; // 20kb in bytes
 
-      // if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
-      //   alert('Image size should be less then 5MB and greater then 25kb');
-      //   console.error('File size is out of the allowed range.');
-      //   setLoading(false);
-      //   return;
-      // }
+      if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
+        alert('Image size should be less then 5MB and greater then 25kb');
+        console.error('File size is out of the allowed range.');
+        setLoading(false);
+        return;
+      }
 
       const img = URL.createObjectURL(file);
       setImage(img);
-
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        ['image']: img,
+      }));
       const imageElement = new Image();
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
-          // Detect face
+          const detectionSingleFace = await faceapi.detectSingleFace(imageElement).withFaceLandmarks();
+          console.log('detectionSingleFace', detectionSingleFace);
+          let isStraight = true;
+          if (detectionSingleFace) {
+            setDetectionResult(detectionSingleFace);
+
+            const landmarks = detectionSingleFace.landmarks;
+            const { x: eyeLeftX, y: eyeLeftY } = landmarks.getLeftEye()[0]; // Get the left eye position
+            const { x: eyeRightX, y: eyeRightY } = landmarks.getRightEye()[0]; // Get the right eye position
+            const { x: noseX, y: noseY } = landmarks.getNose()[3]; // Get the nose position
+            const eyeLineSlope = (eyeRightY - eyeLeftY) / (eyeRightX - eyeLeftX);
+            const angle = Math.atan(eyeLineSlope) * (180 / Math.PI); // Convert radians to degrees
+            console.log('Face angle:', angle);
+            isStraight = Math.abs(angle) < 10;
+            console.log('Is the face straight?', isStraight);
+            setStraightFaceDetected(isStraight);
+          }
+
           const isFaceDetected = await detectFace(imageElement);
           setFaceDetected(isFaceDetected);
 
@@ -101,24 +125,21 @@ const ReviewImageProcessing: React.FC = () => {
           // Resize image
           const resizedImage = resizeImage(imageElement, 200, 257);
           setImage(resizedImage);
-
-          // Call API with processed image data
-          console.log('isFaceDetected', isFaceDetected);
-          console.log('isBgColorMatch', isBgColorMatch);
-          const bookingId = formData.bookingId || '';
-
           const fileName = formData?.passid + formData.nric?.slice(-4);
           console.log('image file name:', fileName);
           setFormData(prevFormData => ({
             ...prevFormData,
-            ['image']: img,
+            ['image']: resizedImage,
             ['isFaceDetected']: isFaceDetected,
+            ['isStraightFaceDetected']: isStraight,
             ['isBgColorMatch']: isBgColorMatch,
             ['imageUrl']: fileName,
           }));
-          if (isBgColorMatch && isFaceDetected) {
-            await sendImageToAPI(resizedImage, bookingId);
-          }
+
+          console.log('isFaceDetected', isFaceDetected);
+          console.log('isBgColorMatch', isBgColorMatch);
+          console.log('isStraight', isStraight);
+
         } catch (error) {
           console.error('Error processing image:', error);
         } finally {
@@ -274,34 +295,34 @@ const ReviewImageProcessing: React.FC = () => {
         </div>
         <br></br>
         <hr className={reviewPhotoContentstyles.photoHrLine}></hr>
-        {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch) ? (
-          <div className={reviewPhotoContentstyles.photoUploadError}>
-            <div className={reviewPhotoContentstyles.photoUploadErrorBox}>
-              <div>
-                <h1>Your photo has been rejected for the following reasons:</h1>
-              </div>
-              {faceDetected ? (
-                <p></p>
-              ) : (
-                <div> .  The face is not clearly visible</div>
-              )}
-              {bgColorMatch ? (
-                <p></p>
-              ) : (
-                <div> .  The background is not white</div>
-              )}
-
-              {spectacleDetected ? (
-                <p>Eyewear has been detected</p>
-              ) : (
-                <p></p>
-              )}
+        {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch || !formData.isStraightFaceDetected) ? (
+        <div className={reviewPhotoContentstyles.photoUploadError}>
+          <div className={reviewPhotoContentstyles.photoUploadErrorBox}>
+            <div className={globalStyleCss.regularBold}>
+              Your photo has been rejected for the following reasons:
             </div>
 
+            {formData.isStraightFaceDetected ? (
+              <p></p>
+            ) : (
+              <div className={globalStyleCss.regular}> .  The face is not straight </div>
+            )}
+
+            {formData.isFaceDetected ? (
+              <p></p>
+            ) : (
+              <div className={globalStyleCss.regular}> .  The face is not clearly visible</div>
+            )}
+            {formData.isBgColorMatch ? (
+              <p></p>
+            ) : (
+              <div className={globalStyleCss.regular}> .  The background is not white</div>
+            )}
           </div>
-        ) : (
-          <p></p>
-        )}
+        </div>
+      ) : (
+        <p></p>
+      )}
 
         <div className={reviewPhotoContentstyles.photoContainer}>
           <div className={reviewPhotoContentstyles.uploadBox}>

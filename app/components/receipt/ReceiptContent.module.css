@@ -24,6 +24,7 @@
     border-radius: 28px;
     border: 1px solid #546E7A;
     background: #FFF;
+    
   }
 
   .innerContainerHeader {
@@ -48,9 +49,9 @@
     align-items: flex-start;
     background: #FFF;
     justify-content: center;
-
     @media screen and (max-width: 769px) {
       padding: 10px;
+      width: 340px;
     }
 
     .customhr {

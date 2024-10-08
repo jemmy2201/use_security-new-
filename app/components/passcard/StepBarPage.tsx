@@ -44,7 +44,6 @@ const steps = [
 
 const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
 
-    console.log('StepBarHomePage: Action Type', actionType);
     const [activeStep, setActiveStep] = useState<number>(0);
     const { formData, setFormData } = useFormContext();
     const [isOtpPopupOpen, setIsOtpPopupOpen] = useState<boolean>(false); // State for OTP popup

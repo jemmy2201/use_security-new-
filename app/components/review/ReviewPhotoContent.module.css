@@ -85,7 +85,12 @@
         align-items: flex-start;
         gap: 24px;
         display: flex;
-
+        border-right: 1px solid lightgrey;
+        width:40%;
+        @media screen and (max-width: 769px) {
+          border-right: 0px solid lightgrey;
+          width:100%;
+        }
         .uploadPhotoContainerBox {
           width: 200px;
           height: 257px;

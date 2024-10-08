@@ -19,6 +19,8 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
   console.log('bookingId', bookingId);
   const [image, setImage] = useState<string | null>(null);
+  const [detectionResult, setDetectionResult] = useState<faceapi.WithFaceLandmarks<{ detection: faceapi.FaceDetection }> | null>(null);
+  const [straightFaceDetected, setStraightFaceDetected] = useState<boolean>(false);
   const [faceDetected, setFaceDetected] = useState<boolean>(false);
   const [bgColorMatch, setBgColorMatch] = useState<boolean>(false);
   const [showBookingAppointment, setShowBookingAppointment] = useState<boolean>();
@@ -118,7 +120,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     setLoading(true);
     console.log('bookingId', bookingId);
 
-    if (bgColorMatch && faceDetected) {
+    if (bgColorMatch && faceDetected && straightFaceDetected) {
       try {
         const response = await axios.post('/api/handle-resubmit-image', {
           image,
@@ -157,14 +159,15 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
       const fileSizeInBytes = file.size;
 
-      const maxSizeInBytes = 5 * 1024 * 1024; // 2MB in bytes
-      const minSizeInBytes = 25 * 1024; // 100KB in bytes
+      const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
+      const minSizeInBytes = 20 * 1024; // 20kb in bytes
 
-      // if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
-      //   alert('Image size should be less then 5MB and greater then 25kb');
-      //   console.error('File size is out of the allowed range.');
-      //   return; 
-      // }
+      if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
+        alert('Image size should be less then 5MB and greater then 25kb');
+        console.error('File size is out of the allowed range.');
+        setLoading(false);
+        return;
+      }
 
       const img = URL.createObjectURL(file);
       setImage(img);
@@ -173,6 +176,25 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
+
+          const detectionSingleFace = await faceapi.detectSingleFace(imageElement).withFaceLandmarks();
+          console.log('detectionSingleFace', detectionSingleFace);
+          let isStraight = true;
+          if (detectionSingleFace) {
+            setDetectionResult(detectionSingleFace);
+
+            const landmarks = detectionSingleFace.landmarks;
+            const { x: eyeLeftX, y: eyeLeftY } = landmarks.getLeftEye()[0]; // Get the left eye position
+            const { x: eyeRightX, y: eyeRightY } = landmarks.getRightEye()[0]; // Get the right eye position
+            const { x: noseX, y: noseY } = landmarks.getNose()[3]; // Get the nose position
+            const eyeLineSlope = (eyeRightY - eyeLeftY) / (eyeRightX - eyeLeftX);
+            const angle = Math.atan(eyeLineSlope) * (180 / Math.PI); // Convert radians to degrees
+            console.log('Face angle:', angle);
+            isStraight = Math.abs(angle) < 10;
+            console.log('Is the face straight?', isStraight);
+            setStraightFaceDetected(isStraight);
+          }
+
           // Detect face
           const isFaceDetected = await detectFace(imageElement);
           setFaceDetected(isFaceDetected);
@@ -196,6 +218,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           // Call API with processed image data
           console.log('isFaceDetected', isFaceDetected);
           console.log('isBgColorMatch', isBgColorMatch);
+          console.log('isStraight', isStraight);
           if (isBgColorMatch && isFaceDetected) {
             //await sendImageToAPI(resizedImage, bookingId);
           }
@@ -370,6 +393,13 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                 <div>
                   <h1>Your photo has been rejected for the following reasons:</h1>
                 </div>
+
+                {straightFaceDetected ? (
+                  <p></p>
+                ) : (
+                  <div className={globalStyleCss.regular}> .  The face is not straight </div>
+                )}
+
                 {faceDetected ? (
                   <p></p>
                 ) : (
@@ -401,7 +431,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
               </div>
 
               <div className={globalStyleCss.regular}>
-                Maximum file size: 5 MB <br></br>
+                Maximum file size: 2 MB <br></br>
                 Supported file types: JPG / PNG
               </div>
 
