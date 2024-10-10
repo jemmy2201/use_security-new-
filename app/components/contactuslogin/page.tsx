@@ -11,8 +11,14 @@ import Link from 'next/link';
 
 const ContactusPage: React.FC = () => {
 
+    const router = useRouter();
+
     const handleLoginClick = async () => {
         signIn('singpass');
+    };
+
+    const handleClick = () => {
+        router.push('/homepage');
     };
 
     return (
@@ -24,7 +30,7 @@ const ContactusPage: React.FC = () => {
             </div>
             <div className={contactusContentstyles.mainContainer}>
                 <div className={contactusContentstyles.contactusContainer}>
-                    <button type='button' onClick={handleBack} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                    <button type='button' onClick={handleClick} style={{ display: 'inline-flex', alignItems: 'center' }}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <g clipPath="url(#clip0_1433_2277)">
                                 <path d="M7.825 13L13.425 18.6L12 20L4 12L12 4L13.425 5.4L7.825 11H20V13H7.825Z" fill="#546E7A" />
@@ -35,7 +41,7 @@ const ContactusPage: React.FC = () => {
                                 </clipPath>
                             </defs>
                         </svg>
-                        <div className={globalStyleCss.regularLinkBlackBold}>&nbsp;Back to Personal details</div>
+                        <div className={globalStyleCss.regularLinkBlackBold}>&nbsp;Back to Home page</div>
                     </button>
                     <div className={globalStyleCss.header2}>
                         Contact Us
