@@ -48,17 +48,15 @@ export async function GET(request: NextRequest) {
 
     const fullSlotTime = dateSchedules
       .map((dateSchedule) => {
-        // if (!checkTimeSlot(dateSchedule.timeStartAppointment as string)) {
-        //   return null
-        // }
-        // if (dateSchedule.totalCount < 20) {
-        //   return null
-        // }
+        if (!checkTimeSlot(dateSchedule.timeStartAppointment as string)) {
+          return null
+        }
+        if (dateSchedule.totalCount < 20) {
+          return null
+        }
         return dateSchedule.timeStartAppointment;
       })
       .filter((timeSlot) => timeSlot !== null);
-
-    // return NextResponse.json({fullSlotTime}, {status: 200});
 
     const disabledSlots = convertTimeSlots(fullSlotTime);;
 

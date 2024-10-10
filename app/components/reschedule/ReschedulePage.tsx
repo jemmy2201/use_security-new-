@@ -12,6 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { format, parseISO } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
 import { booking_schedules } from '@prisma/client';
+import CircularProgress from '@mui/material/CircularProgress';
 
 type DisabledDatesResponse = string[];
 
@@ -76,6 +77,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     };
 
     const handleDateChange = async (date: Date | null) => {
+        setLoading(true);
         setStartDate(date);
         const formattedDateForSlots = formatDateSlots(date);
 
@@ -87,6 +89,8 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
         const data = await response.json();
         console.log('response, /api/day-slots', data);
         setDisabledSlots(data.disabledSlots);
+        setLoading(false);
+
     };
 
     const handleTimeSlotClick = (text: string) => {
@@ -130,6 +134,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     const onBack = async () => {
 
         try {
+            setLoading(true);
             const responseUser = await fetch('/api/myinfo');
             if (!responseUser.ok) {
                 console.log('no user detail found hence redirecting to firsttime page');
@@ -165,7 +170,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     const onNext = async () => {
         let valid = true;
         try {
-
+            setLoading(true);
             if (!startDate) {
                 setStartDateError("Please select the appointment start date");
                 valid = false;
@@ -179,7 +184,10 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             } else {
                 setSelectedTimeSlotError("");
             }
-            if (!valid) return;
+            if (!valid) {
+                setLoading(false);
+                return;
+            }
             const formattedDateForSlots = formatDateSlots(startDate);
             const response = await fetch('/api/reschedule-appointment', {
                 method: 'POST',
@@ -205,9 +213,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 router.push(`/complete?bookingId=${encodeURIComponent(bookingId)}&reschedule=${encodeURIComponent(reschedule)}`);
             } catch (err) {
                 setErrorMessage('Failed to fetch user details');
-            } finally {
-                setLoading(false);
-            }
+            } 
         } catch (err) {
             setErrorMessage('Failed to fetch reschedule');
         } finally {
@@ -221,6 +227,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
         const fetchBookingSchedule = async () => {
             try {
+                setLoading(true);
                 const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
                 if (!responseBookingSchedule.ok) {
                     throw new Error('Network response was not ok');
@@ -229,11 +236,14 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 setBookingSchedule(dataBookingSchedule);
             } catch (error) {
                 console.error('Error fetching disabled dates:', error);
+            } finally{
+                setLoading(false);
             }
         };
 
         const fetchDisabledDates = async () => {
             try {
+                setLoading(true);
                 const response = await fetch(`/api/appointment-dates?bookingId=${encodeURIComponent(bookingId)}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch disabled dates');
@@ -251,6 +261,8 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
             } catch (error) {
                 console.error('Error fetching disabled dates:', error);
+            } finally{
+                setLoading(false);
             }
         };
         fetchDisabledDates();
@@ -270,6 +282,11 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             <div >
                 <HeaderPageLink />
             </div>
+            {loading && (
+                <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <CircularProgress />
+                </div>
+            )}            
             <div className={rescheduleContentstyles.mainContainer}>
                 <div className={rescheduleContentstyles.headerBox}>
                     {bookingSchedule && bookingSchedule.appointment_date && (

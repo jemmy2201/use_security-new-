@@ -35,6 +35,11 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
     console.log('UpdateDetailsPage Booking ID:', bookingId);
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
+    const [pwmEnable, setPwmEnable] = useState<boolean>(true);
+    const [pwmEnable2, setPwmEnable2] = useState<boolean>(true);
+    const [pwmEnable3, setPwmEnable3] = useState<boolean>(true);
+    const [pwmEnable4, setPwmEnable4] = useState<boolean>(true);
+    const [pwmEnable5, setPwmEnable5] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState('');
     const [errorMobileMessage, setErrorMobileMessage] = useState('');
     const { formData, setFormData } = useFormContext();
@@ -236,6 +241,25 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                     trObse: dataBookingSchedule?.TR_OBSE ? true : false,
                     trSsm: dataBookingSchedule?.TR_SSM ? true : false,
                 });
+
+                if(dataBookingSchedule.grade_id=='2'){
+                    setPwmEnable(false);
+                }
+                if(dataBookingSchedule.grade_id=='3'){
+                    setPwmEnable(false);
+                    setPwmEnable2(false);
+                }
+                if(dataBookingSchedule.grade_id=='4'){
+                    setPwmEnable(false);
+                    setPwmEnable2(false);
+                    setPwmEnable3(false);
+                }
+                if(dataBookingSchedule.grade_id=='5'){
+                    setPwmEnable(false);
+                    setPwmEnable2(false);
+                    setPwmEnable3(false);
+                    setPwmEnable4(false);
+                }
             } catch (error) {
                 console.error('Error fetching disabled dates:', error);
             } finally {
@@ -322,6 +346,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     value="SO"
                                     checked={selectedValue === 'SO'}
                                     onChange={handleRadioChange}
+                                    disabled={!pwmEnable} 
                                 />
                                     Security Officier</div>
                             </label>
@@ -332,6 +357,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     value="SSO"
                                     checked={selectedValue === 'SSO'}
                                     onChange={handleRadioChange}
+                                    disabled={!pwmEnable2} 
                                 />
                                     Senior Security Officier</div>
                             </label>
@@ -342,6 +368,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     value="SS"
                                     checked={selectedValue === 'SS'}
                                     onChange={handleRadioChange}
+                                    disabled={!pwmEnable3} 
                                 />
                                     Security Supervisor</div>
                             </label>
@@ -352,10 +379,10 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     value="SSS"
                                     checked={selectedValue === 'SSS'}
                                     onChange={handleRadioChange}
+                                    disabled={!pwmEnable4} 
                                 />
                                     Senior Security Supervisor</div>
                             </label>
-
 
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
@@ -363,6 +390,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     value="CSO"
                                     checked={selectedValue === 'CSO'}
                                     onChange={handleRadioChange}
+                                    disabled={!pwmEnable5} 
                                 />
                                     Chief Security Officer</div>
                             </label>

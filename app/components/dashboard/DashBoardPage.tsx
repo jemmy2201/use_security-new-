@@ -36,8 +36,8 @@ export interface userInfo {
 
 
 const cardTypeMap: { [key: string]: string } = {
-    [SO_APP]: 'Security Officer (SO)/Aviation Security Officer (AVSO)',
-    [PI_APP]: 'Personal Investigator',
+    [SO_APP]: 'Security Officer (SO)\nAviation Security Officer (AVSO)',
+    [PI_APP]: 'Personal Investigator (PI)',
 };
 
 const appTypeMap: { [key: string]: string } = {
@@ -179,7 +179,7 @@ const DashBoardPage: React.FC = () => {
     };
 
     const handleCloseModal = () => {
-        setShowModal(false); // Close the modal
+        setShowModal(false); 
         setModalMessage('');
     };
 
@@ -344,6 +344,7 @@ const DashBoardPage: React.FC = () => {
 
             if (dataBookingSchedule.app_type != '3') {
                 setShowModal(true);
+                setModalMessage('2');
                 return;
             }
             sessionStorage.setItem('bookingSchedule', JSON.stringify(dataBookingSchedule));
@@ -485,7 +486,7 @@ const DashBoardPage: React.FC = () => {
                                             <>
                                                 <tr key={`b-${booking.id}`} className={globalStyleCss.regular}>
                                                     <td className={dashBoardContentstyles.item2}>{booking.app_type == '1' ? 'New' : 'Existing'}</td>
-                                                    <td className={dashBoardContentstyles.item}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
+                                                    <td className={dashBoardContentstyles.item} style={{ whiteSpace: 'pre-line' }}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
                                                     <td className={dashBoardContentstyles.item1}>{gradeTypeMap[booking.grade_id || ''] || ''}</td>
                                                     <td className={dashBoardContentstyles.item3}>{formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}</td>
 
@@ -505,7 +506,7 @@ const DashBoardPage: React.FC = () => {
 
                                                         {booking.app_type == '2' && booking.Status_app ? (
                                                             <>
-                                                                Replace - {statusTypeMap[booking.Status_app || ''] || ''}
+                                                                Replacement - {statusTypeMap[booking.Status_app || ''] || ''}
                                                             </>
                                                         ) : null}
 
@@ -537,8 +538,9 @@ const DashBoardPage: React.FC = () => {
                                                                         handleReplaceClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Replace &nbsp;&nbsp;
+                                                                    Replace &nbsp;
                                                                 </a>
+                                                                | &nbsp;
                                                                 <a
                                                                     href="/renew"
                                                                     onClick={(e) => {
@@ -546,8 +548,9 @@ const DashBoardPage: React.FC = () => {
                                                                         handleRenewClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Renew &nbsp;&nbsp;
+                                                                    Renew &nbsp;
                                                                 </a>
+                                                                | &nbsp;
                                                                 <a
                                                                     href="/edit"
                                                                     onClick={(e) => {
@@ -587,6 +590,7 @@ const DashBoardPage: React.FC = () => {
                                                                     className={globalStyleCss.blueLink}>
                                                                     Continue &nbsp;
                                                                 </a>
+                                                                | &nbsp;
                                                                 <a
                                                                     href="/edit"
                                                                     onClick={(e) => {
@@ -612,8 +616,9 @@ const DashBoardPage: React.FC = () => {
                                                                         handleViewReceiptClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    View Receipt &nbsp;
+                                                                    View Receipt &nbsp; 
                                                                 </a>
+                                                                | &nbsp;
                                                                 <a
                                                                     href="/edit"
                                                                     onClick={(e) => {
@@ -638,6 +643,7 @@ const DashBoardPage: React.FC = () => {
                                                                     className={globalStyleCss.blueLink}>
                                                                     View Receipt &nbsp;
                                                                 </a>
+                                                                | &nbsp;
                                                                 <a
                                                                     href="/edit"
                                                                     onClick={(e) => {
@@ -659,8 +665,9 @@ const DashBoardPage: React.FC = () => {
                                                                         handleResubmitPhotoClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Upload photo &nbsp;
+                                                                    Upload photo &nbsp; 
                                                                 </a>
+                                                                | &nbsp;
                                                                 <a
                                                                     href="/edit"
                                                                     onClick={(e) => {
@@ -682,8 +689,9 @@ const DashBoardPage: React.FC = () => {
                                                                         handleBookAppointmentClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Book Appointment &nbsp;&nbsp;
+                                                                    Book Appointment &nbsp; 
                                                                 </a>
+                                                                | &nbsp;
                                                                 <a
                                                                     href="/edit"
                                                                     onClick={(e) => {
@@ -705,8 +713,9 @@ const DashBoardPage: React.FC = () => {
                                                                         handleViewReceiptClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    View Receipt
+                                                                    View Receipt &nbsp; 
                                                                 </a>
+                                                                | &nbsp;
                                                                 <a
                                                                     href="/edit"
                                                                     onClick={(e) => {
@@ -714,7 +723,7 @@ const DashBoardPage: React.FC = () => {
                                                                         handleBookAppointmentClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    &nbsp; Change Appointment
+                                                                    Change Appointment
                                                                 </a>
 
                                                             </>
@@ -730,9 +739,9 @@ const DashBoardPage: React.FC = () => {
                                                                         handleRenewClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Renew &nbsp;&nbsp;
+                                                                    Renew &nbsp; 
                                                                 </a>
-
+                                                                | &nbsp;
                                                                 {/* <a
                                                                 href="/edit"
                                                                 onClick={(e) => {
@@ -749,8 +758,9 @@ const DashBoardPage: React.FC = () => {
                                                                         handleReplaceClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Replace &nbsp;&nbsp;
+                                                                    Replace &nbsp; 
                                                                 </a>
+                                                                | &nbsp;
                                                                 <a
                                                                     href="/edit"
                                                                     onClick={(e) => {
@@ -873,7 +883,7 @@ const DashBoardPage: React.FC = () => {
 
                                             {booking.app_type == '2' && booking.Status_app ? (
                                                 <>
-                                                    Replace - {statusTypeMap[booking.Status_app || ''] || ''}
+                                                    Replacement - {statusTypeMap[booking.Status_app || ''] || ''}
                                                 </>
                                             ) : null}
 

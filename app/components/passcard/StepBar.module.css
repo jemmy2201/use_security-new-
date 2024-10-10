@@ -235,10 +235,11 @@
             display: flex;
             flex-direction: column;
             text-align: left;
-            width:1016px;
+            width: 1016px;
+
             @media screen and (max-width: 769px) {
                 width: 340px;
-              }
+            }
         }
 
         .menuBar {
@@ -337,7 +338,7 @@
     background-image: url('/images/Circle.svg');
     background-size: contain;
     background-repeat: no-repeat;
-    margin-left: 0px; 
+    margin-left: 0px;
     color: #546E7A;
 }
 

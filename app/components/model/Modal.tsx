@@ -13,12 +13,36 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
     <div className={styleCss.modaloverlay}>
       <div className={styleCss.modelContainer}>
         <div className={styleCss.modelBox}>
-          <div className={globalStyleCss.header2}>
-            Pass card application restrictions
-          </div>
-          <div className={globalStyleCss.regular}>
-            Security Officers who already hold an Aviation Security Officer (AVSO) pass card and Private investigator (PI) pass card are not eligible to apply for additional pass cards.
-          </div>
+
+          {message && message == '2' ? (
+            <>
+              <div className={globalStyleCss.header2}>
+                Pass card not due for renewal
+              </div>
+            </>
+          ) :
+            <>
+              <div className={globalStyleCss.header2}>
+                Pass card application restrictions
+              </div>
+            </>
+
+          }
+
+          {message && message == '2' ? (
+            <>
+              <div className={globalStyleCss.regular}>
+                Your pass card must have at least 3 months remaining before its expiry date to be eligible for renewal.
+              </div>
+            </>
+          ) :
+            <>
+              <div className={globalStyleCss.regular}>
+                Security Officers who already hold an Aviation Security Officer (AVSO) pass card and Private investigator (PI) pass card are not eligible to apply for additional pass cards.
+              </div>
+            </>
+
+          }
           <div className={styleCss.modelButton}>
             <button className={globalStyleCss.buttonTextBlack} onClick={onClose}>
               Okay

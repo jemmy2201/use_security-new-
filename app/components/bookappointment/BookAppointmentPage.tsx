@@ -10,6 +10,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { format, parseISO } from 'date-fns';
 import { useFormContext } from '.././FormContext';
 import globalStyleCss from '../globalstyle/Global.module.css';
+import CircularProgress from '@mui/material/CircularProgress';
 
 type DisabledDatesResponse = string[];
 export interface userInfo {
@@ -84,6 +85,7 @@ const BookAppointmentPage: React.FC = () => {
     ];
 
     const handleDateChange = async (date: Date | null) => {
+        setLoading(true);
         setStartDate(date);
         setFormData(prevFormData => ({
             ...prevFormData,
@@ -98,16 +100,20 @@ const BookAppointmentPage: React.FC = () => {
         const data = await response.json();
         console.log('response, /api/day-slots', data);
         setDisabledSlots(data.disabledSlots);
+        setLoading(false);
     };
 
     useEffect(() => {
         const storedData = sessionStorage.getItem('users');
         if (storedData) {
             try {
+                setLoading(true);
                 const parsedData: userInfo = JSON.parse(storedData);
                 setUsers(parsedData);
             } catch (err) {
                 setError('Failed to parse user data');
+            } finally {
+                setLoading(false);
             }
         } else {
             setError('No user data found');
@@ -115,6 +121,7 @@ const BookAppointmentPage: React.FC = () => {
 
         const fetchDisabledDates = async () => {
             try {
+                setLoading(true);
                 const response = await fetch(`/api/appointment-dates?bookingId=${encodeURIComponent(formData.bookingId ? formData.bookingId : '')}`);
 
                 if (!response.ok) {
@@ -125,6 +132,8 @@ const BookAppointmentPage: React.FC = () => {
                 setDisabledDates(parsedDates);
             } catch (error) {
                 console.error('Error fetching disabled dates:', error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchDisabledDates();
@@ -145,6 +154,11 @@ const BookAppointmentPage: React.FC = () => {
     return (
         <form>
             <div className={bookAppointmentContentstyles.mainContainer}>
+                {loading && (
+                    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <CircularProgress />
+                    </div>
+                )}
                 <div className={bookAppointmentContentstyles.stepContentContainer}>
                     <div className={bookAppointmentContentstyles.header}>
                         <div className={globalStyleCss.header2}>

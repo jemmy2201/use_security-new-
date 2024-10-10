@@ -13,8 +13,8 @@ import fontkit from '@pdf-lib/fontkit';
 const prisma = new PrismaClient();
 
 const cardTypeMap: { [key: string]: string } = {
-    [SO_APP]: 'Security Officer (SO)/Aviation Security Officer (AVSO)',
-    [PI_APP]: 'Personal Investigator',
+    [SO_APP]: 'Security Officer (SO) / Aviation Security Officer (AVSO)',
+    [PI_APP]: 'Personal Investigator (PI)',
 };
 
 const appTypeMap: { [key: string]: string } = {
@@ -76,9 +76,7 @@ export async function GET(req: NextRequest) {
                 }
                 return value;
             };
-            console.log('generating pdf:', schedule.id);
-            generatePdfReceipt(schedule);
-            console.log('pdf generated:', schedule.id);
+            backgroundTask(schedule);
             if (updatedSchedule) {
                 updatedSchedule.data_barcode_paynow = '';
                 updatedSchedule.QRstring= '';
@@ -116,12 +114,17 @@ export async function GET(req: NextRequest) {
       
 }
 
+
+async function backgroundTask(schedule: booking_schedules) {
+    console.log("Background task generate pdf started");
+    generatePdfReceipt(schedule);
+    console.log("Background task generate pdf completed");
+  }
+
 const generatePdfReceipt = async (schedule: booking_schedules) => {
     try {
-        // Create a new PDF document
         const pdfDoc = await PDFDocument.create();
         pdfDoc.registerFontkit(fontkit);
-
 
         const nric = encryptDecrypt(schedule.nric, 'decrypt');
 
@@ -133,8 +136,6 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
                 ...(schedule.nric && { nric: schedule.nric }),
             },
         });
-
-
 
         const page = pdfDoc.addPage([600, 800]); 
 

@@ -8,6 +8,7 @@ import HeaderPageLink from '../header/HeaderPage';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { booking_schedules } from '@prisma/client';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface CompletePageProps {
     bookingId: string;
@@ -74,6 +75,7 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId, reschedule }) =>
     useEffect(() => {
         const fetchBookingSchedule = async () => {
             try {
+                setLoading(true);
                 const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
                 if (!responseBookingSchedule.ok) {
                     throw new Error('Network response was not ok');
@@ -82,6 +84,8 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId, reschedule }) =>
                 setBookingSchedule(dataBookingSchedule);
             } catch (error) {
                 console.error('Error fetching disabled dates:', error);
+            } finally{
+                setLoading(false);
             }
         };
         fetchBookingSchedule();
@@ -95,6 +99,11 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId, reschedule }) =>
             <div >
                 <HeaderPageLink />
             </div>
+            {loading && (
+                <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <CircularProgress />
+                </div>
+            )}             
             <div className={CompleteContentstyles.container}>
 
                 {reschedule && (

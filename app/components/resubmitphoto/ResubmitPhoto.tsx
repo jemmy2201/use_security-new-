@@ -23,7 +23,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const [straightFaceDetected, setStraightFaceDetected] = useState<boolean>(false);
   const [faceDetected, setFaceDetected] = useState<boolean>(false);
   const [bgColorMatch, setBgColorMatch] = useState<boolean>(false);
-  const [showBookingAppointment, setShowBookingAppointment] = useState<boolean>();
+  const [showBookingAppointment, setShowBookingAppointment] = useState<boolean>(false);
   const [brightnessContrast, setBrightnessContrast] = useState<{ brightness: number; contrast: number } | null>(null);
   const [spectacleDetected, setSpectacleDetected] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -33,15 +33,28 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
   useEffect(() => {
     setLoading(true);
+
+    if (showBookingAppointment) {
+      // Logic that should run when showBookingAppointment is true
+    }
+    setLoading(false);
+
+  }, [showBookingAppointment]);
+
+  useEffect(() => {
+    setLoading(true);
     const fetchBookingSchedule = async () => {
       try {
+        console.log('appointment_date:');
+        setLoading(true);
+
         const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
         if (!responseBookingSchedule.ok) {
           throw new Error('Network response was not ok');
         }
         const dataBookingSchedule: booking_schedules = await responseBookingSchedule.json();
-        setBookingSchedule(dataBookingSchedule);
-        const appointment_date = bookingSchedule?.appointment_date;
+        const appointment_date = dataBookingSchedule?.appointment_date;
+        console.log('appointment_date:', appointment_date);
         if (appointment_date) {
           console.log('appointment_date:', appointment_date);
           const currentDate = new Date();
@@ -56,24 +69,31 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           }
           console.log('setShowBookingAppointment:', showBookingAppointment);
         } else {
-          console.log('setShowBookingAppointment to true:', showBookingAppointment);
+          console.log('setShowBookingAppointment to true:');
           setShowBookingAppointment(true);
+          console.log('setShowBookingAppointment to true:', showBookingAppointment);
         }
-
-        console.log('setShowBookingAppointment:', showBookingAppointment);
+        setBookingSchedule(dataBookingSchedule);
       } catch (error) {
         console.error('Error fetching disabled dates:', error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchBookingSchedule();
 
     const loadModels = async () => {
       try {
+        setLoading(true);
+
         await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
         await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
         await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
       } catch (error) {
         console.error('Error loading models:', error);
+      } finally {
+        setLoading(false);
+
       }
     };
 
@@ -558,29 +578,18 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             <div className={globalStyleCss.regular}>Cancel</div>
           </button>
 
-          {showBookingAppointment ? (
-            <>
-
-              <button className={resubmitPhotoContentstyles.continue} type='button' onClick={onNext}>
-                <div className={globalStyleCss.buttonText}>Book appointment</div>
-              </button>
-            </>
-
-          ) : null
-          }
 
           {showBookingAppointment ? (
-            null
+            <button className={resubmitPhotoContentstyles.continue} type='button' onClick={onNext}>
+              <div className={globalStyleCss.buttonText}>Book appointment</div>
+            </button>
 
-          ) : <>
+          ) : (
 
             <button className={resubmitPhotoContentstyles.continue} type='button' onClick={onComplete}>
               <div className={globalStyleCss.buttonText}>Complete</div>
             </button>
-          </>
-          }
-
-
+          )}
 
         </div>
       </div>

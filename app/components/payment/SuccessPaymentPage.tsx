@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import makePaymentContentstyles from './MakePaymentContent.module.css';
-import { loadStripe } from '@stripe/stripe-js';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { useFormContext } from '.././FormContext';
 
@@ -60,7 +59,7 @@ const SuccessPaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
                         <div className={makePaymentContentstyles.contentBox}>
                             <div className={makePaymentContentstyles.item}>
                                 <div className={globalStyleCss.regularBold}>Type of application </div>
-                                <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.cardId == '1' ? 'Security Officer (SO)/Aviation Security Officer (AVSO)' : 'Private Investigator (PI)'}</div></div>
+                                <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.cardId == '1' ? 'Security Officer (SO) / Aviation Security Officer (AVSO)' : 'Private Investigator (PI)'}</div></div>
                             </div>
 
                         </div>
