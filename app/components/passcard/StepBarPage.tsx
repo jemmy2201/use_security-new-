@@ -528,7 +528,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
     };
 
     return (
-        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%', background:'#F5F6F7'}}>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%', background: '#F5F6F7' }}>
 
             {loading && (
                 <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -542,20 +542,20 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 <>
                     <div className={mainPageModule.bodyContainer}>
                         <div className={mainPageModule.headerContainer}>
-                                <button type='button' onClick={handleBack} style={{ display: 'inline-flex', alignItems: 'center' }}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <g clipPath="url(#clip0_1433_2277)">
-                                            <path d="M7.825 13L13.425 18.6L12 20L4 12L12 4L13.425 5.4L7.825 11H20V13H7.825Z" fill="#546E7A" />
-                                        </g>
-                                        <defs>
-                                            <clipPath id="clip0_1433_2277">
-                                                <rect width="24" height="24" fill="white" />
-                                            </clipPath>
-                                        </defs>
-                                    </svg>
-                                    <div className={globalStyleCss.regularLinkBlack}>&nbsp;Back to Personal details</div>
-                                </button>
-                            </div>
+                            <button type='button' onClick={handleBack} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <g clipPath="url(#clip0_1433_2277)">
+                                        <path d="M7.825 13L13.425 18.6L12 20L4 12L12 4L13.425 5.4L7.825 11H20V13H7.825Z" fill="#546E7A" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_1433_2277">
+                                            <rect width="24" height="24" fill="white" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                                <div className={globalStyleCss.regularLinkBlack}>&nbsp;Back to Personal details</div>
+                            </button>
+                        </div>
                     </div>
                 </>
             )}

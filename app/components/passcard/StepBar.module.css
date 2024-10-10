@@ -231,10 +231,14 @@
 
         .pageHeading {
             flex-wrap: wrap;
-            padding: 20px;
+            padding-top: 20px;
             display: flex;
             flex-direction: column;
             text-align: left;
+            width:1016px;
+            @media screen and (max-width: 769px) {
+                width: 340px;
+              }
         }
 
         .menuBar {
