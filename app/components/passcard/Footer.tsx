@@ -7,6 +7,7 @@ import globalStyleCss from '../globalstyle/Global.module.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface FooterProps {
     onNext: () => void;
@@ -16,21 +17,24 @@ interface FooterProps {
     hasBack: boolean;
     activeStep: number;
 }
-
 const Footer: React.FC<FooterProps> =
     ({ onNext, onBack, onSaveDraft, hasNext, hasBack, activeStep }) => {
+
         const { formData, setFormData } = useFormContext();
+        const router = useRouter();
+
+        const handleClick = () => {
+            router.push('/homepage');
+        };
         return (
             <footer>
                 <div className={stepBarFooterStyle.bodyContainer}>
                     <div className={stepBarFooterStyle.headerContainer}>
-                        {/* <div className={globalStyleCss.regularLinkBlack}><Link href="/homepage">Cancel</Link></div> */}
-                        <div className={stepBarFooterStyle.saveDraft}>
-                            <Link href="/homepage">
+                        {!formData.isAppointmentConfirmed && (
+                            <div className={stepBarFooterStyle.saveDraft} onClick={handleClick} style={{ cursor: 'pointer' }}>
                                 <div className={globalStyleCss.regular}>Cancel</div>
-                            </Link>
-                        </div>
-
+                            </div>
+                        )}
                         {!formData.paymentProcessed && (
                             <div className={stepBarFooterStyle.saveDraft}>
                                 <button type='button' onClick={onSaveDraft}>
@@ -69,10 +73,7 @@ const Footer: React.FC<FooterProps> =
 
                         )}
                     </div>
-
-
                 </div>
-
             </footer>
         );
     }

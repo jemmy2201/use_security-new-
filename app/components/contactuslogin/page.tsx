@@ -24,6 +24,19 @@ const ContactusPage: React.FC = () => {
             </div>
             <div className={contactusContentstyles.mainContainer}>
                 <div className={contactusContentstyles.contactusContainer}>
+                    <button type='button' onClick={handleBack} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <g clipPath="url(#clip0_1433_2277)">
+                                <path d="M7.825 13L13.425 18.6L12 20L4 12L12 4L13.425 5.4L7.825 11H20V13H7.825Z" fill="#546E7A" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_1433_2277">
+                                    <rect width="24" height="24" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                        <div className={globalStyleCss.regularLinkBlackBold}>&nbsp;Back to Personal details</div>
+                    </button>
                     <div className={globalStyleCss.header2}>
                         Contact Us
                     </div>

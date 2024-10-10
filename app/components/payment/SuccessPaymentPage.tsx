@@ -66,13 +66,7 @@ const SuccessPaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
-
-
-
         </form >
     );
 };

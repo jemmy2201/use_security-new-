@@ -5,8 +5,15 @@ import headerstyles from './HeaderStyle.module.css';
 import { logout } from '@/actions/auth';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const HeaderPage: React.FC = () => {
+
+    const router = useRouter();
+
+    const handleClick = () => {
+        router.push('/homepage');
+    };
 
     const handleLogout = async () => {
         try {
@@ -25,7 +32,7 @@ const HeaderPage: React.FC = () => {
     return (
 
         <div className={headerstyles.siteHeaderContainer}>
-            <div className={headerstyles.logo}><Link href="/homepage"><img src="/images/logo.png" alt="Logo" /></Link></div>
+            <div className={headerstyles.logo} onClick={handleClick} style={{ cursor: 'pointer' }}><img src="/images/logo.png" alt="Logo" /></div>
             <div className={headerstyles.companyName}>Union of Security Employees (USE)</div>
             <div className={headerstyles.leftBox}>
                 <div className={headerstyles.contactUs}>

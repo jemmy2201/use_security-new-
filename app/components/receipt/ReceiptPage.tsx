@@ -12,6 +12,7 @@ import html2canvas from 'html2canvas';
 import { NEW, REPLACEMENT, RENEWAL } from '../../constant/constant';
 import { SO_APP, AVSO_APP, PI_APP } from '../../constant/constant';
 import { SO, SSO, SS, SSS, CSO } from '../../constant/constant';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface CompletePageProps {
     bookingId: string;
@@ -127,7 +128,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
     };
 
     useEffect(() => {
-
+        setLoading(true);
         const storedData = sessionStorage.getItem('users');
         if (storedData) {
             const actionTypeValue = sessionStorage.getItem('actionTypeValue');
@@ -150,12 +151,18 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
             }
         };
         fetchBookingSchedule();
+        setLoading(false);
     }, []);
 
 
     return (
 
         <form>
+            {loading && (
+                <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <CircularProgress />
+                </div>
+            )}
             <div >
                 <HeaderPageLink />
             </div>
@@ -193,7 +200,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                             <div className={globalStyleCss.regularBold}>Transaction reference no.</div>
                         </div>
                         <div className={receiptContentstyles.boxWidth}>
-                            <div className={globalStyleCss.regular}>{bookingSchedule?.stripe_payment_id ? bookingSchedule?.stripe_payment_id: bookingSchedule?.receiptNo }</div>
+                            <div className={globalStyleCss.regular}>{bookingSchedule?.stripe_payment_id ? bookingSchedule?.stripe_payment_id : bookingSchedule?.receiptNo}</div>
                         </div>
                     </div>
                     <hr className={receiptContentstyles.customhr}></hr>

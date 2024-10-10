@@ -38,9 +38,8 @@ export async function GET(request: NextRequest) {
     const url = new URL(request.url);
     const encryptedNric = await getEncryptedNricFromSession(request);
     if (encryptedNric instanceof NextResponse) {
-      return encryptedNric; // Return the redirect response if necessary
+      return encryptedNric; 
     }
-    // Find records with optional filters
     const schedules = await prisma.booking_schedules.findMany({
       where: {
         ...(encryptedNric && { nric: encryptedNric }),

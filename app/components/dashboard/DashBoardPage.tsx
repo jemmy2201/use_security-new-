@@ -77,15 +77,21 @@ const DashBoardPage: React.FC = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [modalMessage, setModalMessage] = useState<string>('');
 
-    const options = ['Security Officer (SO) / Aviation Security Officer (AVSO)', 'Private Investigator'];
 
+    const options = [
+        <>
+          Security Officer(SO)<br />Aviation Security Officer(AVSO)
+        </>,
+        'Private Investigator(PI)'
+      ];
+    
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
-    const handleSelect = (option: string) => {
+    const handleSelect = (option: number) => {
         console.log('Selected:', option);
-        if (option == 'Private Investigator') {
+        if (option == 1) {
             handlePINewPasscardClick();
         } else {
             handleSONewPasscardClick();
@@ -111,7 +117,11 @@ const DashBoardPage: React.FC = () => {
             setLoading(true);
             const response = await fetch('/api/handle-create-new-pass/so-card');
             console.log('response from handle-create-new-pass/so-card', response);
-
+            if (!response.ok && response.status === 401) {
+                setLoading(false);
+                router.push('/signin');
+                throw new Error('Personal Details: Failed to save draft');
+            }
             const data: createNewPassApiResponse = await response.json();
             console.log('data:', data);
             if (data.errorCode) {
@@ -426,7 +436,7 @@ const DashBoardPage: React.FC = () => {
                                         {options.map((option, index) => (
                                             <li
                                                 key={`op-${index}`}
-                                                onClick={() => handleSelect(option)}
+                                                onClick={() => handleSelect(index)}
                                                 style={{
                                                     padding: '4px',
                                                     cursor: 'pointer',
@@ -487,7 +497,7 @@ const DashBoardPage: React.FC = () => {
                                                             </>
                                                         ) : null}
 
-                                                        {booking.app_type == '2' && booking.Status_app == '' ? (
+                                                        {booking.app_type == '2' && (booking.Status_app == '' || !booking.Status_app) ? (
                                                             <>
                                                                 Issued
                                                             </>
@@ -517,7 +527,7 @@ const DashBoardPage: React.FC = () => {
                                                     <td className={dashBoardContentstyles.item}>
 
 
-                                                        {booking.app_type == '2' && booking.Status_app == '' ? (
+                                                        {booking.app_type == '2' && (booking.Status_app == '' || !booking.Status_app) ? (
                                                             <>
 
                                                                 <a
@@ -855,7 +865,7 @@ const DashBoardPage: React.FC = () => {
                                                 </>
                                             ) : null}
 
-                                            {booking.app_type == '2' && booking.Status_app == '' ? (
+                                            {booking.app_type == '2' && (booking.Status_app == '' || !booking.Status_app) ? (
                                                 <>
                                                     Issued
                                                 </>
@@ -892,7 +902,7 @@ const DashBoardPage: React.FC = () => {
                                     </div>
                                     <div className={dashBoardContentstyles.cell}>
                                         <div className={globalStyleCss.regular}>
-                                            {booking.app_type == '2' && booking.Status_app == '' ? (
+                                            {booking.app_type == '2' && (booking.Status_app == '' || !booking.Status_app) ? (
                                                 <>
 
                                                     <a

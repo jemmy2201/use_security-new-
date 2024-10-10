@@ -13,6 +13,7 @@ import OtpPopup from './OtpPopup';
 import UpdateModel from './UpdateModel';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface UpdateDetailsPageProps {
     bookingId: string;
@@ -35,6 +36,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [errorMobileMessage, setErrorMobileMessage] = useState('');
     const { formData, setFormData } = useFormContext();
     const [isOtpPopupOpen, setIsOtpPopupOpen] = useState<boolean>(false);
     const [isModelPopupOpen, setIsModelPopupOpen] = useState<boolean>(false);
@@ -98,6 +100,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
     const onNext = async () => {
 
         try {
+            setLoading(true);
             let validStepZero = true;
             if (!formData.email) {
                 setFormData(prevFormData => ({
@@ -123,7 +126,10 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                     errorMobileNumber: '',
                 }))
             }
-            if (!validStepZero) return;
+            if (!validStepZero) {
+                setLoading(false);
+                return;
+            }
 
             if (formData.originalMobileno === formData.mobileno
                 || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
@@ -144,13 +150,19 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
 
                 if (result.success) {
                     console.log('SMS sent:', result);
+                    setLoading(false);
                     setIsOtpPopupOpen(true);
                 } else {
-                    alert(result.message);
+                    setLoading(false);
+                    setFormData(prevFormData => ({
+                        ...prevFormData,
+                        errorMobileNumber: result.message,
+                    }))
                 }
-
+                setLoading(false);
                 return;
             }
+            setLoading(false);
             setIsModelPopupOpen(true);
             console.log('bookingId', bookingId);
 
@@ -183,6 +195,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
 
         const fetchBookingSchedule = async () => {
             try {
+                setLoading(true);
                 const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
                 if (!responseBookingSchedule.ok) {
                     throw new Error('Network response was not ok');
@@ -225,6 +238,8 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                 });
             } catch (error) {
                 console.error('Error fetching disabled dates:', error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchBookingSchedule();
@@ -234,9 +249,14 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
 
         <form>
             <ToastContainer />
-            <div >
-                <HeaderPageLink />
-            </div>
+            {loading && (
+                <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <CircularProgress />
+                </div>
+            )}
+
+            <HeaderPageLink />
+
             <div className={updateDetailsContentstyles.mainContainer}>
                 <div className={updateDetailsContentstyles.headerBox}>
                     <div className={globalStyleCss.header1}>
@@ -245,47 +265,44 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                 </div>
 
                 <div className={updateDetailsContentstyles.appointmentDetailContainer}>
-                    <div className={updateDetailsContentstyles.header}>
-                        <div className={globalStyleCss.header2}>
-                            Personal details
-                        </div>
-                        <div className={updateDetailsContentstyles.contentBox}>
-                            <div className={updateDetailsContentstyles.item}>
-                                <div className={globalStyleCss.regularBold}>Mobile number:
-                                    {formData.errorMobileNumber && <p style={{ color: 'red' }}>{formData.errorMobileNumber}</p>}
-                                </div>
-                                <div className={globalStyleCss.regular}>
-                                    <input
-                                        type="text"
-                                        id="mobileno"
-                                        value={formData.mobileno || ''}
-                                        onChange={handleChange}
-                                        className={updateDetailsContentstyles.inputBox}
-                                        required placeholder="Enter your mobile number"
-                                    /></div>
+                    <div className={globalStyleCss.header2}>
+                        Personal details
+                    </div>
+                    <div className={updateDetailsContentstyles.contentBox}>
+                        <div className={updateDetailsContentstyles.item}>
+                            <div className={globalStyleCss.regularBold}>Mobile number:
+                                {formData.errorMobileNumber && <p style={{ color: 'red' }}>{formData.errorMobileNumber}</p>}
                             </div>
-                            <div className={updateDetailsContentstyles.item}>
-                                <div className={globalStyleCss.regularBold}>Email Address.
-                                    {formData.errorEmail && <p style={{ color: 'red' }}>{formData.errorEmail}</p>}
-                                </div>
-                                <div className={globalStyleCss.regular}>
-                                    <input
-                                        type="text"
-                                        id="email"
-                                        value={formData.email || ''}
-                                        onChange={handleChange}
-                                        className={updateDetailsContentstyles.inputBox}
-                                        required placeholder="Enter your email"
-                                    />
-                                </div>
-                                <OtpPopup
-                                    isOpen={isOtpPopupOpen}
-                                    onClose={handleOtpCancel}
+                            <div className={globalStyleCss.regular}>
+                                <input
+                                    type="text"
+                                    id="mobileno"
+                                    value={formData.mobileno || ''}
+                                    onChange={handleChange}
+                                    className={updateDetailsContentstyles.inputBox}
+                                    required placeholder="Enter your mobile number"
+                                /></div>
+                        </div>
+                        <div className={updateDetailsContentstyles.item}>
+                            <div className={globalStyleCss.regularBold}>Email Address.
+                                {formData.errorEmail && <p style={{ color: 'red' }}>{formData.errorEmail}</p>}
+                            </div>
+                            <div className={globalStyleCss.regular}>
+                                <input
+                                    type="text"
+                                    id="email"
+                                    value={formData.email || ''}
+                                    onChange={handleChange}
+                                    className={updateDetailsContentstyles.inputBox}
+                                    required placeholder="Enter your email"
                                 />
                             </div>
+                            <OtpPopup
+                                isOpen={isOtpPopupOpen}
+                                onClose={handleOtpCancel}
+                            />
                         </div>
                     </div>
-
                 </div>
 
                 <div className={updateDetailsContentstyles.appointmentDetailContainer}>
@@ -298,6 +315,16 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                     </div>
                     <div className={updateDetailsContentstyles.trainingOptionContainer}>
                         <div className={updateDetailsContentstyles.trainingOptionBox}>
+
+                            <label className={updateDetailsContentstyles.checkboxes}>
+                                <div className={globalStyleCss.regular}><input
+                                    type="radio"
+                                    value="SO"
+                                    checked={selectedValue === 'SO'}
+                                    onChange={handleRadioChange}
+                                />
+                                    Security Officier</div>
+                            </label>
 
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
@@ -357,7 +384,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                     <div className={updateDetailsContentstyles.trainingOptionContainer}>
                         <div className={updateDetailsContentstyles.trainingOptionBox}>
 
-                            <label className={updateDetailsContentstyles.checkboxes}>
+                            {/* <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}>
                                     <input
                                         type="checkbox"
@@ -365,8 +392,8 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                         checked={checkboxes.trAvso}
                                         onChange={handleCheckboxChange}
                                     />
-                                    </div> <div>Airport Screener Deployment</div>
-                            </label>
+                                </div> <div>Airport Screener Deployment</div>
+                            </label> */}
 
 
                             <label className={updateDetailsContentstyles.checkboxes}>
@@ -376,7 +403,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     checked={checkboxes.trCctc}
                                     onChange={handleCheckboxChange}
                                 />
-                                    </div> <div>Conduct Crowd and Traffic Control (CCTC)</div>
+                                </div> <div>Conduct Crowd and Traffic Control (CCTC)</div>
                             </label>
 
                             <label className={updateDetailsContentstyles.checkboxes}>
@@ -386,7 +413,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     checked={checkboxes.trCsspb}
                                     onChange={handleCheckboxChange}
                                 />
-                                    </div> <div>Conduct Security Screening of Person and Bag (CSSPB)</div>
+                                </div> <div>Conduct Security Screening of Person and Bag (CSSPB)</div>
                             </label>
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
@@ -395,7 +422,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     checked={checkboxes.trXray}
                                     onChange={handleCheckboxChange}
                                 />
-                                    </div> <div>Conduct Screening using X-ray Machine (X-RAY)</div>
+                                </div> <div>Conduct Screening using X-ray Machine (X-RAY)</div>
                             </label>
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
@@ -404,28 +431,28 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     checked={checkboxes.trHcta}
                                     onChange={handleCheckboxChange}
                                 />
-                                    </div> <div>Handle Counter Terrorist Activities (HCTA)</div>
+                                </div> <div>Handle Counter Terrorist Activities (HCTA)</div>
                             </label>
 
 
-                            <label className={updateDetailsContentstyles.checkboxes}>
+                            {/* <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trObse"
                                     checked={checkboxes.trObse}
                                     onChange={handleCheckboxChange}
                                 />
-                                    </div> <div>Operate Basic Security Equipment</div>
-                            </label>
-                            <label className={updateDetailsContentstyles.checkboxes}>
+                                </div> <div>Operate Basic Security Equipment</div>
+                            </label> */}
+                            {/* <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
                                     name="trSsm"
                                     checked={checkboxes.trSsm}
                                     onChange={handleCheckboxChange}
                                 />
-                                    </div> <div>Security Surveillance Management</div>
-                            </label>
+                                </div> <div>Security Surveillance Management</div>
+                            </label> */}
 
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}> <input
@@ -434,7 +461,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     checked={checkboxes.trRtt}
                                     onChange={handleCheckboxChange}
                                 />
-                                    </div> <div>Recognise Terrorist Threat (RTT)</div>
+                                </div> <div>Recognise Terrorist Threat (RTT)</div>
                             </label>
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input

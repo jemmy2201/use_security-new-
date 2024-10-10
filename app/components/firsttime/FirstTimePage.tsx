@@ -38,15 +38,20 @@ const FirstTimePage: React.FC = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [modalMessage, setModalMessage] = useState<string>('');
 
-    const options = ['Security Officer (SO) / Aviation Security Officer (AVSO)', 'Private Investigator'];
+    const options = [
+        <>
+          Security Officer(SO)<br />Aviation Security Officer(AVSO)
+        </>,
+        'Private Investigator(PI)'
+      ];
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
-    const handleSelect = (option: string) => {
+    const handleSelect = (option: number) => {
         console.log('Selected:', option);
-        if (option == 'Private Investigator') {
+        if (option == 1) {
             handleNewPiPasscardClick();
         } else {
             handleNewSoPasscardClick();
@@ -67,7 +72,11 @@ const FirstTimePage: React.FC = () => {
 
             const responseNewPass = await fetch('/api/handle-create-new-pass/so-card');
             console.log('response from handle-create-new-pass', responseNewPass);
-
+            if (!responseNewPass.ok && responseNewPass.status === 401) {
+                setLoading(false);
+                router.push('/signin');
+                throw new Error('Personal Details: Failed to save draft');
+            }
             const dataNewPass: createNewPassApiResponse = await responseNewPass.json();
             console.log('data:', dataNewPass);
             if (dataNewPass.errorCode) {
@@ -174,7 +183,7 @@ const FirstTimePage: React.FC = () => {
                     <div className={firstTimeContentstyles.recordContainer}>
                         <div className={firstTimeContentstyles.recordBox}>
                             <div className={firstTimeContentstyles.recordBoxText}>
-                                No records
+                                No Record
                             </div>
                             <div className={firstTimeContentstyles.recordBoxText2}>
                                 Your application will be displayed here
@@ -212,7 +221,7 @@ const FirstTimePage: React.FC = () => {
                                         {options.map((option, index) => (
                                             <li
                                                 key={`ft-${index}`}
-                                                onClick={() => handleSelect(option)}
+                                                onClick={() => handleSelect(index)}
                                                 style={{
                                                     padding: '4px',
                                                     cursor: 'pointer',

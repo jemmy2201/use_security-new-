@@ -11,13 +11,19 @@ import Link from 'next/link';
 
 const ContactusPage: React.FC = () => {
 
+    const router = useRouter();
+
     const handleLoginClick = async () => {
         signIn('singpass');
     };
 
+    const handleClick = () => {
+        router.push('/signin');
+    };
+
     return (
 
-        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%', background:'#F5F6F7' }}>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%', background: '#F5F6F7' }}>
 
 
             <div className={headerstyles.headerContainer}>
@@ -44,13 +50,25 @@ const ContactusPage: React.FC = () => {
                                     </clipPath>
                                 </defs>
                             </svg>
-
                         </button>
                     </div>
                 </div>
             </div>
             <div className={contactusContentstyles.mainContainer}>
                 <div className={contactusContentstyles.contactusContainer}>
+                    <button type='button' onClick={handleClick} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <g clipPath="url(#clip0_1433_2277)">
+                                <path d="M7.825 13L13.425 18.6L12 20L4 12L12 4L13.425 5.4L7.825 11H20V13H7.825Z" fill="#546E7A" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_1433_2277">
+                                    <rect width="24" height="24" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>&nbsp;
+                        <div className={globalStyleCss.regularLinkBlackBold}>Back to Home page</div>
+                    </button>
                     <div className={globalStyleCss.header2}>
                         Contact Us
                     </div>

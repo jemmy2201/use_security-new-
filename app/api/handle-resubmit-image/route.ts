@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     if (schedule) {
       const fileName = schedule?.passid + encryptedNric?.slice(-4);
       console.log('file name:', fileName);
-      const filePath = path.join(uploadsDir+'/userdocs/img_users', fileName + '.png');
+      const filePath = path.join(uploadsDir, fileName + '.png');
       fs.writeFileSync(filePath, buffer);
 
       const updatedSchedule = await prisma.booking_schedules.update({
