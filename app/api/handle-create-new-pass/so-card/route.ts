@@ -35,13 +35,25 @@ const mapToCreateNewPassApiResponse = (
 
 export async function GET(request: NextRequest) {
   try {
-    const url = new URL(request.url);
     const encryptedNric = await getEncryptedNricFromSession(request);
     if (encryptedNric instanceof NextResponse) {
-      return encryptedNric; // Return the redirect response if necessary
+      return encryptedNric; 
     }
 
-    // Find records with optional filters
+    const passList = await prisma.booking_schedules.findFirst({
+      where: {
+        ...(encryptedNric && { nric: encryptedNric }),
+        app_type: '1',
+        card_id: '1',
+        card_issue: {
+          not: 'N',
+        },
+      },
+    });
+    console.log('passList', passList);
+    if (!passList) {
+      return new Response(JSON.stringify({ error: 'No record found' }), { status: 404 });
+    }
     const schedules = await prisma.booking_schedules.findMany({
       where: {
         ...(encryptedNric && { nric: encryptedNric }),

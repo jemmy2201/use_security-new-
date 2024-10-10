@@ -122,6 +122,11 @@ const DashBoardPage: React.FC = () => {
                 router.push('/signin');
                 throw new Error('Personal Details: Failed to save draft');
             }
+            if(!response.ok){
+                setShowModal(true);
+                setModalMessage('3');
+                return;
+            }
             const data: createNewPassApiResponse = await response.json();
             console.log('data:', data);
             if (data.errorCode) {
@@ -129,13 +134,6 @@ const DashBoardPage: React.FC = () => {
                 return;
             }
             sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(data));
-
-            // const responseMyInfo = await fetch('/api/myinfo');
-            // if (!responseMyInfo.ok) {
-            //     throw new Error('Network response was not ok');
-            // }
-            // const dataMyInfo: userInfo = await responseMyInfo.json();
-            // router.push('/myinfoterms');
             sessionStorage.setItem('actionTypeValue', 'New');
             router.push('/passcard?actionType=New');
 
@@ -152,7 +150,16 @@ const DashBoardPage: React.FC = () => {
             setLoading(true);
             const response = await fetch('/api/handle-create-new-pass/pi-card');
             console.log('response from handle-create-new-pass/pi-card', response);
-
+            if (!response.ok && response.status === 401) {
+                setLoading(false);
+                router.push('/signin');
+                throw new Error('Personal Details: Failed to save draft');
+            }
+            if(!response.ok){
+                setShowModal(true);
+                setModalMessage('3');
+                return;
+            }
             const data: createNewPassApiResponse = await response.json();
             console.log('data:', data);
             if (data.errorCode) {
@@ -160,14 +167,6 @@ const DashBoardPage: React.FC = () => {
                 return;
             }
             sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(data));
-
-            // const responseMyInfo = await fetch('/api/myinfo');
-            // if (!responseMyInfo.ok) {
-            //     throw new Error('Network response was not ok');
-            // }
-            // const dataMyInfo: userInfo = await responseMyInfo.json();
-            // router.push('/myinfoterms');
-
             sessionStorage.setItem('actionTypeValue', 'New');
             router.push('/passcard?actionType=New');
 
