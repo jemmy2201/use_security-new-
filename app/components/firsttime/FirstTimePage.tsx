@@ -71,6 +71,7 @@ const FirstTimePage: React.FC = () => {
                 throw new Error('Personal Details: Failed to save draft');
             }
             if (!responseNewPass.ok) {
+                setLoading(false);
                 setShowModal(true);
                 return;
             }
@@ -83,9 +84,10 @@ const FirstTimePage: React.FC = () => {
             router.push('/passcard?actionType=New');
 
         } catch (err) {
+            setLoading(false);
             setError('Failed to fetch user details');
         } finally {
-            setLoading(false);
+            //setLoading(false);
         }
     };
 
@@ -95,7 +97,13 @@ const FirstTimePage: React.FC = () => {
             setLoading(true);
             const responseNewPass = await fetch('/api/handle-create-new-pass/pi-card');
             console.log('response from handle-create-new-pass', responseNewPass);
+            if (!responseNewPass.ok && responseNewPass.status === 401) {
+                setLoading(false);
+                router.push('/signin');
+                throw new Error('Personal Details: Failed to save draft');
+            }
             if (!responseNewPass.ok) {
+                setLoading(false);
                 setShowModal(true);
                 return;
             }
@@ -107,9 +115,10 @@ const FirstTimePage: React.FC = () => {
             router.push('/passcard?actionType=New');
 
         } catch (err) {
+            setLoading(false);
             setError('Failed to fetch user details');
         } finally {
-            setLoading(false);
+            // setLoading(false);
         }
     };
 
@@ -158,7 +167,7 @@ const FirstTimePage: React.FC = () => {
                 </div>
                 <div className={firstTimeContentstyles.myApplication}>
                     <div className={firstTimeContentstyles.myApplicationText}>
-                        My applications
+                        My Applications
                     </div>
                     <div className={firstTimeContentstyles.recordContainer}>
                         <div className={firstTimeContentstyles.recordBox}>

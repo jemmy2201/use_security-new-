@@ -322,9 +322,10 @@ const DashBoardPage: React.FC = () => {
             router.push('/passcard?actionType=Replace');
 
         } catch (err) {
+            setLoading(false);
             setError('Failed to fetch user details');
         } finally {
-            setLoading(false);
+            // setLoading(false);
         }
     };
 
@@ -424,7 +425,7 @@ const DashBoardPage: React.FC = () => {
                     <div className={dashBoardContentstyles.myApplication}>
                         <div className={dashBoardContentstyles.headerBox}>
                             <div className={globalStyleCss.header1}>
-                                My applications
+                                My Applications
                             </div>
 
                             <div className={dashBoardContentstyles.primaryButton}>
