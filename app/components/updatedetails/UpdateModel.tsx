@@ -81,7 +81,8 @@ const UpdateModel: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
             <h2>Save changes</h2>
           </div>
           <div className={OtpModuleStyle.textDetails}>
-            By clicking “Save changes”, I hereby certify that the information and photograph provided are accurate and complete. I acknowledge that should any of this information be found to be false, misleading, or misrepresentative, I may be held legally responsible.
+            I hereby certify that the information and photograph provided are accurate and complete. I acknowledge that if any of the information is found to be false, misleading, or misrepresented,
+            I may be held legally responsible.
           </div>
 
           <div className={OtpModuleStyle.optButtonBox}>

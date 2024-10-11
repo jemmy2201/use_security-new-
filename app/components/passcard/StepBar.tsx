@@ -31,44 +31,41 @@ const StepBar: React.FC<StepBarProps> = ({ actionType, steps, activeStep }) => {
                 <div className={styleBarModule.pageHeading}>
                     {formData.applicationType == '1' && formData.cardId == '1' ? (
                         <>
-                            <div className={globalStyleCss.header1}>Application for New ID Card:</div>
-                            <div className={globalStyleCss.header1}>Security Officer (SO) / Aviation Security Officer (AVSO)</div>
+                            <div className={globalStyleCss.header2}>Application for New ID Card:</div>
+                            <div className={globalStyleCss.header2}>Security Officer (SO) / Aviation Security Officer (AVSO)</div>
                         </>
                     ) : <> </>}
 
                     {formData.applicationType == '2' && formData.cardId == '1' ? (
                         <>
-                            <div className={globalStyleCss.header1}>Replace ID Card:</div>
-                            <div className={globalStyleCss.header1}>Security Officer (SO) / Aviation Security Officer (AVSO)</div>
+                            <div className={globalStyleCss.header2}>Replace ID Card:</div>
+                            <div className={globalStyleCss.header2}>Security Officer (SO) / Aviation Security Officer (AVSO)</div>
                         </>
                     ) : <> </>}
 
                     {formData.applicationType == '3' && formData.cardId == '1' ? (
                         <>
-                            <div className={globalStyleCss.header1}>Renew ID Card:</div>
-                            <div className={globalStyleCss.header1}>Security Officer (SO) / Aviation Security Officer (AVSO)</div>
+                            <div className={globalStyleCss.header2}>Renew ID Card:</div>
+                            <div className={globalStyleCss.header2}>Security Officer (SO) / Aviation Security Officer (AVSO)</div>
                         </>
                     ) : <> </>}
 
 
                     {formData.applicationType == '1' && formData.cardId == '2' ? (
                         <>
-                            <div className={globalStyleCss.header1}>Application for New ID Card:</div>
-                            <div className={globalStyleCss.header1}>Personal Investigator (PI)</div>
+                            <div className={globalStyleCss.header2}>Application for New ID Card: Personal Investigator (PI)</div>
                         </>
                     ) : <> </>}
 
                     {formData.applicationType == '2' && formData.cardId == '2' ? (
                         <>
-                            <div className={globalStyleCss.header1}>Replace ID Card:</div>
-                            <div className={globalStyleCss.header1}>Personal Investigator (PI)</div>
+                            <div className={globalStyleCss.header2}>Replace ID Card: Personal Investigator (PI)</div>
                         </>
                     ) : <> </>}
 
                     {formData.applicationType == '3' && formData.cardId == '2' ? (
                         <>
-                            <div className={globalStyleCss.header1}>Renew ID Card:</div>
-                            <div className={globalStyleCss.header1}>Personal Investigator (PI)</div>
+                            <div className={globalStyleCss.header2}>Renew ID Card: Personal Investigator (PI)</div>
                         </>
                     ) : <> </>}
 

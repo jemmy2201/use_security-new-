@@ -49,6 +49,11 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
         setLoading(true);
 
         const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
+        if (!responseBookingSchedule.ok && responseBookingSchedule.status === 401) {
+          setLoading(false);
+          router.push('/signin');
+          throw new Error('Log out');
+        }
         if (!responseBookingSchedule.ok) {
           throw new Error('Network response was not ok');
         }
@@ -385,7 +390,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             Photo
           </div>
           <div className={globalStyleCss.header2}>
-            This photo will be used for your pass card
+            This photo will be used for your ID Card.
           </div>
           <div className={resubmitPhotoContentstyles.warningBox}>
             <div>
@@ -474,7 +479,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
             <div className={resubmitPhotoContentstyles.photosDosDontContainer}>
               <div className={resubmitPhotoContentstyles.dosDontDoText}>
-                Photo dos and don’ts
+                Dos and Don’ts
               </div>
               <div className={resubmitPhotoContentstyles.photosDosDontContainerPicsBox}>
                 <div className={resubmitPhotoContentstyles.picBox}>

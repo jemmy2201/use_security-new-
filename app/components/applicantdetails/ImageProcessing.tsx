@@ -332,7 +332,7 @@ const ImageProcessing = () => {
         Photo
       </div>
       <div className={globalStyleCss.regular}>
-        This photo will be used for your pass card
+        This photo will be used for your ID Card.
         {formData.errorPhoto && <p style={{ color: 'red' }}>{formData.errorPhoto}</p>}
       </div>
       <div className={applicantDetailsContentstyles.warningBox}>
@@ -426,7 +426,7 @@ const ImageProcessing = () => {
 
         <div className={applicantDetailsContentstyles.photosDosDontContainer}>
           <div className={applicantDetailsContentstyles.dosDontDoText}>
-            Photo dos and don’ts
+            Dos and Don’ts
           </div>
           <div className={applicantDetailsContentstyles.photosDosDontContainerPicsBox}>
             <div className={applicantDetailsContentstyles.picBox}>

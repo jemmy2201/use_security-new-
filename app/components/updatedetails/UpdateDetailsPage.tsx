@@ -202,6 +202,11 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
             try {
                 setLoading(true);
                 const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
+                if (!responseBookingSchedule.ok && responseBookingSchedule.status === 401) {
+                    setLoading(false);
+                    router.push('/signin');
+                    throw new Error('Log out');
+                }
                 if (!responseBookingSchedule.ok) {
                     throw new Error('Network response was not ok');
                 }

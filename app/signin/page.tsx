@@ -54,7 +54,7 @@ const HomePage: React.FC = () => {
                 </div>
 
                 <div className={s.bodyBox}>
-                    <div className={s.title}>Welcome to USE Pass Card Portal</div>
+                    <div className={s.title}>Welcome to USE ID Card Portal</div>
 
                     <div className={s.serviceWrapper}>
                         <div className={s.services}>
@@ -71,11 +71,11 @@ const HomePage: React.FC = () => {
                                 </div>
 
                                 <div className={s.boxHeader}>
-                                    Apply new pass card
+                                    Apply New ID Card
                                 </div>
                                 <div className={s.boxContent}>
 
-                                Application For New ID Card
+                                    Application For New ID Card
                                 </div>
 
                             </div>
@@ -91,11 +91,11 @@ const HomePage: React.FC = () => {
 
                                 </div>
                                 <div className={s.boxHeader}>
-                                    Renew pass card
+                                    Renew ID Card
                                 </div>
                                 <div className={s.boxContent}>
-                                Application To Renew ID Card
-                                For soon to expire ID
+                                    Application To Renew ID Card
+                                    For soon to expire ID
                                 </div>
 
                             </div>
@@ -113,10 +113,10 @@ const HomePage: React.FC = () => {
                                 </div>
 
                                 <div className={s.boxHeader}>
-                                    Replace pass card
+                                    Replacement ID Card
                                 </div>
                                 <div className={s.boxContent}>
-                                Application For Replacement or Lost 
+                                    Application For Replacement or Lost ID Card
 
                                 </div>
                             </div>
@@ -134,10 +134,10 @@ const HomePage: React.FC = () => {
                                 </div>
 
                                 <div className={s.boxHeader}>
-                                    Update pass card
+                                    Update Details
                                 </div>
                                 <div className={s.boxContent}>
-                                Update New PWM Grade and Courses Attained
+                                    Update New PWM Grade and Courses Attained
                                 </div>
 
                             </div>

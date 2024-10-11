@@ -270,7 +270,7 @@ const ReviewDetailsPage: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className={globalStyleCss.regular}>
-                                        Please make sure your photo is compliant to prevent your application from being rejected.
+                                        Please ensure your photo complies with the guidelines to prevent your application from being rejected.
                                     </div>
                                     {formData.image ? (
                                         <>
@@ -485,7 +485,8 @@ const ReviewDetailsPage: React.FC = () => {
                             </svg>
                         </div>
                         <div className={globalStyleCss.regular}>
-                            I hereby certify that the information and photograph provided are accurate and complete. I acknowledge that should any of this information be found to be false, misleading, or misrepresentative, I may be held legally responsible.
+                            I hereby certify that the information and photograph provided are accurate and complete. I acknowledge that if any of the information is found to be false, misleading, or misrepresented,
+                            I may be held legally responsible.
                             {formData.errorDeclaration && <p style={{ color: 'red' }}>{formData.errorDeclaration}</p>}
                         </div>
                     </div>

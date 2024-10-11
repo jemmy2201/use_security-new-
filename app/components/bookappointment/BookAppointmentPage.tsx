@@ -283,7 +283,7 @@ const BookAppointmentPage: React.FC = () => {
                         </div>
                     </div>
                     <hr className={bookAppointmentContentstyles.bookAppointmentBoxLine}></hr>
-                    <div>
+                    <div className={bookAppointmentContentstyles.DivStyle}>
                         <div className={bookAppointmentContentstyles.collectionText}>
                             <div className={globalStyleCss.regularBold}> Closed on Saturdays, Sundays & Public Holidays </div>
                         </div>

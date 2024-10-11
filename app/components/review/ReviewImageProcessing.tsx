@@ -273,7 +273,8 @@ const ReviewImageProcessing: React.FC = () => {
       <div className={reviewPhotoContentstyles.stepContentContainer}>
 
         <div className={globalStyleCss.regular}>
-          Please make sure your photo is compliant to prevent your application from being rejected.
+          Please ensure your photo complies with the guidelines to prevent your application from being rejected.
+
           <br></br><br></br>
         </div>
         <div className={reviewPhotoContentstyles.warningBox}>
@@ -296,33 +297,33 @@ const ReviewImageProcessing: React.FC = () => {
         <br></br>
         <hr className={reviewPhotoContentstyles.photoHrLine}></hr>
         {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch || !formData.isStraightFaceDetected) ? (
-        <div className={reviewPhotoContentstyles.photoUploadError}>
-          <div className={reviewPhotoContentstyles.photoUploadErrorBox}>
-            <div className={globalStyleCss.regularBold}>
-              Your photo has been rejected for the following reasons:
+          <div className={reviewPhotoContentstyles.photoUploadError}>
+            <div className={reviewPhotoContentstyles.photoUploadErrorBox}>
+              <div className={globalStyleCss.regularBold}>
+                Your photo has been rejected for the following reasons:
+              </div>
+
+              {formData.isStraightFaceDetected ? (
+                <p></p>
+              ) : (
+                <div className={globalStyleCss.regular}> .  The face is not straight </div>
+              )}
+
+              {formData.isFaceDetected ? (
+                <p></p>
+              ) : (
+                <div className={globalStyleCss.regular}> .  The face is not clearly visible</div>
+              )}
+              {formData.isBgColorMatch ? (
+                <p></p>
+              ) : (
+                <div className={globalStyleCss.regular}> .  The background is not white</div>
+              )}
             </div>
-
-            {formData.isStraightFaceDetected ? (
-              <p></p>
-            ) : (
-              <div className={globalStyleCss.regular}> .  The face is not straight </div>
-            )}
-
-            {formData.isFaceDetected ? (
-              <p></p>
-            ) : (
-              <div className={globalStyleCss.regular}> .  The face is not clearly visible</div>
-            )}
-            {formData.isBgColorMatch ? (
-              <p></p>
-            ) : (
-              <div className={globalStyleCss.regular}> .  The background is not white</div>
-            )}
           </div>
-        </div>
-      ) : (
-        <p></p>
-      )}
+        ) : (
+          <p></p>
+        )}
 
         <div className={reviewPhotoContentstyles.photoContainer}>
           <div className={reviewPhotoContentstyles.uploadBox}>
@@ -364,7 +365,7 @@ const ReviewImageProcessing: React.FC = () => {
 
           <div className={reviewPhotoContentstyles.photosDosDontContainer}>
             <div className={reviewPhotoContentstyles.dosDontDoText}>
-              Photo dos and don’ts
+              Dos and Don’ts
             </div>
             <div className={reviewPhotoContentstyles.photosDosDontContainerPicsBox}>
               <div className={reviewPhotoContentstyles.picBox}>

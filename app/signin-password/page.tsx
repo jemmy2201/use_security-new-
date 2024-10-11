@@ -25,35 +25,35 @@ const HomePage: React.FC = () => {
 
         // Build the form data
         const formData = {
-          username,
-          password,
+            username,
+            password,
         };
-      
+
         try {
-          // Send a POST request to the API
-          const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-          });
-      
-          const result = await response.json();
-          if (response.ok) {
-            console.log(result.message); 
-            router.push('/terms');
-          } else {
-            
+            // Send a POST request to the API
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                console.log(result.message);
+                router.push('/terms');
+            } else {
+
                 setStartDateError(result.message);
-            
-            console.error(result.message); 
-          }
+
+                console.error(result.message);
+            }
         } catch (error) {
-          console.error('Error submitting form:', error);
+            console.error('Error submitting form:', error);
         }
-      };
-      
+    };
+
 
     return (
         <div className={styles.container}>
@@ -68,12 +68,12 @@ const HomePage: React.FC = () => {
                             </svg>
                         </div>
                         <div className={headerstyles.contactUs}><Link href="/contactus">Contact Us</Link>
-                        
+
                         </div>
 
                         <form onSubmit={handleSubmit}>
                             <div className={headerstyles.loginButton}>
-                                
+
                                 <label htmlFor="username" style={{ display: 'block', marginBottom: '5px' }}>Username:</label>
                                 <input
                                     type="text"
@@ -95,7 +95,7 @@ const HomePage: React.FC = () => {
                                 <button type="submit">
                                     <div className={globalStyleCss.primaryButton}>Log in</div>
                                 </button>
-                                
+
                             </div>
                         </form>
                         {startDateError && <p style={{ color: 'red' }}>{startDateError}</p>}
@@ -103,7 +103,7 @@ const HomePage: React.FC = () => {
                 </div>
 
                 <div className={s.bodyBox}>
-                    <div className={s.title}>Welcome to USE Pass Card Portal</div>
+                    <div className={s.title}>Welcome to USE ID Card Portal </div>
 
                     <div className={s.serviceWrapper}>
                         <div className={s.services}>
@@ -120,10 +120,10 @@ const HomePage: React.FC = () => {
                                 </div>
 
                                 <div className={s.boxHeader}>
-                                    Apply new pass card
+                                    Apply New ID Card
                                 </div>
                                 <div className={s.boxContent}>
-                                    Quickly apply for your new pass card online.
+                                    Application For New ID Card
                                 </div>
 
                             </div>
@@ -139,10 +139,11 @@ const HomePage: React.FC = () => {
 
                                 </div>
                                 <div className={s.boxHeader}>
-                                    Renew pass card
+                                    Renew ID Card
                                 </div>
                                 <div className={s.boxContent}>
-                                    Renew your pass card before it expires.
+                                    Application To Renew ID Card
+                                    For soon to expire ID
                                 </div>
 
                             </div>
@@ -160,10 +161,10 @@ const HomePage: React.FC = () => {
                                 </div>
 
                                 <div className={s.boxHeader}>
-                                    Replace pass card
+                                    Replace ID Card
                                 </div>
                                 <div className={s.boxContent}>
-                                    Request a replacement for lost or stolen cards.
+                                    Application For Replacement or Lost ID Card
                                 </div>
                             </div>
 
@@ -180,10 +181,10 @@ const HomePage: React.FC = () => {
                                 </div>
 
                                 <div className={s.boxHeader}>
-                                    Update pass card
+                                    Update Details
                                 </div>
                                 <div className={s.boxContent}>
-                                    Update your pass card details instantly.
+                                    Update New PWM Grade and Courses Attained
                                 </div>
 
                             </div>

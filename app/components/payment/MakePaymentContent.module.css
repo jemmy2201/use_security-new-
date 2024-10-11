@@ -76,7 +76,7 @@
           flex-direction: column;
           align-items: flex-start;
           gap: 8px;
-          width: 320px;
+          width: 420px;
           flex: 1 0 0;
           flex-wrap: wrap;
 
@@ -85,7 +85,7 @@
           }
 
           .inputText {
-            width: 300px;
+            width: 400px;
             display: flex;
             align-items: flex-start;
             gap: 16px;
@@ -116,7 +116,7 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
-        width: 320px;
+        width: 420px;
         flex: 1 0 0;
         flex-wrap: wrap;
 
@@ -125,7 +125,7 @@
         }
 
         .inputText {
-          width: 300px;
+          width: 400px;
           display: flex;
           align-items: flex-start;
           gap: 16px;

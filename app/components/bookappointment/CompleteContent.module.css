@@ -3,7 +3,7 @@
 .mainContainer {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 1124px;
   align-items: center;
   gap: 40px;
 
@@ -22,6 +22,12 @@
     align-items: flex-start;
     background: white;
     flex-wrap: wrap;
+
+    @media screen and (max-width: 769px) {
+      padding: 24px;
+      gap: 24px;
+      width: 340px;
+    }
 
     @media screen and (max-width: 769px) {
       padding: 10px;

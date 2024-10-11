@@ -127,6 +127,10 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
         });
     };
 
+    const handleClick = () => {
+        router.push('/homepage');
+    };
+
     useEffect(() => {
         setLoading(true);
         const storedData = sessionStorage.getItem('users');
@@ -142,6 +146,11 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
             try {
                 setLoading(true);
                 const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
+                if (!responseBookingSchedule.ok && responseBookingSchedule.status === 401) {
+                    setLoading(false);
+                    router.push('/signin');
+                    throw new Error('Log out');
+                }
                 if (!responseBookingSchedule.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -149,7 +158,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                 setBookingSchedule(dataBookingSchedule);
             } catch (error) {
                 console.error('Error fetching disabled dates:', error);
-            } finally{
+            } finally {
                 setLoading(false);
             }
         };
@@ -171,7 +180,21 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                 </div>
             )}
             <div className={receiptContentstyles.container}>
+
                 <div className={receiptContentstyles.innerContainerHeader}>
+                    <button type='button' onClick={handleClick} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <g clipPath="url(#clip0_1433_2277)">
+                                <path d="M7.825 13L13.425 18.6L12 20L4 12L12 4L13.425 5.4L7.825 11H20V13H7.825Z" fill="#546E7A" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_1433_2277">
+                                    <rect width="24" height="24" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                        <div className={globalStyleCss.regularLinkBlackBold}>&nbsp;Back to Home page</div>
+                    </button>
                     <div className={globalStyleCss.header1}>
                         Payment receipt
                     </div>

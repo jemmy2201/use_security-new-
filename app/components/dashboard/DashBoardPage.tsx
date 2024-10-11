@@ -272,7 +272,11 @@ const DashBoardPage: React.FC = () => {
 
             const bookingId = id.toString(); // Replace with your actual bookingId
             const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
-
+            if (!responseBookingSchedule.ok && responseBookingSchedule.status === 401) {
+                setLoading(false);
+                router.push('/signin');
+                throw new Error('Log out');
+            }
             if (!responseBookingSchedule.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -304,7 +308,11 @@ const DashBoardPage: React.FC = () => {
 
             const bookingId = id.toString();
             const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
-
+            if (!responseBookingSchedule.ok && responseBookingSchedule.status === 401) {
+                setLoading(false);
+                router.push('/signin');
+                throw new Error('Log out');
+            }
             if (!responseBookingSchedule.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -335,7 +343,11 @@ const DashBoardPage: React.FC = () => {
 
             const bookingId = id.toString();
             const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
-
+            if (!responseBookingSchedule.ok && responseBookingSchedule.status === 401) {
+                setLoading(false);
+                router.push('/signin');
+                throw new Error('Log out');
+            }
             if (!responseBookingSchedule.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -516,9 +528,9 @@ const DashBoardPage: React.FC = () => {
                                                         ) : null}
 
 
-                                                        {booking.app_type == '3' ? (
+                                                        {booking.app_type == '3' && (booking.Status_app != '' && booking.Status_app)? (
                                                             <>
-                                                                &nbsp;- {statusTypeMap[booking.Status_app || ''] || ''}
+                                                                &nbsp;-- {statusTypeMap[booking.Status_app || ''] || ''}
 
                                                             </>
                                                         ) : null}
