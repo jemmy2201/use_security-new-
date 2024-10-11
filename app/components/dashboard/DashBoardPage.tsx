@@ -429,7 +429,7 @@ const DashBoardPage: React.FC = () => {
 
                             <div className={dashBoardContentstyles.primaryButton}>
                                 <button onClick={toggleDropdown}>
-                                    <div className={globalStyleCss.buttonText}>Apply for new pass card</div>
+                                    <div className={globalStyleCss.buttonText}>Application for New ID Card</div>
                                 </button>
 
                                 {isDropdownOpen && (
@@ -475,10 +475,10 @@ const DashBoardPage: React.FC = () => {
                             <table>
                                 <thead>
                                     <tr className={globalStyleCss.regularBold}>
-                                        <th className={dashBoardContentstyles.item2}>Application type</th>
-                                        <th className={dashBoardContentstyles.item}>License type</th>
+                                        <th className={dashBoardContentstyles.item2}>Application Type</th>
+                                        <th className={dashBoardContentstyles.item}>License Type</th>
                                         <th className={dashBoardContentstyles.item1}>Grade</th>
-                                        <th className={dashBoardContentstyles.item3}>Collection date</th>
+                                        <th className={dashBoardContentstyles.item3}>Collection Date</th>
                                         <th className={dashBoardContentstyles.item3}>Application Status</th>
                                         <th className={dashBoardContentstyles.item}>Actions</th>
                                     </tr>
