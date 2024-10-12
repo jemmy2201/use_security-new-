@@ -163,7 +163,7 @@ const ApplicantDetailsPage: React.FC = () => {
                     <div className={applicantDetailsContentstyles.trainingOptionContainer}>
                         <div className={applicantDetailsContentstyles.trainingOptionBox}>
 
-                            <label className={applicantDetailsContentstyles.checkboxes}>
+                            {/* <label className={applicantDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}>
                                     <input
                                         type="checkbox"
@@ -172,7 +172,7 @@ const ApplicantDetailsPage: React.FC = () => {
                                         onChange={handleCheckboxChange}
                                     /> </div>
                                 <div>Airport Screener Deployment</div>
-                            </label>
+                            </label> */}
 
                             <label className={applicantDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import makePaymentContentstyles from './MakePaymentContent.module.css';
 import globalStyleCss from '../globalstyle/Global.module.css';
@@ -15,6 +15,13 @@ const SuccessPaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+
+    useEffect(() => {
+        setLoading(true);
+
+        setLoading(false);
+    }, []);
+
     return (
 
         <form>
