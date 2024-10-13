@@ -320,7 +320,7 @@ const ReviewDetailsPage: React.FC = () => {
                                 <div className={reviewDetailsContentstyles.trainingOptionContainer}>
                                     <div className={reviewDetailsContentstyles.trainingOptionBox}>
 
-                                        <label className={reviewDetailsContentstyles.checkboxes}>
+                                        {/* <label className={reviewDetailsContentstyles.checkboxes}>
                                             <div className={globalStyleCss.regular}>
                                                 <input
                                                     type="checkbox"
@@ -329,7 +329,7 @@ const ReviewDetailsPage: React.FC = () => {
                                                     onChange={handleCheckboxChange}
                                                 /> </div>
                                             <div>Airport Screener Deployment</div>
-                                        </label>
+                                        </label> */}
 
                                         <label className={reviewDetailsContentstyles.checkboxes}>
                                             <div className={globalStyleCss.regular}><input

@@ -178,7 +178,7 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
             { column1: 'Amount paid (inclusive of GST)', column2: schedule.grand_total },
             { column1: 'Type of application', column2: appTypeString },
             { column1: 'Grade', column2: gradeTypeString },
-            { column1: 'Pass card no.', column2: schedule.passid },
+            { column1: 'ID card no.', column2: schedule.passid },
             { column1: 'Pass card date of expiry', column2: schedule.expired_date },
             { column1: 'Full name', column2: userRecord?.name },
             { column1: 'NRIC / FIN no.', column2: nric },

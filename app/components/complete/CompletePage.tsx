@@ -175,7 +175,7 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId, reschedule }) =>
                         <div className={CompleteContentstyles.collectionTextContainer}>
                             <span className={CompleteContentstyles.collectionTextSpan}>
                                 <div className={globalStyleCss.regularBold}>
-                                    Pass card no.
+                                    ID card no.
                                 </div>
                                 <div className={globalStyleCss.regular}>
                                     {bookingSchedule?.passid}
@@ -184,7 +184,7 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId, reschedule }) =>
 
                             <span className={CompleteContentstyles.collectionTextSpan}>
                                 <div className={globalStyleCss.regularBold}>
-                                    Pass card date of expiry
+                                    ID card date of expiry
                                 </div>
                                 <div className={globalStyleCss.regular}>
                                     {formatExpiryDate(bookingSchedule?.expired_date ? bookingSchedule.expired_date : '')}

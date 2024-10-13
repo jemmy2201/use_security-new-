@@ -824,7 +824,7 @@ const DashBoardPage: React.FC = () => {
                                 <div className={dashBoardContentstyles.item}>
                                     <div className={dashBoardContentstyles.cell}>
                                         <div className={globalStyleCss.regularBold}>
-                                            Application type
+                                            Application Type
                                         </div>
                                     </div>
                                     <div className={dashBoardContentstyles.cell}>
@@ -837,7 +837,7 @@ const DashBoardPage: React.FC = () => {
                                 <div className={dashBoardContentstyles.item}>
                                     <div className={dashBoardContentstyles.cell}>
                                         <div className={globalStyleCss.regularBold}>
-                                            Pass card type
+                                            ID Card Type
                                         </div>
                                     </div>
                                     <div className={dashBoardContentstyles.cell}>
@@ -863,7 +863,7 @@ const DashBoardPage: React.FC = () => {
                                 <div className={dashBoardContentstyles.item}>
                                     <div className={dashBoardContentstyles.cell}>
                                         <div className={globalStyleCss.regularBold}>
-                                            Collection date
+                                            Collection Date
                                         </div>
                                     </div>
                                     <div className={dashBoardContentstyles.cell}>
@@ -876,7 +876,7 @@ const DashBoardPage: React.FC = () => {
                                 <div className={dashBoardContentstyles.item}>
                                     <div className={dashBoardContentstyles.cell}>
                                         <div className={globalStyleCss.regularBold}>
-                                            Application status
+                                            Application Status
                                         </div>
                                     </div>
                                     <div className={dashBoardContentstyles.cell}>

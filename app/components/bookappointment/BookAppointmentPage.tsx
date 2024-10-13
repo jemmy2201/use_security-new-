@@ -165,7 +165,7 @@ const BookAppointmentPage: React.FC = () => {
                             Appointment details
                         </div>
                         <div className={globalStyleCss.regular}>
-                            Please choose a date and time to book your appointment to collect your pass card.
+                            Please choose a date and time to book your appointment to collect your ID card.
                         </div>
 
                     </div>

@@ -145,12 +145,12 @@ const BookAppointmentCompletePage: React.FC = () => {
 
                         <div className={CompleteContentstyles.contentBox}>
                             <div className={CompleteContentstyles.item}>
-                                <div className={globalStyleCss.regularBold}>Pass card no. </div>
+                                <div className={globalStyleCss.regularBold}>ID card no. </div>
                                 <div className={CompleteContentstyles.inputText}>{bookingSchedule?.passid}</div>
 
                             </div>
                             <div className={CompleteContentstyles.item}>
-                                <div className={globalStyleCss.regularBold}>Pass card date of expiry </div>
+                                <div className={globalStyleCss.regularBold}>ID card date of expiry </div>
                                 <div className={CompleteContentstyles.inputText}>{formatExpiryDate(bookingSchedule?.expired_date ? bookingSchedule.expired_date : '')}</div>
                             </div>
                         </div>

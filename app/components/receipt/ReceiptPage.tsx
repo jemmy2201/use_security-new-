@@ -273,7 +273,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
                     <div className={receiptContentstyles.receiptTextBox}>
                         <div className={receiptContentstyles.boxWidth}>
-                            <div className={globalStyleCss.regularBold}> Pass card no.</div>
+                            <div className={globalStyleCss.regularBold}> ID card no.</div>
                         </div>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regular}>  {bookingSchedule?.passid}</div>
@@ -284,7 +284,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
                     <div className={receiptContentstyles.receiptTextBox}>
                         <div className={receiptContentstyles.boxWidth}>
-                            <div className={globalStyleCss.regularBold}> Pass card date of expiry</div>
+                            <div className={globalStyleCss.regularBold}> ID card date of expiry</div>
                         </div>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regular}> {formatExpiryDate(bookingSchedule?.expired_date ? bookingSchedule.expired_date : '')} </div>
