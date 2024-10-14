@@ -26,7 +26,9 @@ export async function POST(req: NextRequest) {
 
     const base64Data = image.replace(/^data:image\/\w+;base64,/, '');
     const buffer = Buffer.from(base64Data, 'base64');
-
+    // const resizedImageBuffer = await sharp(buffer)
+    //   .resize(400, 514)
+    //   .toBuffer();
     const uploadsDir = path.join(process.cwd(), 'public', 'userdocs/img_users');
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir, { recursive: true });

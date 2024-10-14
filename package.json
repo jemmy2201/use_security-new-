@@ -47,6 +47,7 @@
     "react-router-dom": "^6.26.0",
     "react-toastify": "^10.0.6",
     "sass": "^1.78.0",
+    "sharp": "^0.33.5",
     "stripe": "^16.8.0",
     "styled-components": "^6.1.12"
   },

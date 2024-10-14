@@ -199,8 +199,8 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
       setImage(img);
 
       const imageElement = document.createElement('img');
-      imageElement.width = 200; // Set the width
-      imageElement.height = 257; // Set the height;
+      imageElement.width = 400; 
+      imageElement.height = 514; 
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
@@ -240,7 +240,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           setBrightnessContrast(bc);
 
           // Resize image
-          const resizedImage = resizeImage(imageElement, 200, 257);
+          const resizedImage = resizeImage(imageElement, 400, 514);
           setImage(resizedImage);
 
           // Call API with processed image data

@@ -35,8 +35,8 @@ const ImageProcessing = () => {
         console.log('Image processing image url:', formData.imageUrl);
         if (formData.imageUrl) {
           const img = document.createElement('img');
-          img.width = 200; // Set the width
-          img.height = 257; // Set the height
+          img.width = 400; 
+          img.height = 514; 
           img.src = formData.imageUrl;
 
           img.onload = () => {
@@ -90,8 +90,8 @@ const ImageProcessing = () => {
         ['image']: img,
       }));
       const imageElement = document.createElement('img');
-      imageElement.width = 200; // Set the width
-      imageElement.height = 257; // Set the height
+      imageElement.width = 400; 
+      imageElement.height = 514; 
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
@@ -129,7 +129,7 @@ const ImageProcessing = () => {
           setBrightnessContrast(bc);
 
           // Resize image
-          const resizedImage = resizeImage(imageElement, 200, 257);
+          const resizedImage = resizeImage(imageElement, 400, 514);
           setImage(resizedImage);
           const fileName = formData?.passid + formData.nric?.slice(-4);
           console.log('image file name:', fileName);

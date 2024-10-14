@@ -36,8 +36,8 @@ const ReviewImageProcessing: React.FC = () => {
         console.log('Review Image processing image url:', formData.imageUrl);
         if (formData.imageUrl) {
           const img = document.createElement('img');
-          img.width = 200; // Set the width
-          img.height = 257; // Set the height
+          img.width = 400; 
+          img.height = 514; 
           img.src = formData.imageUrl;
 
           img.onload = () => {
@@ -89,8 +89,8 @@ const ReviewImageProcessing: React.FC = () => {
         ['image']: img,
       }));
       const imageElement = document.createElement('img');
-      imageElement.width = 200; // Set the width
-      imageElement.height = 257; // Set the height
+      imageElement.width = 400; 
+      imageElement.height = 514; 
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
