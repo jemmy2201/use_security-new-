@@ -95,7 +95,7 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId, reschedule }) =>
         };
         fetchBookingSchedule();
 
-    }, []);
+    }, [bookingId, router]);
 
 
     return (

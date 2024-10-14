@@ -4,11 +4,12 @@ import { booking_schedules, PrismaClient } from '@prisma/client';
 import axios from 'axios';
 
 import cron from 'node-cron';
+import { NextResponse, NextRequest } from 'next/server';
 
 let taskStarted = false;
 const prisma = new PrismaClient();
 
-export async function GET(request: NextApiRequest, res: NextApiResponse) {
+export async function GET(request: NextRequest, res: NextResponse) {
   console.log('scheduler starting');
   console.log('process.env.ENABLE_PHOTO_REJECTON_SMS:', process.env.ENABLE_PHOTO_REJECTON_SMS);
   const isEnable = process.env.ENABLE_PHOTO_REJECTON_SMS === 'true';
@@ -34,7 +35,7 @@ export async function GET(request: NextApiRequest, res: NextApiResponse) {
   });
 }
 
-export async function sendSms() {
+async function sendSms() {
 
   try {
     const username = process.env.GATEWAY_SMS_USERNAME;

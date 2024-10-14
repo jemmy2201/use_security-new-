@@ -1,6 +1,7 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import stepBarFooterStyle from './StepBarFooter.module.css'
 import { useFormContext } from '.././FormContext';
 import globalStyleCss from '../globalstyle/Global.module.css';
@@ -8,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import CancelPopup from './CancelPopup';
 
 interface FooterProps {
     onNext: () => void;
@@ -19,21 +21,36 @@ interface FooterProps {
 }
 const Footer: React.FC<FooterProps> =
     ({ onNext, onBack, onSaveDraft, hasNext, hasBack, activeStep }) => {
-
         const { formData, setFormData } = useFormContext();
         const router = useRouter();
+        const [isCancelPopupOpen, setIsCancelPopupOpen] = useState<boolean>(false); // State for OTP popup
 
-        const handleClick = () => {
-            router.push('/homepage');
+        const handleCancelCancel = () => {
+            setIsCancelPopupOpen(false); 
         };
+        const handleContinue = () => {
+            setIsCancelPopupOpen(false);
+            router.push('/homepage'); 
+        };
+        const handleClick = () => {
+            setIsCancelPopupOpen(true);
+            
+        };
+
         return (
             <footer>
                 <div className={stepBarFooterStyle.bodyContainer}>
                     <div className={stepBarFooterStyle.headerContainer}>
+                        <CancelPopup
+                            isOpen={isCancelPopupOpen}
+                            onClose={handleCancelCancel}
+                            onContinue={handleContinue}
+                        />
                         {!formData.isAppointmentConfirmed && (
                             <div className={stepBarFooterStyle.saveDraft} onClick={handleClick} style={{ cursor: 'pointer' }}>
                                 <div className={globalStyleCss.regular}>Cancel</div>
                             </div>
+
                         )}
                         {!formData.paymentProcessed && (
                             <div className={stepBarFooterStyle.saveDraft}>

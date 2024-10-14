@@ -6,6 +6,7 @@ import { logout } from '@/actions/auth';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const HeaderPage: React.FC = () => {
 
@@ -32,7 +33,7 @@ const HeaderPage: React.FC = () => {
     return (
 
         <div className={headerstyles.siteHeaderContainer}>
-            <div className={headerstyles.logo} onClick={handleClick} style={{ cursor: 'pointer' }}><img src="/images/logo.png" alt="Logo" /></div>
+            <div className={headerstyles.logo} onClick={handleClick} style={{ cursor: 'pointer' }}><Image src="/images/logo.png" alt="Logo" width={55} height={58}/></div>
             <div className={headerstyles.companyName}>Union of Security Employees (USE)</div>
             <div className={headerstyles.leftBox}>
                 <div className={headerstyles.contactUs}>

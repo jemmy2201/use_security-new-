@@ -44,15 +44,28 @@
       align-items: flex-start;
       padding-bottom: 20px;
       flex: 1 0 0;
+
       @media screen and (max-width: 769px) {
         gap: 10px;
         padding-top: 10px;
       }
 
-      .editLink {
+      .item {
         display: flex;
-        align-items: end;
-        align-content: end;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 860px;
+        flex: 1 0 0;
+        flex-wrap: wrap;
+        @media screen and (max-width: 769px) {
+          width: 165x;
+        }
+        .editLink {
+          display: flex;
+          align-items: end;
+          align-content: end;
+        }
       }
 
     }
@@ -73,7 +86,7 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
-        width: 320px;
+        width: 620px;
         flex: 1 0 0;
         flex-wrap: wrap;
 

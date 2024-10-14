@@ -10,6 +10,7 @@ import s from "./signin.module.scss";
 import FooterPageLink from '../components/footer/FooterPage'
 import globalStyleCss from '../components/globalstyle/Global.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const HomePage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -24,7 +25,7 @@ const HomePage: React.FC = () => {
         <div className={styles.container}>
             <div className={styles.overlay}>
                 <div className={headerstyles.headerContainer}>
-                    <div className={headerstyles.logo}><img src="/images/logo.png" alt="Logo" /></div>
+                    <div className={headerstyles.logo}><Image src="/images/logo.png" alt="Logo" width={55} height={58}/></div>
                     <div className={headerstyles.companyName}>Union of Security Employees (USE)</div>
                     <div className={headerstyles.leftBox}>
                         <div className={headerstyles.phoneSvg}>
@@ -95,7 +96,7 @@ const HomePage: React.FC = () => {
                                 </div>
                                 <div className={s.boxContent}>
                                     Application To Renew ID Card
-                                    For soon to expire ID
+                                    <br></br>For soon to expire ID
                                 </div>
 
                             </div>

@@ -129,7 +129,9 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
                                     className={OtpModuleStyle.otpNumber}
                                     value={value}
                                     onChange={(e) => handleOtpChange(index, e.target.value)}
-                                    ref={(el) => inputRefs.current[index] = el} // Assign ref to each input
+                                    ref={(el) => {
+                                        inputRefs.current[index] = el; 
+                                    }}
                                 />
                             ))}
                         </div>
@@ -145,7 +147,7 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
 
                     <div>
                         <span className={OtpModuleStyle.otpText}>
-                        <div className={globalStyleCss.regular}>Didn't receive the code? &nbsp;
+                        <div className={globalStyleCss.regular}>Didn&apos;t receive the code? &nbsp;
                                 <a href="#" onClick={handleResend} className={globalStyleCss.blueLink}>
                                     Click to resend
                                 </a>

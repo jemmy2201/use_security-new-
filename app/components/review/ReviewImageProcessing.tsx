@@ -8,6 +8,7 @@ import globalStyleCss from '../globalstyle/Global.module.css';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from '.././FormContext';
 import CircularProgress from '@mui/material/CircularProgress';
+import Image from 'next/image';
 
 const ReviewImageProcessing: React.FC = () => {
 
@@ -34,7 +35,9 @@ const ReviewImageProcessing: React.FC = () => {
         await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
         console.log('Review Image processing image url:', formData.imageUrl);
         if (formData.imageUrl) {
-          const img = new Image();
+          const img = document.createElement('img');
+          img.width = 200; // Set the width
+          img.height = 257; // Set the height
           img.src = formData.imageUrl;
 
           img.onload = () => {
@@ -59,7 +62,7 @@ const ReviewImageProcessing: React.FC = () => {
     };
 
     loadModels();
-  }, []);
+  }, [formData.imageUrl, setFormData]);
 
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +88,9 @@ const ReviewImageProcessing: React.FC = () => {
         ...prevFormData,
         ['image']: img,
       }));
-      const imageElement = new Image();
+      const imageElement = document.createElement('img');
+      imageElement.width = 200; // Set the width
+      imageElement.height = 257; // Set the height
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
@@ -330,11 +335,11 @@ const ReviewImageProcessing: React.FC = () => {
             <div className={reviewPhotoContentstyles.uploadPhotoContainerBox}>
               {formData.image ? (
                 <>
-                  {formData.image && <img src={formData.image} />}
+                  {formData.image && <Image src={formData.image} alt="Photo ID" height={200} width={257}/>}
                 </>
               ) : (
                 <>
-                  {formData.imageUrl && <img src={formData.imageUrl} />}
+                  {formData.imageUrl && <Image src={formData.imageUrl} alt="Photo ID" height={200} width={257}/>}
                 </>
               )
 
@@ -370,7 +375,7 @@ const ReviewImageProcessing: React.FC = () => {
             <div className={reviewPhotoContentstyles.photosDosDontContainerPicsBox}>
               <div className={reviewPhotoContentstyles.picBox}>
                 <div className={reviewPhotoContentstyles.picFrame}>
-                  <img src='/images/clear_pic.jpeg'></img>
+                  <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
                 </div>
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -387,7 +392,7 @@ const ReviewImageProcessing: React.FC = () => {
               </div>
               <div className={reviewPhotoContentstyles.picBox}>
                 <div className={reviewPhotoContentstyles.picFrame}>
-                  <img src='/images/clear_pic.jpeg'></img>
+                  <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
                 </div>
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -404,7 +409,7 @@ const ReviewImageProcessing: React.FC = () => {
               </div>
               <div className={reviewPhotoContentstyles.picBox}>
                 <div className={reviewPhotoContentstyles.picFrame}>
-                  <img src='/images/clear_pic.jpeg'></img>
+                  <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
                 </div>
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -423,7 +428,7 @@ const ReviewImageProcessing: React.FC = () => {
             <div className={reviewPhotoContentstyles.photosDosDontContainerPicsBox}>
               <div className={reviewPhotoContentstyles.picBox}>
                 <div className={reviewPhotoContentstyles.picFrame}>
-                  <img src='/images/specs.jpg'></img>
+                  <Image src='/images/specs.jpg' alt='' height={80} width={120}></Image>
 
                 </div>
                 <div>
@@ -435,7 +440,7 @@ const ReviewImageProcessing: React.FC = () => {
               </div>
               <div className={reviewPhotoContentstyles.picBox}>
                 <div className={reviewPhotoContentstyles.picFrame}>
-                  <img src='/images/no_face.png'></img>
+                  <Image src='/images/no_face.png' alt='' height={80} width={120}></Image>
                 </div>
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -446,7 +451,7 @@ const ReviewImageProcessing: React.FC = () => {
               </div>
               <div className={reviewPhotoContentstyles.picBox}>
                 <div className={reviewPhotoContentstyles.picFrame}>
-                  <img src='/images/noface.jpeg'></img>
+                  <Image src='/images/noface.jpeg' alt='' height={80} width={120}></Image>
                 </div>
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">

@@ -2,25 +2,30 @@
 
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
+import React, { Suspense } from 'react';
 import UpdateDetailsPage from '@/components/updatedetails/UpdateDetailsPage';
 import { FormProvider } from '../../components/FormContext';
 
-
-const Reschedule: React.FC = () => {
-  const searchParams = useSearchParams()
-  const bookingId = searchParams.get('bookingId')
+const SearchParamsWrapper: React.FC = () => {
+  const searchParams = useSearchParams();
+  const bookingId = searchParams.get('bookingId');
   const bookingIdString = typeof bookingId === 'string' ? bookingId : '';
 
+  return <UpdateDetailsPage bookingId={bookingIdString} />;
+};
+
+const UpdatePage: React.FC = () => {
   return (
-    <FormProvider>
     <div>
-      <UpdateDetailsPage bookingId={bookingIdString} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchParamsWrapper />
+      </Suspense>
     </div>
-    </FormProvider>
   );
 };
 
-export default Reschedule;
+
+export default UpdatePage;
+
 
 

@@ -91,7 +91,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 )
                 .catch((err) => console.error(err));
         }
-    }, [searchParams]);
+    }, [searchParams, setFormData]);
 
 
 

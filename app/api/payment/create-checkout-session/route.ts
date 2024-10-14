@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
         console.log('session id generated at stripe checkout session ', session.id);
         console.log('payment intent generated at stripe checkout session ', session.payment_intent);
 
-        const updatedSchedule = await prisma.booking_schedules.update({
+        await prisma.booking_schedules.update({
           where: { id: schedule.id },
           data: {
             gst_id: gst.id.toString(),

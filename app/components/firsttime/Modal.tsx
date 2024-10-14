@@ -17,7 +17,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
           We noticed you do not have a valid card license or your licence may have expired.
           </div>
           <div className={globalStyleCss.regular}>
-          It may take 48-72 hours for your approved data from Police Licensing and Regulatory Department (PLRD) to be updated on USE's ID card portal. Please try again later.
+          It may take 48-72 hours for your approved data from Police Licensing and Regulatory Department (PLRD) to be updated on USE&apos;s ID card portal. Please try again later.
           </div>
           <div className={styleCss.modelButton}>
             <button className={globalStyleCss.buttonTextBlack} onClick={onClose}>

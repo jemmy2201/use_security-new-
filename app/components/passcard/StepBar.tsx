@@ -38,7 +38,7 @@ const StepBar: React.FC<StepBarProps> = ({ actionType, steps, activeStep }) => {
 
                     {formData.applicationType == '2' && formData.cardId == '1' ? (
                         <>
-                            <div className={globalStyleCss.header2}>Replace ID Card:</div>
+                            <div className={globalStyleCss.header2}>Replacement ID Card:</div>
                             <div className={globalStyleCss.header2}>Security Officer (SO) / Aviation Security Officer (AVSO)</div>
                         </>
                     ) : <> </>}
@@ -59,7 +59,7 @@ const StepBar: React.FC<StepBarProps> = ({ actionType, steps, activeStep }) => {
 
                     {formData.applicationType == '2' && formData.cardId == '2' ? (
                         <>
-                            <div className={globalStyleCss.header2}>Replace ID Card: Personal Investigator (PI)</div>
+                            <div className={globalStyleCss.header2}>Replacement ID Card: Personal Investigator (PI)</div>
                         </>
                     ) : <> </>}
 

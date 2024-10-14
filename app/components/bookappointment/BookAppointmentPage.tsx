@@ -144,7 +144,7 @@ const BookAppointmentPage: React.FC = () => {
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [formData.bookingId]);
 
 
     const isDisabled = (date: Date) => {

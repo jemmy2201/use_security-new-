@@ -6,17 +6,20 @@ import { NextRequest, NextResponse } from 'next/server';
 const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
+  const url = new URL(request.url);
+  const bookingIdString = url.searchParams.get('bookingId');
+  if (!bookingIdString) {
+    return new Response('Booking ID is required', { status: 400 });
+  }
   try {
-    const url = new URL(request.url);
-    const bookingIdString = url.searchParams.get('bookingId');
+
+
     const encryptedNric = await getEncryptedNricFromSession(request);
     if (encryptedNric instanceof NextResponse) {
       return encryptedNric; 
     }
     console.log('get-booking-schedule, bookingIdString:encryptedNric', bookingIdString, encryptedNric);
-    if (!bookingIdString) {
-      return new Response(JSON.stringify({ error: 'Booking Id reqquire' }), { status: 400 });
-    }
+
 
     const bookingId = BigInt(bookingIdString) as bigint;
     const schedules = await prisma.booking_schedules.findUnique({
@@ -50,6 +53,6 @@ export async function GET(request: NextRequest) {
     return new Response(JSON.stringify({ error: 'Error fetching schedules' }), { status: 500 });
 
   } finally {
-    await prisma.$disconnect(); // Ensure connection is closed
+    await prisma.$disconnect(); 
   }
 }

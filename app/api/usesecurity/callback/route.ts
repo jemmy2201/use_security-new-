@@ -92,16 +92,15 @@ const convertSub = (sub: string) => {
 };
 
 export async function GET(request: NextRequest, res: NextResponse) {
+    const redirectUrlToTerms = process.env.NEXT_PUBLIC_URL + '/terms';
+    console.log('redirect url to terms and condition:', redirectUrlToTerms);
+    const { searchParams } = new URL(request.url);
+    const code = searchParams.get('code');
+
+    if (!code) {
+        return NextResponse.json({ error: 'Authorization code is missing' }, { status: 400 });
+    }
     try {
-        const redirectUrlToTerms = process.env.NEXT_PUBLIC_URL + '/terms';
-        console.log('redirect url to terms and condition:', redirectUrlToTerms);
-        const { searchParams } = new URL(request.url);
-        const code = searchParams.get('code');
-
-        if (!code) {
-            return NextResponse.json({ error: 'Authorization code is missing' }, { status: 400 });
-        }
-
         console.log('Callback from Singpass login, auth code:', code);
 
         const jwtToken = await privateKeyJwt();

@@ -6,6 +6,8 @@ import reviewDetailsContentstyles from './ReviewDetailsContent.module.css';
 import { useFormContext } from '.././FormContext';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import ReviewImageProcessing from './ReviewImageProcessing';
+import Image from 'next/image';
+
 type CheckboxState = {
     [key: string]: boolean;
 };
@@ -60,7 +62,7 @@ const ReviewDetailsPage: React.FC = () => {
         console.log('review detail page, iamge file name:', formData.imageUrl);
         setIsChecked(formData?.isTermsAndConditionSigned || false);
 
-    }, []);
+    }, [formData.imageUrl, formData?.isTermsAndConditionSigned]);
 
     const [isEditingSection1, setIsEditingSection1] = useState(false);
     const [isEditingSection2, setIsEditingSection2] = useState(false);
@@ -105,22 +107,25 @@ const ReviewDetailsPage: React.FC = () => {
 
                             <div className={reviewDetailsContentstyles.stepContentContainer}>
                                 <div className={reviewDetailsContentstyles.headerContentBox}>
-
-                                    <div className={globalStyleCss.header2}>
-                                        Personal details
+                                    <div className={reviewDetailsContentstyles.item}>
+                                        <div className={globalStyleCss.header2}>
+                                            Personal details
+                                        </div>
                                     </div>
-                                    <div className={reviewDetailsContentstyles.editLink}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <g clipPath="url(#clip0_1418_2800)">
-                                                <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
-                                            </g>
-                                            <defs>
-                                                <clipPath id="clip0_1418_2800">
-                                                    <rect width="24" height="24" fill="white" />
-                                                </clipPath>
-                                            </defs>
-                                        </svg>&nbsp;
-                                        <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(1)}>Save</button>
+                                    <div className={reviewDetailsContentstyles.item}>
+                                        <div className={reviewDetailsContentstyles.editLink}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <g clipPath="url(#clip0_1418_2800)">
+                                                    <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_1418_2800">
+                                                        <rect width="24" height="24" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>&nbsp;
+                                            <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(1)}>Save</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className={reviewDetailsContentstyles.contentBox}>
@@ -168,23 +173,25 @@ const ReviewDetailsPage: React.FC = () => {
                         <>
                             <div className={reviewDetailsContentstyles.stepContentContainer}>
                                 <div className={reviewDetailsContentstyles.headerContentBox}>
-
-                                    <div className={globalStyleCss.header2}>
-                                        Personal details
+                                    <div className={reviewDetailsContentstyles.item}>
+                                        <div className={globalStyleCss.header2}>
+                                            Personal details
+                                        </div>
                                     </div>
-
-                                    <div className={reviewDetailsContentstyles.editLink}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <g clipPath="url(#clip0_1418_2800)">
-                                                <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
-                                            </g>
-                                            <defs>
-                                                <clipPath id="clip0_1418_2800">
-                                                    <rect width="24" height="24" fill="white" />
-                                                </clipPath>
-                                            </defs>
-                                        </svg>&nbsp;
-                                        <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(1)}>Edit</button>
+                                    <div className={reviewDetailsContentstyles.item}>
+                                        <div className={reviewDetailsContentstyles.editLink}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <g clipPath="url(#clip0_1418_2800)">
+                                                    <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_1418_2800">
+                                                        <rect width="24" height="24" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>&nbsp;
+                                            <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(1)}>Edit</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className={reviewDetailsContentstyles.contentBox}>
@@ -222,22 +229,25 @@ const ReviewDetailsPage: React.FC = () => {
                             <>
                                 <div className={reviewDetailsContentstyles.stepContentContainer}>
                                     <div className={reviewDetailsContentstyles.headerContentBox}>
-
-                                        <div className={globalStyleCss.header2}>
-                                            Photo
+                                        <div className={reviewDetailsContentstyles.item}>
+                                            <div className={globalStyleCss.header2}>
+                                                Photo
+                                            </div>
                                         </div>
-                                        <div className={reviewDetailsContentstyles.editLink}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <g clipPath="url(#clip0_1418_2800)">
-                                                    <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_1418_2800">
-                                                        <rect width="24" height="24" fill="white" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>&nbsp;
-                                            <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(2)}>Save</button>
+                                        <div className={reviewDetailsContentstyles.item}>
+                                            <div className={reviewDetailsContentstyles.editLink}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <g clipPath="url(#clip0_1418_2800)">
+                                                        <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
+                                                    </g>
+                                                    <defs>
+                                                        <clipPath id="clip0_1418_2800">
+                                                            <rect width="24" height="24" fill="white" />
+                                                        </clipPath>
+                                                    </defs>
+                                                </svg>&nbsp;
+                                                <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(2)}>Save</button>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -250,23 +260,25 @@ const ReviewDetailsPage: React.FC = () => {
                             <>
                                 <div className={reviewDetailsContentstyles.stepContentContainer}>
                                     <div className={reviewDetailsContentstyles.headerContentBox}>
-
-                                        <div className={globalStyleCss.header2}>
-                                            Photo
+                                        <div className={reviewDetailsContentstyles.item}>
+                                            <div className={globalStyleCss.header2}>
+                                                Photo
+                                            </div>
                                         </div>
-
-                                        <div className={reviewDetailsContentstyles.editLink}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <g clipPath="url(#clip0_1418_2800)">
-                                                    <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_1418_2800">
-                                                        <rect width="24" height="24" fill="white" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>&nbsp;
-                                            <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(2)}>Edit</button>
+                                        <div className={reviewDetailsContentstyles.item}>
+                                            <div className={reviewDetailsContentstyles.editLink}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <g clipPath="url(#clip0_1418_2800)">
+                                                        <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
+                                                    </g>
+                                                    <defs>
+                                                        <clipPath id="clip0_1418_2800">
+                                                            <rect width="24" height="24" fill="white" />
+                                                        </clipPath>
+                                                    </defs>
+                                                </svg>&nbsp;
+                                                <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(2)}>Edit</button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className={globalStyleCss.regular}>
@@ -274,11 +286,11 @@ const ReviewDetailsPage: React.FC = () => {
                                     </div>
                                     {formData.image ? (
                                         <>
-                                            {formData.image && <img src={formData.image} />}
+                                            {formData.image && <Image src={formData.image} alt="Photo ID" height={200} width={257} />}
                                         </>
                                     ) : (
                                         <>
-                                            {formData.imageUrl && <img src={formData.imageUrl} />}
+                                            {formData.imageUrl && <Image src={formData.imageUrl} alt="Photo ID" height={200} width={257} />}
                                         </>
                                     )
 
@@ -295,22 +307,25 @@ const ReviewDetailsPage: React.FC = () => {
                             <div className={reviewDetailsContentstyles.stepContentContainer}>
 
                                 <div className={reviewDetailsContentstyles.headerContentBox}>
-
-                                    <div className={globalStyleCss.header2}>
-                                        Training records
+                                    <div className={reviewDetailsContentstyles.item}>
+                                        <div className={globalStyleCss.header2}>
+                                            Training records
+                                        </div>
                                     </div>
-                                    <div className={reviewDetailsContentstyles.editLink}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <g clipPath="url(#clip0_1418_2800)">
-                                                <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
-                                            </g>
-                                            <defs>
-                                                <clipPath id="clip0_1418_2800">
-                                                    <rect width="24" height="24" fill="white" />
-                                                </clipPath>
-                                            </defs>
-                                        </svg>&nbsp;
-                                        <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(3)}>Save</button>
+                                    <div className={reviewDetailsContentstyles.item}>
+                                        <div className={reviewDetailsContentstyles.editLink}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <g clipPath="url(#clip0_1418_2800)">
+                                                    <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_1418_2800">
+                                                        <rect width="24" height="24" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>&nbsp;
+                                            <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(3)}>Save</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className={globalStyleCss.regularBold}>
@@ -427,21 +442,25 @@ const ReviewDetailsPage: React.FC = () => {
                         <>
                             <div className={reviewDetailsContentstyles.stepContentContainer}>
                                 <div className={reviewDetailsContentstyles.headerContentBox}>
-                                    <div className={globalStyleCss.header2}>
-                                        Training records
+                                    <div className={reviewDetailsContentstyles.item}>
+                                        <div className={globalStyleCss.header2}>
+                                            Training records
+                                        </div>
                                     </div>
-                                    <div className={reviewDetailsContentstyles.editLink}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <g clipPath="url(#clip0_1418_2800)">
-                                                <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
-                                            </g>
-                                            <defs>
-                                                <clipPath id="clip0_1418_2800">
-                                                    <rect width="24" height="24" fill="white" />
-                                                </clipPath>
-                                            </defs>
-                                        </svg>&nbsp;
-                                        <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(3)}>Edit</button>
+                                    <div className={reviewDetailsContentstyles.item}>
+                                        <div className={reviewDetailsContentstyles.editLink}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <g clipPath="url(#clip0_1418_2800)">
+                                                    <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_1418_2800">
+                                                        <rect width="24" height="24" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>&nbsp;
+                                            <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(3)}>Edit</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className={globalStyleCss.regularBold}>

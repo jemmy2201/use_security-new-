@@ -164,7 +164,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
         };
         fetchBookingSchedule();
         setLoading(false);
-    }, []);
+    }, [bookingId, router]);
 
 
     return (

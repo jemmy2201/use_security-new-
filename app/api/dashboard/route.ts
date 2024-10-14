@@ -5,12 +5,11 @@ import { NextRequest, NextResponse } from 'next/server';
 const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
+  const encryptedNric = await getEncryptedNricFromSession(request);
+  if (encryptedNric instanceof NextResponse) {
+    return encryptedNric;
+  }
   try {
-    const url = new URL(request.url);
-    const encryptedNric = await getEncryptedNricFromSession(request);
-    if (encryptedNric instanceof NextResponse) {
-      return encryptedNric;
-    }
 
     // const schedules = await prisma.booking_schedules.findMany({
     //   where: {

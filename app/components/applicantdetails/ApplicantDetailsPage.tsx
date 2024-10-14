@@ -144,7 +144,7 @@ const ApplicantDetailsPage: React.FC = () => {
         } else {
             setError('No user data found');
         }
-    }, []);
+    }, [formData,setFormData]);
 
     return (
 

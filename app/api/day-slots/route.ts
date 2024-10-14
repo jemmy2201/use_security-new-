@@ -22,9 +22,14 @@ export interface bookingDate {
 }
 
 export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const selectedDateString = searchParams.get('selectedDate');
+
+  if (!selectedDateString) {
+    return new Response('Selected Date is required', { status: 400 });
+  }
   try {
-    const url = new URL(request.url);
-    const selectedDateString = url.searchParams.get('selectedDate');
+
     console.log('selectedDateString:', selectedDateString);
     const encryptedNric = await getEncryptedNricFromSession(request);
     if (encryptedNric instanceof NextResponse) {

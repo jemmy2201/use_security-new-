@@ -117,7 +117,7 @@ const PersonalDetailsPage: React.FC = () => {
             }
         }
 
-    }, []);
+    }, [formData.actionType, formData.email, formData.mobileno, setFormData]);
 
     return (
         <form>

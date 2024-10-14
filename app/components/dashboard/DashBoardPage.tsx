@@ -550,7 +550,7 @@ const DashBoardPage: React.FC = () => {
                                                                         handleReplaceClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Replace &nbsp;
+                                                                    Replacement &nbsp;
                                                                 </a>
                                                                 | &nbsp;
                                                                 <a
@@ -770,7 +770,7 @@ const DashBoardPage: React.FC = () => {
                                                                         handleReplaceClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Replace &nbsp; 
+                                                                    Replacement &nbsp; 
                                                                 </a>
                                                                 | &nbsp;
                                                                 <a
@@ -934,7 +934,7 @@ const DashBoardPage: React.FC = () => {
                                                             handleReplaceClick(booking.id);
                                                         }}
                                                         className={globalStyleCss.blueLink}>
-                                                        Replace <br></br>
+                                                        Replacement <br></br>
                                                     </a>
                                                     <a
                                                         href="/renew"
@@ -1138,7 +1138,7 @@ const DashBoardPage: React.FC = () => {
                                                             handleReplaceClick(booking.id);
                                                         }}
                                                         className={globalStyleCss.blueLink}>
-                                                        Replace <br></br>
+                                                        Replacement <br></br>
                                                     </a>
                                                     <a
                                                         href="/edit"

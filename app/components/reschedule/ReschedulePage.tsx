@@ -279,7 +279,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [bookingId, router]);
 
     return (
 

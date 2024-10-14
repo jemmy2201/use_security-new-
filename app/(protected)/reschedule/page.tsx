@@ -1,23 +1,25 @@
 "use client";
 
-
-import { useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
+import { useSearchParams } from 'next/navigation';
+import React, { Suspense } from 'react';
 import ReschedulePage from '@/components/reschedule/ReschedulePage';
 
-
-const Reschedule: React.FC = () => {
-  const searchParams = useSearchParams()
-  const bookingId = searchParams.get('bookingId')
+const SearchParamsWrapper: React.FC = () => {
+  const searchParams = useSearchParams();
+  const bookingId = searchParams.get('bookingId');
   const bookingIdString = typeof bookingId === 'string' ? bookingId : '';
 
+  return <ReschedulePage bookingId={bookingIdString} />;
+};
+
+const Reschedule: React.FC = () => {
   return (
     <div>
-      <ReschedulePage bookingId={bookingIdString} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchParamsWrapper />
+      </Suspense>
     </div>
   );
 };
 
 export default Reschedule;
-
-

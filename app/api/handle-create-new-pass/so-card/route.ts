@@ -34,11 +34,12 @@ const mapToCreateNewPassApiResponse = (
 };
 
 export async function GET(request: NextRequest) {
+  const encryptedNric = await getEncryptedNricFromSession(request);
+  if (encryptedNric instanceof NextResponse) {
+    return encryptedNric; 
+  }
   try {
-    const encryptedNric = await getEncryptedNricFromSession(request);
-    if (encryptedNric instanceof NextResponse) {
-      return encryptedNric; 
-    }
+
 
     const passList = await prisma.booking_schedules.findFirst({
       where: {

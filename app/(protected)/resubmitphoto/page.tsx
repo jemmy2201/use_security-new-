@@ -1,23 +1,26 @@
 "use client";
 
-
-import { useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
+import { useSearchParams } from 'next/navigation';
+import React, { Suspense } from 'react';
 import ResubmitPhotoPage from '@/components/resubmitphoto/ResubmitPhoto';
 
-
-const Reschedule: React.FC = () => {
-  const searchParams = useSearchParams()
-  const bookingId = searchParams.get('bookingId')
+const SearchParamsWrapper: React.FC = () => {
+  const searchParams = useSearchParams();
+  const bookingId = searchParams.get('bookingId');
   const bookingIdString = typeof bookingId === 'string' ? bookingId : '';
 
+  return <ResubmitPhotoPage bookingId={bookingIdString} />;
+};
+
+const ResubmitPhoto: React.FC = () => {
   return (
     <div>
-      <ResubmitPhotoPage bookingId={bookingIdString} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchParamsWrapper />
+      </Suspense>
     </div>
   );
 };
 
-export default Reschedule;
-
+export default ResubmitPhoto;
 

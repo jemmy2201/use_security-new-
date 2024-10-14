@@ -10,6 +10,7 @@ import HeaderPageLink from '../header/HeaderPage';
 import { useRouter } from 'next/navigation';
 import { booking_schedules } from '@prisma/client';
 import CircularProgress from '@mui/material/CircularProgress';
+import Image from 'next/image';
 
 interface ResubmitPhotoPageProps {
   bookingId: string;
@@ -113,7 +114,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
 
-  }, []);
+  }, [bookingId, router, showBookingAppointment]);
 
 
   const onComplete = async () => {
@@ -197,7 +198,9 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
       const img = URL.createObjectURL(file);
       setImage(img);
 
-      const imageElement = new Image();
+      const imageElement = document.createElement('img');
+      imageElement.width = 200; // Set the width
+      imageElement.height = 257; // Set the height;
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
@@ -452,7 +455,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             <div className={resubmitPhotoContentstyles.uploadBox}>
 
               <div className={resubmitPhotoContentstyles.uploadPhotoContainerBox}>
-                {<img src={image} />}
+                {<Image src={image?image:''} alt='ID Photo' height={200} width={257}/>}
               </div>
 
               <div className={globalStyleCss.regular}>
@@ -484,7 +487,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
               <div className={resubmitPhotoContentstyles.photosDosDontContainerPicsBox}>
                 <div className={resubmitPhotoContentstyles.picBox}>
                   <div className={resubmitPhotoContentstyles.picFrame}>
-                    <img src='/images/clear_pic.jpeg'></img>
+                    <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
                   </div>
                   <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -501,7 +504,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                 </div>
                 <div className={resubmitPhotoContentstyles.picBox}>
                   <div className={resubmitPhotoContentstyles.picFrame}>
-                    <img src='/images/clear_pic.jpeg'></img>
+                    <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
                   </div>
                   <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -518,7 +521,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                 </div>
                 <div className={resubmitPhotoContentstyles.picBox}>
                   <div className={resubmitPhotoContentstyles.picFrame}>
-                    <img src='/images/clear_pic.jpeg'></img>
+                    <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
                   </div>
                   <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -538,7 +541,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
               <div className={resubmitPhotoContentstyles.photosDosDontContainerPicsBox}>
                 <div className={resubmitPhotoContentstyles.picBox}>
                   <div className={resubmitPhotoContentstyles.picFrame}>
-                    <img src='/images/specs.jpg'></img>
+                    <Image src='/images/2.jpg' alt='' height={80} width={120}></Image>
 
                   </div>
                   <div>
@@ -550,7 +553,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                 </div>
                 <div className={resubmitPhotoContentstyles.picBox}>
                   <div className={resubmitPhotoContentstyles.picFrame}>
-                    <img src='/images/no_face.png'></img>
+                    <Image src='/images/5.png' alt='' height={80} width={120}></Image>
                   </div>
                   <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -561,7 +564,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                 </div>
                 <div className={resubmitPhotoContentstyles.picBox}>
                   <div className={resubmitPhotoContentstyles.picFrame}>
-                    <img src='/images/noface.jpeg'></img>
+                    <Image src='/images/6.png' alt='' height={80} width={120}></Image>
                   </div>
                   <div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">

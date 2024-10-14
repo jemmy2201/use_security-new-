@@ -94,7 +94,7 @@ const BookAppointmentCompletePage: React.FC = () => {
         };
         fetchBookingSchedule();
 
-    }, []);
+    }, [formData.id, router]);
 
     return (
 

@@ -22,9 +22,14 @@ export interface bookingDate {
 }
 
 export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const bookingIdString = searchParams.get('bookingId');
+
+  if (!bookingIdString) {
+    return new Response('Booking ID is required', { status: 400 });
+  }
   try {
-    const url = new URL(request.url);
-    const bookingIdString = url.searchParams.get('bookingId');
+
     const encryptedNric = await getEncryptedNricFromSession(request);
     if (encryptedNric instanceof NextResponse) {
       return encryptedNric;

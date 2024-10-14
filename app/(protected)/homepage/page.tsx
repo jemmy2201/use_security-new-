@@ -1,11 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { useRouter, } from 'next/navigation';
-
+import { useRouter } from 'next/navigation';
 import { booking_schedules as bookingDetail } from '@prisma/client';
-import globalStyleCss from '../globalstyle/Global.module.css';
-import { logout } from '@/actions/auth';
 import CircularProgress from '@mui/material/CircularProgress';
 
 export interface userInfo {
@@ -27,7 +24,6 @@ const DefaultHomePage: React.FC = () => {
 
 
     useEffect(() => {
-
 
         const fetchHomePage = async () => {
             try {
@@ -69,7 +65,7 @@ const DefaultHomePage: React.FC = () => {
         };
         fetchHomePage();
 
-    }, []);
+    }, [router]);
 
     return (
         <div >

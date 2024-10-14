@@ -8,6 +8,7 @@ import headerstyles from './HeaderStyle.module.css';
 import FooterPageLink from '../components/footer/FooterPage'
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const ContactusPage: React.FC = () => {
 
@@ -27,7 +28,7 @@ const ContactusPage: React.FC = () => {
 
 
             <div className={headerstyles.headerContainer}>
-                <div className={headerstyles.logo}><Link href="/signin"><img src="/images/logo.png" alt="Logo" /></Link></div>
+                <div className={headerstyles.logo}><Link href="/signin"><Image src="/images/logo.png" alt="Logo" width={55} height={58}/></Link></div>
                 <div className={headerstyles.companyName}>Union of Security Employees (USE)</div>
                 <div className={headerstyles.leftBox}>
                     <div className={headerstyles.phoneSvg}>

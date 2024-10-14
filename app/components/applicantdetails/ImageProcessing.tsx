@@ -7,6 +7,7 @@ import { useFormContext } from '.././FormContext';
 import applicantDetailsContentstyles from './ApplicantDetailsContent.module.css';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import CircularProgress from '@mui/material/CircularProgress';
+import Image from 'next/image';
 
 const ImageProcessing = () => {
 
@@ -33,7 +34,9 @@ const ImageProcessing = () => {
         console.log('Image processing applicationType:', formData.applicationType);
         console.log('Image processing image url:', formData.imageUrl);
         if (formData.imageUrl) {
-          const img = new Image();
+          const img = document.createElement('img');
+          img.width = 200; // Set the width
+          img.height = 257; // Set the height
           img.src = formData.imageUrl;
 
           img.onload = () => {
@@ -59,7 +62,7 @@ const ImageProcessing = () => {
     };
 
     loadModels();
-  }, []);
+  }, [formData.applicationType, formData.imageUrl, setFormData]);
 
 
 
@@ -86,7 +89,9 @@ const ImageProcessing = () => {
         ...prevFormData,
         ['image']: img,
       }));
-      const imageElement = new Image();
+      const imageElement = document.createElement('img');
+      imageElement.width = 200; // Set the width
+      imageElement.height = 257; // Set the height
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
@@ -391,11 +396,11 @@ const ImageProcessing = () => {
             {
               formData.image ? (
                 <>
-                  {formData.image && <img src={formData.image} />}
+                  {formData.image && <Image src={formData.image} alt="Photo ID" height={200} width={257}/>}
                 </>
               ) : (
                 <>
-                  {formData.imageUrl && <img src={formData.imageUrl} />}
+                  {formData.imageUrl && <Image src={formData.imageUrl} alt="Photo ID" height={200} width={257}/>}
                 </>
               )
             }
@@ -431,7 +436,7 @@ const ImageProcessing = () => {
           <div className={applicantDetailsContentstyles.photosDosDontContainerPicsBox}>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <img src='/images/clear_pic.jpeg'></img>
+                <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -448,7 +453,7 @@ const ImageProcessing = () => {
             </div>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <img src='/images/clear_pic.jpeg'></img>
+                <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -465,7 +470,7 @@ const ImageProcessing = () => {
             </div>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <img src='/images/clear_pic.jpeg'></img>
+                <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -484,7 +489,7 @@ const ImageProcessing = () => {
           <div className={applicantDetailsContentstyles.photosDosDontContainerPicsBox}>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <img src='/images/2.png'></img>
+                <Image src='/images/2.png' alt='' height={80} width={120}></Image>
 
               </div>
               <div>
@@ -496,7 +501,7 @@ const ImageProcessing = () => {
             </div>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <img src='/images/5.png'></img>
+                <Image src='/images/5.png' alt='' height={80} width={120}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -507,7 +512,7 @@ const ImageProcessing = () => {
             </div>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <img src='/images/6.png'></img>
+                <Image src='/images/6.png' alt='' height={80} width={120}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">

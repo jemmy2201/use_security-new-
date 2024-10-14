@@ -1,22 +1,26 @@
 "use client";
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
+import { useSearchParams } from 'next/navigation';
+import React, { Suspense } from 'react';
 import ReceiptPage from '@/components/receipt/ReceiptPage';
 
-
-const Complete: React.FC = () => {
-  const searchParams = useSearchParams()
-  const bookingId = searchParams.get('bookingId')
+const SearchParamsWrapper: React.FC = () => {
+  const searchParams = useSearchParams();
+  const bookingId = searchParams.get('bookingId');
   const bookingIdString = typeof bookingId === 'string' ? bookingId : '';
 
+  return <ReceiptPage bookingId={bookingIdString} />;
+};
+
+const Receipt: React.FC = () => {
   return (
     <div>
-      <ReceiptPage bookingId={bookingIdString} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchParamsWrapper />
+      </Suspense>
     </div>
   );
 };
 
-export default Complete;
-
+export default Receipt;
 
