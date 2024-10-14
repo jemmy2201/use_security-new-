@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
-    "build": "next build",
-    "start": "node server.js",
+    "dev": "cross-env NODE_ENV=development node server.js",
+    "build:uat": "cross-env NODE_ENV=uat next build",
+    "build:prod": "cross-env NODE_ENV=production next build",
+    "start:uat": "cross-env NODE_ENV=uat node server.js",
+    "start:prod": "cross-env NODE_ENV=production node server.js",
+    "serve:uat": "npm run build:uat && npm run start:uat",
+    "serve:prod": "npm run build:prod && npm run start:prod",
     "lint": "next lint"
   },
   "dependencies": {
@@ -19,6 +23,7 @@
     "axios": "^1.7.6",
     "bcrypt": "^5.1.1",
     "cookies-next": "^4.2.1",
+    "cross-env": "^7.0.3",
     "date-fns": "^2.30.0",
     "encoding": "^0.1.13",
     "face-api.js": "^0.22.2",
