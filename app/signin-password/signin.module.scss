@@ -75,7 +75,7 @@
 .bodyBox {
     justify-content: center;
     align-items: center;
-    padding: 5%;
+    padding: 1%;
     .title {
         flex-wrap: wrap;
         align-self: stretch;
@@ -86,7 +86,20 @@
         font-style: normal;
         font-weight: 700;
         line-height: 32px;
-        padding-bottom: 5%;
+        padding-bottom: 3%;
+    }
+
+    .loginBox {
+        flex-wrap: wrap;
+        align-self: stretch;
+        color: white;
+        text-align: center;
+        font-family: Poppins;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 18px;
+        padding-bottom: 1%;
     }
     
     .serviceWrapper {

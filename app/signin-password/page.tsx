@@ -60,7 +60,7 @@ const HomePage: React.FC = () => {
         <div className={styles.container}>
             <div className={styles.overlay}>
                 <div className={headerstyles.headerContainer}>
-                    <div className={headerstyles.logo}><Image src="/images/logo.png" alt="Logo" width={55} height={58}/></div>
+                    <div className={headerstyles.logo}><Image src="/images/logo.png" alt="Logo" width={55} height={58} /></div>
                     <div className={headerstyles.companyName}>Union of Security Employees (USE)</div>
                     <div className={headerstyles.leftBox}>
                         <div className={headerstyles.phoneSvg}>
@@ -72,39 +72,41 @@ const HomePage: React.FC = () => {
 
                         </div>
 
-                        <form onSubmit={handleSubmit}>
-                            <div className={headerstyles.loginButton}>
 
-                                <label htmlFor="username" style={{ display: 'block', marginBottom: '5px' }}>Username:</label>
-                                <input
-                                    type="text"
-                                    id="username"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    style={{ color: 'black', width: '25%', padding: '2px', boxSizing: 'border-box' }}
-                                    required
-                                />
-                                <label htmlFor="password">Password:</label>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    style={{ color: 'black', width: '25%', padding: '2px', boxSizing: 'border-box' }}
-                                    required
-                                />
-                                <button type="submit">
-                                    <div className={globalStyleCss.primaryButton}>Log in</div>
-                                </button>
-
-                            </div>
-                        </form>
-                        {startDateError && <p style={{ color: 'red' }}>{startDateError}</p>}
                     </div>
                 </div>
 
                 <div className={s.bodyBox}>
                     <div className={s.title}>Welcome to USE ID Card Portal </div>
+                    <form onSubmit={handleSubmit}>
+
+                    <div className={s.loginBox}><label htmlFor="username">Username:&nbsp;</label>
+                        <input
+                            type="text"
+                            id="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                            style={{ color: 'black' }}
+                        />  </div>
+                    <div className={s.loginBox}>
+                        <label htmlFor="password">Password:&nbsp;</label>
+                        <input
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            style={{ color: 'black' }}
+                        /> </div>
+                        <div className={s.loginBox}>
+                            <button type="submit" className={headerstyles.loginButton}>
+                                <div className={globalStyleCss.primaryButton}>Log in</div>
+                            </button>
+                            {startDateError && <p style={{ color: 'red' }}>{startDateError}</p>}
+
+                        </div>
+                    </form>
 
                     <div className={s.serviceWrapper}>
                         <div className={s.services}>
