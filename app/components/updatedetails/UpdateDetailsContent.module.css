@@ -42,7 +42,7 @@
     }
 
     .contentBox {
-      display: flex;
+      display: flex !important;
       align-items: flex-start;
       flex-wrap: wrap;
 
@@ -98,7 +98,7 @@
         flex-wrap: wrap;
 
         .checkboxes {
-          display: flex;
+          display: flex !important;
           align-items: flex-start;
           align-self: stretch;
           color: #000;
@@ -113,10 +113,6 @@
         }
       }
     }
-
-
-
-
   }
 
   .buttonContainer {

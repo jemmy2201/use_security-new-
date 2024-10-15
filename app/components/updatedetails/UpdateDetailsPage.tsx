@@ -417,18 +417,6 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                     <div className={updateDetailsContentstyles.trainingOptionContainer}>
                         <div className={updateDetailsContentstyles.trainingOptionBox}>
 
-                            {/* <label className={updateDetailsContentstyles.checkboxes}>
-                                <div className={globalStyleCss.regular}>
-                                    <input
-                                        type="checkbox"
-                                        name="trAvso"
-                                        checked={checkboxes.trAvso}
-                                        onChange={handleCheckboxChange}
-                                    />
-                                </div> <div>Airport Screener Deployment</div>
-                            </label> */}
-
-
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}><input
                                     type="checkbox"
@@ -466,26 +454,6 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                 />
                                 </div> <div>Handle Counter Terrorist Activities (HCTA)</div>
                             </label>
-
-
-                            {/* <label className={updateDetailsContentstyles.checkboxes}>
-                                <div className={globalStyleCss.regular}><input
-                                    type="checkbox"
-                                    name="trObse"
-                                    checked={checkboxes.trObse}
-                                    onChange={handleCheckboxChange}
-                                />
-                                </div> <div>Operate Basic Security Equipment</div>
-                            </label> */}
-                            {/* <label className={updateDetailsContentstyles.checkboxes}>
-                                <div className={globalStyleCss.regular}><input
-                                    type="checkbox"
-                                    name="trSsm"
-                                    checked={checkboxes.trSsm}
-                                    onChange={handleCheckboxChange}
-                                />
-                                </div> <div>Security Surveillance Management</div>
-                            </label> */}
 
                             <label className={updateDetailsContentstyles.checkboxes}>
                                 <div className={globalStyleCss.regular}> <input

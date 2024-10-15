@@ -62,7 +62,7 @@ const HomePage: React.FC = () => {
                             <div className={s.box}>
                                 <div className={s.svgBox}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                                        <circle cx="24" cy="24" r="23" stroke="#546E7A" stroke-width="2" />
+                                        <circle cx="24" cy="24" r="23" stroke="#546E7A" strokeWidth="2" />
                                         <image href="/images/new.jpg" x="12" y="12" height="24" width="24" clipPath="circle(22px at 20px 20px)" />
                                     </svg>
                                 </div>
@@ -80,7 +80,7 @@ const HomePage: React.FC = () => {
                             <div className={s.box}>
                                 <div className={s.svgBox}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                                        <circle cx="24" cy="24" r="23" stroke="#546E7A" stroke-width="2" />
+                                        <circle cx="24" cy="24" r="23" stroke="#546E7A" strokeWidth="2" />
                                         <image href="/images/renew.jpg" x="12" y="12" height="24" width="24" clipPath="circle(22px at 20px 20px)" />
                                     </svg>
 
@@ -98,7 +98,7 @@ const HomePage: React.FC = () => {
                             <div className={s.box}>
                                 <div className={s.svgBox}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                                        <circle cx="24" cy="24" r="23" stroke="#546E7A" stroke-width="2" />
+                                        <circle cx="24" cy="24" r="23" stroke="#546E7A" strokeWidth="2" />
                                         <image href="/images/replace.jpg" x="12" y="12" height="24" width="24" clipPath="circle(22px at 20px 20px)" />
                                     </svg>
                                 </div>
@@ -115,7 +115,7 @@ const HomePage: React.FC = () => {
                             <div className={s.box}>
                                 <div className={s.svgBox}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                                        <circle cx="24" cy="24" r="23" stroke="#546E7A" stroke-width="2" />
+                                        <circle cx="24" cy="24" r="23" stroke="#546E7A" strokeWidth="2" />
                                         <image href="/images/edit.jpg" x="14" y="14" height="24" width="24" clipPath="circle(22px at 20px 20px)" />
                                     </svg>
 
