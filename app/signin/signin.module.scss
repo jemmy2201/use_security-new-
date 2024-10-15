@@ -125,8 +125,9 @@
                     svg {
                         stroke-width: 2px;
                         stroke: #546E7A;
-                        width: 24px;
-                        height: 24px;
+                        flex-shrink: 0;
+                        width: 48px;
+                        height: 48px;
                     }
                 }
     
