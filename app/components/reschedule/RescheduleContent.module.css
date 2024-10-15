@@ -24,7 +24,7 @@
   }
 
   .appointmentDetailContainer {
-    display: flex;
+    display: inline-flex;
     padding: 40px;
     width: 80%;
     flex-direction: column;
@@ -80,7 +80,6 @@
     }
 
     .header {
-      display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;

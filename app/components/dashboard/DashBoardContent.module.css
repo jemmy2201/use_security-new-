@@ -37,7 +37,7 @@
       }
 
       .headerBox {
-        display: flex;
+        display: inline-flex;
         justify-content: space-between;
         align-items: center;
         align-self: stretch;
@@ -141,7 +141,7 @@
         padding: 20px;
 
         @media screen and (max-width: 769px) {
-          display: flex;
+          display: inline-flex;
           flex-direction: column;
           align-items: flex-start;
           gap: 8px;

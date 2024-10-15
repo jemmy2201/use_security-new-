@@ -17,6 +17,11 @@ const cardTypeMap: { [key: string]: string } = {
     [PI_APP]: 'Personal Investigator (PI)',
 };
 
+const cardTypeCode: { [key: string]: string } = {
+    [SO_APP]: 'SO',
+    [PI_APP]: 'PI',
+};
+
 const appTypeMap: { [key: string]: string } = {
     [NEW]: 'New',
     [REPLACEMENT]: 'Replace',
@@ -59,6 +64,7 @@ export async function GET(req: NextRequest) {
         if (schedule && session.payment_status == 'paid') {
             const paymentIntentId = session.payment_intent as string;
             const formattedDate = formatDate();
+            const receiptNumber = formatDateToDDMMYYYY(new Date())+ schedule?.id.toString().slice(-5);
             const updatedSchedule = await prisma.booking_schedules.update({
                 where: { id: schedule.id },
                 data: {
@@ -67,7 +73,7 @@ export async function GET(req: NextRequest) {
                     stripe_payment_id: paymentIntentId,
                     status_payment: '1',
                     trans_date: formattedDate,
-                    receiptNo: paymentIntentId,
+                    receiptNo: receiptNumber,
                 },
             });
             const replacer = (key: string, value: any) => {
@@ -206,7 +212,9 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
         const pdfBytes = await pdfDoc.save();
 
         const folderPath = path.join(process.cwd(), 'public', 'userdocs/img_users/invoice');
-        const filePath = path.join(folderPath, schedule.passid + '.pdf');
+        
+        const fileNameBuilder = 'T_'+encryptDecrypt(schedule.nric, 'decrypt') +cardTypeCode[schedule.card_id ? schedule.card_id : ''] +'_'+formatDateToDDMMYYYY(new Date())+ schedule?.id.toString().slice(-5);
+        const filePath = path.join(folderPath, fileNameBuilder + '.pdf');
 
         fs.mkdirSync(folderPath, { recursive: true });
 
@@ -219,6 +227,13 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
         fs.close;
     }
 };
+
+function formatDateToDDMMYYYY(date: Date): string {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+    return `${year}${month}${day}`;
+}
 
 
 

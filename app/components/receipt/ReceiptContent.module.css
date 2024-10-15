@@ -24,7 +24,7 @@
     border-radius: 28px;
     border: 1px solid #546E7A;
     background: #FFF;
-    
+
   }
 
   .innerContainerHeader {
@@ -49,6 +49,7 @@
     align-items: flex-start;
     background: #FFF;
     justify-content: center;
+    flex-wrap: wrap;
     @media screen and (max-width: 769px) {
       padding: 10px;
       width: 340px;
@@ -63,16 +64,16 @@
       background: #D5D5D5;
     }
 
-    .receiptTextBox {
-      display: flex;
+    .receiptTextBox1 {
+      display: inline-flex;
       align-items: flex-start;
       padding: 20px;
       gap: 10px;
-      overflow-wrap: anywhere;
       align-self: stretch;
       @media screen and (max-width: 769px) {
         padding: 5px;
       }
+
       .warningBox {
         display: flex;
         padding: 12px 16px;

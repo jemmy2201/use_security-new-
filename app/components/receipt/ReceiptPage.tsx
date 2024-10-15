@@ -215,14 +215,14 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                     </div>
                 </div>
                 <div ref={pdfRef} className={receiptContentstyles.innerContainer}>
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.header2}>
                                 Transaction details
                             </div>
                         </div>
                     </div>
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regularBold}>Transaction reference no.</div>
                         </div>
@@ -231,7 +231,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                         </div>
                     </div>
                     <hr className={receiptContentstyles.customhr}></hr>
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regularBold}> Transaction date</div>
                         </div>
@@ -242,7 +242,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
                     <hr className={receiptContentstyles.customhr}></hr>
 
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regularBold}> Amount paid (inclusive of GST)</div>
                         </div>
@@ -251,7 +251,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                         </div>
                     </div>
                     <hr className={receiptContentstyles.customhr}></hr>
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regularBold}> Type of application</div>
                         </div>
@@ -260,7 +260,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                         </div>
                     </div>
                     <hr className={receiptContentstyles.customhr}></hr>
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regularBold}> Grade</div>
                         </div>
@@ -271,7 +271,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
                     <hr className={receiptContentstyles.customhr}></hr>
 
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regularBold}> ID card no.</div>
                         </div>
@@ -282,7 +282,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
                     <hr className={receiptContentstyles.customhr}></hr>
 
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regularBold}> ID card date of expiry</div>
                         </div>
@@ -293,7 +293,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
                     <hr className={receiptContentstyles.customhr}></hr>
 
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regularBold}> Full name</div>
                         </div>
@@ -305,7 +305,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
                     <hr className={receiptContentstyles.customhr}></hr>
 
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regularBold}> NRIC / FIN no.</div>
                         </div>
@@ -315,14 +315,14 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                     </div>
                 </div>
                 <div className={receiptContentstyles.innerContainer}>
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.header2}>
                                 Appointment details
                             </div>
                         </div>
                     </div>
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.warningBox}>
                             <div className={globalStyleCss.regular} style={{ display: 'inline-flex' }}>
                                 <svg style={{ display: 'inline-flex' }} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -341,7 +341,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                             </div>
                         </div>
                     </div>
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regularBold}>Collection date</div>
                         </div>
@@ -353,7 +353,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                     <div>
                         <hr className={receiptContentstyles.customhr}></hr>
                     </div>
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regularBold}>Collection time slot</div>
                         </div>
@@ -364,7 +364,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
                     <hr className={receiptContentstyles.customhr}></hr>
 
-                    <div className={receiptContentstyles.receiptTextBox}>
+                    <div className={receiptContentstyles.receiptTextBox1}>
                         <div className={receiptContentstyles.boxWidth}>
                             <div className={globalStyleCss.regularBold}>Collection centre</div>
                         </div>
