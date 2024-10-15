@@ -744,7 +744,7 @@ const DashBoardPage: React.FC = () => {
                                                         {booking.Status_app == '6' ? (
                                                             <>
 
-                                                                <a
+                                                                {/* <a
                                                                     href="/edit"
                                                                     onClick={(e) => {
                                                                         e.preventDefault();
@@ -754,15 +754,7 @@ const DashBoardPage: React.FC = () => {
                                                                     Renew &nbsp;
                                                                 </a>
                                                                 | &nbsp;
-                                                                {/* <a
-                                                                href="/edit"
-                                                                onClick={(e) => {
-                                                                    e.preventDefault();
-                                                                    handleRenewClick(booking.id);
-                                                                }}
-                                                                className={globalStyleCss.blueLink}>
-                                                                Renew &nbsp;
-                                                            </a> */}
+
                                                                 <a
                                                                     href="/edit"
                                                                     onClick={(e) => {
@@ -781,7 +773,7 @@ const DashBoardPage: React.FC = () => {
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
                                                                     Update
-                                                                </a>
+                                                                </a> */}
                                                             </>
                                                         ) : null}
                                                     </td>
@@ -1120,7 +1112,7 @@ const DashBoardPage: React.FC = () => {
                                             {booking.Status_app == '6' ? (
                                                 <>
 
-                                                    <a
+                                                    {/* <a
                                                         href="/edit"
                                                         onClick={(e) => {
                                                             e.preventDefault();
@@ -1148,7 +1140,7 @@ const DashBoardPage: React.FC = () => {
                                                         }}
                                                         className={globalStyleCss.blueLink}>
                                                         Update
-                                                    </a>
+                                                    </a> */}
                                                 </>
                                             ) : null}
                                         </div>

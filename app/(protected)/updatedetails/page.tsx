@@ -11,7 +11,14 @@ const SearchParamsWrapper: React.FC = () => {
   const bookingId = searchParams.get('bookingId');
   const bookingIdString = typeof bookingId === 'string' ? bookingId : '';
 
-  return <UpdateDetailsPage bookingId={bookingIdString} />;
+  return (
+    <FormProvider>
+      <div>
+        <UpdateDetailsPage bookingId={bookingIdString} />
+      </div>
+    </FormProvider>
+  );
+  
 };
 
 const UpdatePage: React.FC = () => {
