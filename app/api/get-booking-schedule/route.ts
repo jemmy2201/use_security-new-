@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
     const encryptedNric = await getEncryptedNricFromSession(request);
     if (encryptedNric instanceof NextResponse) {
-      return encryptedNric; 
+      return encryptedNric;
     }
     console.log('get-booking-schedule, bookingIdString:encryptedNric', bookingIdString, encryptedNric);
 
@@ -29,6 +29,26 @@ export async function GET(request: NextRequest) {
       } as any,
     });
 
+
+    if (schedules && !schedules.grand_total) {
+      const transaction_amount_id = await prisma.transaction_amounts.findFirst({
+        where: {
+          app_type: schedules?.app_type,
+          card_type: schedules?.card_id,
+        },
+      });
+      const gst = await prisma.gsts.findFirst({});
+      if (transaction_amount_id && gst) {
+
+        const transactionAmount: number = parseFloat(transaction_amount_id.transaction_amount ?? '0');
+        const gstAmount = parseFloat(gst.amount_gst ?? '0');
+
+        const grandTotal: number = transactionAmount + gstAmount;
+        schedules.grand_total = grandTotal + '0';
+      }
+    }
+
+
     console.log('schedules', schedules);
     // Custom replacer function to convert BigInt to string
     const replacer = (key: string, value: any) => {
@@ -37,10 +57,10 @@ export async function GET(request: NextRequest) {
       }
       return value;
     };
-    
-    if(schedules){
-      schedules.data_barcode_paynow= '';
-      schedules.QRstring= '';
+
+    if (schedules) {
+      schedules.data_barcode_paynow = '';
+      schedules.QRstring = '';
     }
 
 
@@ -53,6 +73,6 @@ export async function GET(request: NextRequest) {
     return new Response(JSON.stringify({ error: 'Error fetching schedules' }), { status: 500 });
 
   } finally {
-    await prisma.$disconnect(); 
+    await prisma.$disconnect();
   }
 }

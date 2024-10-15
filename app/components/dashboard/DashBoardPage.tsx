@@ -80,11 +80,11 @@ const DashBoardPage: React.FC = () => {
 
     const options = [
         <>
-          Security Officer(SO)<br />Aviation Security Officer(AVSO)
+            Security Officer(SO)<br />Aviation Security Officer(AVSO)
         </>,
         'Private Investigator(PI)'
-      ];
-    
+    ];
+
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
@@ -122,7 +122,7 @@ const DashBoardPage: React.FC = () => {
                 router.push('/signin');
                 throw new Error('Personal Details: Failed to save draft');
             }
-            if(!response.ok){
+            if (!response.ok) {
                 setShowModal(true);
                 setModalMessage('3');
                 return;
@@ -155,7 +155,7 @@ const DashBoardPage: React.FC = () => {
                 router.push('/signin');
                 throw new Error('Personal Details: Failed to save draft');
             }
-            if(!response.ok){
+            if (!response.ok) {
                 setShowModal(true);
                 setModalMessage('3');
                 return;
@@ -178,7 +178,7 @@ const DashBoardPage: React.FC = () => {
     };
 
     const handleCloseModal = () => {
-        setShowModal(false); 
+        setShowModal(false);
         setModalMessage('');
     };
 
@@ -403,7 +403,7 @@ const DashBoardPage: React.FC = () => {
 
 
     return (
-        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%', background:'#F5F6F7'}}>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%', background: '#F5F6F7' }}>
             {loading && (
                 <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <CircularProgress />
@@ -529,7 +529,7 @@ const DashBoardPage: React.FC = () => {
                                                         ) : null}
 
 
-                                                        {booking.app_type == '3' && (booking.Status_app != '' && booking.Status_app)? (
+                                                        {booking.app_type == '3' && (booking.Status_app != '' && booking.Status_app) ? (
                                                             <>
                                                                 &nbsp;-- {statusTypeMap[booking.Status_app || ''] || ''}
 
@@ -628,7 +628,7 @@ const DashBoardPage: React.FC = () => {
                                                                         handleViewReceiptClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    View Receipt &nbsp; 
+                                                                    View Receipt &nbsp;
                                                                 </a>
                                                                 | &nbsp;
                                                                 <a
@@ -677,7 +677,7 @@ const DashBoardPage: React.FC = () => {
                                                                         handleResubmitPhotoClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Upload photo &nbsp; 
+                                                                    Upload photo &nbsp;
                                                                 </a>
                                                                 | &nbsp;
                                                                 <a
@@ -701,7 +701,7 @@ const DashBoardPage: React.FC = () => {
                                                                         handleBookAppointmentClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Book Appointment &nbsp; 
+                                                                    Book Appointment &nbsp;
                                                                 </a>
                                                                 | &nbsp;
                                                                 <a
@@ -725,7 +725,7 @@ const DashBoardPage: React.FC = () => {
                                                                         handleViewReceiptClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    View Receipt &nbsp; 
+                                                                    View Receipt &nbsp;
                                                                 </a>
                                                                 | &nbsp;
                                                                 <a
@@ -751,7 +751,7 @@ const DashBoardPage: React.FC = () => {
                                                                         handleRenewClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Renew &nbsp; 
+                                                                    Renew &nbsp;
                                                                 </a>
                                                                 | &nbsp;
                                                                 {/* <a
@@ -770,7 +770,7 @@ const DashBoardPage: React.FC = () => {
                                                                         handleReplaceClick(booking.id);
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
-                                                                    Replacement &nbsp; 
+                                                                    Replacement &nbsp;
                                                                 </a>
                                                                 | &nbsp;
                                                                 <a

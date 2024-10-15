@@ -49,12 +49,28 @@ export async function POST(req: NextRequest) {
       const filePath = path.join(uploadsDir, fileName + '.png');
       fs.writeFileSync(filePath, buffer);
 
-      const updatedSchedule = await prisma.booking_schedules.update({
+      await prisma.booking_schedules.update({
         where: { id: schedule.id },
         data: {
           Status_app: '5',
         },
       });
+
+      const userRecord = await prisma.users.findFirst({
+          where: {
+              ...(encryptedNric && { nric: encryptedNric }),
+          },
+      });
+
+      if (userRecord) {
+          await prisma.users.update({
+              where: { id: userRecord.id },
+              data: {
+                  photo: fileName + '.png',
+              },
+          });
+      }
+
       return NextResponse.json({
         message: 'Resubmit Image uploaded successfully',
         data: {

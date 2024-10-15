@@ -79,9 +79,25 @@ export async function POST(req: NextRequest) {
                     },
                 });
             }
+
+            const fileName = schedule?.passid + encryptedNric?.slice(-4) + '.png';
+            const userRecord = await prisma.users.findFirst({
+                where: {
+                    ...(encryptedNric && { nric: encryptedNric }),
+                },
+            });
+
+            if (userRecord) {
+                await prisma.users.update({
+                    where: { id: userRecord.id },
+                    data: {
+                        photo: fileName,
+                    },
+                });
+            }
             if (updatedSchedule) {
                 updatedSchedule.data_barcode_paynow = '';
-                updatedSchedule.QRstring= '';
+                updatedSchedule.QRstring = '';
             }
             console.log('Schedule updated:', updatedSchedule);
             const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);

@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
               { Status_app: '6' }
             ]
           }
-        ],        
+        ],
       },
     });
 
@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
           data: {
             gst_id: gst.id.toString(),
             transaction_amount_id: transaction_amount_id?.id.toString(),
-            grand_total: grandTotal.toString(),
+            grand_total: grandTotal.toString() + '0',
             stripe_session_id: session.id,
           },
         });

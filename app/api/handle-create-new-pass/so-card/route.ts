@@ -36,7 +36,7 @@ const mapToCreateNewPassApiResponse = (
 export async function GET(request: NextRequest) {
   const encryptedNric = await getEncryptedNricFromSession(request);
   if (encryptedNric instanceof NextResponse) {
-    return encryptedNric; 
+    return encryptedNric;
   }
   try {
 
@@ -89,7 +89,21 @@ export async function GET(request: NextRequest) {
       responseData.canCreateSoApplication = true;
       responseData.passId = booking_schedules.passid;
       responseData.recordId = booking_schedules.id.toString();
-      responseData.grandTotal = booking_schedules.grand_total ? booking_schedules.grand_total : '';
+      const transaction_amount_id = await prisma.transaction_amounts.findFirst({
+        where: {
+          app_type: booking_schedules?.app_type,
+          card_type: booking_schedules?.card_id,
+        },
+      });
+      const gst = await prisma.gsts.findFirst({});
+      if (transaction_amount_id && gst) {
+
+        const transactionAmount: number = parseFloat(transaction_amount_id.transaction_amount ?? '0');
+        const gstAmount = parseFloat(gst.amount_gst ?? '0');
+
+        const grandTotal: number = transactionAmount + gstAmount;
+        responseData.grandTotal = grandTotal + '0';
+      } 
       responseData.cardId = booking_schedules.card_id ? booking_schedules.card_id : '';
       return new Response(JSON.stringify(responseData), { status: 200 });
     }
