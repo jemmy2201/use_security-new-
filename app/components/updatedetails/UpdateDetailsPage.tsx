@@ -272,7 +272,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
             }
         };
         fetchBookingSchedule();
-    }, [bookingId, router, setFormData, onBack]);
+    }, []);
 
     return (
 
