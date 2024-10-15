@@ -49,6 +49,7 @@
         align-self: stretch;
         flex-wrap: wrap;
         @media screen and (max-width: 769px) {
+          display: inline-flex;
           gap: 20px;
         }
         .leftText{
@@ -60,7 +61,7 @@
         .rightText{
           width: 332px;
           @media screen and (max-width: 769px) {
-            width: 160px;
+            width: 260px;
           }
         }
       }
