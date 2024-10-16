@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     const passList = await prisma.booking_schedules.findFirst({
       where: {
         ...(encryptedNric && { nric: encryptedNric }),
-        card_id: '2',
+        card_id: '3',
         card_issue: {
           not: 'N',
         },
@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
       where: {
         ...(encryptedNric && { nric: encryptedNric }),
         app_type: '1',
-        card_id: '2',
+        card_id: '3',
         card_issue: {
           not: 'N',
         },

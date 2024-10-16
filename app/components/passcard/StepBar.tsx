@@ -51,19 +51,19 @@ const StepBar: React.FC<StepBarProps> = ({ actionType, steps, activeStep }) => {
                     ) : <> </>}
 
 
-                    {formData.applicationType == '1' && formData.cardId == '2' ? (
+                    {formData.applicationType == '1' && formData.cardId == '3' ? (
                         <>
                             <div className={globalStyleCss.header2}>Application for New ID Card: Personal Investigator (PI)</div>
                         </>
                     ) : <> </>}
 
-                    {formData.applicationType == '2' && formData.cardId == '2' ? (
+                    {formData.applicationType == '2' && formData.cardId == '3' ? (
                         <>
                             <div className={globalStyleCss.header2}>Replacement ID Card: Personal Investigator (PI)</div>
                         </>
                     ) : <> </>}
 
-                    {formData.applicationType == '3' && formData.cardId == '2' ? (
+                    {formData.applicationType == '3' && formData.cardId == '3' ? (
                         <>
                             <div className={globalStyleCss.header2}>Renew ID Card: Personal Investigator (PI)</div>
                         </>

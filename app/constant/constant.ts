@@ -10,8 +10,8 @@ export const RENEWAL = "3";
 
 // cardTypes
 export const SO_APP = 1;
-export const PI_APP = 2;
-export const AVSO_APP = 3;
+export const AVSO_APP = 2;
+export const PI_APP = 3;
 
 
 // status_app
