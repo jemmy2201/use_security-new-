@@ -20,11 +20,14 @@ export const POST = async (req: NextRequest) => {
 
   try {
     const body = await req.text(); 
+    console.log('stripe webhook request body:', body);
     event = stripe.webhooks.constructEvent(
       body,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET as string
     );
+    console.log('stripe webhook event, type:', event, event.type);
+
   } catch (err) {
     console.error(`Webhook Error: ${err}`);
     return NextResponse.json({ error: 'Webhook Error' }, { status: 400 });
