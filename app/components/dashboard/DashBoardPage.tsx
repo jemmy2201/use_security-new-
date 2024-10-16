@@ -13,6 +13,7 @@ import FooterPageLink from '../footer/FooterPage';
 import HeaderPageLink from '../header/HeaderPage';
 import Modal from '../model/Modal';
 import globalStyleCss from '../globalstyle/Global.module.css';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 
 export interface createNewPassApiResponse {
     errorCode?: string;
@@ -68,7 +69,7 @@ const statusTypeMap: { [key: string]: string } = {
 const DashBoardPage: React.FC = () => {
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+    const [open, setOpen] = useState(false);
     const [users, setUsers] = useState<userInfo>();
     const [loading, setLoading] = useState<boolean>(false);
     const [bookingSchedules, setBookingSchedules] = useState<bookingDetail[]>([]);
@@ -111,6 +112,11 @@ const DashBoardPage: React.FC = () => {
         });
     };
 
+    const handleClose = () => {
+        setOpen(false);
+        router.push('/passcard?actionType=Replace');
+    };
+
     const handleSONewPasscardClick = async () => {
         setError(null);
         try {
@@ -123,6 +129,7 @@ const DashBoardPage: React.FC = () => {
                 throw new Error('Personal Details: Failed to save draft');
             }
             if (!response.ok) {
+                setLoading(false);
                 setShowModal(true);
                 setModalMessage('3');
                 return;
@@ -130,6 +137,7 @@ const DashBoardPage: React.FC = () => {
             const data: createNewPassApiResponse = await response.json();
             console.log('data:', data);
             if (data.errorCode) {
+                setLoading(false);
                 setShowModal(true);
                 return;
             }
@@ -138,9 +146,10 @@ const DashBoardPage: React.FC = () => {
             router.push('/passcard?actionType=New');
 
         } catch (err) {
+            setLoading(false);
             setError('Failed to fetch user details');
         } finally {
-            setLoading(false);
+            // setLoading(false);
         }
     };
 
@@ -156,6 +165,7 @@ const DashBoardPage: React.FC = () => {
                 throw new Error('Personal Details: Failed to save draft');
             }
             if (!response.ok) {
+                setLoading(false);
                 setShowModal(true);
                 setModalMessage('3');
                 return;
@@ -163,6 +173,7 @@ const DashBoardPage: React.FC = () => {
             const data: createNewPassApiResponse = await response.json();
             console.log('data:', data);
             if (data.errorCode) {
+                setLoading(false);
                 setShowModal(true);
                 return;
             }
@@ -171,9 +182,10 @@ const DashBoardPage: React.FC = () => {
             router.push('/passcard?actionType=New');
 
         } catch (err) {
+            setLoading(false);
             setError('Failed to fetch user details');
         } finally {
-            setLoading(false);
+            //setLoading(false);
         }
     };
 
@@ -193,9 +205,10 @@ const DashBoardPage: React.FC = () => {
         try {
             router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);
         } catch (err) {
+            setLoading(false);
             setError('Failed to fetch user details');
         } finally {
-            setLoading(false);
+            //setLoading(false);
         }
     };
 
@@ -233,9 +246,10 @@ const DashBoardPage: React.FC = () => {
         try {
             router.push(`/receipt?bookingId=${encodeURIComponent(bookingId)}`);
         } catch (err) {
+            setLoading(false);
             setError('Failed to load receipt page');
         } finally {
-            setLoading(false);
+            //setLoading(false);
         }
 
     };
@@ -249,9 +263,10 @@ const DashBoardPage: React.FC = () => {
         try {
             router.push(`/updatedetails?bookingId=${encodeURIComponent(bookingId)}`);
         } catch (err) {
+            setLoading(false);
             setError('Failed to fetch user details');
         } finally {
-            setLoading(false);
+            //setLoading(false);
         }
     };
 
@@ -278,6 +293,7 @@ const DashBoardPage: React.FC = () => {
                 throw new Error('Log out');
             }
             if (!responseBookingSchedule.ok) {
+                setLoading(false);
                 throw new Error('Network response was not ok');
             }
             const dataBookingSchedule: booking_schedules = await responseBookingSchedule.json();
@@ -288,9 +304,10 @@ const DashBoardPage: React.FC = () => {
             router.push('/passcard?actionType=Edit');
 
         } catch (err) {
+            setLoading(false);
             setError('Failed to fetch user details');
         } finally {
-            setLoading(false);
+            //setLoading(false);
         }
     };
 
@@ -314,11 +331,29 @@ const DashBoardPage: React.FC = () => {
                 throw new Error('Log out');
             }
             if (!responseBookingSchedule.ok) {
+                setLoading(false);
                 throw new Error('Network response was not ok');
             }
             const dataBookingSchedule: booking_schedules = await responseBookingSchedule.json();
             sessionStorage.setItem('bookingSchedule', JSON.stringify(dataBookingSchedule));
             sessionStorage.setItem('actionTypeValue', 'Replace');
+            console.log('expiryDate from api:', dataBookingSchedule.expired_date);
+            if (dataBookingSchedule.expired_date) {
+                const [day, month, year] = dataBookingSchedule.expired_date.split('/').map(Number);
+                const expiryDate = new Date(year, month - 1, day);
+                const currentDate = new Date();
+                const threeMonthsFromNow = new Date();
+                threeMonthsFromNow.setMonth(currentDate.getMonth() + 3);
+                console.log('expiryDate:', expiryDate);
+                console.log('threeMonthsFromNow:', threeMonthsFromNow);
+
+                if (expiryDate <= threeMonthsFromNow) {
+                    setLoading(false);
+                    setOpen(true); 
+                    return true;
+                }
+            }
+
             router.push('/passcard?actionType=Replace');
 
         } catch (err) {
@@ -350,11 +385,13 @@ const DashBoardPage: React.FC = () => {
                 throw new Error('Log out');
             }
             if (!responseBookingSchedule.ok) {
+                setLoading(false);
                 throw new Error('Network response was not ok');
             }
             const dataBookingSchedule: booking_schedules = await responseBookingSchedule.json();
 
             if (dataBookingSchedule.app_type != '3') {
+                setLoading(false);
                 setShowModal(true);
                 setModalMessage('2');
                 return;
@@ -364,9 +401,10 @@ const DashBoardPage: React.FC = () => {
             router.push('/passcard?actionType=Renew');
 
         } catch (err) {
+            setLoading(false);
             setError('Failed to fetch user details');
         } finally {
-            setLoading(false);
+            //setLoading(false);
         }
     };
 
@@ -380,6 +418,7 @@ const DashBoardPage: React.FC = () => {
                 const parsedUserData: userInfo = JSON.parse(storedUserData);
                 setUsers(parsedUserData);
             } catch (err) {
+                setLoading(false);
                 setError('Failed to parse user data');
             }
         } else {
@@ -392,6 +431,7 @@ const DashBoardPage: React.FC = () => {
                 const parsedData: bookingDetail[] = JSON.parse(storedData);
                 setBookingSchedules(parsedData);
             } catch (err) {
+                setLoading(false);
                 setError('Failed to parse user data');
             }
         } else {
@@ -412,6 +452,17 @@ const DashBoardPage: React.FC = () => {
             <HeaderPageLink />
 
             <div className={dashBoardContentstyles.mainContainer}>
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle className={globalStyleCss.header2}>Information</DialogTitle>
+                    <DialogContent>
+                        <div className={globalStyleCss.regular}>Please note that the ID Card expiry date will remain the same.</div>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button type='button' onClick={handleClose} color="primary">
+                            OK
+                        </Button>
+                    </DialogActions>
+                </Dialog>
                 <div className={dashBoardContentstyles.container}>
                     <div className={globalStyleCss.regularBoldWhite}>
                         Welcome
@@ -778,7 +829,7 @@ const DashBoardPage: React.FC = () => {
                                                         ) : null}
                                                     </td>
                                                 </tr>
-                                                {(booking.Status_app == '1' || booking.Status_app == '5') && booking.appointment_date && (<tr key={booking.passid} style={{ backgroundColor: '#F5F6F7' }}>
+                                                {(booking.Status_app == '1' || booking.Status_app == '5' || booking.Status_app == '2' || booking.Status_app == '3') && booking.appointment_date && (<tr key={booking.passid} style={{ backgroundColor: '#F5F6F7' }}>
                                                     <td colSpan={6} >
                                                         <div className={dashBoardContentstyles.collectionHeader}>
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

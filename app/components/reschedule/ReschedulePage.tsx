@@ -13,6 +13,7 @@ import { format, parseISO } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
 import { booking_schedules } from '@prisma/client';
 import CircularProgress from '@mui/material/CircularProgress';
+import { getDay, startOfWeek, subWeeks, lastDayOfMonth } from 'date-fns';
 
 type DisabledDatesResponse = string[];
 
@@ -47,7 +48,8 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     const [disabledDates, setDisabledDates] = useState<Date[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [disabledSlots, setDisabledSlots] = useState<string[]>([]);
-
+    const [disabledSlots2, setDisabledSlots2] = useState<string[]>([]);
+    const [disabledSlots3, setDisabledSlots3] = useState<string[]>([]);
     const [startDateError, setStartDateError] = useState<string>("");
     const [selectedTimeSlotError, setSelectedTimeSlotError] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState('');
@@ -78,9 +80,26 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
     const handleDateChange = async (date: Date | null) => {
         setLoading(true);
+        setDisabledSlots3([]);
+        setDisabledSlots([]);
+        setDisabledSlots2([]);
+        if(date){
+
+            const lastDay = lastDayOfMonth(date);
+            let dayOfWeek = getDay(lastDay); 
+            let daysToSubtract = (dayOfWeek >= 2) ? dayOfWeek - 2 : dayOfWeek + 5; 
+            const lastWednesdayDate = new Date(lastDay);
+            lastWednesdayDate.setDate(lastDay.getDate() - daysToSubtract);
+            console.log('last tuesday:', format(lastWednesdayDate, 'yyyy-MM-dd'));
+
+            if(format(date, 'yyyy-MM-dd') === format(lastWednesdayDate, 'yyyy-MM-dd')){
+                setDisabledSlots2(['13:30 - 14:30', '14:30 - 15:30', '15:30 - 16:30']);
+            }
+            
+        }
+
         setStartDate(date);
         const formattedDateForSlots = formatDateSlots(date);
-
         const response = await fetch(`/api/day-slots?selectedDate=${encodeURIComponent(formattedDateForSlots)}`);
         if (!response.ok && response.status === 401) {
             router.push('/signin');
@@ -89,9 +108,18 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
         const data = await response.json();
         console.log('response, /api/day-slots', data);
         setDisabledSlots(data.disabledSlots);
+        const combinedSlots = [...disabledSlots, ...disabledSlots2];
+        setDisabledSlots3(combinedSlots);
         setLoading(false);
 
     };
+
+    useEffect(() => {
+        if (startDate) {
+          const combinedSlots = [...disabledSlots, ...disabledSlots2];
+          setDisabledSlots3(combinedSlots);
+        }
+      }, [startDate, disabledSlots, disabledSlots2]);
 
     const handleTimeSlotClick = (text: string) => {
         console.log('timeslot', text);
@@ -104,10 +132,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             return '';
         }
         const [day, month, year] = dateStringExpiryDate.split('/').map(Number);
-
-
         const date = new Date(year, month - 1, day);
-
         const formattedDate = new Intl.DateTimeFormat('en-GB', {
             day: 'numeric',
             month: 'long',
@@ -224,7 +249,6 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
     useEffect(() => {
 
-
         const fetchBookingSchedule = async () => {
             try {
                 setLoading(true);
@@ -279,7 +303,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, [bookingId, router]);
+    }, []);
 
     return (
 
@@ -391,10 +415,10 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                                         <li key={index}>
                                             <button type='button'
                                                 className={`${rescheduleContentstyles.timeSlotText} ${selectedTimeSlot === text
-                                                    ? rescheduleContentstyles.selected : ''} ${disabledSlots.includes(text)
+                                                    ? rescheduleContentstyles.selected : ''} ${disabledSlots3.includes(text)
                                                         ? rescheduleContentstyles.disabled : ''}`}
                                                 onClick={() => handleTimeSlotClick(text)}
-                                                disabled={disabledSlots.includes(text)}
+                                                disabled={disabledSlots3.includes(text)}
                                             >
                                                 {disabledSlots.includes(text) ? (
                                                     <>

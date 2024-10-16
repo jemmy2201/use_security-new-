@@ -63,16 +63,15 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                 height: input.offsetHeight,
             });
 
-            // Convert the canvas to an image
             const imgData = canvas.toDataURL('image/png');
 
-            // Create a new jsPDF instance (use 'px' for better control over sizes on mobile)
-            const pdf = new jsPDF('p', 'px', [canvas.width, canvas.height]);
+            const pdf = new jsPDF('p', 'mm', 'a5');
 
-            // Add the image to the PDF with calculated dimensions
-            pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-
-            // Save the generated PDF
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = canvas.width * 0.264583; // Convert px to mm (1px = 0.264583mm)
+            const imgHeight = (imgWidth * canvas.height) / canvas.width;
+            pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, imgHeight > pageHeight ? pageHeight : imgHeight);
             pdf.save(`${bookingId}.pdf`);
         }
     };
