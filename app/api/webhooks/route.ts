@@ -73,8 +73,8 @@ export const POST = async (req: NextRequest) => {
   switch (event.type) {
 
     case 'checkout.session.completed':
-      console.log('checkout.session.completed');
-      updatePaymentStatus(event.id);
+      console.log('checkout.session.completed', event.data.object.id);
+      updatePaymentStatus(event.data.object.id);
       break;
     case 'payment_intent.succeeded':
       console.log('Payment succeeded');
