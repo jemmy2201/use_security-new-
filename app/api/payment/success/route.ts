@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
         if (schedule && session.payment_status == 'paid') {
             const paymentIntentId = session.payment_intent as string;
             const formattedDate = formatDate();
-            const receiptNumber = formatDateToDDMMYYYY(new Date())+ schedule?.id.toString().slice(-5);
+            const receiptNumber = formatDateToDDMMYYYY(new Date()) + schedule?.id.toString().slice(-5);
             const updatedSchedule = await prisma.booking_schedules.update({
                 where: { id: schedule.id },
                 data: {
@@ -85,7 +85,7 @@ export async function GET(req: NextRequest) {
             backgroundTask(schedule);
             if (updatedSchedule) {
                 updatedSchedule.data_barcode_paynow = '';
-                updatedSchedule.QRstring= '';
+                updatedSchedule.QRstring = '';
             }
             return new Response(JSON.stringify(updatedSchedule, replacer), {
                 status: 200,
@@ -106,18 +106,18 @@ export async function GET(req: NextRequest) {
 
     function formatDate() {
         const date = new Date();
-      
+
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
         const year = date.getFullYear();
-      
+
         const hours = String(date.getHours()).padStart(2, '0');
         const minutes = String(date.getMinutes()).padStart(2, '0');
         const seconds = String(date.getSeconds()).padStart(2, '0');
-      
+
         return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-      }
-      
+    }
+
 }
 
 
@@ -125,7 +125,7 @@ async function backgroundTask(schedule: booking_schedules) {
     console.log("Background task generate pdf started");
     generatePdfReceipt(schedule);
     console.log("Background task generate pdf completed");
-  }
+}
 
 const generatePdfReceipt = async (schedule: booking_schedules) => {
     try {
@@ -143,43 +143,44 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
             },
         });
 
-        const page = pdfDoc.addPage([600, 800]); 
+        const page = pdfDoc.addPage([600, 800]);
 
         // Load the logo image
         const logoImagePath = path.resolve('public/images', 'logo_pdf.png');
         const logoImageBytes = fs.readFileSync(logoImagePath);
         const logoImage = await pdfDoc.embedPng(logoImageBytes);
         const logoDims = logoImage.scale(0.1);
-      
+
         // Draw the logo on the left side
         page.drawImage(logoImage, {
-          x: 50,
-          y: page.getHeight() - logoDims.height - 30, 
-          width: logoDims.width,
-          height: logoDims.height,
+            x: 50,
+            y: page.getHeight() - logoDims.height - 30,
+            width: logoDims.width,
+            height: logoDims.height,
         });
-      
-        const fontPath = path.resolve('public/font', 'Roboto-Regular.ttf'); 
+
+        const fontPath = path.resolve('public/font', 'Roboto-Regular.ttf');
         const fontBytes = fs.readFileSync(fontPath);
         const customFont = await pdfDoc.embedFont(fontBytes);
-      
+
         // const addressText = "Union of Security Employees (USE) \n200 Jalan Sultan \n#03-24 Textile Centre \nSingapore 199018";
         const addressText = 'Union of Security Employees (USE)';
         const fontSize = 18;
         const textWidth = customFont.widthOfTextAtSize(addressText, fontSize);
-  
+
         page.drawText(addressText, {
-          x: page.getWidth() - textWidth - 50,
-          y: page.getHeight() - 62,
-          size: fontSize,
-          font: customFont,
-          color: rgb(1, 0, 0),
+            x: page.getWidth() - textWidth - 50,
+            y: page.getHeight() - 62,
+            size: fontSize,
+            font: customFont,
+            color: rgb(1, 0, 0),
         });
-      
-        const tableTop = page.getHeight() - logoDims.height - 30 - 40; 
-      
+
+        const tableTop = page.getHeight() - logoDims.height - 30 - 40;
+
         const tableData = [
             { column1: 'Transaction reference no.', column2: schedule.stripe_payment_id },
+            { column1: 'Receipt no.', column2: schedule.receiptNo },
             { column1: 'Transaction date', column2: schedule.trans_date },
             { column1: 'Amount paid (inclusive of GST)', column2: schedule.grand_total },
             { column1: 'Type of application', column2: appTypeString },
@@ -189,31 +190,31 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
             { column1: 'Full name', column2: userRecord?.name },
             { column1: 'NRIC / FIN no.', column2: nric },
         ];
-      
-        const rowHeight = 40; 
-        const rowGap = 10;        
+
+        const rowHeight = 40;
+        const rowGap = 10;
 
         tableData.forEach((row, index) => {
-          const yPosition = tableTop - index * (rowHeight + rowGap);
-          page.drawText(row.column1, {
-            x: 50,
-            y: yPosition,
-            size: 12,
-            color: rgb(0, 0, 0),
-          });
-          page.drawText(row.column2 ? row.column2 : '', {
-            x: 350,
-            y: yPosition,
-            size: 12,
-            color: rgb(0, 0, 0),
-          });
+            const yPosition = tableTop - index * (rowHeight + rowGap);
+            page.drawText(row.column1, {
+                x: 50,
+                y: yPosition,
+                size: 12,
+                color: rgb(0, 0, 0),
+            });
+            page.drawText(row.column2 ? row.column2 : '', {
+                x: 350,
+                y: yPosition,
+                size: 12,
+                color: rgb(0, 0, 0),
+            });
         });
 
         const pdfBytes = await pdfDoc.save();
 
         const folderPath = path.join(process.cwd(), 'public', 'userdocs/img_users/invoice');
-        
-        const fileNameBuilder = 'T_'+encryptDecrypt(schedule.nric, 'decrypt') +cardTypeCode[schedule.card_id ? schedule.card_id : ''] +'_'+formatDateToDDMMYYYY(new Date())+ schedule?.id.toString().slice(-5);
+
+        const fileNameBuilder = 'T_' + encryptDecrypt(schedule.nric, 'decrypt') + cardTypeCode[schedule.card_id ? schedule.card_id : ''] + '_' + formatDateToDDMMYYYY(new Date()) + schedule?.id.toString().slice(-5);
         const filePath = path.join(folderPath, fileNameBuilder + '.pdf');
 
         fs.mkdirSync(folderPath, { recursive: true });

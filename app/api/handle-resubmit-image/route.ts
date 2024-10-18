@@ -6,6 +6,8 @@ import { getEncryptedNricFromSession } from '../../../lib/session';
 
 const prisma = new PrismaClient();
 
+const copyImagePath = process.env.COPY_IMAGE_PATH;
+
 type ImageRequestBody = {
   image: string;
   nric: string;
@@ -49,6 +51,19 @@ export async function POST(req: NextRequest) {
       const filePath = path.join(uploadsDir, fileName + '.png');
       fs.writeFileSync(filePath, buffer);
 
+      console.log('copyImagePath:', copyImagePath);
+      if (copyImagePath) {
+        try {
+          console.log('copy to app1');
+          const uploadsDirApp1 = path.join(copyImagePath, 'public', 'img', 'img_users');
+          const filePathApp1 = path.join(uploadsDirApp1, fileName + '.png');
+          fs.writeFileSync(filePath, buffer);
+          console.log('copy to app1 done');
+        } catch (error) {
+          console.log('error in copy image to app1', error);
+        }
+      }
+
       await prisma.booking_schedules.update({
         where: { id: schedule.id },
         data: {
@@ -57,18 +72,18 @@ export async function POST(req: NextRequest) {
       });
 
       const userRecord = await prisma.users.findFirst({
-          where: {
-              ...(encryptedNric && { nric: encryptedNric }),
-          },
+        where: {
+          ...(encryptedNric && { nric: encryptedNric }),
+        },
       });
 
       if (userRecord) {
-          await prisma.users.update({
-              where: { id: userRecord.id },
-              data: {
-                  photo: fileName + '.png',
-              },
-          });
+        await prisma.users.update({
+          where: { id: userRecord.id },
+          data: {
+            photo: fileName + '.png',
+          },
+        });
       }
 
       return NextResponse.json({
