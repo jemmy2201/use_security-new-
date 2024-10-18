@@ -40,10 +40,10 @@
     }
 
     .headerContentBox {
+      width: 95%;
       display: flex;
-      align-items: flex-start;
-      padding-bottom: 20px;
-      flex: 1 0 0;
+      justify-content: space-between;
+      align-items: center; 
 
       @media screen and (max-width: 769px) {
         gap: 10px;
@@ -55,7 +55,7 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
-        width: 860px;
+        width: 620px;
         flex: 1 0 0;
         flex-wrap: wrap;
         @media screen and (max-width: 769px) {

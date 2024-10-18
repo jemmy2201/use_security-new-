@@ -22,36 +22,40 @@ const ImageProcessing = () => {
   const [brightnessContrast, setBrightnessContrast] = useState<{ brightness: number; contrast: number } | null>(null);
   const [spectacleDetected, setSpectacleDetected] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [modelsLoaded, setModelsLoaded] = useState(false);
   useEffect(() => {
     const loadModels = async () => {
       try {
         setLoading(true);
-        await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
-        await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
-        await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
-        await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
-        console.log('Image processing applicationType:', formData.applicationType);
-        console.log('Image processing image url:', formData.imageUrl);
-        if (formData.imageUrl) {
-          const img = document.createElement('img');
-          img.width = 400; 
-          img.height = 514; 
-          img.src = formData.imageUrl;
+        if (!modelsLoaded) {
+          await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
+          await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+          await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+          await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
 
-          img.onload = () => {
-            console.log("Image loaded successfully");
-            setFormData(prevFormData => ({
-              ...prevFormData,
-              isFaceDetected: true,
-              isStraightFaceDetected: true,
-              isBgColorMatch: true,
-            }));
-          };
+          console.log('Image processing applicationType:', formData.applicationType);
+          console.log('Image processing image url:', formData.imageUrl);
+          if (formData.imageUrl) {
+            const img = document.createElement('img');
+            img.width = 400;
+            img.height = 514;
+            img.src = formData.imageUrl;
 
-          img.onerror = () => {
-            console.error("Failed to load the image");
-          };
+            img.onload = () => {
+              console.log("Image loaded successfully");
+              setFormData(prevFormData => ({
+                ...prevFormData,
+                isFaceDetected: true,
+                isStraightFaceDetected: true,
+                isBgColorMatch: true,
+              }));
+            };
+
+            img.onerror = () => {
+              console.error("Failed to load the image");
+            };
+          }
+          setModelsLoaded(true);
         }
 
       } catch (error) {
@@ -62,7 +66,7 @@ const ImageProcessing = () => {
     };
 
     loadModels();
-  }, [formData.applicationType, formData.imageUrl, setFormData]);
+  }, [formData.applicationType, formData.imageUrl, setFormData, modelsLoaded]);
 
 
 
@@ -90,8 +94,8 @@ const ImageProcessing = () => {
         ['image']: img,
       }));
       const imageElement = document.createElement('img');
-      imageElement.width = 400; 
-      imageElement.height = 514; 
+      imageElement.width = 400;
+      imageElement.height = 514;
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
@@ -168,9 +172,6 @@ const ImageProcessing = () => {
 
   const detectSpectacles = async (imageElement: HTMLImageElement) => {
     try {
-      await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
-      await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
-
       const detections = await faceapi.detectAllFaces(imageElement, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
       console.log('Glass detections:', detections);
 
@@ -396,25 +397,24 @@ const ImageProcessing = () => {
             {
               formData.image ? (
                 <>
-                  {formData.image && <Image src={formData.image} alt="Photo ID" height={200} width={257}/>}
+                  {formData.image && <Image src={formData.image} alt="Photo ID" height={200} width={257} />}
                 </>
               ) : (
                 <>
-                  {formData.imageUrl && <Image src={formData.imageUrl} alt="Photo ID" height={200} width={257}/>}
+                  {formData.imageUrl && <Image src={formData.imageUrl} alt="Photo ID" height={200} width={257} />}
                 </>
               )
             }
 
           </div>
 
-          <div className={globalStyleCss.regular}>
-            Minimum file size: 20 KB <br></br> Maximum file size: 2 MB <br></br>
-            Supported file types: JPG / PNG
-          </div>
-
-          <div>
-            <label htmlFor="file-upload" className={applicantDetailsContentstyles.chooseFileButton}>
-              <div className={applicantDetailsContentstyles.chooseFileButtonText}>
+          <div className={applicantDetailsContentstyles.uploadContainerBox}>
+            <div className={globalStyleCss.regular}>
+              Minimum file size: 20 KB <br></br> Maximum file size: 2 MB <br></br>
+              Supported file types: JPG / PNG
+            </div>
+            <label htmlFor="file-upload" className={applicantDetailsContentstyles.chooseFileButton} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <div className={globalStyleCss.buttonText}>
                 Choose photo
               </div>
             </label>
@@ -426,6 +426,7 @@ const ImageProcessing = () => {
               style={{ display: 'none' }}
             />
           </div>
+
 
         </div>
 

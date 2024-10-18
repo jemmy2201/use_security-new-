@@ -26,15 +26,15 @@ const Footer: React.FC<FooterProps> =
         const [isCancelPopupOpen, setIsCancelPopupOpen] = useState<boolean>(false); // State for OTP popup
 
         const handleCancelCancel = () => {
-            setIsCancelPopupOpen(false); 
+            setIsCancelPopupOpen(false);
         };
         const handleContinue = () => {
             setIsCancelPopupOpen(false);
-            router.push('/homepage'); 
+            router.push('/homepage');
         };
         const handleClick = () => {
             setIsCancelPopupOpen(true);
-            
+
         };
 
         return (
@@ -47,13 +47,13 @@ const Footer: React.FC<FooterProps> =
                             onContinue={handleContinue}
                         />
                         {!formData.isAppointmentConfirmed && (
-                            <div className={stepBarFooterStyle.saveDraft} onClick={handleClick} style={{ cursor: 'pointer' }}>
+                            <div className={stepBarFooterStyle.saveDraft} onClick={handleClick} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
                                 <div className={globalStyleCss.regular}>Cancel</div>
                             </div>
 
                         )}
                         {!formData.paymentProcessed && (
-                            <div className={stepBarFooterStyle.saveDraft}>
+                            <div className={stepBarFooterStyle.saveDraft} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <button type='button' onClick={onSaveDraft}>
                                     <div className={globalStyleCss.regular}>Save draft</div>
                                 </button>
@@ -62,25 +62,24 @@ const Footer: React.FC<FooterProps> =
 
                         )}
                         {!formData.isAppointmentConfirmed && (
-                            <div className={stepBarFooterStyle.continue}>
-                                <div>
-                                    <button type='button'
-                                        onClick={onNext}>
-                                        <div className={globalStyleCss.buttonText}>
-                                            {activeStep === 0 ? 'Application details' : ''}
-                                            {activeStep === 1 ? 'Review details' : ''}
-                                            {activeStep === 2 ? 'Make payment' : ''}
-                                            {activeStep === 3 && !formData.paymentProcessed ? 'Proceed to pay' : ''}
-                                            {activeStep === 3 && formData.paymentProcessed ? 'Book appointment' : ''}
-                                            {activeStep === 4 && !formData.isAppointmentConfirmed ? 'Confirm appointment' : ''}
-                                            {activeStep === 4 && formData.isAppointmentConfirmed ? 'Complete' : ''}
-                                        </div>
-                                    </button>
-                                </div>
+                            <div className={stepBarFooterStyle.continue} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <button type='button'
+                                    onClick={onNext}>
+                                    <div className={globalStyleCss.buttonText}>
+                                        {activeStep === 0 ? 'Application details' : ''}
+                                        {activeStep === 1 ? 'Review details' : ''}
+                                        {activeStep === 2 ? 'Make payment' : ''}
+                                        {activeStep === 3 && !formData.paymentProcessed ? 'Proceed to pay' : ''}
+                                        {activeStep === 3 && formData.paymentProcessed ? 'Book appointment' : ''}
+                                        {activeStep === 4 && !formData.isAppointmentConfirmed ? 'Confirm appointment' : ''}
+                                        {activeStep === 4 && formData.isAppointmentConfirmed ? 'Complete' : ''}
+                                    </div>
+                                </button>
+
                             </div>
                         )}
                         {activeStep != 0 && !formData.paymentProcessed && (
-                            <div className={stepBarFooterStyle.saveDraft}>
+                            <div className={stepBarFooterStyle.saveDraft} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <button type='button'
                                     onClick={onBack}
                                     disabled={!hasBack}>

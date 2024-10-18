@@ -24,11 +24,13 @@
     gap: 40px;
     background: white;
     flex-wrap: wrap;
+
     @media screen and (max-width: 769px) {
       padding: 24px;
       gap: 24px;
       width: 340px;
     }
+
     .headingText {
       color: #000;
       /* Desktop H2 */
@@ -158,40 +160,45 @@
         display: flex;
         padding-right: 20px;
         border-right: 1px solid lightgrey;
-        width:40%;
+        width: 40%;
+
         @media screen and (max-width: 769px) {
           border-right: 0px solid lightgrey;
-          width:100%;
+          width: 100%;
         }
 
         .uploadPhotoContainerBox {
-          width: 200px;
-          height: 257px;
+          width:257px;
           flex-shrink: 0;
           border: 2px dashed #CFD8DC;
-          background: #F5F6F7;
         }
 
-        .chooseFileButton {
-          display: flex;
-          padding: 16px 20px;
-          align-items: flex-start;
-          gap: 8px;
-          border-radius: 28px;
-          background: #CC0C00;
+        .uploadContainerBox {
+          flex-shrink: 0;
+          width:257px;
+          .chooseFileButton {
+            display: flex;
+            padding: 16px 20px;
+            align-items: flex-start;
+            gap: 8px;
+            border-radius: 28px;
+            background: #CC0C00;
+          }
+
+          .chooseFileButtonText {
+            color: #FFF;
+
+            /* Regular Bold */
+            font-family: Roboto;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 24px;
+            /* 150% */
+          }
         }
 
-        .chooseFileButtonText {
-          color: #FFF;
 
-          /* Regular Bold */
-          font-family: Roboto;
-          font-size: 16px;
-          font-style: normal;
-          font-weight: 700;
-          line-height: 24px;
-          /* 150% */
-        }
       }
 
       .photosDosDontContainer {
@@ -200,7 +207,7 @@
         align-items: flex-start;
         gap: 24px;
         color: #000;
-        width:500px;
+        width: 500px;
         font-family: "SF Pro Text";
         font-size: 16px;
         font-style: normal;

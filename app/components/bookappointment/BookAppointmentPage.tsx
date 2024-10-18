@@ -11,6 +11,7 @@ import { format, parseISO } from 'date-fns';
 import { useFormContext } from '.././FormContext';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import CircularProgress from '@mui/material/CircularProgress';
+import { getDay, startOfWeek, subWeeks, lastDayOfMonth } from 'date-fns';
 
 type DisabledDatesResponse = string[];
 export interface userInfo {
@@ -64,10 +65,13 @@ const BookAppointmentPage: React.FC = () => {
         }));
     };
 
+
     // State variables to store the input values
     const [contactNumber, setContactNumber] = useState('');
     const [email, setEmail] = useState('');
-    const [disabledSlots, setDisabledSlots] = useState<string[]>([]); // Array of disabled slots
+    const [disabledSlots, setDisabledSlots] = useState<string[]>([]);
+    const [disabledSlots2, setDisabledSlots2] = useState<string[]>([]);
+    const [disabledSlots3, setDisabledSlots3] = useState<string[]>([]);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 769);
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -84,8 +88,32 @@ const BookAppointmentPage: React.FC = () => {
         '15:30 - 16:30',
     ];
 
+    useEffect(() => {
+        if (startDate) {
+            const combinedSlots = [...disabledSlots, ...disabledSlots2];
+            setDisabledSlots3(combinedSlots);
+        }
+    }, [startDate, disabledSlots, disabledSlots2]);
+
     const handleDateChange = async (date: Date | null) => {
         setLoading(true);
+        setDisabledSlots3([]);
+        setDisabledSlots([]);
+        setDisabledSlots2([]);
+        if (date) {
+
+            const lastDay = lastDayOfMonth(date);
+            let dayOfWeek = getDay(lastDay);
+            let daysToSubtract = (dayOfWeek >= 2) ? dayOfWeek - 2 : dayOfWeek + 5;
+            const lastWednesdayDate = new Date(lastDay);
+            lastWednesdayDate.setDate(lastDay.getDate() - daysToSubtract);
+            console.log('last tuesday:', format(lastWednesdayDate, 'yyyy-MM-dd'));
+
+            if (format(date, 'yyyy-MM-dd') === format(lastWednesdayDate, 'yyyy-MM-dd')) {
+                setDisabledSlots2(['12:30 - 13:30', '13:30 - 14:30', '14:30 - 15:30', '15:30 - 16:30']);
+            }
+
+        }
         setStartDate(date);
         setFormData(prevFormData => ({
             ...prevFormData,
@@ -228,10 +256,10 @@ const BookAppointmentPage: React.FC = () => {
                                         <li key={index}>
                                             <button type='button'
                                                 className={`${bookAppointmentContentstyles.timeSlotText} ${selectedTimeSlot === text
-                                                    ? bookAppointmentContentstyles.selected : ''} ${disabledSlots.includes(text)
+                                                    ? bookAppointmentContentstyles.selected : ''} ${disabledSlots3.includes(text)
                                                         ? bookAppointmentContentstyles.disabled : ''}`}
                                                 onClick={() => handleTimeSlotClick(text)}
-                                                disabled={disabledSlots.includes(text)}
+                                                disabled={disabledSlots3.includes(text)}
                                             >
                                                 {disabledSlots.includes(text) ? (
                                                     <>

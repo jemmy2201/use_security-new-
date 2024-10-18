@@ -78,12 +78,12 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
                     isOtpVerified: true,
                     verifiedMobileNo: formData.mobileno,
                 }));
-                setErrorMessage(''); 
+                setErrorMessage('');
                 toast.success('Mobile number successfully verified', {
                     position: 'top-right',
                     autoClose: 3000,
                     onClose: () => onClose()
-                    
+
                 });
             } else {
                 console.error('Failed to verify OTP');
@@ -107,67 +107,49 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
     if (!isOpen) return null; // Don't render the popup if it's not open
 
     return (
-        <div style={{
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: 'white',
-            padding: '20px',
-            boxShadow: '0 0 10px rgba(0,0,0,0.5)',
-            zIndex: 1000,
-            display: 'block'
-        }}>
+        <div className={OtpModuleStyle.centeredModal}>
             <div className={OtpModuleStyle.container}>
-                <div className={OtpModuleStyle.content}>
-                    <div className={OtpModuleStyle.verifyMobileNumber}>
-                        <div className={globalStyleCss.header2}>Mobile Number Verification</div>
+                <div className={globalStyleCss.header2}>Mobile Number Verification</div>
+                <br></br>
+                <div className={globalStyleCss.regular}>You are required to verify your mobile number before proceeding.
+                    <br></br>Enter the 4-digit OTP sent to your mobile number.
+                </div>
+                <br></br>
+                <div className={OtpModuleStyle.otpBox}>
+                    <div className={OtpModuleStyle.otpField}>
+                        {otp.map((value, index) => (
+                            <input
+                                key={`otp-${index}`}
+                                type="text"
+                                className={OtpModuleStyle.otpNumber}
+                                value={value}
+                                onChange={(e) => handleOtpChange(index, e.target.value)}
+                                ref={(el) => {
+                                    inputRefs.current[index] = el;
+                                }}
+                            />
+                        ))}
                     </div>
-                    <div className={OtpModuleStyle.textDetails}>
-                        <div className={globalStyleCss.regular}>You are required to verify your mobile number before proceeding.
-                            <br></br>Enter the 4-digit OTP sent to your mobile number.</div>
-                    </div>
-                    <div className={OtpModuleStyle.otpBox}>
-                        <div className={OtpModuleStyle.otpField}>
-                            {otp.map((value, index) => (
-                                <input
-                                    key={`otp-${index}`}
-                                    type="text"
-                                    className={OtpModuleStyle.otpNumber}
-                                    value={value}
-                                    onChange={(e) => handleOtpChange(index, e.target.value)}
-                                    ref={(el) => {
-                                        inputRefs.current[index] = el; 
-                                    }}
-                                />
-                            ))}
+
+                    {errorMessage && (
+                        <div className={OtpModuleStyle.errorMessage}>
+                            {errorMessage}
                         </div>
+                    )}
+                </div>
 
-                        {errorMessage && (
-                            <div className={OtpModuleStyle.errorMessage}>
-                                {errorMessage}
-                            </div>
-                        )}
-                    </div>
-
-                    <div>
-                        <span className={OtpModuleStyle.otpText}>
-                            <div className={globalStyleCss.regular}>Didn&apos;t receive the code? &nbsp;
-                                <a href="#" onClick={handleResend} className={globalStyleCss.blueLink}>
-                                    Click to resend
-                                </a>
-                            </div>
-                        </span>
-
-                    </div>
-
-                    <div className={OtpModuleStyle.optButtonBox}>
-                        <button type='button' onClick={onClose} className={OtpModuleStyle.cancelButton}><div className={globalStyleCss.regular}>Cancel</div></button>
-                        <button type='button' onClick={handleSubmit} className={OtpModuleStyle.validateButton}><div className={globalStyleCss.regularWhite}>Validate</div></button>
-                    </div>
-                    <ToastContainer />
+                <div className={globalStyleCss.regular}>Didn&apos;t receive the code? &nbsp;
+                    <a href="#" onClick={handleResend} className={globalStyleCss.blueLink}>
+                        Click to resend
+                    </a>
+                </div>
+                <div className={OtpModuleStyle.buttonContainer}>
+                    <button type='button' onClick={onClose} className={OtpModuleStyle.cancelButton} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}><div className={globalStyleCss.regular}>Cancel</div></button>
+                    <button type='button' onClick={handleSubmit} className={OtpModuleStyle.validateButton} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}><div className={globalStyleCss.regularWhite}>Validate</div></button>
                 </div>
             </div>
+
+            <ToastContainer />
         </div>
     );
 };

@@ -5,6 +5,8 @@ import fs from 'fs';
 import path from 'path';
 
 const prisma = new PrismaClient();
+const copyImagePath = process.env.COPY_IMAGE_PATH;
+
 export async function POST(req: NextRequest) {
     try {
         console.log('handle-applicant-details, new');
@@ -169,6 +171,19 @@ export async function POST(req: NextRequest) {
                     console.log('file name:', fileName);
                     const filePath = path.join(uploadsDir, fileName + '.png');
                     fs.writeFileSync(filePath, buffer);
+
+                    console.log('copyImagePath:', copyImagePath);
+                    if (copyImagePath) {
+                      try {
+                        console.log('copy to app1');
+                        const uploadsDirApp1 = path.join(copyImagePath);
+                        const filePathApp1 = path.join(uploadsDirApp1, fileName + '.png');
+                        fs.writeFileSync(filePath, buffer);
+                        console.log('copy to app1 done');
+                      } catch (error) {
+                        console.log('error in copy image to app1', error);
+                      }
+                    }
                 }
 
                 if (updatedSchedule) {

@@ -93,7 +93,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             console.log('last tuesday:', format(lastWednesdayDate, 'yyyy-MM-dd'));
 
             if(format(date, 'yyyy-MM-dd') === format(lastWednesdayDate, 'yyyy-MM-dd')){
-                setDisabledSlots2(['13:30 - 14:30', '14:30 - 15:30', '15:30 - 16:30']);
+                setDisabledSlots2(['12:30 - 13:30', '13:30 - 14:30', '14:30 - 15:30', '15:30 - 16:30']);
             }
             
         }
