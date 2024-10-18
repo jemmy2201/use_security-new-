@@ -23,11 +23,13 @@ const ImageProcessing = () => {
   const [spectacleDetected, setSpectacleDetected] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [modelsLoaded, setModelsLoaded] = useState(false);
+
+
   useEffect(() => {
     const loadModels = async () => {
       try {
         setLoading(true);
-        if (!modelsLoaded) {
+        
           await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
           await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
           await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
@@ -53,10 +55,14 @@ const ImageProcessing = () => {
 
             img.onerror = () => {
               console.error("Failed to load the image");
+              setFormData(prevFormData => ({
+                ...prevFormData,
+                imageUrl: '',
+              }));
             };
           }
           setModelsLoaded(true);
-        }
+        
 
       } catch (error) {
         console.error('Error loading models:', error);
@@ -66,7 +72,7 @@ const ImageProcessing = () => {
     };
 
     loadModels();
-  }, [formData.applicationType, formData.imageUrl, setFormData, modelsLoaded]);
+  }, []);
 
 
 
@@ -401,7 +407,7 @@ const ImageProcessing = () => {
                 </>
               ) : (
                 <>
-                  {formData.imageUrl && <Image src={formData.imageUrl} alt="Photo ID" height={200} width={257} />}
+                  {formData.imageUrl && <Image src={`${formData.imageUrl}?t=${new Date().valueOf()}`} alt="Photo ID" height={200} width={257} />}
                 </>
               )
             }

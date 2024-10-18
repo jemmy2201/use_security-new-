@@ -51,6 +51,11 @@ const ReviewImageProcessing: React.FC = () => {
 
           img.onerror = () => {
             console.error("Failed to load the image");
+            console.error("Failed to load the image");
+            setFormData(prevFormData => ({
+              ...prevFormData,
+              imageUrl: '',
+            }));
           };
         }
 
@@ -128,7 +133,7 @@ const ReviewImageProcessing: React.FC = () => {
           setBrightnessContrast(bc);
 
           // Resize image
-          const resizedImage = resizeImage(imageElement, 200, 257);
+          const resizedImage = resizeImage(imageElement, 400, 514);
           setImage(resizedImage);
           const fileName = formData?.passid + formData.nric?.slice(-4);
           console.log('image file name:', fileName);
@@ -339,7 +344,7 @@ const ReviewImageProcessing: React.FC = () => {
                 </>
               ) : (
                 <>
-                  {formData.imageUrl && <Image src={formData.imageUrl} alt="Photo ID" height={200} width={257}/>}
+                  {formData.imageUrl && <Image src={`${formData.imageUrl}?t=${new Date().valueOf()}`}  alt="Photo ID" height={200} width={257}/>}
                 </>
               )
 
