@@ -91,7 +91,7 @@ export const POST = async (req: NextRequest) => {
 
 const updatePaymentStatus = async (session_id: string) => {
   try {
-    console.log('update payment status for stripe session id:',session_id);
+    console.log('update payment status for stripe session id:', session_id);
     const session = await stripe.checkout.sessions.retrieve(session_id);
 
     const schedule = await prisma.booking_schedules.findFirst({
@@ -128,7 +128,7 @@ const updatePaymentStatus = async (session_id: string) => {
     const date = new Date();
 
     const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
 
     const hours = String(date.getHours()).padStart(2, '0');
@@ -244,6 +244,7 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
       try {
         console.log('copy pdf to app1');
         const uploadsDirApp1 = path.join(copyImagePath, 'invoice');
+        console.log('uploadsDirApp1:', uploadsDirApp1);
         const filePathApp1 = path.join(uploadsDirApp1, fileNameBuilder + '.pdf');
         fs.writeFileSync(filePathApp1, pdfBytes);
         console.log('copy pdf to app1 done');
