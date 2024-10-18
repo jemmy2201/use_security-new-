@@ -243,7 +243,7 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
     if (copyImagePath) {
       try {
         console.log('copy pdf to app1');
-        const uploadsDirApp1 = path.join(copyImagePath, 'public', 'img', 'img_users', 'invoice');
+        const uploadsDirApp1 = path.join(copyImagePath, 'invoice');
         const filePathApp1 = path.join(uploadsDirApp1, fileNameBuilder + '.pdf');
         fs.writeFileSync(filePathApp1, pdfBytes);
         console.log('copy pdf to app1 done');
