@@ -23,6 +23,9 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const [detectionResult, setDetectionResult] = useState<faceapi.WithFaceLandmarks<{ detection: faceapi.FaceDetection }> | null>(null);
   const [straightFaceDetected, setStraightFaceDetected] = useState<boolean>(false);
   const [faceDetected, setFaceDetected] = useState<boolean>(false);
+  const [shouldersVisible, setShouldersVisible] = useState<boolean>(false);
+  const [faceCentered, setFaceCentered] = useState<boolean>(false);
+
   const [bgColorMatch, setBgColorMatch] = useState<boolean>(false);
   const [showBookingAppointment, setShowBookingAppointment] = useState<boolean>(false);
   const [brightnessContrast, setBrightnessContrast] = useState<{ brightness: number; contrast: number } | null>(null);
@@ -32,11 +35,11 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const router = useRouter();
   const [bookingSchedule, setBookingSchedule] = useState<booking_schedules>();
 
+
+
   useEffect(() => {
     setLoading(true);
-
     if (showBookingAppointment) {
-      // Logic that should run when showBookingAppointment is true
     }
     setLoading(false);
 
@@ -99,7 +102,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
         console.error('Error loading models:', error);
       } finally {
         setLoading(false);
-
       }
     };
 
@@ -146,7 +148,8 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     setLoading(true);
     console.log('bookingId', bookingId);
 
-    if (bgColorMatch && faceDetected && straightFaceDetected) {
+    if (bgColorMatch && faceDetected && straightFaceDetected 
+          && straightFaceDetected && shouldersVisible) {
       try {
         const response = await axios.post('/api/handle-resubmit-image', {
           image,
@@ -182,14 +185,13 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     setLoading(true);
     const file = event.target.files?.[0];
     if (file) {
-
       const fileSizeInBytes = file.size;
 
       const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
-      const minSizeInBytes = 20 * 1024; // 20kb in bytes
+      const minSizeInBytes = 20 * 1024; // 20KB in bytes
 
       if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
-        alert('Image size should be less then 5MB and greater then 25kb');
+        alert('Image size should be less than 2MB and greater than 20KB');
         console.error('File size is out of the allowed range.');
         setLoading(false);
         return;
@@ -199,12 +201,11 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
       setImage(img);
 
       const imageElement = document.createElement('img');
-      imageElement.width = 400; 
-      imageElement.height = 514; 
+      imageElement.width = 400;
+      imageElement.height = 514;
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
-
           const detectionSingleFace = await faceapi.detectSingleFace(imageElement).withFaceLandmarks();
           console.log('detectionSingleFace', detectionSingleFace);
           let isStraight = true;
@@ -212,15 +213,25 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             setDetectionResult(detectionSingleFace);
 
             const landmarks = detectionSingleFace.landmarks;
-            const { x: eyeLeftX, y: eyeLeftY } = landmarks.getLeftEye()[0]; // Get the left eye position
-            const { x: eyeRightX, y: eyeRightY } = landmarks.getRightEye()[0]; // Get the right eye position
-            const { x: noseX, y: noseY } = landmarks.getNose()[3]; // Get the nose position
+            const faceRectangle = detectionSingleFace.detection.box;
+            const { x: eyeLeftX, y: eyeLeftY } = landmarks.getLeftEye()[0];
+            const { x: eyeRightX, y: eyeRightY } = landmarks.getRightEye()[0];
             const eyeLineSlope = (eyeRightY - eyeLeftY) / (eyeRightX - eyeLeftX);
-            const angle = Math.atan(eyeLineSlope) * (180 / Math.PI); // Convert radians to degrees
+            const angle = Math.atan(eyeLineSlope) * (180 / Math.PI);
             console.log('Face angle:', angle);
             isStraight = Math.abs(angle) < 10;
             console.log('Is the face straight?', isStraight);
             setStraightFaceDetected(isStraight);
+
+            // Check if shoulders are visible
+            const areShouldersVisible = checkIfShouldersVisible(landmarks, imageElement.height);
+            console.log('Are shoulders visible?', areShouldersVisible);
+            setShouldersVisible(areShouldersVisible);
+
+            // Check if the face is centered
+            const isCentered = isFaceCentered(faceRectangle, imageElement.width, imageElement.height);
+            console.log('Is the face centered?', isCentered);
+            setFaceCentered(isCentered);
           }
 
           // Detect face
@@ -247,9 +258,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           console.log('isFaceDetected', isFaceDetected);
           console.log('isBgColorMatch', isBgColorMatch);
           console.log('isStraight', isStraight);
-          if (isBgColorMatch && isFaceDetected) {
-            //await sendImageToAPI(resizedImage, bookingId);
-          }
+
         } catch (error) {
           console.error('Error processing image:', error);
         } finally {
@@ -258,6 +267,35 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
       };
     }
   };
+
+  // Helper function to check if shoulders are visible
+  const checkIfShouldersVisible = (landmarks: faceapi.FaceLandmarks68, imageHeight: number): boolean => {
+    const jawPositions = landmarks.getJawOutline();
+    const jawBottomY = jawPositions[jawPositions.length - 1].y;
+
+    // Assuming that if the jaw is located within the top 80% of the image, the shoulders are visible
+    const jawThreshold = 0.8 * imageHeight;
+    return jawBottomY < jawThreshold;
+  };
+
+  function isFaceCentered(faceRectangle: faceapi.FaceDetection['box'], imageWidth: number, imageHeight: number): boolean {
+    const { x: left, y: top, width, height } = faceRectangle;
+    const faceCenterX = left + width / 2;
+    const faceCenterY = top + height / 2;
+
+    const imageCenterX = imageWidth / 2;
+    const imageCenterY = imageHeight / 2;
+
+    const horizontalOffset = Math.abs(faceCenterX - imageCenterX) / imageWidth;
+    const verticalOffset = Math.abs(faceCenterY - imageHeight) / imageHeight;
+    console.log('horizontalOffset:', horizontalOffset);
+    console.log('horizontalOffset:', horizontalOffset);
+
+    return horizontalOffset < 0.1 && verticalOffset < 0.1;
+  }
+
+
+
 
   const detectFace = async (imageElement: HTMLImageElement) => {
     try {
@@ -415,17 +453,23 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
           <hr className={resubmitPhotoContentstyles.photoHrLine}></hr>
 
-          {image && (!faceDetected || !bgColorMatch) ? (
+          {image && (!faceDetected || !bgColorMatch || !straightFaceDetected || !shouldersVisible) ? (
             <div className={resubmitPhotoContentstyles.photoUploadError}>
               <div className={resubmitPhotoContentstyles.photoUploadErrorBox}>
                 <div>
                   <h1>Your photo has been rejected for the following reasons:</h1>
                 </div>
 
+                {shouldersVisible ? (
+                  <p></p>
+                ) : (
+                  <div className={globalStyleCss.regular}> .  Your shoulders are not fully visible in the image.. </div>
+                )}
+
                 {straightFaceDetected ? (
                   <p></p>
                 ) : (
-                  <div className={globalStyleCss.regular}> .  The face is not straight </div>
+                  <div className={globalStyleCss.regular}> .  It looks like your image might not be straight. Try adjusting the angle of your photo to make sure your face is aligned correctly. </div>
                 )}
 
                 {faceDetected ? (
@@ -455,7 +499,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             <div className={resubmitPhotoContentstyles.uploadBox}>
 
               <div className={resubmitPhotoContentstyles.uploadPhotoContainerBox}>
-                {<Image src={image?image:''} alt='ID Photo' height={200} width={257}/>}
+                {<Image src={image ? image : ''} alt='ID Photo' height={200} width={257} />}
               </div>
 
               <div className={globalStyleCss.regular}>
