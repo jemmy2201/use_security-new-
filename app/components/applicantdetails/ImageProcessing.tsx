@@ -430,11 +430,11 @@ const ImageProcessing = () => {
             {
               formData.image ? (
                 <>
-                  {formData.image && <Image src={formData.image} alt="Photo ID" height={200} width={257} />}
+                  {formData.image && <Image src={formData.image} alt="Photo ID" height={360} width={280} />}
                 </>
               ) : (
                 <>
-                  {formData.imageUrl && <Image src={`${formData.imageUrl}?t=${new Date().valueOf()}`} alt="Photo ID" height={200} width={257} />}
+                  {formData.imageUrl && <Image src={`${formData.imageUrl}?t=${new Date().valueOf()}`} alt="Photo ID" height={360} width={280} />}
                 </>
               )
             }
@@ -470,7 +470,7 @@ const ImageProcessing = () => {
           <div className={applicantDetailsContentstyles.photosDosDontContainerPicsBox}>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
+                <Image src='/images/clear_pic.jpeg' alt='' height={120} width={95}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -487,7 +487,7 @@ const ImageProcessing = () => {
             </div>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
+                <Image src='/images/clear_pic.jpeg' alt='' height={120} width={95}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -504,7 +504,7 @@ const ImageProcessing = () => {
             </div>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
+                <Image src='/images/clear_pic.jpeg' alt='' height={120} width={95}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -523,7 +523,7 @@ const ImageProcessing = () => {
           <div className={applicantDetailsContentstyles.photosDosDontContainerPicsBox}>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <Image src='/images/2.png' alt='' height={80} width={120}></Image>
+                <Image src='/images/2.png' alt='' height={120} width={95}></Image>
 
               </div>
               <div>
@@ -535,7 +535,7 @@ const ImageProcessing = () => {
             </div>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <Image src='/images/5.png' alt='' height={80} width={120}></Image>
+                <Image src='/images/5.png' alt='' height={120} width={95}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -546,7 +546,7 @@ const ImageProcessing = () => {
             </div>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <Image src='/images/6.png' alt='' height={80} width={120}></Image>
+                <Image src='/images/6.png' alt='' height={120} width={95}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">

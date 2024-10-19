@@ -92,8 +92,8 @@
           width:100%;
         }
         .uploadPhotoContainerBox {
-          width: 200px;
-          height: 257px;
+          width: 280px;
+          height: 360px;
           flex-shrink: 0;
           border: 2px dashed #CFD8DC;
           background: #F5F6F7;
@@ -151,13 +151,12 @@
 
         .photosDosDontContainerPicsBox {
           display: flex;
-          gap: 35%;
+          gap: 30%;
           padding-bottom: 10%;
-          padding-left: 5%;
 
           .picBox {
             display: flex;
-            width: 80px;
+            width: 100px;
             height: 120px;
             flex-direction: column;
             align-items: center;
@@ -165,7 +164,7 @@
 
             .picFrame {
               display: flex;
-              width: 75px;
+              width: 95px;
               height: 120px;
               flex-direction: column;
               align-items: center;

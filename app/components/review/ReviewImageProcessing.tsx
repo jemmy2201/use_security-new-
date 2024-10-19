@@ -382,11 +382,11 @@ const ReviewImageProcessing: React.FC = () => {
             <div className={reviewPhotoContentstyles.uploadPhotoContainerBox}>
               {formData.image ? (
                 <>
-                  {formData.image && <Image src={formData.image} alt="Photo ID" height={200} width={257} />}
+                  {formData.image && <Image src={formData.image} alt="Photo ID" height={360} width={280} />}
                 </>
               ) : (
                 <>
-                  {formData.imageUrl && <Image src={`${formData.imageUrl}?t=${new Date().valueOf()}`} alt="Photo ID" height={200} width={257} />}
+                  {formData.imageUrl && <Image src={`${formData.imageUrl}?t=${new Date().valueOf()}`} alt="Photo ID" height={360} width={280} />}
                 </>
               )
 
@@ -394,7 +394,7 @@ const ReviewImageProcessing: React.FC = () => {
             </div>
 
             <div className={globalStyleCss.regular}>
-              Maximum file size: 2 MB <br></br>
+            Minimum file size: 20 KB <br></br>Maximum file size: 2 MB <br></br>
               Supported file types: JPG / PNG
             </div>
 
@@ -422,7 +422,7 @@ const ReviewImageProcessing: React.FC = () => {
             <div className={reviewPhotoContentstyles.photosDosDontContainerPicsBox}>
               <div className={reviewPhotoContentstyles.picBox}>
                 <div className={reviewPhotoContentstyles.picFrame}>
-                  <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
+                  <Image src='/images/clear_pic.jpeg' alt='' height={120} width={95}></Image>
                 </div>
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -439,7 +439,7 @@ const ReviewImageProcessing: React.FC = () => {
               </div>
               <div className={reviewPhotoContentstyles.picBox}>
                 <div className={reviewPhotoContentstyles.picFrame}>
-                  <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
+                  <Image src='/images/clear_pic.jpeg' alt='' height={120} width={95}></Image>
                 </div>
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -456,7 +456,7 @@ const ReviewImageProcessing: React.FC = () => {
               </div>
               <div className={reviewPhotoContentstyles.picBox}>
                 <div className={reviewPhotoContentstyles.picFrame}>
-                  <Image src='/images/clear_pic.jpeg' alt='' height={80} width={120}></Image>
+                  <Image src='/images/clear_pic.jpeg' alt='' height={120} width={95}></Image>
                 </div>
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -475,7 +475,7 @@ const ReviewImageProcessing: React.FC = () => {
             <div className={reviewPhotoContentstyles.photosDosDontContainerPicsBox}>
               <div className={reviewPhotoContentstyles.picBox}>
                 <div className={reviewPhotoContentstyles.picFrame}>
-                  <Image src='/images/specs.jpg' alt='' height={80} width={120}></Image>
+                  <Image src='/images/2.png' alt='' height={120} width={95}></Image>
 
                 </div>
                 <div>
@@ -487,7 +487,7 @@ const ReviewImageProcessing: React.FC = () => {
               </div>
               <div className={reviewPhotoContentstyles.picBox}>
                 <div className={reviewPhotoContentstyles.picFrame}>
-                  <Image src='/images/no_face.png' alt='' height={80} width={120}></Image>
+                  <Image src='/images/5.png' alt='' height={120} width={95}></Image>
                 </div>
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -498,7 +498,7 @@ const ReviewImageProcessing: React.FC = () => {
               </div>
               <div className={reviewPhotoContentstyles.picBox}>
                 <div className={reviewPhotoContentstyles.picFrame}>
-                  <Image src='/images/noface.jpeg' alt='' height={80} width={120}></Image>
+                  <Image src='/images/6.png' alt='' height={120} width={95}></Image>
                 </div>
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">

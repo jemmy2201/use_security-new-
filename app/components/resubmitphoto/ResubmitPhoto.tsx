@@ -499,7 +499,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             <div className={resubmitPhotoContentstyles.uploadBox}>
 
               <div className={resubmitPhotoContentstyles.uploadPhotoContainerBox}>
-                {<Image src={image ? image : ''} alt='ID Photo' height={200} width={257} />}
+                {<Image src={image ? image : ''} alt='ID Photo' height={257} width={200} />}
               </div>
 
               <div className={globalStyleCss.regular}>
@@ -585,7 +585,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
               <div className={resubmitPhotoContentstyles.photosDosDontContainerPicsBox}>
                 <div className={resubmitPhotoContentstyles.picBox}>
                   <div className={resubmitPhotoContentstyles.picFrame}>
-                    <Image src='/images/2.jpg' alt='' height={80} width={120}></Image>
+                    <Image src='/images/2.png' alt='' height={80} width={120}></Image>
 
                   </div>
                   <div>
