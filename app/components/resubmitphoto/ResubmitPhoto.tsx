@@ -463,7 +463,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                 {shouldersVisible ? (
                   <p></p>
                 ) : (
-                  <div className={globalStyleCss.regular}> .  Your shoulders are not fully visible in the image.. </div>
+                  <div className={globalStyleCss.regular}> .  Your shoulders are not fully visible in the image. </div>
                 )}
 
                 {straightFaceDetected ? (

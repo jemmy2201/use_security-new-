@@ -14,6 +14,7 @@ const ReviewImageProcessing: React.FC = () => {
 
   const [detectionResult, setDetectionResult] = useState<faceapi.WithFaceLandmarks<{ detection: faceapi.FaceDetection }> | null>(null);
   const { formData, setFormData } = useFormContext();
+  const [shouldersVisible, setShouldersVisible] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
   const [faceDetected, setFaceDetected] = useState<boolean>(false);
   const [bgColorMatch, setBgColorMatch] = useState<boolean>(false);
@@ -36,8 +37,8 @@ const ReviewImageProcessing: React.FC = () => {
         console.log('Review Image processing image url:', formData.imageUrl);
         if (formData.imageUrl) {
           const img = document.createElement('img');
-          img.width = 400; 
-          img.height = 514; 
+          img.width = 400;
+          img.height = 514;
           img.src = formData.imageUrl;
 
           img.onload = () => {
@@ -45,12 +46,13 @@ const ReviewImageProcessing: React.FC = () => {
             setFormData(prevFormData => ({
               ...prevFormData,
               isFaceDetected: true,
+              isStraightFaceDetected: true,
               isBgColorMatch: true,
+              isShoulderVisible: true,
             }));
           };
 
           img.onerror = () => {
-            console.error("Failed to load the image");
             console.error("Failed to load the image");
             setFormData(prevFormData => ({
               ...prevFormData,
@@ -69,6 +71,30 @@ const ReviewImageProcessing: React.FC = () => {
     loadModels();
   }, [formData.imageUrl, setFormData]);
 
+  const checkIfShouldersVisible = (landmarks: faceapi.FaceLandmarks68, imageHeight: number): boolean => {
+    const jawPositions = landmarks.getJawOutline();
+    const jawBottomY = jawPositions[jawPositions.length - 1].y;
+
+    // Assuming that if the jaw is located within the top 80% of the image, the shoulders are visible
+    const jawThreshold = 0.8 * imageHeight;
+    return jawBottomY < jawThreshold;
+  };
+
+  function isFaceCentered(faceRectangle: faceapi.FaceDetection['box'], imageWidth: number, imageHeight: number): boolean {
+    const { x: left, y: top, width, height } = faceRectangle;
+    const faceCenterX = left + width / 2;
+    const faceCenterY = top + height / 2;
+
+    const imageCenterX = imageWidth / 2;
+    const imageCenterY = imageHeight / 2;
+
+    const horizontalOffset = Math.abs(faceCenterX - imageCenterX) / imageWidth;
+    const verticalOffset = Math.abs(faceCenterY - imageHeight) / imageHeight;
+    console.log('horizontalOffset:', horizontalOffset);
+    console.log('horizontalOffset:', horizontalOffset);
+
+    return horizontalOffset < 0.1 && verticalOffset < 0.1;
+  }
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -94,14 +120,15 @@ const ReviewImageProcessing: React.FC = () => {
         ['image']: img,
       }));
       const imageElement = document.createElement('img');
-      imageElement.width = 400; 
-      imageElement.height = 514; 
+      imageElement.width = 400;
+      imageElement.height = 514;
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
           const detectionSingleFace = await faceapi.detectSingleFace(imageElement).withFaceLandmarks();
           console.log('detectionSingleFace', detectionSingleFace);
           let isStraight = true;
+          let isShoulderVisible = true;
           if (detectionSingleFace) {
             setDetectionResult(detectionSingleFace);
 
@@ -115,6 +142,11 @@ const ReviewImageProcessing: React.FC = () => {
             isStraight = Math.abs(angle) < 10;
             console.log('Is the face straight?', isStraight);
             setStraightFaceDetected(isStraight);
+
+            // Check if shoulders are visible
+            isShoulderVisible = checkIfShouldersVisible(landmarks, imageElement.height);
+            console.log('Are shoulders visible?', isShoulderVisible);
+            setShouldersVisible(isShoulderVisible);
           }
 
           const isFaceDetected = await detectFace(imageElement);
@@ -143,13 +175,15 @@ const ReviewImageProcessing: React.FC = () => {
             ['isFaceDetected']: isFaceDetected,
             ['isStraightFaceDetected']: isStraight,
             ['isBgColorMatch']: isBgColorMatch,
+            ['isShoulderVisible']: isShoulderVisible,
             ['imageUrl']: fileName,
+            ['errorPhoto']: '',
           }));
 
           console.log('isFaceDetected', isFaceDetected);
           console.log('isBgColorMatch', isBgColorMatch);
           console.log('isStraight', isStraight);
-
+          console.log('isStraight', isShoulderVisible);
         } catch (error) {
           console.error('Error processing image:', error);
         } finally {
@@ -286,6 +320,7 @@ const ReviewImageProcessing: React.FC = () => {
           Please ensure your photo complies with the guidelines to prevent your application from being rejected.
 
           <br></br><br></br>
+          {formData.errorPhoto && <p style={{ color: 'red' }}>{formData.errorPhoto}</p>}
         </div>
         <div className={reviewPhotoContentstyles.warningBox}>
           <div>
@@ -306,17 +341,24 @@ const ReviewImageProcessing: React.FC = () => {
         </div>
         <br></br>
         <hr className={reviewPhotoContentstyles.photoHrLine}></hr>
-        {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch || !formData.isStraightFaceDetected) ? (
+        {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch
+          || !formData.isStraightFaceDetected || !formData.isShoulderVisible) ? (
           <div className={reviewPhotoContentstyles.photoUploadError}>
             <div className={reviewPhotoContentstyles.photoUploadErrorBox}>
               <div className={globalStyleCss.regularBold}>
                 Your photo has been rejected for the following reasons:
               </div>
 
+              {formData.isShoulderVisible ? (
+                <p></p>
+              ) : (
+                <div className={globalStyleCss.regular}> .  Your shoulders are not fully visible in the image. </div>
+              )}
+
               {formData.isStraightFaceDetected ? (
                 <p></p>
               ) : (
-                <div className={globalStyleCss.regular}> .  The face is not straight </div>
+                <div className={globalStyleCss.regular}> .  It looks like your image might not be straight. Try adjusting the angle of your photo to make sure your face is aligned correctly. </div>
               )}
 
               {formData.isFaceDetected ? (
@@ -340,11 +382,11 @@ const ReviewImageProcessing: React.FC = () => {
             <div className={reviewPhotoContentstyles.uploadPhotoContainerBox}>
               {formData.image ? (
                 <>
-                  {formData.image && <Image src={formData.image} alt="Photo ID" height={200} width={257}/>}
+                  {formData.image && <Image src={formData.image} alt="Photo ID" height={200} width={257} />}
                 </>
               ) : (
                 <>
-                  {formData.imageUrl && <Image src={`${formData.imageUrl}?t=${new Date().valueOf()}`}  alt="Photo ID" height={200} width={257}/>}
+                  {formData.imageUrl && <Image src={`${formData.imageUrl}?t=${new Date().valueOf()}`} alt="Photo ID" height={200} width={257} />}
                 </>
               )
 

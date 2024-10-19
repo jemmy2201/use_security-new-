@@ -107,22 +107,22 @@ const ReviewDetailsPage: React.FC = () => {
 
                             <div className={reviewDetailsContentstyles.stepContentContainer}>
                                 <div className={reviewDetailsContentstyles.headerContentBox}>
-                                    
-                                        <div className={globalStyleCss.header2}>
-                                            Personal details
-                                        </div>
-                                        <div className={reviewDetailsContentstyles.editLink}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <g clipPath="url(#clip0_1418_2800)">
-                                                    <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_1418_2800">
-                                                        <rect width="24" height="24" fill="white" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>&nbsp;
-                                            <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(1)}>Save</button>
+
+                                    <div className={globalStyleCss.header2}>
+                                        Personal details
+                                    </div>
+                                    <div className={reviewDetailsContentstyles.editLink}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <g clipPath="url(#clip0_1418_2800)">
+                                                <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#546E7A" />
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_1418_2800">
+                                                    <rect width="24" height="24" fill="white" />
+                                                </clipPath>
+                                            </defs>
+                                        </svg>&nbsp;
+                                        <button className={globalStyleCss.blueLink} type='button' onClick={() => toggleEditMode(1)}>Save</button>
                                     </div>
                                 </div>
                                 <div className={reviewDetailsContentstyles.contentBox}>
@@ -138,6 +138,7 @@ const ReviewDetailsPage: React.FC = () => {
 
                                 <div className={reviewDetailsContentstyles.contentBox}>
                                     <div className={reviewDetailsContentstyles.item}>
+
                                         <div className={globalStyleCss.regularBold}>Mobile number: </div>
                                         <div className={globalStyleCss.regular}>
                                             <input
@@ -147,7 +148,11 @@ const ReviewDetailsPage: React.FC = () => {
                                                 onChange={handleChange}
                                                 className={reviewDetailsContentstyles.inputBox}
                                                 required placeholder="Enter your mobile number"
-                                            /></div>
+                                            />
+                                        </div>
+                                        <div className={globalStyleCss.regularBold}>
+                                            {formData.errorMobileNumber && <p style={{ color: 'red' }}>{formData.errorMobileNumber}</p>}
+                                        </div>
                                     </div>
                                     <div className={reviewDetailsContentstyles.item}>
                                         <div className={globalStyleCss.regularBold}>Email Address. </div>
@@ -159,7 +164,12 @@ const ReviewDetailsPage: React.FC = () => {
                                                 onChange={handleChange}
                                                 className={reviewDetailsContentstyles.inputBox}
                                                 required placeholder="Enter your email"
-                                            /></div>
+                                            />
+                                        </div>
+                                        <div className={globalStyleCss.regularBold}>
+                                            {formData.errorEmail && <p style={{ color: 'red' }}>{formData.errorEmail}</p>}
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -203,12 +213,16 @@ const ReviewDetailsPage: React.FC = () => {
                                     <div className={reviewDetailsContentstyles.item}>
                                         <div className={globalStyleCss.regularBold}>Mobile number: </div>
                                         <div className={reviewDetailsContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.mobileno}</div></div>
-
+                                        <div className={globalStyleCss.regularBold}>
+                                            {formData.errorMobileNumber && <p style={{ color: 'red' }}>{formData.errorMobileNumber}</p>}
+                                        </div>
                                     </div>
                                     <div className={reviewDetailsContentstyles.item}>
                                         <div className={globalStyleCss.regularBold}>Email Address. </div>
                                         <div className={reviewDetailsContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.email}</div></div>
-
+                                        <div className={globalStyleCss.regularBold}>
+                                            {formData.errorEmail && <p style={{ color: 'red' }}>{formData.errorEmail}</p>}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -226,6 +240,7 @@ const ReviewDetailsPage: React.FC = () => {
 
                                         <div className={globalStyleCss.header2}>
                                             Photo
+
                                         </div>
 
 
@@ -277,6 +292,8 @@ const ReviewDetailsPage: React.FC = () => {
                                     </div>
                                     <div className={globalStyleCss.regular}>
                                         Please ensure your photo complies with the guidelines to prevent your application from being rejected.
+                                        {formData.errorPhoto && <p style={{ color: 'red' }}>{formData.errorPhoto}</p>}
+
                                     </div>
                                     {formData.image ? (
                                         <>

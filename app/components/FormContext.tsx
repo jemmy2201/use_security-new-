@@ -34,6 +34,7 @@ interface FormData {
     isFaceDetected?: boolean;
     isStraightFaceDetected?: boolean;
     isBgColorMatch?: boolean;
+    isShoulderVisible?: boolean;
     isUpdated?: boolean;
     isTermsAndConditionSigned?: boolean;
     imageUrl?: string;

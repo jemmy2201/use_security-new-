@@ -40,11 +40,10 @@ const CancelPopup: React.FC<CancelPopupProps> = ({ isOpen, onClose, onContinue }
                 <div className={globalStyleCss.regular}>Are you sure you want to cancel this application? This action cannot be undone.
                 </div>
 
-            <div className={OtpModuleStyle.buttonContainer}>
-                <button type='button' onClick={handleContinue} className={OtpModuleStyle.validateButton} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}><div className={globalStyleCss.regularWhite}>Cancel application</div></button>
-                <button type='button' onClick={handleCancel} className={OtpModuleStyle.cancelButton} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}><div className={globalStyleCss.regular}>Stay on page</div></button>
-            </div>
-            <ToastContainer />
+                <div className={OtpModuleStyle.buttonContainer}>
+                    <button type='button' onClick={handleContinue} className={OtpModuleStyle.validateButton} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}><div className={globalStyleCss.regularWhite}>Cancel application</div></button>
+                    <button type='button' onClick={handleCancel} className={OtpModuleStyle.cancelButton} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}><div className={globalStyleCss.regular}>Stay on page</div></button>
+                </div>
             </div>
 
         </div>

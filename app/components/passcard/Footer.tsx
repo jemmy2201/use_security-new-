@@ -57,7 +57,7 @@ const Footer: React.FC<FooterProps> =
                                 <button type='button' onClick={onSaveDraft}>
                                     <div className={globalStyleCss.regular}>Save draft</div>
                                 </button>
-                                <ToastContainer />
+                                {/* <ToastContainer /> */}
                             </div>
 
                         )}

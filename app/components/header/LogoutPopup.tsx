@@ -60,7 +60,6 @@ const LogoutPopup: React.FC<LogoutPopupProps> = ({ isOpen, onClose, onContinue }
                         </div>
                     </div>
                 </div>
-                <ToastContainer />
             </div>
         </div>
     );

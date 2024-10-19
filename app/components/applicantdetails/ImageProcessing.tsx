@@ -23,46 +23,48 @@ const ImageProcessing = () => {
   const [spectacleDetected, setSpectacleDetected] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [modelsLoaded, setModelsLoaded] = useState(false);
+  const [shouldersVisible, setShouldersVisible] = useState<boolean>(false);
 
 
   useEffect(() => {
     const loadModels = async () => {
       try {
         setLoading(true);
-        
-          await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
-          await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
-          await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
-          await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
 
-          console.log('Image processing applicationType:', formData.applicationType);
-          console.log('Image processing image url:', formData.imageUrl);
-          if (formData.imageUrl) {
-            const img = document.createElement('img');
-            img.width = 400;
-            img.height = 514;
-            img.src = formData.imageUrl;
+        await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
+        await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+        await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+        await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
 
-            img.onload = () => {
-              console.log("Image loaded successfully");
-              setFormData(prevFormData => ({
-                ...prevFormData,
-                isFaceDetected: true,
-                isStraightFaceDetected: true,
-                isBgColorMatch: true,
-              }));
-            };
+        console.log('Image processing applicationType:', formData.applicationType);
+        console.log('Image processing image url:', formData.imageUrl);
+        if (formData.imageUrl) {
+          const img = document.createElement('img');
+          img.width = 400;
+          img.height = 514;
+          img.src = formData.imageUrl;
 
-            img.onerror = () => {
-              console.error("Failed to load the image");
-              setFormData(prevFormData => ({
-                ...prevFormData,
-                imageUrl: '',
-              }));
-            };
-          }
-          setModelsLoaded(true);
-        
+          img.onload = () => {
+            console.log("Image loaded successfully");
+            setFormData(prevFormData => ({
+              ...prevFormData,
+              isFaceDetected: true,
+              isStraightFaceDetected: true,
+              isBgColorMatch: true,
+              isShoulderVisible: true,
+            }));
+          };
+
+          img.onerror = () => {
+            console.error("Failed to load the image");
+            setFormData(prevFormData => ({
+              ...prevFormData,
+              imageUrl: '',
+            }));
+          };
+        }
+        setModelsLoaded(true);
+
 
       } catch (error) {
         console.error('Error loading models:', error);
@@ -75,6 +77,15 @@ const ImageProcessing = () => {
   }, []);
 
 
+  // Helper function to check if shoulders are visible
+  const checkIfShouldersVisible = (landmarks: faceapi.FaceLandmarks68, imageHeight: number): boolean => {
+    const jawPositions = landmarks.getJawOutline();
+    const jawBottomY = jawPositions[jawPositions.length - 1].y;
+
+    // Assuming that if the jaw is located within the top 80% of the image, the shoulders are visible
+    const jawThreshold = 0.8 * imageHeight;
+    return jawBottomY < jawThreshold;
+  };
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -108,6 +119,7 @@ const ImageProcessing = () => {
           const detectionSingleFace = await faceapi.detectSingleFace(imageElement).withFaceLandmarks();
           console.log('detectionSingleFace', detectionSingleFace);
           let isStraight = true;
+          let isShoulderVisible = true;
           if (detectionSingleFace) {
             setDetectionResult(detectionSingleFace);
 
@@ -121,6 +133,12 @@ const ImageProcessing = () => {
             isStraight = Math.abs(angle) < 10;
             console.log('Is the face straight?', isStraight);
             setStraightFaceDetected(isStraight);
+
+            // Check if shoulders are visible
+            isShoulderVisible = checkIfShouldersVisible(landmarks, imageElement.height);
+            console.log('Are shoulders visible?', isShoulderVisible);
+            setShouldersVisible(isShoulderVisible);
+
           }
 
           const isFaceDetected = await detectFace(imageElement);
@@ -147,15 +165,17 @@ const ImageProcessing = () => {
             ...prevFormData,
             ['image']: resizedImage,
             ['isFaceDetected']: isFaceDetected,
+            ['isShoulderVisible']: isShoulderVisible,
             ['isStraightFaceDetected']: isStraight,
             ['isBgColorMatch']: isBgColorMatch,
             ['imageUrl']: fileName,
+            ['errorPhoto']: '',
           }));
 
           console.log('isFaceDetected', isFaceDetected);
           console.log('isBgColorMatch', isBgColorMatch);
           console.log('isStraight', isStraight);
-
+          console.log('isShoulderVisible', isShoulderVisible);
         } catch (error) {
           console.error('Error processing image:', error);
         } finally {
@@ -367,17 +387,24 @@ const ImageProcessing = () => {
 
       <hr className={applicantDetailsContentstyles.photoHrLine}></hr>
 
-      {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch || !formData.isStraightFaceDetected) ? (
+      {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch 
+          || !formData.isStraightFaceDetected || !formData.isShoulderVisible) ? (
         <div className={applicantDetailsContentstyles.photoUploadError}>
           <div className={applicantDetailsContentstyles.photoUploadErrorBox}>
             <div className={globalStyleCss.regularBold}>
               Your photo has been rejected for the following reasons:
             </div>
 
+            {formData.isShoulderVisible ? (
+              <p></p>
+            ) : (
+              <div className={globalStyleCss.regular}> .  Your shoulders are not fully visible in the image. </div>
+            )}
+
             {formData.isStraightFaceDetected ? (
               <p></p>
             ) : (
-              <div className={globalStyleCss.regular}> .  The face is not straight </div>
+              <div className={globalStyleCss.regular}> .  It looks like your image might not be straight. Try adjusting the angle of your photo to make sure your face is aligned correctly. </div>
             )}
 
             {formData.isFaceDetected ? (

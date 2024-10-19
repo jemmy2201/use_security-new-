@@ -142,10 +142,11 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 }))
             }
 
-            if (!formData.isFaceDetected || !formData.isBgColorMatch) {
+            if (!formData.isFaceDetected || !formData.isBgColorMatch
+                || !formData.isStraightFaceDetected || !formData.isShoulderVisible) {
                 setFormData(prevFormData => ({
                     ...prevFormData,
-                    errorPhoto: 'Photo have some problem',
+                    errorPhoto: 'Please upload correct photo as per guidelines',
                 }))
                 validStepOne = false;
             } else {
@@ -175,6 +176,81 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
         }
 
         if (activeStep == 2) {
+
+
+            let validStepZero = true;
+            if (!formData.email) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorEmail: 'Please enter the email',
+                }))
+                validStepZero = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorEmail: '',
+                }))
+            }
+            if (!formData.mobileno) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorMobileNumber: 'Please enter the mobile number',
+                }))
+                validStepZero = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorMobileNumber: '',
+                }))
+            }
+            if (!validStepZero) return;            
+
+
+            let validStepOne = true;
+
+            if (!formData.image && !formData.imageUrl) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: 'Photo is required',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: '',
+                }))
+            }
+
+            if (!formData.isFaceDetected || !formData.isBgColorMatch
+                || !formData.isStraightFaceDetected || !formData.isShoulderVisible) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: 'Please upload correct photo as per guidelines.',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: '',
+                }))
+            }
+
+            if (!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta
+                && !formData.trRtt && !formData.trXray
+                && !formData.trNota && !formData.Ssm && !formData.trObse) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorTrainingRecords: 'Training records are missing',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorTrainingRecords: '',
+                }))
+            }
+
+            if (!validStepOne) return;
 
             let validStepTwo = true;
             if (!formData.isTermsAndConditionSigned) {
@@ -409,13 +485,43 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
 
     const handleSaveDraft = async () => {
         console.log('activeStep', activeStep);
+
+
         if (activeStep == 0) {
+            let validStepZero = true;
+            if (!formData.email) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorEmail: 'Please enter the email',
+                }))
+                validStepZero = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorEmail: '',
+                }))
+            }
+            if (!formData.mobileno) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorMobileNumber: 'Please enter the mobile number',
+                }))
+                validStepZero = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorMobileNumber: '',
+                }))
+            }
+            if (!validStepZero) return;
             saveUserDetails();
             toast.success('Your draft has been saved', {
                 position: 'top-right',
                 autoClose: 3000,
             });
         }
+
+
 
         if (activeStep == 1) {
             let validStepOne = true;
@@ -433,10 +539,11 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 }))
             }
 
-            if (!formData.isFaceDetected || !formData.isBgColorMatch) {
+            if (!formData.isFaceDetected || !formData.isBgColorMatch
+                || !formData.isStraightFaceDetected || !formData.isShoulderVisible) {
                 setFormData(prevFormData => ({
                     ...prevFormData,
-                    errorPhoto: 'Photo have some problem',
+                    errorPhoto: 'Please upload correct photo as per guidelines.',
                 }))
                 validStepOne = false;
             } else {
@@ -471,6 +578,110 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
         }
 
         if (activeStep == 2) {
+
+            let validStepZero = true;
+            if (!formData.email) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorEmail: 'Please enter the email',
+                }))
+                validStepZero = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorEmail: '',
+                }))
+            }
+            if (!formData.mobileno) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorMobileNumber: 'Please enter the mobile number',
+                }))
+                validStepZero = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorMobileNumber: '',
+                }))
+            }
+            if (!validStepZero) return;
+
+            if (formData.originalMobileno === formData.mobileno
+                || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
+                console.log('same mobile');
+                setIsOtpPopupOpen(false);
+            } else {
+                console.log('mobile changed', formData.mobileno);
+                const response = await fetch('/api/sms/send-sms', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        mobile: formData.mobileno,
+                    }),
+                });
+                const result = await response.json();
+
+                console.log('send sms result:', result);
+
+                if (result.success) {
+                    console.log('SMS sent:', result);
+                    setIsOtpPopupOpen(true);
+                    return;
+                } else {
+                    alert(result.message);
+                }
+
+            }
+
+            let validStepOne = true;
+
+            if (!formData.image && !formData.imageUrl) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: 'Photo is required',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: '',
+                }))
+            }
+
+            if (!formData.isFaceDetected || !formData.isBgColorMatch
+                || !formData.isStraightFaceDetected || !formData.isShoulderVisible) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: 'Please upload correct photo as per guidelines.',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorPhoto: '',
+                }))
+            }
+
+            if (!formData.trAvso && !formData.trCctc && !formData.trCsspb && !formData.trHcta
+                && !formData.trRtt && !formData.trXray
+                && !formData.trNota && !formData.Ssm && !formData.trObse) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorTrainingRecords: 'Training records are missing',
+                }))
+                validStepOne = false;
+            } else {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    errorTrainingRecords: '',
+                }))
+            }
+
+            if (!validStepOne) return;
+            
+
             await saveUserDetails();
             await saveApplicantDetails();
             await saveReviewDetails();
