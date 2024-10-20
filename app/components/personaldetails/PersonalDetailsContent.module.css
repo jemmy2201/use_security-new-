@@ -10,7 +10,7 @@
   width: 100%;
   @media screen and (max-width: 769px) {
     width: 360px;
-    padding: 24px 24px 40px 24px;
+    padding: 10px;
     align-items: flex-start;
     gap: 24px;
   }
@@ -28,7 +28,7 @@
     @media screen and (max-width: 769px) {
       padding: 24px;
       gap: 24px;
-      width: 310px;
+      width: 340px;
     }
 
     .headingText {

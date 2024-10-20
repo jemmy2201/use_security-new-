@@ -10,7 +10,7 @@
     background: #F5F6F7;
 
     @media screen and (max-width: 769px) {
-        width: 340px;
+        width: 360px;
         align-items: center;
     }
 
@@ -25,9 +25,8 @@
         flex-wrap: wrap;
 
         @media screen and (max-width: 769px) {
-            padding-top: 20px;
+            padding: 24px;
             width: 340px;
-            padding-left: 60px;
         }
 
 

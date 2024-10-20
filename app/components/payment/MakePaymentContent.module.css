@@ -4,13 +4,13 @@
 .mainContainer {
   display: flex;
   flex-direction: column;
-  width: 1124px;
+  width: 1224px;
   align-items: center;
   gap: 40px;
 
   @media screen and (max-width: 769px) {
     width: 360px;
-    padding: 24px 24px 40px 24px;
+    padding: 10px;
     align-items: flex-start;
     gap: 24px;
   }
