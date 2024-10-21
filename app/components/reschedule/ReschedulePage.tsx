@@ -58,7 +58,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     const formatDate = (date: Date | null) => {
         if (!date) return "";
         const day = date.getDate();
-        const month = date.toLocaleString('default', { month: 'long' }); 
+        const month = date.toLocaleString('default', { month: 'long' });
         const year = date.getFullYear();
         return `${day} ${month} ${year}`;
     };
@@ -80,22 +80,26 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
     const handleDateChange = async (date: Date | null) => {
         setLoading(true);
+        setSelectedTimeSlot('');
         setDisabledSlots3([]);
         setDisabledSlots([]);
         setDisabledSlots2([]);
-        if(date){
+        if (date) {
 
             const lastDay = lastDayOfMonth(date);
-            let dayOfWeek = getDay(lastDay); 
-            let daysToSubtract = (dayOfWeek >= 2) ? dayOfWeek - 2 : dayOfWeek + 5; 
+            let dayOfWeek = getDay(lastDay);
+            let daysToSubtract = (dayOfWeek >= 2) ? dayOfWeek - 2 : dayOfWeek + 5;
             const lastWednesdayDate = new Date(lastDay);
             lastWednesdayDate.setDate(lastDay.getDate() - daysToSubtract);
             console.log('last tuesday:', format(lastWednesdayDate, 'yyyy-MM-dd'));
+            const monthDay = format(date, 'MM-dd');
 
-            if(format(date, 'yyyy-MM-dd') === format(lastWednesdayDate, 'yyyy-MM-dd')){
+            if (format(date, 'yyyy-MM-dd') === format(lastWednesdayDate, 'yyyy-MM-dd')
+                || monthDay === '01-01' || monthDay === '12-25') {
                 setDisabledSlots2(['12:30 - 13:30', '13:30 - 14:30', '14:30 - 15:30', '15:30 - 16:30']);
             }
-            
+
+
         }
 
         setStartDate(date);
@@ -116,10 +120,10 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
     useEffect(() => {
         if (startDate) {
-          const combinedSlots = [...disabledSlots, ...disabledSlots2];
-          setDisabledSlots3(combinedSlots);
+            const combinedSlots = [...disabledSlots, ...disabledSlots2];
+            setDisabledSlots3(combinedSlots);
         }
-      }, [startDate, disabledSlots, disabledSlots2]);
+    }, [startDate, disabledSlots, disabledSlots2]);
 
     const handleTimeSlotClick = (text: string) => {
         console.log('timeslot', text);
@@ -144,14 +148,14 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
 
     const formatAppointmentDate = (dateString: string) => {
-        if(!dateString){
+        if (!dateString) {
             return '';
         }
-        const date = new Date(dateString); 
+        const date = new Date(dateString);
 
         return date.toLocaleDateString('en-GB', {
             day: 'numeric',
-            month: 'short', 
+            month: 'short',
             year: 'numeric'
         });
     };
@@ -238,7 +242,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 router.push(`/complete?bookingId=${encodeURIComponent(bookingId)}&reschedule=${encodeURIComponent(reschedule)}`);
             } catch (err) {
                 setErrorMessage('Failed to fetch user details');
-            } 
+            }
         } catch (err) {
             setErrorMessage('Failed to fetch reschedule');
         } finally {
@@ -265,7 +269,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 setBookingSchedule(dataBookingSchedule);
             } catch (error) {
                 console.error('Error fetching disabled dates:', error);
-            } finally{
+            } finally {
                 setLoading(false);
             }
         };
@@ -290,7 +294,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
 
             } catch (error) {
                 console.error('Error fetching disabled dates:', error);
-            } finally{
+            } finally {
                 setLoading(false);
             }
         };
@@ -315,15 +319,15 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <CircularProgress />
                 </div>
-            )}            
+            )}
             <div className={rescheduleContentstyles.mainContainer}>
                 <div className={rescheduleContentstyles.headerBox}>
                     {bookingSchedule && bookingSchedule.appointment_date && (
                         <>
                             <div className={globalStyleCss.header1}>
-                                Reschedule Appointment 
-                                <div className={globalStyleCss.regularBold}>Current appointment is on {formatAppointmentDate(bookingSchedule?.appointment_date ? bookingSchedule.appointment_date : '') || ''} 
-                                 &nbsp; at {bookingSchedule.time_start_appointment} - {bookingSchedule.time_end_appointment}</div>
+                                Reschedule Appointment
+                                <div className={globalStyleCss.regularBold}>Current appointment is on {formatAppointmentDate(bookingSchedule?.appointment_date ? bookingSchedule.appointment_date : '') || ''}
+                                    &nbsp; at {bookingSchedule.time_start_appointment} - {bookingSchedule.time_end_appointment}</div>
                             </div>
 
                         </>

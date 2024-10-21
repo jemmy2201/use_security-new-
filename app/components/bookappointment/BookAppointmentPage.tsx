@@ -97,6 +97,7 @@ const BookAppointmentPage: React.FC = () => {
 
     const handleDateChange = async (date: Date | null) => {
         setLoading(true);
+        setSelectedTimeSlot('');
         setDisabledSlots3([]);
         setDisabledSlots([]);
         setDisabledSlots2([]);
@@ -109,7 +110,10 @@ const BookAppointmentPage: React.FC = () => {
             lastWednesdayDate.setDate(lastDay.getDate() - daysToSubtract);
             console.log('last tuesday:', format(lastWednesdayDate, 'yyyy-MM-dd'));
 
-            if (format(date, 'yyyy-MM-dd') === format(lastWednesdayDate, 'yyyy-MM-dd')) {
+            const monthDay = format(date, 'MM-dd');
+
+            if (format(date, 'yyyy-MM-dd') === format(lastWednesdayDate, 'yyyy-MM-dd')
+                || monthDay === '01-01' || monthDay === '12-25') {
                 setDisabledSlots2(['12:30 - 13:30', '13:30 - 14:30', '14:30 - 15:30', '15:30 - 16:30']);
             }
 
