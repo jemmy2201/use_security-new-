@@ -40,6 +40,9 @@ export async function GET(request: NextRequest) {
     const bookingId = BigInt(bookingIdString) as bigint;
 
     const holidays = await prisma.dateholidays.findMany({
+      where: {
+        time_work:'1',
+      },
       select: {
         date: true,
       },

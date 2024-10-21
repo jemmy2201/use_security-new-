@@ -66,6 +66,26 @@ const HeaderPage: React.FC = () => {
         }
     };
 
+    useEffect(() => {
+        const handleBeforeUnload = async (event: BeforeUnloadEvent) => {
+            await logout();
+            sessionStorage.removeItem('id_token');
+            sessionStorage.removeItem('createNewPassApiResponse');
+            sessionStorage.removeItem('users');
+            sessionStorage.removeItem('bookingSchedule');
+            sessionStorage.removeItem('bookingSchedules');
+            sessionStorage.removeItem('actionTypeValue');
+            event.preventDefault();
+            event.returnValue = '';
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+
     return (
 
         <div className={headerstyles.siteHeaderContainer}>

@@ -153,43 +153,43 @@ const CompletePage: React.FC<CompletePageProps> = ({ bookingId, reschedule }) =>
                             <div className={globalStyleCss.regular}>An SMS reminder will be sent to you 3 days before the collection date.</div>
                         </div>
                         <div className={CompleteContentstyles.collectionTextContainer}>
-                            <span className={CompleteContentstyles.collectionTextSpan}>
+                            <div className={CompleteContentstyles.collectionTextSpan}>
                                 <div className={globalStyleCss.regularBold}>
-                                    Collection Date
+                                    Collection Dateee
                                 </div>
                                 <div className={globalStyleCss.regular}>
                                     {formatAppointmentDate(bookingSchedule?.appointment_date ? bookingSchedule.appointment_date : '') || ''}
                                 </div>
-                            </span>
+                            </div>
 
-                            <span className={CompleteContentstyles.collectionTextSpan}>
+                            <div className={CompleteContentstyles.collectionTextSpan}>
                                 <div className={globalStyleCss.regularBold}>
                                     Collection time slot
                                 </div>
                                 <div className={globalStyleCss.regular}>
                                     {bookingSchedule?.time_start_appointment} - {bookingSchedule?.time_end_appointment}
                                 </div>
-                            </span>
+                            </div>
 
                         </div>
                         <div className={CompleteContentstyles.collectionTextContainer}>
-                            <span className={CompleteContentstyles.collectionTextSpan}>
+                            <div className={CompleteContentstyles.collectionTextSpan}>
                                 <div className={globalStyleCss.regularBold}>
                                     ID card no.
                                 </div>
                                 <div className={globalStyleCss.regular}>
                                     {bookingSchedule?.passid}
                                 </div>
-                            </span>
+                            </div>
 
-                            <span className={CompleteContentstyles.collectionTextSpan}>
+                            <div className={CompleteContentstyles.collectionTextSpan}>
                                 <div className={globalStyleCss.regularBold}>
                                     ID card date of expiry
                                 </div>
                                 <div className={globalStyleCss.regular}>
                                     {formatExpiryDate(bookingSchedule?.expired_date ? bookingSchedule.expired_date : '')}
                                 </div>
-                            </span>
+                            </div>
 
                         </div>
                         <div className={CompleteContentstyles.collectionCenterContainer}>

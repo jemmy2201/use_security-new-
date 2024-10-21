@@ -86,6 +86,12 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
         setDisabledSlots2([]);
         if (date) {
 
+            const responseHalfday = await fetch(`/api/halfday-slots`);
+            if (!responseHalfday.ok && responseHalfday.status === 401) {
+                router.push('/signin');
+                throw new Error('token expired in stripe session');
+            }
+            const dataHalfDay = await responseHalfday.json();
             const lastDay = lastDayOfMonth(date);
             let dayOfWeek = getDay(lastDay);
             let daysToSubtract = (dayOfWeek >= 2) ? dayOfWeek - 2 : dayOfWeek + 5;
@@ -93,13 +99,11 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             lastWednesdayDate.setDate(lastDay.getDate() - daysToSubtract);
             console.log('last tuesday:', format(lastWednesdayDate, 'yyyy-MM-dd'));
             const monthDay = format(date, 'MM-dd');
-
             if (format(date, 'yyyy-MM-dd') === format(lastWednesdayDate, 'yyyy-MM-dd')
-                || monthDay === '01-01' || monthDay === '12-25') {
+                || monthDay === '12-31' || monthDay === '12-24'
+                || dataHalfDay.includes(format(date, 'yyyy-MM-dd'))) {
                 setDisabledSlots2(['12:30 - 13:30', '13:30 - 14:30', '14:30 - 15:30', '15:30 - 16:30']);
             }
-
-
         }
 
         setStartDate(date);
