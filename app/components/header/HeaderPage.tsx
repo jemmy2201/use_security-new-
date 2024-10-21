@@ -9,13 +9,15 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import LogoutPopup from './LogoutPopup'
 import CircularProgress from '@mui/material/CircularProgress';
+import SessionTimeoutPopup from './SessionTimeoutPopup';
 
 const HeaderPage: React.FC = () => {
 
     const router = useRouter();
     const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState<boolean>(false); // State for OTP popup
     const [loading, setLoading] = useState<boolean>(false);
-
+    const [showPopup, setShowPopup] = useState(false);
+    const [sessionToken, setSessionToken] = useState<string | null>(null);
     const handleClick = () => {
         router.push('/homepage');
     };
@@ -66,7 +68,33 @@ const HeaderPage: React.FC = () => {
         }
     };
 
+
+
     useEffect(() => {
+        const checkSession = async () => {
+            try {
+                const response = await fetch('/api/session', {
+                    method: 'GET',
+                    credentials: 'include', // Include cookies in the request
+                });
+                const data = await response.json();
+                console.log('Session data:', data);
+                if (data.valid) {
+                    setSessionToken(data.token);
+                    console.log('setting showpopup true');
+                    // 35 min timer
+                    const timer = setTimeout(() => {
+                        setShowPopup(true);
+                    }, 35 * 60 * 1000);
+                    return () => clearTimeout(timer);
+                }
+            } catch (error) {
+                console.error('Error checking session:', error);
+            }
+        };
+
+        checkSession();
+
         const handleBeforeUnload = async (event: BeforeUnloadEvent) => {
             await logout();
             sessionStorage.removeItem('id_token');
@@ -86,6 +114,32 @@ const HeaderPage: React.FC = () => {
         };
     }, []);
 
+
+    const handleRefreshSession = async () => {
+        try {
+            const response = await fetch('/api/refresh-token', {
+                method: 'POST',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const newToken = data.token;
+
+                localStorage.setItem('session', newToken);
+                setSessionToken(newToken);
+
+                setShowPopup(false);
+            } else {
+                console.error('Failed to refresh token');
+                setLoading(false);
+                router.push('/signin');
+            }
+        } catch (error) {
+            console.error('Error refreshing token:', error);
+        }
+    };
+
     return (
 
         <div className={headerstyles.siteHeaderContainer}>
@@ -94,6 +148,13 @@ const HeaderPage: React.FC = () => {
                     <CircularProgress />
                 </div>
             )}
+
+            <SessionTimeoutPopup
+                isOpen={showPopup}
+                onClose={handleCancelCancel}
+                onContinue={handleRefreshSession}
+            />
+
             <LogoutPopup
                 isOpen={isLogoutPopupOpen}
                 onClose={handleCancelCancel}

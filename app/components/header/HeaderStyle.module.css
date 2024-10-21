@@ -10,6 +10,17 @@
     gap: 32px;
     background: #000;
 
+    .sessionPopup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: white;
+      border: 1px solid black;
+      padding: 16px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
     .logo {
       display: flex;
       width: 55.539px;
@@ -70,6 +81,17 @@
   align-items: center;
   gap: 32px;
   background: #000;
+
+  .sessionPopup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: white;
+    border: 1px solid black;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
 
   .logo {
     display: flex;

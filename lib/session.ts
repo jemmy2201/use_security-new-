@@ -1,6 +1,6 @@
 import 'server-only'
 import { SignJWT, jwtVerify, JWTPayload, decodeJwt } from 'jose'
-import { cookies } from 'next/headers'
+import { cookies } from 'next/headers';
 import encryptDecrypt from '@/utils/encryptDecrypt';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
@@ -48,8 +48,13 @@ export async function decryptSession(session: string | undefined = '') {
 }
 
 export async function createSession(userId: string, userToken: string) {
-    const expiresAt = new Date(Date.now() + 70 * 24 * 60 * 60 * 1000)
-    const session = await encrypt({ userId, expiresAt, userToken })
+    // 70 days
+    // const expiresAt = new Date(Date.now() + 70 * 24 * 60 * 60 * 1000)
+    //45 min
+    const expiresAt = new Date(Date.now() + 45 * 60 * 1000);
+    // 5 min
+    // const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+    const session = await encrypt({ userId, expiresAt, userToken });
 
     // console.log('createSession, session', session);
     const decoded = decodeJwt(session);
@@ -70,14 +75,14 @@ export async function createSession(userId: string, userToken: string) {
         expires: expiresAt,
         sameSite: 'lax',
         path: '/',
-    })
+    });
 }
 
 export async function encrypt(payload: SessionPayload) {
     return new SignJWT(payload)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
-        .setExpirationTime('55min')
+        .setExpirationTime('45min')
         .sign(encodedKey)
 }
 
@@ -87,21 +92,10 @@ export const convertUnixToDateTime = (unixTimestamp: number): string => {
 };
 
 export async function updateSession() {
-    const session = cookies().get('session')?.value
-    const payload = await decrypt(session)
-
-    if (!session || !payload) {
-        return null
-    }
-
-    const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-    cookies().set('session', session, {
-        httpOnly: true,
-        secure: true,
-        expires: expires,
-        sameSite: 'lax',
-        path: '/',
-    })
+    console.log('updating session: started');
+    const sessionOldValue: SessionPayload = await decrypt(cookies().get('session')?.value);
+    await createSession(sessionOldValue?.userId as string, sessionOldValue?.userToken as string)
+    console.log('updating session: done');
 }
 
 
