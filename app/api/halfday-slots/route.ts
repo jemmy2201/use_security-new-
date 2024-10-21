@@ -6,15 +6,12 @@ import { getEncryptedNricFromSession } from '../../../lib/session';
 const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
-
+  const encryptedNric = await getEncryptedNricFromSession(request);
+  if (encryptedNric instanceof NextResponse) {
+    return encryptedNric;
+  }
 
   try {
-
-    const encryptedNric = await getEncryptedNricFromSession(request);
-    if (encryptedNric instanceof NextResponse) {
-      return encryptedNric;
-    }
-
 
     const holidays = await prisma.dateholidays.findMany({
       where: {

@@ -60,16 +60,17 @@
       }
 
       .collectionTextContainer {
-        display: flex;
+        display: flex !important;
         flex-wrap: wrap;
         @media screen and (max-width: 769px) {
           flex-direction: row;
         }
         .collectionTextSpan {
           width: 400px;
+          flex-wrap: nowrap;
           color: #000;
-          flex-wrap: wrap;
           @media screen and (max-width: 769px) {
+            flex-wrap: wrap;
             width: 200px;
             padding-bottom: 20px;
           }
