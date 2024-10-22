@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
       return new Response(JSON.stringify({ error: 'Selected Date reqquire' }), { status: 400 });
     }
 
-    
+
     console.log('selectedDateString:', selectedDateString);
 
     const dateSchedules: bookingDate[] = await prisma.$queryRaw`
@@ -49,7 +49,6 @@ export async function GET(request: NextRequest) {
       group by appointment_date, time_start_appointment; `;
 
     console.log('dateSchedules', dateSchedules);
-
 
     const fullSlotTime = dateSchedules
       .map((dateSchedule) => {
@@ -66,7 +65,7 @@ export async function GET(request: NextRequest) {
     const disabledSlots = convertTimeSlots(fullSlotTime);;
 
     console.log('returning full time slots for day:', selectedDateString, disabledSlots);
-  
+
     return NextResponse.json({ disabledSlots });
 
   } catch (error) {
@@ -82,8 +81,8 @@ export async function GET(request: NextRequest) {
 
 const convertTimeSlots = (timeSlots: string[]): string[] => {
   return timeSlots.map((time) => {
-    const [hours, minutes] = time.split(':').map(Number); // Split the time string into hours and minutes
-    const endHours = (hours + 1) % 24; // Add one hour and handle 24-hour wrap-around
+    const [hours, minutes] = time.split(':').map(Number);
+    const endHours = (hours + 1) % 24;
 
     const startTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
     const endTime = `${endHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
