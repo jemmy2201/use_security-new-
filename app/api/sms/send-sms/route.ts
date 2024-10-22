@@ -7,12 +7,18 @@ import axios from 'axios';
 const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
+
+    const encryptedNric = await getEncryptedNricFromSession(request);
+    if (encryptedNric instanceof NextResponse) {
+        return encryptedNric;
+    }
     try {
+        const triggerSms = process.env.SEND_SMS_ENABLE === 'true';
         const { mobile } = await request.json();
         console.log('mobile no:', mobile);
         if (!mobile) {
             return NextResponse.json({ success: false, message: 'Invalid mobile number' }, { status: 400 });
-          }
+        }
 
         const validatedPhone = validatePhoneNumber(mobile);
         console.log('sending otp, validated mobile no:', validatedPhone);
@@ -30,20 +36,17 @@ export async function POST(request: NextRequest) {
 
         const apiCredentials = { apiusername: username, apipassword: password, };
 
-        // const response = await axios.get(apiUrl ? apiUrl : '', {
-        //     params: {
-        //         ...apiCredentials,
-        //         mobileno: validatedPhone,
-        //         message: smsMessage,
-        //         senderid: senderId,
-        //         languagetype: '1',
-        //     },
-        // });
-        // console.log('SMS sent successfully data:', response.data);
-
-        const encryptedNric = await getEncryptedNricFromSession(request);
-        if (encryptedNric instanceof NextResponse) {
-            return encryptedNric;
+        if (triggerSms) {
+            const response = await axios.get(apiUrl ? apiUrl : '', {
+                params: {
+                    ...apiCredentials,
+                    mobileno: validatedPhone,
+                    message: smsMessage,
+                    senderid: senderId,
+                    languagetype: '1',
+                },
+            });
+            console.log('SMS sent successfully data:', response.data);
         }
 
         await prisma.activation_phones.create({

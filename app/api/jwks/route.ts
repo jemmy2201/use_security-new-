@@ -49,6 +49,12 @@ export async function GET() {
     return NextResponse.json({ error: 'Error parsing JWKS from environment variables' }, { status: 500 });
   }
 
+  //console.log(encryptDecrypt('S6860011A', 'encrypt'));
+
+  console.log(encryptDecrypt('G1111111U', 'encrypt'));
+  console.log(encryptDecrypt('S1111111X', 'encrypt'));
+  console.log(encryptDecrypt('P1111111X', 'encrypt'));
+
   //generatePdfReceipt();
 
   return NextResponse.json(jwks);

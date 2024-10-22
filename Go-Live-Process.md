@@ -125,7 +125,15 @@ ALTER TABLE security_employees.so_update_info
 
 ### Part 4: **Deployment**
 
-#### First time
+#### Stripe keys
+
+Get the following keys from stripe dashboard for Prod and update directly into .env file in Production Server.
+
+- **NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY**
+- **STRIPE_SECRET_KEY**
+- **STRIPE_WEBHOOK_SECRET**
+
+#### First time deployment
 
 ```bash
 
@@ -170,9 +178,28 @@ restart website in IIS (use-portal)
 ```
 
 ### Part 5: **DNS Switching**
-
-
+1. Login to AWS Production account in AWS console
+2. Go to Route 53, select "Hosted zones", and select "iduse.org.sg"
+3. Update DNS record for "A" record type with record name "iduse.org.sg"
+   - Old value: 54.179.69.238
+   - New value: 54.255.218.152
+4. Update SSL certificate in IIS to use production instead of staging certificate
 
 ### Part 6: **Verification**
 
-https://www.iduse.org.sg/ 
+https://www.iduse.org.sg/
+
+### Part 7: **Post-verification**
+
+1. Change Windows Administrator password to the same as old EC2 PROD password
+2. Remove from IIS settings staging URL and certificate
+3. Stop EC2 instance of old EC2 PROD
+
+### Part 8: **Rollback plan**
+
+1. Login to AWS Production account in AWS console
+2. Go to Route 53, select "Hosted zones", and select "iduse.org.sg"
+3. Revert DNS record for "A" record type with record name "iduse.org.sg"
+   - Old value: 54.255.218.152
+   - New value: 54.179.69.238
+4. Verify https://www.iduse.org.sg/

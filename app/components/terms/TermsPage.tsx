@@ -9,6 +9,8 @@ import { booking_schedules as bookingDetail } from '@prisma/client';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { logout } from '@/actions/auth';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/core/lib/styles/index.css';
 
 export interface userInfo {
     name?: string;
@@ -99,7 +101,7 @@ const TermsPage: React.FC = () => {
 
     return (
 
-        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%', background:'#F5F6F7' }}>
+        <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%', background: '#F5F6F7' }}>
             {loading && (
                 <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <CircularProgress />
@@ -131,29 +133,11 @@ const TermsPage: React.FC = () => {
 
                         </>
                     )}
-                    <div className={termsContentstyles.bodyContainer}>
-                        <div className={globalStyleCss.header2}>
-                            1. Acceptance
-                        </div>
-                        <div className={termsContentstyles.detailContainer}>
-                            <textarea
-                                id="scrollableTextarea"
-                                value={text}
-                                readOnly
-                                rows={6}
-                                style={{
-                                    width: '100%',
-                                    height: '250px',
-                                    overflowY: 'scroll',
-                                    fontFamily: 'Roboto',
-                                    fontSize: '16px',
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    lineHeight: '24px'
-                                }}
 
-                            />
-                        </div>
+                    <div className={termsContentstyles.bodyContainer} style={{ height: '300px' }}>
+                        <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
+                            <Viewer fileUrl="/content/terms.pdf" />
+                        </Worker>
                     </div>
 
 

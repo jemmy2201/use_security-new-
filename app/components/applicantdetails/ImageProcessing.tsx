@@ -470,7 +470,7 @@ const ImageProcessing = () => {
           <div className={applicantDetailsContentstyles.photosDosDontContainerPicsBox}>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <Image src='/images/clear_pic.jpeg' alt='' height={120} width={95}></Image>
+                <Image src='/images/clear_pic2.png' alt='' height={120} width={95}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -487,7 +487,7 @@ const ImageProcessing = () => {
             </div>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <Image src='/images/clear_pic.jpeg' alt='' height={120} width={95}></Image>
+                <Image src='/images/clear_pic3.png' alt='' height={120} width={95}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
@@ -504,7 +504,7 @@ const ImageProcessing = () => {
             </div>
             <div className={applicantDetailsContentstyles.picBox}>
               <div className={applicantDetailsContentstyles.picFrame}>
-                <Image src='/images/clear_pic.jpeg' alt='' height={120} width={95}></Image>
+                <Image src='/images/clear_pic3.png' alt='' height={120} width={95}></Image>
               </div>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none">
