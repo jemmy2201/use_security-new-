@@ -191,21 +191,37 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
             { column1: 'NRIC / FIN no.', column2: nric },
         ];
 
-        const rowHeight = 40;
-        const rowGap = 10;
+        const rowHeight = 30;
+        const rowGap = 5;
+        const columnWidths = [150, 350];
+        const totalRows = tableData.length;
+
+        const totalTableHeight = totalRows * (rowHeight + rowGap) - rowGap; 
+        const tableTopPosition = tableTop; 
+
+        page.drawRectangle({
+            x: 50, 
+            y: tableTopPosition - totalTableHeight - 10, 
+            width: columnWidths[0] + columnWidths[1], 
+            height: totalTableHeight + 40, 
+            borderWidth: 1, 
+            borderColor: rgb(0, 0, 0), 
+        });
 
         tableData.forEach((row, index) => {
-            const yPosition = tableTop - index * (rowHeight + rowGap);
+            const yPosition = tableTopPosition - index * (rowHeight + rowGap);
+
             page.drawText(row.column1, {
-                x: 50,
-                y: yPosition,
-                size: 12,
+                x: 60,
+                y: yPosition - 15,
+                size: 11,
                 color: rgb(0, 0, 0),
             });
+
             page.drawText(row.column2 ? row.column2 : '', {
-                x: 350,
-                y: yPosition,
-                size: 12,
+                x: 235,
+                y: yPosition - 15,
+                size: 11,
                 color: rgb(0, 0, 0),
             });
         });
