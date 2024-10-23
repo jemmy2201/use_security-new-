@@ -42,7 +42,6 @@ export async function GET() {
         where appointment_date = ${formattedDate}
         group by appointment_date, time_start_appointment; 
     `;
-      console.log('dateSchedules', dateSchedules);
 
       if (dateSchedules.length == 7) {
         const fullSlotDay = dateSchedules

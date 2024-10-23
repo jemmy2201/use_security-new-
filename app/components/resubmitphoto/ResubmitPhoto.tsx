@@ -16,6 +16,25 @@ interface ResubmitPhotoPageProps {
   bookingId: string;
 }
 
+interface FaceRectangle {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+}
+
+interface FaceAttributes {
+  glasses: string;
+}
+
+interface FaceData {
+  faceRectangle: FaceRectangle;
+  faceAttributes: FaceAttributes;
+}
+
+const API_ENDPOINT = 'https://validate-photo.cognitiveservices.azure.com/';
+const API_KEY = 'f84929c443494f30bca1ec3498fba384';
+
 const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
   console.log('bookingId', bookingId);
@@ -148,8 +167,8 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     setLoading(true);
     console.log('bookingId', bookingId);
 
-    if (bgColorMatch && faceDetected && straightFaceDetected 
-          && straightFaceDetected && shouldersVisible) {
+    if (bgColorMatch && faceDetected && straightFaceDetected
+      && straightFaceDetected && shouldersVisible) {
       try {
         const response = await axios.post('/api/handle-resubmit-image', {
           image,
@@ -181,10 +200,55 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     }
   };
 
+  async function detectEyeWear(imageBlob: ArrayBuffer): Promise<FaceData[] | null> {
+    try {
+      const response = await axios.post(
+        `${API_ENDPOINT}/face/v1.0/detect`,
+        imageBlob,
+        {
+          headers: {
+            'Ocp-Apim-Subscription-Key': API_KEY,
+            'Content-Type': 'application/octet-stream',
+          },
+          params: {
+            returnFaceId: false,
+            returnFaceLandmarks: false,
+            returnFaceAttributes: 'headPose,glasses',
+          },
+        }
+      );
+      console.log('response:', response);
+      return response.data;
+    } catch (error) {
+      console.error('Error detecting face:', error);
+      return null;
+    }
+  }
+
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
+    setSpectacleDetected(false);
     const file = event.target.files?.[0];
     if (file) {
+
+      try {
+        const imageBlob = await file.arrayBuffer();
+        const faceData = await detectEyeWear(imageBlob);
+        if (!faceData || faceData.length === 0) {
+          console.log('empty facedata');
+        } else {
+          const glasses = faceData[0].faceAttributes.glasses;
+          if (glasses === 'NoGlasses') {
+            setSpectacleDetected(false);
+          } else {
+            setSpectacleDetected(true);
+          }
+        }
+      } catch (error) {
+        console.log('error in detecting eyewear');
+      }
+
+
       const fileSizeInBytes = file.size;
 
       const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
@@ -218,14 +282,12 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             const { x: eyeRightX, y: eyeRightY } = landmarks.getRightEye()[0];
             const eyeLineSlope = (eyeRightY - eyeLeftY) / (eyeRightX - eyeLeftX);
             const angle = Math.atan(eyeLineSlope) * (180 / Math.PI);
-            console.log('Face angle:', angle);
             isStraight = Math.abs(angle) < 10;
-            console.log('Is the face straight?', isStraight);
+            //console.log('Is the face straight?', isStraight);
             setStraightFaceDetected(isStraight);
 
             // Check if shoulders are visible
             const areShouldersVisible = checkIfShouldersVisible(landmarks, imageElement.height);
-            console.log('Are shoulders visible?', areShouldersVisible);
             setShouldersVisible(areShouldersVisible);
 
             // Check if the face is centered
@@ -238,10 +300,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           const isFaceDetected = await detectFace(imageElement);
           setFaceDetected(isFaceDetected);
 
-          // Detect spectacles
-          const isSpectacleDetected = await detectSpectacles(imageElement);
-          setSpectacleDetected(isSpectacleDetected);
-
           // Check background color
           const isBgColorMatch = verifyBackgroundColor(imageElement, '#ffffff');
           setBgColorMatch(isBgColorMatch);
@@ -253,11 +311,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           // Resize image
           const resizedImage = resizeImage(imageElement, 400, 514);
           setImage(resizedImage);
-
-          // Call API with processed image data
-          console.log('isFaceDetected', isFaceDetected);
-          console.log('isBgColorMatch', isBgColorMatch);
-          console.log('isStraight', isStraight);
 
         } catch (error) {
           console.error('Error processing image:', error);
@@ -288,14 +341,9 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
     const horizontalOffset = Math.abs(faceCenterX - imageCenterX) / imageWidth;
     const verticalOffset = Math.abs(faceCenterY - imageHeight) / imageHeight;
-    console.log('horizontalOffset:', horizontalOffset);
-    console.log('horizontalOffset:', horizontalOffset);
 
     return horizontalOffset < 0.1 && verticalOffset < 0.1;
   }
-
-
-
 
   const detectFace = async (imageElement: HTMLImageElement) => {
     try {
@@ -308,33 +356,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     }
   };
 
-  const detectSpectacles = async (imageElement: HTMLImageElement) => {
-    try {
-      const detections = await faceapi.detectAllFaces(imageElement).withFaceLandmarks();
-      console.log('Glass detections:', detections);
-
-      if (detections.length > 0) {
-        const landmarks = detections[0].landmarks;
-        const leftEye = landmarks.getLeftEye();
-        const rightEye = landmarks.getRightEye();
-        const nose = landmarks.getNose();
-
-        if (leftEye.length > 0 && rightEye.length > 0 && nose.length > 0) {
-          const eyeDistance = Math.hypot(leftEye[3].x - rightEye[3].x, leftEye[3].y - rightEye[3].y);
-          const noseWidth = Math.hypot(nose[2].x - nose[1].x, nose[2].y - nose[1].y);
-
-          const isGlassesDetected = eyeDistance < 40 && noseWidth > 20;
-
-          console.log('Glasses detected:', isGlassesDetected);
-          return isGlassesDetected;
-        }
-      }
-      return false;
-    } catch (error) {
-      console.error('Error detecting spectacles:', error);
-      return false;
-    }
-  };
 
   const verifyBackgroundColor = (image: HTMLImageElement, targetColor: string) => {
     const canvas = document.createElement('canvas');
@@ -362,16 +383,14 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
       const b = data[i + 2];
       const a = data[i + 3];
 
-      if (a > 0) { // Consider only non-transparent pixels
+      if (a > 0) {
         totalPixelCount++;
-        // Adjust the color tolerance as needed
         if (Math.abs(r - targetRGB.r) < 30 && Math.abs(g - targetRGB.g) < 30 && Math.abs(b - targetRGB.b) < 30) {
           whitePixelCount++;
         }
       }
     }
 
-    // Calculate the percentage of white pixels
     const whitePixelPercentage = (whitePixelCount / totalPixelCount) * 100;
 
     return whitePixelPercentage > 40;
@@ -453,7 +472,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
           <hr className={resubmitPhotoContentstyles.photoHrLine}></hr>
 
-          {image && (!faceDetected || !bgColorMatch || !straightFaceDetected || !shouldersVisible) ? (
+          {image && (!faceDetected || !bgColorMatch || !straightFaceDetected || !shouldersVisible || spectacleDetected) ? (
             <div className={resubmitPhotoContentstyles.photoUploadError}>
               <div className={resubmitPhotoContentstyles.photoUploadErrorBox}>
                 <div>

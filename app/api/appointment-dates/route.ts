@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
 
     const holidays = await prisma.dateholidays.findMany({
       where: {
-        time_work:'1',
+        time_work: '1',
       },
       select: {
         date: true,
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
       .map((holiday) => {
         if (holiday.date) {
           const date = new Date(holiday.date);
-          if (!isNaN(date.getTime())) { 
+          if (!isNaN(date.getTime())) {
             return date.toISOString().split('T')[0];
           }
         }
@@ -78,7 +78,6 @@ export async function GET(request: NextRequest) {
         where appointment_date = ${formattedDate}
         group by appointment_date, time_start_appointment; `;
 
-      console.log('dateSchedules', dateSchedules);
 
       if (dateSchedules.length == 7) {
         const fullSlotDay = dateSchedules

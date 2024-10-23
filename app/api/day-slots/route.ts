@@ -48,7 +48,6 @@ export async function GET(request: NextRequest) {
       where appointment_date = ${selectedDateString}
       group by appointment_date, time_start_appointment; `;
 
-    console.log('dateSchedules', dateSchedules);
 
     const fullSlotTime = dateSchedules
       .map((dateSchedule) => {
