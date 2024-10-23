@@ -260,12 +260,87 @@ values
 
 **Test Case7:**  Applicant able to reschedule appointment.
 
+```bash
+
+-- sql to reject the photo
+
+update security_employees.booking_schedules set Status_app=4 where passid = '202411111BSO'
+
+```
+
 **Test Case8:**  Applicant able to resubmit photo from dashboard after photo gots rejected by system admin staff.
 
 **Test Case9:**  Applicant can continue on same appointment if resubmitted photo and appointment date gap is 3 days or more.
 
 **Test Case10:** Applicant has to rebook appointment if resubmitted photo and appointment date gap is less then 3 days.
 
+#### 4. Update Issued ID Card flow
+
+```bash
 
 
+-- User (NRIC) = TESTER12, password: 123123
+INSERT INTO security_employees.users
+      (id, name, email, password, nric, mobileno, created_at, updated_at)
+   values 
+     ((SELECT max(uu.id) + 1 FROM security_employees.users uu),
+     'Tester 12','tester12@admin.com',
+     '$2y$10$B9b8MzrKuTHEejOkcE9azeJA5gVKJ9F6VCZEDEiqhvfbF55ap4Wk2',
+     'YjdJR2VNVk9TcVZuRzR6UHUxQ3d5dz09',
+     '6581392712','2024-07-31 06:26:05','2024-08-07 02:58:56');
+
+
+	INSERT INTO security_employees.booking_schedules
+	  (id, app_type, card_id, grade_id, expired_date, nric, passid, created_at, licence_status, card_issue) 
+	values 
+	  ((SELECT max(uu.id) + 1 FROM security_employees.booking_schedules uu), 
+    '2', '1', '3', 
+    '22/12/2026', 
+    'YjdJR2VNVk9TcVZuRzR6UHUxQ3d5dz09', 
+    '410220373BSO', 
+    '2024-07-31 14:32:22', 
+    'Y', 
+    '');
+
+```
+**Test Case1:**  User able to login successfully.
+
+**Test Case2:**  User able to see dashobard with one issued card (Existing).
+
+***Test Case3:** User able to update the personal information successfully.
+
+#### 5. Renew ID Card flow
+
+```bash
+
+
+-- User (NRIC) = TESTER11, password: 123123
+INSERT INTO security_employees.users
+      (id, name, email, password, nric, mobileno, created_at, updated_at)
+   values 
+     ((SELECT max(uu.id) + 1 FROM security_employees.users uu),
+     'Tester 11','tester11@admin.com',
+     '$2y$10$B9b8MzrKuTHEejOkcE9azeJA5gVKJ9F6VCZEDEiqhvfbF55ap4Wk2',
+     'cmR1dnozY0dFbmNIL2JPWFRwSndDQT09',
+     '6581392712','2024-07-31 06:26:05','2024-08-07 02:58:56');
+
+
+INSERT INTO security_employees.booking_schedules
+	  (id, app_type, card_id, grade_id, expired_date, nric, passid, created_at, licence_status, card_issue) 
+values 
+	  ((SELECT max(uu.id) + 1 FROM security_employees.booking_schedules uu), 
+    '3', '1', '2', 
+    '22/11/2024', 
+    'cmR1dnozY0dFbmNIL2JPWFRwSndDQT09', 
+    '400220373BSO', 
+    '2024-07-31 14:32:22', 
+    'Y', 
+    '');
+
+```
+**Test Case1:**  User able to login successfully.
+
+**Test Case2:**  User able to see dashobard with one issued card.
+
+***Test Case3:** User able to raise new application to renew the ID Card.
 
