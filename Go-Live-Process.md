@@ -1,6 +1,6 @@
-Guide to use **AWS Database Migration Service (DMS)** for database migration and **RDP (Remote Desktop Protocol)** for file transfer between AWS Windows servers.
 
----
+<h2 style="color: green;">Guide for Go-Live</h2>
+
 
 ### Part 1: **AWS Database Migration Service (DMS) for Database Migration**
 
@@ -56,6 +56,10 @@ Guide to use **AWS Database Migration Service (DMS)** for database migration and
 
 ### Part 2: **Remote Desktop Protocol (RDP) for File Transfer**
 
+```bash
+directory path: C:\inetpub\wwwroot\Security\public\img\img_users
+```
+
 #### **Step 1: Enable Remote Desktop on AWS Windows Instances**
 1. On both the **source** and **target** AWS Windows servers, ensure that **Remote Desktop** is enabled.
    - Right-click **This PC** > **Properties** > **Remote Settings**.
@@ -90,7 +94,6 @@ Guide to use **AWS Database Migration Service (DMS)** for database migration and
 3. Copy the files from your local machine.
 4. Paste the files into the desired folder on the target server.
 
----
 
 ### Summary
 
@@ -133,8 +136,8 @@ Get the following keys from stripe dashboard for Prod and update directly into .
 - **STRIPE_SECRET_KEY**
 - **STRIPE_WEBHOOK_SECRET**
 
-#### First time deployment
-
+#### First time deployment (This step already executed in Prod2)
+ 
 ```bash
 
 cd  C:\inetpub\wwwroot
@@ -155,7 +158,7 @@ restart website in IIS
 
 ```
 
-#### Next subsequent deployment
+#### Next subsequent deployment (In case any change in code base / fixes)
 
 ```bash
 

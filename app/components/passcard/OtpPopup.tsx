@@ -149,7 +149,6 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
                 </div>
             </div>
 
-            <ToastContainer />
         </div>
     );
 };

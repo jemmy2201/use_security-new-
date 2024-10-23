@@ -215,7 +215,7 @@ const DashBoardPage: React.FC = () => {
     const handleDeletePasscardClick = async (id: bigint) => {
 
         console.log('id', id);
-        const bookingId = id.toString(); // Correctly call the toString method
+        const bookingId = id.toString(); 
         console.log('bookingId', bookingId);
     };
 
@@ -653,7 +653,7 @@ const DashBoardPage: React.FC = () => {
                                                                     className={globalStyleCss.blueLink}>
                                                                     Continue &nbsp;
                                                                 </a>
-                                                                | &nbsp;
+                                                                {/* | &nbsp;
                                                                 <a
                                                                     href="/edit"
                                                                     onClick={(e) => {
@@ -662,7 +662,7 @@ const DashBoardPage: React.FC = () => {
                                                                     }}
                                                                     className={globalStyleCss.blueLink}>
                                                                     Delete
-                                                                </a>
+                                                                </a> */}
                                                             </>
                                                         ) : null}
 
@@ -1027,7 +1027,7 @@ const DashBoardPage: React.FC = () => {
                                                         className={globalStyleCss.blueLink}>
                                                         Continue <br></br>
                                                     </a>
-                                                    <a
+                                                    {/* <a
                                                         href="/edit"
                                                         onClick={(e) => {
                                                             e.preventDefault();
@@ -1035,7 +1035,7 @@ const DashBoardPage: React.FC = () => {
                                                         }}
                                                         className={globalStyleCss.blueLink}>
                                                         Delete
-                                                    </a>
+                                                    </a> */}
                                                 </>
                                             ) : null}
 

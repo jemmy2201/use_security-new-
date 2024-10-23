@@ -78,7 +78,7 @@
    - **Dashboard Data Flow**: shows the draft, existing, renew, replacement and new application holds by applicant.
 
 
-#### 1.6 Functionality
+<h2 style="color: green;">Functionality</h2>
 
 The application supports two types of ID Card applications that can be submitted by security personnel: 
 
@@ -122,6 +122,7 @@ To submit an application, the following information is required:
     - Reschedule the appointment after the new photo is accepted.
 
 
+<h2 style="color: green;">Testing</h2>
 ### Test Data Creation: 
 
 #### 1. User with no valid licenses
@@ -331,9 +332,12 @@ values
     '');
 
 ```
-**Test Case1:**  User able to login successfully.
+**Test Case1:**  Applicant able to login successfully.
 
-**Test Case2:**  User able to see dashobard with one issued card.
+**Test Case2:**  Applicant able to see dashobard with one issued card (Existing ID).
 
-***Test Case3:** User able to raise new application to renew the ID Card.
+***Test Case3:** Applicant able to raise new application to renew the ID Card.
 
+***Test Case4:** Applicant able to upload latest photo, payment and book appointment.
+
+***Test Case5:** Applicant can see replacement application on dashboard with appointment details.
