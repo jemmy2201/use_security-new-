@@ -96,15 +96,17 @@ const HeaderPage: React.FC = () => {
         checkSession();
 
         const handleBeforeUnload = async (event: BeforeUnloadEvent) => {
-            await logout();
-            sessionStorage.removeItem('id_token');
-            sessionStorage.removeItem('createNewPassApiResponse');
-            sessionStorage.removeItem('users');
-            sessionStorage.removeItem('bookingSchedule');
-            sessionStorage.removeItem('bookingSchedules');
-            sessionStorage.removeItem('actionTypeValue');
-            event.preventDefault();
-            event.returnValue = '';
+            if (document.visibilityState === 'hidden') {
+                await logout();
+                sessionStorage.removeItem('id_token');
+                sessionStorage.removeItem('createNewPassApiResponse');
+                sessionStorage.removeItem('users');
+                sessionStorage.removeItem('bookingSchedule');
+                sessionStorage.removeItem('bookingSchedules');
+                sessionStorage.removeItem('actionTypeValue');
+                event.preventDefault();
+                event.returnValue = '';
+            }
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);

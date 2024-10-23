@@ -48,13 +48,11 @@ export async function GET(request: NextRequest) {
       },
     });
 
-
-
     const disabledDates = holidays
       .map((holiday) => {
         if (holiday.date) {
           const date = new Date(holiday.date);
-          if (!isNaN(date.getTime())) { // Check if date is valid
+          if (!isNaN(date.getTime())) { 
             return date.toISOString().split('T')[0];
           }
         }

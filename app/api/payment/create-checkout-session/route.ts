@@ -28,8 +28,6 @@ export async function POST(req: NextRequest) {
   console.log('bookingId:', bookingId);
   console.log('encrypted nric:', encryptedNric);
 
-
-
   // Validate required fields
   if (!encryptedNric || !bookingId) {
     return NextResponse.json(
@@ -73,6 +71,12 @@ export async function POST(req: NextRequest) {
         const grandTotal: number = transactionAmount + gstAmount;
         const total: number = grandTotal * 100;
 
+        const userRecord = await prisma.users.findFirst({
+          where: {
+            ...(encryptedNric && { nric: encryptedNric }),
+          },
+        });
+
         const session = await stripe.checkout.sessions.create({
           payment_method_types: ['card', 'paynow'],
           line_items: [
@@ -95,6 +99,7 @@ export async function POST(req: NextRequest) {
               id: schedule.id.toString(),
             }
           },
+          customer_email: userRecord?.email,
           success_url: `${process.env.NEXT_PUBLIC_URL}/passcard?session_id={CHECKOUT_SESSION_ID}`,
           cancel_url: `${process.env.NEXT_PUBLIC_URL}/cancel`,
         });
