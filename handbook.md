@@ -1,7 +1,7 @@
 
 #### 1.1 Overview
-   - **Purpose**: To describe the high-level architecture for a web-based application integrating features like multi-step forms, SingPass authentication, face detection, PDF generation, Stripe payment, multi-step form and dashboard.
-   - **Scope**: Includes user authentication, data collection, data processing, third-party integrations, and reporting features.
+   - **Purpose**: To describe the high-level architecture for a USE application integrating features like multi-step forms, SingPass authentication, face detection, PDF generation, Stripe payment, multi-step form and dashboard.
+   - **Scope**: Includes user authentication, data collection, data processing, third-party integrations, and invoice features.
    - **Target Audience**: Developers, architects, business analysts, and stakeholders.
 
 #### 1.2 Architecture 
@@ -10,22 +10,20 @@
      - **Backend (Next.js APIs, Node.js)**: Authentication services, PDF generation, and data processing.
      - **Database (MySQL via Prisma)**: User data, form submissions, and business metrics storage.
      - **Third-Party Integrations**: SingPass for authentication, `face-api` for facial detection, Stripe for payment and oneway sms for sms gateway.
-     - **Deployment (AWS with IIS for UAT/Production)**: Environments for development, UAT, and production.
-     - **JWK and JWE Handling**: `jose` library documentation for token management.
+     - **Environment (AWS with IIS for UAT/Production)**: Environments for UAT, and production.
+     - **JWK and JWE Handling**: `jose` library for token management.
      - **Face Detection Libraries**: face-api.js .
 
 
 #### 1.3 Functional Components
    - **Frontend (Next.js/React.js)**
      - **Multi-Step Form Handling**: Collect user information (name, email, preferences) and validate each step.
-     - **User Authentication**: Integrates SingPass authentication for production and mock authentication for local environments.
-     - **Dashboard and Metrics Views**: Display metrics migrated from Tableau to Apache Superset.
+     - **User Authentication**: Integrates SingPass authentication for production/uat and mock authentication for local environments.
    - **Backend (Node.js/Next.js APIs)**
      - **Authentication Services**: Manage user sessions and integrate with SingPass.
      - **PDF Generation**: generate pdf receipt after successful stripe payment.
      - **Data Handling Services**: Processing data from multi-step forms and storing it in the database.
    - **Database (MySQL using Prisma)**
-     - **Schema Design**: Tables for user profiles, form submissions, metrics, and documents.
    - **Third-Party Integrations**
      - **SingPass Integration**: Handling user login through government-backed authentication.
      - **Face Detection (face-api.js)**: Using facial recognition to validate user conditions, such as detecting background and face through face landmark analysis..
@@ -73,13 +71,11 @@
 3. Environment Configuration  
 
 
-
 #### 1.5 Data Flow
    - **User Authentication Flow**: User initiates login, is redirected to SingPass for authentication, and upon successful login, is redirected back to the application dashboard or first time user screen.
    - **Multi-Step Form Flow**: User progresses through steps, data is validated, and upon final submission, data is stored in the database.
    - **PDF Generation Flow**: Server processes form data and generates a PDF, which is then made available for download.
    - **Dashboard Data Flow**: shows the draft, existing, renew, replacement and new application holds by applicant.
-
 
 
 #### 1.6 Functionality
@@ -124,7 +120,6 @@ To submit an application, the following information is required:
   - **Photo Rejection**: If the photo submitted by the user does not meet the guidelines and is rejected, the user can:
     - Resubmit a new photo.
     - Reschedule the appointment after the new photo is accepted.
-
 
 
 ### Test Data Creation: 
@@ -204,7 +199,6 @@ values
 **Test Case10:** Applicant has to rebook appointment if resubmitted photo and appointment date gap is less then 3 days.
 
 
-
 #### 3. User with 2 valid license (Security Officier / Aviation Security Officier & Personal Investigator)
 
 ```bash
@@ -278,7 +272,6 @@ update security_employees.booking_schedules set Status_app=4 where passid = '202
 
 ```bash
 
-
 -- User (NRIC) = TESTER12, password: 123123
 INSERT INTO security_employees.users
       (id, name, email, password, nric, mobileno, created_at, updated_at)
@@ -303,6 +296,7 @@ INSERT INTO security_employees.users
     '');
 
 ```
+
 **Test Case1:**  User able to login successfully.
 
 **Test Case2:**  User able to see dashobard with one issued card (Existing).
@@ -312,7 +306,6 @@ INSERT INTO security_employees.users
 #### 5. Renew ID Card flow
 
 ```bash
-
 
 -- User (NRIC) = TESTER11, password: 123123
 INSERT INTO security_employees.users
