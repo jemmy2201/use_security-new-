@@ -80,7 +80,7 @@ const HomePage: React.FC = () => {
                     <div className={s.title}>Welcome to USE ID Card Portal </div>
                     <form onSubmit={handleSubmit}>
 
-                        <div className={s.loginBox}><label htmlFor="username">Username:&nbsp;</label>
+                        <div className={s.loginBox}><label htmlFor="username">User Name:&nbsp;</label>
                             <input
                                 type="text"
                                 id="username"
@@ -90,7 +90,7 @@ const HomePage: React.FC = () => {
                                 style={{ color: 'black' }}
                             />  </div>
                         <div className={s.loginBox}>
-                            <label htmlFor="password">Password:&nbsp;</label>
+                            <label htmlFor="password">&nbsp;&nbsp;Password:&nbsp;</label>
                             <input
                                 type="password"
                                 id="password"
