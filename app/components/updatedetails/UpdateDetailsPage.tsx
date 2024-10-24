@@ -183,7 +183,9 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
     };
 
     useEffect(() => {
+        console.log('isUpdated useEffect:', formData.isUpdated);
         if (formData.isUpdated) {
+            console.log('displaying toastbox');
             toast.success('Details successfully updated', {
                 position: 'top-right',
                 autoClose: 3000,
@@ -463,15 +465,6 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     onChange={handleCheckboxChange}
                                 />
                                 </div> <div>Recognise Terrorist Threat (RTT)</div>
-                            </label>
-                            <label className={updateDetailsContentstyles.checkboxes}>
-                                <div className={globalStyleCss.regular}><input
-                                    type="checkbox"
-                                    name="trNota"
-                                    checked={checkboxes.trNota}
-                                    onChange={handleCheckboxChange}
-                                /></div>
-                                <div> None of the above (SO)</div>
                             </label>
                         </div>
 

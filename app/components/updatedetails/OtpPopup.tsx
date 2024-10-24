@@ -159,7 +159,7 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
                         <button onClick={onClose} className={OtpModuleStyle.cancelButton}><h2>Cancel</h2></button>
                         <button onClick={handleSubmit} type='button' className={OtpModuleStyle.validateButton}><h2>Validate</h2></button>
                     </div>
-                    <ToastContainer />
+                    
                 </div>
             </div>
         </div>

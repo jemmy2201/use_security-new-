@@ -136,6 +136,25 @@ Get the following keys from stripe dashboard for Prod and update directly into .
 - **STRIPE_SECRET_KEY**
 - **STRIPE_WEBHOOK_SECRET**
 
+#### .env Update 
+
+
+1. replace https://staging.iduse.org.sg/ with https://iduse.org.sg
+(currently its pointing to https://staging.iduse.org.sg. On Go-Live day need to change to https://iduse.org.sg)
+
+for below parameters
+- **NEXTAUTH_URL**
+
+- **NEXTAUTH_SECRET**
+
+- **NEXT_PUBLIC_URL**
+
+- **SINGPASS_REDIRECT_URI** 
+
+- **SINGPASS_JWKS_URL**
+
+- **JWKS_URL**
+
 #### First time deployment (This step already executed in Prod2)
  
 ```bash
