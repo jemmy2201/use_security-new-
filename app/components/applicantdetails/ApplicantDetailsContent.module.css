@@ -231,7 +231,7 @@
 
         .photosDosDontContainerPicsBox {
           display: flex;
-          gap: 30%;
+          gap: 15%;
           padding-bottom: 10%;
 
           .picBox {

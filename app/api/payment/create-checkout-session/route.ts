@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
           },
           customer_email: userRecord?.email ? userRecord?.email : '',
           success_url: `${process.env.NEXT_PUBLIC_URL}/passcard?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url: `${process.env.NEXT_PUBLIC_URL}/cancel`,
+          cancel_url: `${process.env.NEXT_PUBLIC_URL}/homepage`,
         });
         console.log('session id generated at stripe checkout session ', session.id);
         console.log('payment intent generated at stripe checkout session ', session.payment_intent);

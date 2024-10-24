@@ -102,7 +102,7 @@ const updatePaymentStatus = async (session_id: string) => {
       const paymentIntentId = session.payment_intent as string;
       const formattedDate = formatDate();
       const receiptNumber = formatDateToDDMMYYYY(new Date()) + schedule?.id.toString().slice(-5);
-      await prisma.booking_schedules.update({
+      const updatedSchedule = await prisma.booking_schedules.update({
         where: { id: schedule.id },
         data: {
           Status_app: '1',
@@ -113,7 +113,7 @@ const updatePaymentStatus = async (session_id: string) => {
           receiptNo: receiptNumber,
         },
       });
-      backgroundTask(schedule);
+      backgroundTask(updatedSchedule);
     } else {
       console.log('Payment fail');
     }

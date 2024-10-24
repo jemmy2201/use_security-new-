@@ -82,7 +82,7 @@ export async function GET(req: NextRequest) {
                 }
                 return value;
             };
-            backgroundTask(schedule);
+            backgroundTask(updatedSchedule);
             if (updatedSchedule) {
                 updatedSchedule.data_barcode_paynow = '';
                 updatedSchedule.QRstring = '';
