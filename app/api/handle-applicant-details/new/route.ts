@@ -178,7 +178,7 @@ export async function POST(req: NextRequest) {
                         console.log('copy to app1');
                         const uploadsDirApp1 = path.join(copyImagePath);
                         const filePathApp1 = path.join(uploadsDirApp1, fileName + '.png');
-                        fs.writeFileSync(filePath, buffer);
+                        fs.writeFileSync(filePathApp1, buffer);
                         console.log('copy to app1 done');
                       } catch (error) {
                         console.log('error in copy image to app1', error);
