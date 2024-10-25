@@ -42,7 +42,10 @@ const ImageProcessing = () => {
           const img = document.createElement('img');
           img.width = 400;
           img.height = 514;
-          img.src = formData.imageUrl;
+          
+          img.src = `/api/get-image?imageName=${formData.imageUrl}`;
+          //img.src = `${formData.imageUrl}?t=${new Date().valueOf()}`;
+          //img.src = formData.imageUrl;
 
           img.onload = () => {
             console.log("Image loaded successfully");
@@ -59,7 +62,6 @@ const ImageProcessing = () => {
             console.error("Failed to load the image");
             setFormData(prevFormData => ({
               ...prevFormData,
-              imageUrl: '',
             }));
           };
         }
@@ -434,7 +436,7 @@ const ImageProcessing = () => {
                 </>
               ) : (
                 <>
-                  {formData.imageUrl && <Image src={`${formData.imageUrl}?t=${new Date().valueOf()}`} alt="Photo ID" height={360} width={280} />}
+                  {formData.imageUrl && <Image src={`/api/get-image?imageName=${formData.imageUrl}&t=${new Date().getTime()}`} alt="Photo ID" height={360} width={280} />}
                 </>
               )
             }

@@ -301,7 +301,7 @@ const ReviewDetailsPage: React.FC = () => {
                                         </>
                                     ) : (
                                         <>
-                                            {formData.imageUrl && <Image src={`${formData.imageUrl}?t=${new Date().valueOf()}`} alt="Photo ID" height={200} width={257} />}
+                                            {formData.imageUrl && <Image src={`/api/get-image?imageName=${formData.imageUrl}&t=${new Date().getTime()}`} alt="Photo ID" height={200} width={257} />}
                                         </>
                                     )
 
