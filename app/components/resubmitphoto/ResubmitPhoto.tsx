@@ -33,7 +33,7 @@ interface FaceData {
 }
 
 const API_ENDPOINT = 'https://validate-photo.cognitiveservices.azure.com/';
-const API_KEY = 'f84929c443494f30bca1ec3498fba384';
+const API_KEY = '';
 
 const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
@@ -231,22 +231,22 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     const file = event.target.files?.[0];
     if (file) {
 
-      try {
-        const imageBlob = await file.arrayBuffer();
-        const faceData = await detectEyeWear(imageBlob);
-        if (!faceData || faceData.length === 0) {
-          console.log('empty facedata');
-        } else {
-          const glasses = faceData[0].faceAttributes.glasses;
-          if (glasses === 'NoGlasses') {
-            setSpectacleDetected(false);
-          } else {
-            setSpectacleDetected(true);
-          }
-        }
-      } catch (error) {
-        console.log('error in detecting eyewear');
-      }
+      // try {
+      //   const imageBlob = await file.arrayBuffer();
+      //   const faceData = await detectEyeWear(imageBlob);
+      //   if (!faceData || faceData.length === 0) {
+      //     console.log('empty facedata');
+      //   } else {
+      //     const glasses = faceData[0].faceAttributes.glasses;
+      //     if (glasses === 'NoGlasses') {
+      //       setSpectacleDetected(false);
+      //     } else {
+      //       setSpectacleDetected(true);
+      //     }
+      //   }
+      // } catch (error) {
+      //   console.log('error in detecting eyewear');
+      // }
 
 
       const fileSizeInBytes = file.size;
