@@ -1,12 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
 
-
 .container {
-  background: url('/images/home_background.png');
+  position: relative;
   height: 100%;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('/images/home_background_nov26.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(8px);
+    z-index: -1;
+  }
+
   .overlay {
     flex-shrink: 0;
-    background: rgba(0, 0, 0, 0.70);
+    background: rgba(128, 128, 128, 0.4);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -21,4 +37,3 @@
     }
   }
 }
-
