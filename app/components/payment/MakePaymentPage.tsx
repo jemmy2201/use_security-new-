@@ -42,7 +42,7 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
                                     </clipPath>
                                 </defs>
                             </svg>
-                            <div className={globalStyleCss.regular}> &nbsp;Please note that there will no cancellations or refunds upon completion of payment.</div>
+                            <div className={globalStyleCss.regular}> &nbsp;Please note that there will be no cancellation or refunds upon completion of payment</div>
                         </div>
 
                     </div>
