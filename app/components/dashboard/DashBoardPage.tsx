@@ -582,7 +582,7 @@ const DashBoardPage: React.FC = () => {
 
                                                         {booking.app_type == '3' && (booking.Status_app != '' && booking.Status_app) ? (
                                                             <>
-                                                                &nbsp;-- {statusTypeMap[booking.Status_app || ''] || ''}
+                                                                &nbsp;- {statusTypeMap[booking.Status_app || ''] || ''}
 
                                                             </>
                                                         ) : null}
