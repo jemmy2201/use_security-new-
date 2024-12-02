@@ -172,10 +172,11 @@ const FirstTimePage: React.FC = () => {
                     <div className={firstTimeContentstyles.recordContainer}>
                         <div className={firstTimeContentstyles.recordBox}>
                             <div className={firstTimeContentstyles.recordBoxText}>
-                                No Record
+                                No Records
                             </div>
                             <div className={firstTimeContentstyles.recordBoxText2}>
-                                Your application will be displayed here
+                                This is your first application &nbsp;
+                                To Proceed - Click on \&quot;Application for New ID Card\&quot;
                             </div>
                             {/* <div className={firstTimeContentstyles.buttonBackground}>
                             <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewSoPasscardClick}>
