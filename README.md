@@ -88,24 +88,25 @@ If you prefer using Docker to run MySQL, follow these steps:
     version: '3.3'
     services:
     db:
-    image: mysql
-    restart: always
-    environment:
+        image: mysql
+        restart: always
+        environment:
         MYSQL_DATABASE: 'db'
-        # So you don't have to use root, but you can if you like
-        MYSQL_USER: 'root'
+        # root user is automatically created
+        # MYSQL_USER: 'dev'
         # You can use whatever password you like
-        MYSQL_PASSWORD: 'password'
+        # MYSQL_PASSWORD: ''
         # Password for root access
         MYSQL_ROOT_PASSWORD: 'password'
-    ports:
+        MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        ports:
         # <Port exposed> : <MySQL Port running inside container>
         - '3306:3306'
-    expose:
+        expose:
         # Opens port 3306 on the container
         - '3306'
         # Where our data will be persisted
-    volumes:
+        volumes:
         - mysql-db:/var/lib/mysql
     # Names our volume
     volumes:
