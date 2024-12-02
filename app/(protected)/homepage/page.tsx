@@ -77,7 +77,6 @@ const DefaultHomePage: React.FC = () => {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        backgroundImage: "url('images/logo_pdf.png')",
                         backgroundSize: "auto",
                         backgroundPosition: "center",
                         zIndex: 9999,
