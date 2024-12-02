@@ -842,7 +842,7 @@ const DashBoardPage: React.FC = () => {
                                                                     </clipPath>
                                                                 </defs>
                                                             </svg>
-                                                            &nbsp;You have made an appointment to collect your new pass card on {formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}, {booking.time_start_appointment} - {booking.time_end_appointment}
+                                                            &nbsp;You have made an appointment to collect your new ID Card on {formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}, {booking.time_start_appointment} - {booking.time_end_appointment}
                                                         </div>
                                                     </td>
                                                 </tr>)}

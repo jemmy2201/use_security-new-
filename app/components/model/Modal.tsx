@@ -62,7 +62,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
                 ID card application limitations
               </div>
               <div className={globalStyleCss.regular}>
-                Security Officers who already hold an Aviation Security Officer (AVSO) ID card and Private investigator (PI) ID card are not eligible to apply for additional pass cards.
+                Security Officers who already hold an Aviation Security Officer (AVSO) ID card and Private investigator (PI) ID card are not eligible to apply for additional ID Cards.
               </div>
               <div className={styleCss.modelButton}>
                 <button className={globalStyleCss.buttonTextBlack} onClick={onClose}>
