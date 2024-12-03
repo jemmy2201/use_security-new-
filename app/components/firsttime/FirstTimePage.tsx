@@ -176,7 +176,7 @@ const FirstTimePage: React.FC = () => {
                             </div>
                             <div className={firstTimeContentstyles.recordBoxText2} style={{ textAlign: 'center' }}>
                                 This is your first application.<br/>
-                                To Proceed - Click on "Apply for New ID Card"
+                                To Proceed - Click on &quot;Apply for New ID Card&quot;
                             </div>
                             {/* <div className={firstTimeContentstyles.buttonBackground}>
                             <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewSoPasscardClick}>

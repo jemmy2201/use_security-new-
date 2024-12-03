@@ -125,6 +125,9 @@ To submit an application, the following information is required:
 <h2 style="color: green;">Testing</h2>
 ### Test Data Creation: 
 
+(For Sign in with user name and password:  http://localhost/signin-password)
+
+
 ### 1. User with no valid licenses
 
 ```bash
