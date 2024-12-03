@@ -125,7 +125,7 @@ To submit an application, the following information is required:
 <h2 style="color: green;">Testing</h2>
 ### Test Data Creation: 
 
-#### 1. User with no valid licenses
+### 1. User with no valid licenses
 
 ```bash
 -- User (NRIC) = G1111111U, password: 123123
@@ -151,7 +151,7 @@ This user dont have any valid license.
 **Test Case4:** Applicant get popup with message (No valid license) When applicant click on Application for new ID Card and select PI
 
 
-#### 2. User with one valid license (Security Officier / Aviation Security Officier)
+### 2. User with one valid license (Security Officier / Aviation Security Officier)
 
 ```bash
 -- User (NRIC) = S1111111X, password: 123123
@@ -200,7 +200,7 @@ values
 **Test Case10:** Applicant has to rebook appointment if resubmitted photo and appointment date gap is less then 3 days.
 
 
-#### 3. User with 2 valid license (Security Officier / Aviation Security Officier & Personal Investigator)
+### 3. User with 2 valid license (Security Officier / Aviation Security Officier & Personal Investigator)
 
 ```bash
 -- User (NRIC) = P1111111X, password: 123123
@@ -269,7 +269,7 @@ update security_employees.booking_schedules set Status_app=4 where passid = '202
 
 **Test Case10:** Applicant has to rebook appointment if resubmitted photo and appointment date gap is less then 3 days.
 
-#### 4. Update Issued ID Card flow
+### 4. Update Issued ID Card flow
 
 ```bash
 
@@ -304,7 +304,7 @@ INSERT INTO security_employees.users
 
 ***Test Case3:** User able to update the personal information successfully.
 
-#### 5. Renew ID Card flow
+### 5. Renew ID Card flow
 
 ```bash
 

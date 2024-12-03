@@ -9,8 +9,6 @@ import { booking_schedules as bookingDetail } from '@prisma/client';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { logout } from '@/actions/auth';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Worker, Viewer } from '@react-pdf-viewer/core';
-import '@react-pdf-viewer/core/lib/styles/index.css';
 
 export interface userInfo {
     name?: string;
@@ -25,13 +23,7 @@ const TermsPage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    const [text, setText] = useState<string>(
-        `1.1 This is an Agreement (“Terms of Use”) between you and the UNION OF SECURITY EMPLOYEES("we", “us” and/or “USE”) for the use of our web portal https://www.iduse.org.sg ("Web Portal") and mobile applications (“Apps”), owned and operated by us, and their related services and features (the Website and the Apps shall be collectively referred to as “USE Web Portal”). By using and accessing the USE Web Portal, you conclude a legally binding agreement with us.
-
-1.2  We may update these Terms of Use from time to time by posting a revised version on the USE Web Portal. We will not send an individual notice to you. Any amended Terms of Use shall replace all previous versions of the same.
-
-1.3  By using the USE Web Portal, you agree to comply with the Terms of Use, including any revisions that we may make to the Terms of Use. If you do not agree to the Terms of Use and/or to the amendments, you should immediately cease the use of any of the services on the USE Web Portal.
-`);
+    const [text, setText] = useState<string>('');
 
     const router = useRouter();
 
@@ -134,24 +126,21 @@ const TermsPage: React.FC = () => {
                         </>
                     )}
 
-                    <div className={termsContentstyles.bodyContainer} style={{ height: '300px' }}>
-                        <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
-                            <Viewer fileUrl="/content/terms.pdf" />
-                        </Worker>
-                    </div>
+                    <div style={{ whiteSpace: 'pre-wrap' }}>{text}</div>
 
-
-                    <div className={termsContentstyles.options}>
-                        <div onClick={handleCheckboxToggle}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <rect x="0.5" y="0.5" width="23" height="23" rx="3.5" fill={isChecked ? "#546E7A" : "white"} stroke="#546E7A" />
-                                {isChecked && (
-                                    <path d="M6 12l4 4 8-8" stroke="white" strokeWidth="2" fill="none" />
-                                )}
-                            </svg>
+                    <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '4px', boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.1)' }}>
+                        <div className={termsContentstyles.options}>
+                            <div onClick={handleCheckboxToggle}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <rect x="0.5" y="0.5" width="23" height="23" rx="3.5" fill={isChecked ? "#546E7A" : "white"} stroke="#546E7A" />
+                                    {isChecked && (
+                                        <path d="M6 12l4 4 8-8" stroke="white" strokeWidth="2" fill="none" />
+                                    )}
+                                </svg>
+                            </div>
+                            <div className={termsContentstyles.text}>
+                                By checking this box, you acknowledge that you have read and agree to the terms and conditions of use for the Union of Security Employees (USE) website. You also consent to the collection and retention of your data only for as long as necessary to fulfil the purposes of processing and issuing the ID card for which it was collected.                        </div>
                         </div>
-                        <div className={termsContentstyles.text}>
-                            By checking this box, you acknowledge that you have read and agree to the terms and conditions of use for the Union of Security Employees (USE) website. You also consent to the collection and retention of your data only for as long as necessary to fulfil the purposes of processing and issuing the ID card for which it was collected.                        </div>
                     </div>
 
 

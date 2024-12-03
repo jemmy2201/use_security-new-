@@ -172,10 +172,11 @@ const FirstTimePage: React.FC = () => {
                     <div className={firstTimeContentstyles.recordContainer}>
                         <div className={firstTimeContentstyles.recordBox}>
                             <div className={firstTimeContentstyles.recordBoxText}>
-                                No Record
+                                No Records
                             </div>
-                            <div className={firstTimeContentstyles.recordBoxText2}>
-                                Your application will be displayed here
+                            <div className={firstTimeContentstyles.recordBoxText2} style={{ textAlign: 'center' }}>
+                                This is your first application.<br/>
+                                To Proceed - Click on "Apply for New ID Card"
                             </div>
                             {/* <div className={firstTimeContentstyles.buttonBackground}>
                             <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={handleNewSoPasscardClick}>
@@ -191,7 +192,7 @@ const FirstTimePage: React.FC = () => {
                             </button> */}
 
                                 <button className={firstTimeContentstyles.buttonText} style={{ textAlign: 'left' }} onClick={toggleDropdown}>
-                                    Application for New ID Card
+                                Apply for New ID Card
                                 </button>
 
                                 {isDropdownOpen && (

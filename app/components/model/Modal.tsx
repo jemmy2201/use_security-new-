@@ -8,19 +8,21 @@ interface ModalProps {
   onClose: () => void;
 }
 
+// message=='2' means ID Card is not due for renewal 
+// message=='3' means Security licence may have expired or pending approval.
+
 const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
   return (
     <div className={styleCss.modaloverlay}>
       <div className={styleCss.modelContainer}>
-
         {message && message == '2' ? (
           <>
             <div className={styleCss.modelBox}>
               <div className={globalStyleCss.header2}>
-                ID card not due for renewal
+                ID Card is not due for renewal.
               </div>
               <div className={globalStyleCss.regular}>
-                Your ID card must have at least 3 months remaining before its expiry date to be eligible for renewal.
+              The renewal notice will be sent by to you by Police Licensing and Regulatory Department (PLRD) 3 months prior to your licence expiry date.
               </div>
               <div className={styleCss.modelButton}>
                 <button className={globalStyleCss.buttonTextBlack} onClick={onClose}>
@@ -38,11 +40,10 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
           <>
             <div className={styleCss.modelBox}>
               <div className={globalStyleCss.header2}>
-                We noticed you do not have a valid card license or your licence may have expired.
-
+              Your security licence may have expired or pending approval.
               </div>
               <div className={globalStyleCss.regular}>
-                It may take 48-72 hours for your approved data from Police Licensing and Regulatory Department (PLRD) to be updated on USE&apos;s ID card portal. Please try again later.
+              For successful application, it may take  48 -72 hours for your approved data from the Police Licensing and Regulatory Department (PLRD) to be updated on USE's ID card portal. Please try again later.
               </div>
               <div className={styleCss.modelButton}>
                 <button className={globalStyleCss.buttonTextBlack} onClick={onClose}>
@@ -60,10 +61,10 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
           <>
             <div className={styleCss.modelBox}>
               <div className={globalStyleCss.header2}>
-                ID card application limitations
+                ID Card Application Advisory
               </div>
               <div className={globalStyleCss.regular}>
-                Security Officers who already hold an Aviation Security Officer (AVSO) ID card and Private investigator (PI) ID card are not eligible to apply for additional pass cards.
+              If you already have a Security Officer (SO) ID card and Private Investigator (PI) ID card, you are not eligible to apply for other ID cards.
               </div>
               <div className={styleCss.modelButton}>
                 <button className={globalStyleCss.buttonTextBlack} onClick={onClose}>

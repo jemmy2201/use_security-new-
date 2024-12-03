@@ -133,8 +133,7 @@ const HomePage: React.FC = () => {
                                     Renew ID Card
                                 </div>
                                 <div className={s.boxContent}>
-                                    Application To Renew ID Card
-                                    <br></br>For soon to expire ID
+                                    Application To Renew Soon To Expire ID Card 
                                 </div>
 
                             </div>

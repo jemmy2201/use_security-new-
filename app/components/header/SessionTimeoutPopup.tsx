@@ -37,7 +37,7 @@ const SessionTimeoutPopup: React.FC<SessionTimeoutPopupProps> = ({ isOpen, onClo
                 <div className={globalStyleCss.header2}>Don’t lose your progress!</div>
 
                 <div className={globalStyleCss.regular}>
-                    Your session is about to expire. Do you want to refresh?.
+                    Your session is about to expire. Do you want to continue?
                 </div>
 
                 <div className={OtpModuleStyle.buttonContainer}>
