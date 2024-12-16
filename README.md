@@ -16,6 +16,10 @@ npm i sass
 
 Open [http://localhost](http://localhost:3000) with your browser to see the login page.
 
+### Alternative Login Method
+
+If Singpass authentication is not available, you can use the password login option by navigating to [http://localhost/signin-password](http://localhost/signin-password). This method allows you to log in using your username and password credentials.
+
 ## Database
 
 ## Database Setup
