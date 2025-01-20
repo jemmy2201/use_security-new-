@@ -101,15 +101,30 @@ const DashBoardPage: React.FC = () => {
     };
 
     const formatDate = (dateString: string) => {
-        if (!dateString) {
-            return '';
-        }
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-        });
+      if (!dateString) {
+        return "";
+      }
+      
+      let date: Date;
+      
+      // Check if date is in DD/MM/YYYY format
+      if (dateString.includes('/')) {
+        const [day, month, year] = dateString.split('/');
+        date = new Date(Number(year), Number(month) - 1, Number(day));
+      } else {
+        date = new Date(dateString);
+      }
+
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return "";
+      }
+
+      return date.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
     };
 
     const handleClose = () => {
@@ -530,7 +545,7 @@ const DashBoardPage: React.FC = () => {
                                         <th className={dashBoardContentstyles.item2}>Application Type</th>
                                         <th className={dashBoardContentstyles.item}>License Type</th>
                                         <th className={dashBoardContentstyles.item1}>Grade</th>
-                                        <th className={dashBoardContentstyles.item3}>Collection Date</th>
+                                        <th className={dashBoardContentstyles.item3}>Expiry Date</th>
                                         <th className={dashBoardContentstyles.item3}>Application Status</th>
                                         <th className={dashBoardContentstyles.item}>Actions</th>
                                     </tr>
@@ -551,7 +566,7 @@ const DashBoardPage: React.FC = () => {
                                                     <td className={dashBoardContentstyles.item2}>{booking.app_type == '1' ? 'New' : 'Existing'}</td>
                                                     <td className={dashBoardContentstyles.item} style={{ whiteSpace: 'pre-line' }}>{cardTypeMap[booking.card_id || ''] || 'Unknown'}</td>
                                                     <td className={dashBoardContentstyles.item1}>{gradeTypeMap[booking.grade_id || ''] || ''}</td>
-                                                    <td className={dashBoardContentstyles.item3}>{formatDate(booking.appointment_date ? booking.appointment_date : '') || ''}</td>
+                                                    <td className={dashBoardContentstyles.item3}>{formatDate(booking.expired_date ? booking.expired_date : '') || ''}</td>
 
                                                     <td className={dashBoardContentstyles.item3}>
 
