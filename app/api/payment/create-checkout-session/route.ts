@@ -8,7 +8,9 @@ const prisma = new PrismaClient();
 function getStripeKey(): string {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) {
-    throw new Error('STRIPE_SECRET_KEY is not defined in environment variables');
+    throw new Error(
+      'STRIPE_SECRET_KEY is not defined in environment variables'
+    );
   }
   return key;
 }
@@ -37,7 +39,6 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-
     const schedule = await prisma.booking_schedules.findFirst({
       where: {
         ...(encryptedNric && { nric: encryptedNric }),
@@ -48,9 +49,9 @@ export async function POST(req: NextRequest) {
               { Status_app: '0' },
               { Status_app: null },
               { Status_app: '' },
-              { Status_app: '6' }
-            ]
-          }
+              { Status_app: '6' },
+            ],
+          },
         ],
       },
     });
@@ -64,12 +65,13 @@ export async function POST(req: NextRequest) {
       });
       const gst = await prisma.gsts.findFirst({});
       if (transaction_amount_id && gst) {
-
-        const transactionAmount: number = parseFloat(transaction_amount_id.transaction_amount ?? '0');
+        const transactionAmount: number = parseFloat(
+          transaction_amount_id.transaction_amount ?? '0'
+        );
         const gstAmount = parseFloat(gst.amount_gst ?? '0');
 
         const grandTotal: number = transactionAmount + gstAmount;
-        const total: number = grandTotal * 100;
+        const total: number = Math.round(grandTotal * 100);
 
         const userRecord = await prisma.users.findFirst({
           where: {
@@ -97,26 +99,31 @@ export async function POST(req: NextRequest) {
             metadata: {
               passid: schedule.passid,
               id: schedule.id.toString(),
-            }
+            },
           },
           customer_email: userRecord?.email ? userRecord?.email : '',
           success_url: `${process.env.NEXT_PUBLIC_URL}/passcard?session_id={CHECKOUT_SESSION_ID}`,
           cancel_url: `${process.env.NEXT_PUBLIC_URL}/homepage`,
         });
-        console.log('session id generated at stripe checkout session ', session.id);
-        console.log('payment intent generated at stripe checkout session ', session.payment_intent);
+        console.log(
+          'session id generated at stripe checkout session ',
+          session.id
+        );
+        console.log(
+          'payment intent generated at stripe checkout session ',
+          session.payment_intent
+        );
 
         await prisma.booking_schedules.update({
           where: { id: schedule.id },
           data: {
             gst_id: gst.id.toString(),
             transaction_amount_id: transaction_amount_id?.id.toString(),
-            grand_total: grandTotal.toString() + '0',
+            grand_total: grandTotal.toFixed(2),
             stripe_session_id: session.id,
           },
         });
         return NextResponse.json({ sessionId: session.id });
-
       }
     }
     return NextResponse.json({ error: 'Technical error' }, { status: 500 });
