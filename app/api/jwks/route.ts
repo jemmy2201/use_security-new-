@@ -10,12 +10,11 @@ import { SO, SSO, SS, SSS, CSO } from '../../constant/constant';
 import fontkit from '@pdf-lib/fontkit';
 import bcrypt from 'bcrypt';
 
-
 const prisma = new PrismaClient();
 
 const cardTypeMap: { [key: string]: string } = {
   [SO_APP]: 'Security Officer (SO)/Aviation Security Officer (AVSO)',
-  [PI_APP]: 'Personal Investigator',
+  [PI_APP]: 'Private investigator',
 };
 
 const appTypeMap: { [key: string]: string } = {
@@ -35,18 +34,23 @@ const gradeTypeMap: { [key: string]: string } = {
 const SALT_ROUNDS = 10;
 
 export async function GET() {
-
   const jwksEnv = process.env.SINGPASS_PUBLIC_JWKS;
 
   if (!jwksEnv) {
-    return NextResponse.json({ error: 'JWKS not found in environment variables' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'JWKS not found in environment variables' },
+      { status: 500 }
+    );
   }
 
   let jwks;
   try {
     jwks = JSON.parse(jwksEnv);
   } catch (error) {
-    return NextResponse.json({ error: 'Error parsing JWKS from environment variables' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Error parsing JWKS from environment variables' },
+      { status: 500 }
+    );
   }
 
   //console.log(encryptDecrypt('S6860011A', 'encrypt'));
@@ -60,32 +64,30 @@ export async function GET() {
   return NextResponse.json(jwks);
 }
 
-
 const generatePdfReceipt = async () => {
   try {
-
     const schedule = await prisma.booking_schedules.findUnique({
       where: {
-        id: 101010632
-      }
+        id: 101010632,
+      },
     });
     // Create a new PDF document
     const pdfDoc = await PDFDocument.create();
     pdfDoc.registerFontkit(fontkit);
 
-
-
     if (schedule) {
-      const appTypeString = appTypeMap[schedule.app_type] + '-' + cardTypeMap[schedule.card_id ? schedule.card_id : ''];
+      const appTypeString =
+        appTypeMap[schedule.app_type] +
+        '-' +
+        cardTypeMap[schedule.card_id ? schedule.card_id : ''];
 
-      const gradeTypeString = gradeTypeMap[schedule.grade_id ? schedule.grade_id : ''];
+      const gradeTypeString =
+        gradeTypeMap[schedule.grade_id ? schedule.grade_id : ''];
       const userRecord = await prisma.users.findFirst({
         where: {
           ...(schedule.nric && { nric: schedule.nric }),
         },
       });
-
-
 
       const page = pdfDoc.addPage([600, 800]); // Adjusted height for better layout
 
@@ -124,9 +126,15 @@ const generatePdfReceipt = async () => {
 
       // Table data
       const tableData = [
-        { column1: 'Transaction reference no.', column2: schedule.stripe_payment_id },
+        {
+          column1: 'Transaction reference no.',
+          column2: schedule.stripe_payment_id,
+        },
         { column1: 'Transaction date', column2: schedule.trans_date },
-        { column1: 'Amount paid (inclusive of GST)', column2: schedule.grand_total },
+        {
+          column1: 'Amount paid (inclusive of GST)',
+          column2: schedule.grand_total,
+        },
         { column1: 'Type of application', column2: appTypeString },
         { column1: 'Grade', column2: gradeTypeString },
         { column1: 'Pass card no.', column2: schedule.passid },
@@ -157,15 +165,17 @@ const generatePdfReceipt = async () => {
 
       const pdfBytes = await pdfDoc.save();
 
-      const folderPath = path.join(process.cwd(), 'public', 'userdocs/img_users/invoice');
+      const folderPath = path.join(
+        process.cwd(),
+        'public',
+        'userdocs/img_users/invoice'
+      );
       const filePath = path.join(folderPath, schedule.passid + '.pdf');
 
       fs.mkdirSync(folderPath, { recursive: true });
 
       fs.writeFileSync(filePath, pdfBytes);
     }
-
-
   } catch (error) {
     console.error('Error generating PDF:', error);
   } finally {
@@ -173,6 +183,3 @@ const generatePdfReceipt = async () => {
     fs.close;
   }
 };
-
-
-
