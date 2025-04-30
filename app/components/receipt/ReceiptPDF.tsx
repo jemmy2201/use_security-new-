@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import receiptContentstyles from "./ReceiptContent.module.css";
-import globalStyleCss from "../globalstyle/Global.module.css";
-import { booking_schedules } from "@prisma/client";
+import React from 'react';
+import receiptContentstyles from './ReceiptContent.module.css';
+import globalStyleCss from '../globalstyle/Global.module.css';
+import { booking_schedules } from '@prisma/client';
 
 interface ReceiptPDFProps {
   users:
@@ -38,49 +38,49 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
     <div
       className={receiptContentstyles.innerContainer}
       style={{
-        padding: "4px",
-        maxWidth: "210mm",
-        margin: "0 auto",
-        maxHeight: "155mm",
-        position: "relative",
-        overflow: "hidden",
+        padding: '4px',
+        maxWidth: '210mm',
+        margin: '0 auto',
+        maxHeight: '155mm',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
       <div
         className={receiptContentstyles.receiptHeader}
         style={{
-          marginBottom: "4px",
-          display: "flex",
-          marginLeft: "10%",
-          justifyContent: "space-between",
-          alignItems: "center",
+          marginBottom: '4px',
+          display: 'flex',
+          marginLeft: '10%',
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}
       >
         <div
           className={receiptContentstyles.logoContainer}
           style={{
-            width: "40%",
-            float: "none",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            width: '40%',
+            float: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          <div style={{ alignContent: "center", textAlign: "center" }}>
+          <div style={{ alignContent: 'center', textAlign: 'center' }}>
             <img
-              src="/images/logo_pdf.png"
-              alt="USE Logo"
+              src='/images/logo_pdf.png'
+              alt='USE Logo'
               className={receiptContentstyles.logo}
-              style={{ maxWidth: "100%", height: "74px" }}
+              style={{ maxWidth: '100%', height: '74px' }}
             />
             <p
               style={{
-                fontWeight: "bold",
-                textAlign: "center",
-                margin: "2px auto",
-                width: "100%",
-                fontSize: "20px",
-                whiteSpace: "nowrap",
+                fontWeight: 'bold',
+                textAlign: 'center',
+                margin: '2px auto',
+                width: '100%',
+                fontSize: '20px',
+                whiteSpace: 'nowrap',
               }}
             >
               Union of Security Employees
@@ -89,7 +89,7 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
         </div>
 
         <div className={receiptContentstyles.titleContainer}>
-          <h3 style={{ margin: "4px 0", fontSize: "20px" }}>
+          <h3 style={{ margin: '4px 0', fontSize: '20px' }}>
             Transaction Receipt
           </h3>
         </div>
@@ -97,18 +97,18 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
 
       <table
         className={receiptContentstyles.receiptTable}
-        style={{ width: "100%", borderCollapse: "collapse", fontSize: "9px" }}
+        style={{ width: '100%', borderCollapse: 'collapse', fontSize: '9px' }}
       >
         <tbody>
           <tr>
             <td
               className={receiptContentstyles.labelCell}
-              width="30%"
+              width='30%'
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               NRIC/FIN
@@ -116,7 +116,7 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
             <td
               className={receiptContentstyles.valueCell}
               colSpan={3}
-              style={{ padding: "3px 5px", border: "1px solid #ddd" }}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
               {users?.textNric}
             </td>
@@ -124,12 +124,12 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
           <tr>
             <td
               className={receiptContentstyles.labelCell}
-              width="30%"
+              width='30%'
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               Pass ID Number
@@ -137,7 +137,7 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
             <td
               className={receiptContentstyles.valueCell}
               colSpan={3}
-              style={{ padding: "3px 5px", border: "1px solid #ddd" }}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
               {bookingSchedule?.passid}
             </td>
@@ -145,12 +145,12 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
           <tr>
             <td
               className={receiptContentstyles.labelCell}
-              width="30%"
+              width='30%'
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               Full Name
@@ -158,7 +158,7 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
             <td
               className={receiptContentstyles.valueCell}
               colSpan={3}
-              style={{ padding: "3px 5px", border: "1px solid #ddd" }}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
               {users?.name}
             </td>
@@ -166,12 +166,12 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
           <tr>
             <td
               className={receiptContentstyles.labelCell}
-              width="30%"
+              width='30%'
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               Card Type
@@ -179,20 +179,20 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
             <td
               className={receiptContentstyles.valueCell}
               colSpan={3}
-              style={{ padding: "3px 5px", border: "1px solid #ddd" }}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
-              {cardTypeMap[bookingSchedule?.card_id || ""] || "Unknown"}
+              {cardTypeMap[bookingSchedule?.card_id || ''] || 'Unknown'}
             </td>
           </tr>
           <tr>
             <td
               className={receiptContentstyles.labelCell}
-              width="30%"
+              width='30%'
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               PWM Grade
@@ -200,20 +200,20 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
             <td
               className={receiptContentstyles.valueCell}
               colSpan={3}
-              style={{ padding: "3px 5px", border: "1px solid #ddd" }}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
-              {gradeTypeMap[bookingSchedule?.grade_id || ""] || "Unknown"}
+              {gradeTypeMap[bookingSchedule?.grade_id || ''] || 'Unknown'}
             </td>
           </tr>
           <tr>
             <td
               className={receiptContentstyles.labelCell}
-              width="30%"
+              width='30%'
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               Card Expiry Date
@@ -221,24 +221,24 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
             <td
               className={receiptContentstyles.valueCell}
               colSpan={3}
-              style={{ padding: "3px 5px", border: "1px solid #ddd" }}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
               {formatExpiryDate(
                 bookingSchedule?.expired_date
                   ? bookingSchedule.expired_date
-                  : ""
+                  : ''
               )}
             </td>
           </tr>
           <tr>
             <td
               className={receiptContentstyles.labelCell}
-              width="30%"
+              width='30%'
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               Mobile Number
@@ -246,25 +246,25 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
             <td
               className={receiptContentstyles.valueCell}
               colSpan={3}
-              style={{ padding: "3px 5px", border: "1px solid #ddd" }}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
               {users?.mobileno}
             </td>
           </tr>
           <tr>
-            <td colSpan={4} style={{ height: "3px", border: "none" }}>
+            <td colSpan={4} style={{ height: '3px', border: 'none' }}>
               &nbsp;
             </td>
           </tr>
           <tr>
             <td
               className={receiptContentstyles.labelCell}
-              width="25%"
+              width='25%'
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               Transaction
@@ -273,43 +273,43 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
             </td>
             <td
               className={receiptContentstyles.valueCell}
-              width="25%"
-              style={{ padding: "3px 5px", border: "1px solid #ddd" }}
+              width='25%'
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
               {bookingSchedule?.stripe_payment_id || bookingSchedule?.receiptNo}
             </td>
             <td
               className={receiptContentstyles.labelCell}
-              width="25%"
+              width='25%'
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               Collection Date
             </td>
             <td
               className={receiptContentstyles.valueCell}
-              width="25%"
-              style={{ padding: "3px 5px", border: "1px solid #ddd" }}
+              width='25%'
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
               {formatAppointmentDate(
                 bookingSchedule?.appointment_date
                   ? bookingSchedule.appointment_date
-                  : ""
-              ) || ""}
+                  : ''
+              ) || ''}
             </td>
           </tr>
           <tr>
             <td
               className={receiptContentstyles.labelCell}
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               Amount Paid
@@ -318,26 +318,26 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
             </td>
             <td
               className={receiptContentstyles.valueCell}
-              style={{ padding: "3px 5px", border: "1px solid #ddd" }}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
-              S${parseFloat(bookingSchedule?.grand_total || "0").toFixed(2)}
+              S${parseFloat(bookingSchedule?.grand_total || '0').toFixed(2)}
             </td>
             <td
               className={receiptContentstyles.labelCell}
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               Time Slot
             </td>
             <td
               className={receiptContentstyles.valueCell}
-              style={{ padding: "3px 5px", border: "1px solid #ddd" }}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
-              {bookingSchedule?.time_start_appointment} -{" "}
+              {bookingSchedule?.time_start_appointment} -{' '}
               {bookingSchedule?.time_end_appointment}
             </td>
           </tr>
@@ -345,29 +345,29 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
             <td
               className={receiptContentstyles.labelCell}
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               Transaction Date
             </td>
             <td
               className={receiptContentstyles.valueCell}
-              style={{ padding: "3px 5px", border: "1px solid #ddd" }}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
               {formatDate(
-                bookingSchedule?.trans_date ? bookingSchedule.trans_date : ""
+                bookingSchedule?.trans_date ? bookingSchedule.trans_date : ''
               )}
             </td>
             <td
               className={receiptContentstyles.labelCell}
               style={{
-                padding: "3px 5px",
-                fontWeight: "bold",
-                backgroundColor: "#f5f5f5",
-                border: "1px solid #ddd",
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
               }}
             >
               Collection Address
@@ -375,10 +375,10 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
             <td
               className={receiptContentstyles.valueCell}
               style={{
-                padding: "3px 5px",
-                border: "1px solid #ddd",
-                lineHeight: "1",
-                wordBreak: "break-word",
+                padding: '3px 5px',
+                border: '1px solid #ddd',
+                lineHeight: '1',
+                wordBreak: 'break-word',
               }}
             >
               200, Jalan Sultan
@@ -396,21 +396,21 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
       <div
         className={receiptContentstyles.disclaimer}
         style={{
-          marginTop: "0px",
-          fontSize: "10px",
-          textAlign: "center",
-          lineHeight: "1.2",
-          position: "absolute",
-          bottom: "10px",
-          left: "0",
-          right: "0",
-          padding: "0 5px",
+          marginTop: '0px',
+          fontSize: '10px',
+          textAlign: 'center',
+          lineHeight: '1.2',
+          position: 'absolute',
+          bottom: '10px',
+          left: '0',
+          right: '0',
+          padding: '0 5px',
         }}
       >
         This is an official receipt issued by Union of Security Employees for
         the issuance of the PLRD ID card.
         <br />
-        <span style={{ display: "block", marginTop: "1px" }}>
+        <span style={{ display: 'block', marginTop: '1px' }}>
           Please note that the base transaction fee of $0.36 (inclusive of 9%
           GST) is absorbed by USE.
         </span>
