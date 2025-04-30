@@ -16,7 +16,7 @@ const copyImagePath = process.env.COPY_IMAGE_PATH;
 
 const cardTypeMap: { [key: string]: string } = {
   [SO_APP]: 'Security Officer (SO) / Aviation Security Officer (AVSO)',
-  [PI_APP]: 'Personal Investigator (PI)',
+  [PI_APP]: 'Private investigator (PI)',
 };
 
 const cardTypeCode: { [key: string]: string } = {
@@ -41,7 +41,9 @@ const gradeTypeMap: { [key: string]: string } = {
 function getStripeKey(): string {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) {
-    throw new Error('STRIPE_SECRET_KEY is not defined in environment variables');
+    throw new Error(
+      'STRIPE_SECRET_KEY is not defined in environment variables'
+    );
   }
   return key;
 }
@@ -63,7 +65,6 @@ export const POST = async (req: NextRequest) => {
       process.env.STRIPE_WEBHOOK_SECRET as string
     );
     console.log('stripe webhook event type:', event.type, event.id, event);
-
   } catch (err) {
     console.error(`Webhook Error: ${err}`);
     return NextResponse.json({ error: 'Webhook Error' }, { status: 400 });
@@ -71,7 +72,6 @@ export const POST = async (req: NextRequest) => {
 
   // Handle the event type
   switch (event.type) {
-
     case 'checkout.session.completed':
       console.log('checkout.session.completed', event.data.object.id);
       updatePaymentStatus(event.data.object.id);
@@ -98,10 +98,15 @@ const updatePaymentStatus = async (session_id: string) => {
       where: { stripe_session_id: session.id },
     });
 
-    if (schedule && !schedule.stripe_payment_id && session.payment_status == 'paid') {
+    if (
+      schedule &&
+      !schedule.stripe_payment_id &&
+      session.payment_status == 'paid'
+    ) {
       const paymentIntentId = session.payment_intent as string;
       const formattedDate = formatDate();
-      const receiptNumber = formatDateToDDMMYYYY(new Date()) + schedule?.id.toString().slice(-5);
+      const receiptNumber =
+        formatDateToDDMMYYYY(new Date()) + schedule?.id.toString().slice(-5);
       const updatedSchedule = await prisma.booking_schedules.update({
         where: { id: schedule.id },
         data: {
@@ -117,7 +122,6 @@ const updatePaymentStatus = async (session_id: string) => {
     } else {
       console.log('Payment fail');
     }
-
   } catch (error) {
     console.log('error in payment success update', error);
   } finally {
@@ -139,9 +143,9 @@ const updatePaymentStatus = async (session_id: string) => {
   }
 
   async function backgroundTask(schedule: booking_schedules) {
-    console.log("Background task generate pdf started");
+    console.log('Background task generate pdf started');
     generatePdfReceipt(schedule);
-    console.log("Background task generate pdf completed");
+    console.log('Background task generate pdf completed');
   }
 };
 
@@ -152,9 +156,13 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
 
     const nric = encryptDecrypt(schedule.nric, 'decrypt');
 
-    const appTypeString = appTypeMap[schedule.app_type] + '-' + cardTypeMap[schedule.card_id ? schedule.card_id : ''];
+    const appTypeString =
+      appTypeMap[schedule.app_type] +
+      '-' +
+      cardTypeMap[schedule.card_id ? schedule.card_id : ''];
 
-    const gradeTypeString = gradeTypeMap[schedule.grade_id ? schedule.grade_id : ''];
+    const gradeTypeString =
+      gradeTypeMap[schedule.grade_id ? schedule.grade_id : ''];
     const userRecord = await prisma.users.findFirst({
       where: {
         ...(schedule.nric && { nric: schedule.nric }),
@@ -197,10 +205,16 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
     const tableTop = page.getHeight() - logoDims.height - 30 - 40;
 
     const tableData = [
-      { column1: 'Transaction reference no.', column2: schedule.stripe_payment_id },
+      {
+        column1: 'Transaction reference no.',
+        column2: schedule.stripe_payment_id,
+      },
       { column1: 'Receipt no.', column2: schedule.receiptNo },
       { column1: 'Transaction date', column2: schedule.trans_date },
-      { column1: 'Amount paid (inclusive of GST)', column2: schedule.grand_total },
+      {
+        column1: 'Amount paid (inclusive of GST)',
+        column2: schedule.grand_total,
+      },
       { column1: 'Type of application', column2: appTypeString },
       { column1: 'Grade', column2: gradeTypeString },
       { column1: 'ID card no.', column2: schedule.passid },
@@ -230,9 +244,19 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
 
     const pdfBytes = await pdfDoc.save();
 
-    const folderPath = path.join(process.cwd(), 'public', 'userdocs/img_users/invoice');
+    const folderPath = path.join(
+      process.cwd(),
+      'public',
+      'userdocs/img_users/invoice'
+    );
 
-    const fileNameBuilder = 'T_' + encryptDecrypt(schedule.nric, 'decrypt') + cardTypeCode[schedule.card_id ? schedule.card_id : ''] + '_' + formatDateToDDMMYYYY(new Date()) + schedule?.id.toString().slice(-5);
+    const fileNameBuilder =
+      'T_' +
+      encryptDecrypt(schedule.nric, 'decrypt') +
+      cardTypeCode[schedule.card_id ? schedule.card_id : ''] +
+      '_' +
+      formatDateToDDMMYYYY(new Date()) +
+      schedule?.id.toString().slice(-5);
     const filePath = path.join(folderPath, fileNameBuilder + '.pdf');
 
     fs.mkdirSync(folderPath, { recursive: true });
@@ -245,14 +269,16 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
         console.log('copy pdf to app1');
         const uploadsDirApp1 = path.join(copyImagePath, 'invoice');
         console.log('uploadsDirApp1:', uploadsDirApp1);
-        const filePathApp1 = path.join(uploadsDirApp1, fileNameBuilder + '.pdf');
+        const filePathApp1 = path.join(
+          uploadsDirApp1,
+          fileNameBuilder + '.pdf'
+        );
         fs.writeFileSync(filePathApp1, pdfBytes);
         console.log('copy pdf to app1 done');
       } catch (error) {
         console.log('error in copy image to app1', error);
       }
     }
-
   } catch (error) {
     console.error('Error generating PDF:', error);
   } finally {
