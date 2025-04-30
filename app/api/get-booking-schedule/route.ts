@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { encryptDecrypt } from '../../utils/encryptDecrypt'
+import { encryptDecrypt } from '../../utils/encryptDecrypt';
 import { getEncryptedNricFromSession } from '../../../lib/session';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -12,14 +12,15 @@ export async function GET(request: NextRequest) {
     return new Response('Booking ID is required', { status: 400 });
   }
   try {
-
-
     const encryptedNric = await getEncryptedNricFromSession(request);
     if (encryptedNric instanceof NextResponse) {
       return encryptedNric;
     }
-    console.log('get-booking-schedule, bookingIdString:encryptedNric', bookingIdString, encryptedNric);
-
+    console.log(
+      'get-booking-schedule, bookingIdString:encryptedNric',
+      bookingIdString,
+      encryptedNric
+    );
 
     const bookingId = BigInt(bookingIdString) as bigint;
     const schedules = await prisma.booking_schedules.findUnique({
@@ -28,7 +29,6 @@ export async function GET(request: NextRequest) {
         id: bookingId,
       } as any,
     });
-
 
     if (schedules && !schedules.grand_total) {
       const transaction_amount_id = await prisma.transaction_amounts.findFirst({
@@ -39,15 +39,15 @@ export async function GET(request: NextRequest) {
       });
       const gst = await prisma.gsts.findFirst({});
       if (transaction_amount_id && gst) {
-
-        const transactionAmount: number = parseFloat(transaction_amount_id.transaction_amount ?? '0');
+        const transactionAmount: number = parseFloat(
+          transaction_amount_id.transaction_amount ?? '0'
+        );
         const gstAmount = parseFloat(gst.amount_gst ?? '0');
 
         const grandTotal: number = transactionAmount + gstAmount;
-        schedules.grand_total = grandTotal + '0';
+        schedules.grand_total = grandTotal.toFixed(2);
       }
     }
-
 
     console.log('schedules', schedules);
     // Custom replacer function to convert BigInt to string
@@ -63,15 +63,15 @@ export async function GET(request: NextRequest) {
       schedules.QRstring = '';
     }
 
-
     return new Response(JSON.stringify(schedules, replacer), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
     console.log('error ', error);
-    return new Response(JSON.stringify({ error: 'Error fetching schedules' }), { status: 500 });
-
+    return new Response(JSON.stringify({ error: 'Error fetching schedules' }), {
+      status: 500,
+    });
   } finally {
     await prisma.$disconnect();
   }
