@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState } from 'react';
 
-import stepBarFooterStyle from './StepBarFooter.module.css'
+import stepBarFooterStyle from './StepBarFooter.module.css';
 import { useFormContext } from '.././FormContext';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -12,85 +12,149 @@ import { useRouter } from 'next/navigation';
 import CancelPopup from './CancelPopup';
 
 interface FooterProps {
-    onNext: () => void;
-    onBack: () => void;
-    onSaveDraft: () => void;
-    hasNext: boolean;
-    hasBack: boolean;
-    activeStep: number;
+  onNext: () => void;
+  onBack: () => void;
+  onSaveDraft: () => void;
+  hasNext: boolean;
+  hasBack: boolean;
+  activeStep: number;
 }
-const Footer: React.FC<FooterProps> =
-    ({ onNext, onBack, onSaveDraft, hasNext, hasBack, activeStep }) => {
-        const { formData, setFormData } = useFormContext();
-        const router = useRouter();
-        const [isCancelPopupOpen, setIsCancelPopupOpen] = useState<boolean>(false); // State for OTP popup
+const Footer: React.FC<FooterProps> = ({
+  onNext,
+  onBack,
+  onSaveDraft,
+  hasNext,
+  hasBack,
+  activeStep,
+}) => {
+  const { formData, setFormData } = useFormContext();
+  const router = useRouter();
+  const [isCancelPopupOpen, setIsCancelPopupOpen] = useState<boolean>(false); // State for OTP popup
 
-        const handleCancelCancel = () => {
-            setIsCancelPopupOpen(false);
-        };
-        const handleContinue = () => {
-            setIsCancelPopupOpen(false);
-            router.push('/homepage');
-        };
-        const handleClick = () => {
-            setIsCancelPopupOpen(true);
+  const handleCancelCancel = () => {
+    setIsCancelPopupOpen(false);
+  };
+  const handleContinue = () => {
+    setIsCancelPopupOpen(false);
+    router.push('/homepage');
+  };
+  const handleClick = () => {
+    setIsCancelPopupOpen(true);
+  };
 
-        };
+  // Handler that will scroll to top before calling onNext
+  const handleNextWithScroll = () => {
+    // Scroll to the top of the page
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
 
-        return (
-            <footer>
-                <div className={stepBarFooterStyle.bodyContainer}>
-                    <div className={stepBarFooterStyle.headerContainer}>
-                        <CancelPopup
-                            isOpen={isCancelPopupOpen}
-                            onClose={handleCancelCancel}
-                            onContinue={handleContinue}
-                        />
-                        {!formData.isAppointmentConfirmed && (
-                            <div className={stepBarFooterStyle.saveDraft} onClick={handleClick} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
-                                <div className={globalStyleCss.regular}>Cancel</div>
-                            </div>
+    // Call the original onNext function
+    onNext();
+  };
 
-                        )}
-                        {!formData.paymentProcessed && (
-                            <div className={stepBarFooterStyle.saveDraft} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <button type='button' onClick={onSaveDraft}>
-                                    <div className={globalStyleCss.regular}>Save draft</div>
-                                </button>
-                                {/* <ToastContainer /> */}
-                            </div>
+  // Handler that will scroll to top before calling onBack
+  const handleBackWithScroll = () => {
+    // Scroll to the top of the page
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
 
-                        )}
-                        {!formData.isAppointmentConfirmed && (
-                            <div className={stepBarFooterStyle.continue} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <button type='button'
-                                    onClick={onNext}>
-                                    <div className={globalStyleCss.buttonText}>
-                                        {activeStep === 0 ? 'Application details' : ''}
-                                        {activeStep === 1 ? 'Review details' : ''}
-                                        {activeStep === 2 ? 'Make payment' : ''}
-                                        {activeStep === 3 && !formData.paymentProcessed ? 'Proceed to pay' : ''}
-                                        {activeStep === 3 && formData.paymentProcessed ? 'Book appointment' : ''}
-                                        {activeStep === 4 && !formData.isAppointmentConfirmed ? 'Confirm appointment' : ''}
-                                        {activeStep === 4 && formData.isAppointmentConfirmed ? 'Complete' : ''}
-                                    </div>
-                                </button>
+    // Call the original onBack function
+    onBack();
+  };
 
-                            </div>
-                        )}
-                        {activeStep != 0 && !formData.paymentProcessed && (
-                            <div className={stepBarFooterStyle.saveDraft} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <button type='button'
-                                    onClick={onBack}
-                                    disabled={!hasBack}>
-                                    <div className={globalStyleCss.regular}>Back</div>
-                                </button>
-                            </div>
-
-                        )}
-                    </div>
+  return (
+    <footer>
+      <div className={stepBarFooterStyle.bodyContainer}>
+        <div className={stepBarFooterStyle.headerContainer}>
+          <CancelPopup
+            isOpen={isCancelPopupOpen}
+            onClose={handleCancelCancel}
+            onContinue={handleContinue}
+          />
+          {!formData.isAppointmentConfirmed && (
+            <div
+              className={stepBarFooterStyle.saveDraft}
+              onClick={handleClick}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <div className={globalStyleCss.regular}>Cancel</div>
+            </div>
+          )}
+          {!formData.paymentProcessed && (
+            <div
+              className={stepBarFooterStyle.saveDraft}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <button type='button' onClick={onSaveDraft}>
+                <div className={globalStyleCss.regular}>Save draft</div>
+              </button>
+              {/* <ToastContainer /> */}
+            </div>
+          )}
+          {!formData.isAppointmentConfirmed && (
+            <div
+              className={stepBarFooterStyle.continue}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <button type='button' onClick={handleNextWithScroll}>
+                <div className={globalStyleCss.buttonText}>
+                  {activeStep === 0 ? 'Application details' : ''}
+                  {activeStep === 1 ? 'Review details' : ''}
+                  {activeStep === 2 ? 'Make payment' : ''}
+                  {activeStep === 3 && !formData.paymentProcessed
+                    ? 'Proceed to pay'
+                    : ''}
+                  {activeStep === 3 && formData.paymentProcessed
+                    ? 'Book appointment'
+                    : ''}
+                  {activeStep === 4 && !formData.isAppointmentConfirmed
+                    ? 'Confirm appointment'
+                    : ''}
+                  {activeStep === 4 && formData.isAppointmentConfirmed
+                    ? 'Complete'
+                    : ''}
                 </div>
-            </footer>
-        );
-    }
+              </button>
+            </div>
+          )}
+          {activeStep != 0 && !formData.paymentProcessed && (
+            <div
+              className={stepBarFooterStyle.saveDraft}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <button
+                type='button'
+                onClick={handleBackWithScroll}
+                disabled={!hasBack}
+              >
+                <div className={globalStyleCss.regular}>Back</div>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </footer>
+  );
+};
 export default Footer;
