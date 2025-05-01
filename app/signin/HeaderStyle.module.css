@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
 
-
 @media screen and (max-width: 769px) {
   .headerContainer {
     display: flex;
@@ -11,7 +10,7 @@
     background: #000;
 
     .companyName {
-      color: #FFF;
+      color: #fff;
       font-family: Poppins;
       font-size: 24px;
       font-style: normal;
@@ -22,10 +21,10 @@
 
     .leftBox {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: flex-end;
       align-items: center;
-      gap: 16px;
+      gap: 8px;
       flex: 1 0 0;
 
       .loginButton {
@@ -35,13 +34,20 @@
         align-items: center;
         gap: 4px;
         border-radius: 28px;
-        background: #CC0C00;
-        color: #FFF;
+        background: #cc0c00;
+        color: #fff;
         font-family: Roboto;
         font-size: 16px;
         font-style: normal;
         font-weight: 700;
         line-height: 24px;
+      }
+
+      .contactIcon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 4px;
       }
 
       .phoneSvg {
@@ -51,32 +57,30 @@
       }
 
       .contactUs {
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         padding: 8px;
-        color: #FFFFFF;
+        color: #ffffff;
         font-family: Roboto;
-        font-size: 16px;
+        font-size: 14px;
         font-style: normal;
         font-weight: 700;
         line-height: 24px;
-        display: none;
-
+        display: flex;
       }
     }
 
     .contactUs {
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
       padding: 8px;
-      color: #FFFFFF;
+      color: #ffffff;
       font-family: Roboto;
-      font-size: 16px;
+      font-size: 14px;
       font-style: normal;
       font-weight: 700;
       line-height: 24px;
-      display: none;
-
+      display: flex;
     }
   }
 }
@@ -115,13 +119,20 @@
       align-items: center;
       gap: 4px;
       border-radius: 28px;
-      background: #CC0C00;
-      color: #FFF;
+      background: #cc0c00;
+      color: #fff;
       font-family: Roboto;
       font-size: 16px;
       font-style: normal;
       font-weight: 700;
       line-height: 24px;
+    }
+
+    .contactIcon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
     }
 
     .phoneSvg {
@@ -131,7 +142,7 @@
     .contactUs {
       align-items: center;
       padding: 8px;
-      color: #FFFFFF;
+      color: #ffffff;
       /* Regular Bold */
       font-family: Roboto;
       font-size: 16px;
@@ -142,12 +153,11 @@
   }
 
   .companyName {
-    color: #FFF;
+    color: #fff;
     font-family: Poppins;
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
     line-height: 24px;
   }
-
 }

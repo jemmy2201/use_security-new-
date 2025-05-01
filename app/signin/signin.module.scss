@@ -1,164 +1,236 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;700&display=swap');
 
 @media screen and (max-width: 769px) {
-    .text {
-        font-family: Roboto;
-        font-size: 16px;
-        font-style: normal;
-        line-height: 24px;
-    }
+  .text {
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    line-height: 24px;
+  }
 
-    .bodyBox {
-
-        justify-content: center;
-        align-items: center;
-        .title {
-            flex-wrap: wrap;
-            align-self: stretch;
-            color: #F5F6F7;
-            text-align: center;
-            font-family: Poppins;
-            font-size: 36px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 42px;
-        }
-    
-        .serviceWrapper {
-            .services {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-    
-                .box {
-                    order: 1;
-                    padding: 24px;
-                    background-color: #fff;
-                    margin: 12px;
-                    width: 236px;
-                    display: flex;
-                    flex-direction: column;
-                    flex-wrap: nowrap;
-                    align-items: center;
-    
-                    .svgBox {
-                        margin-bottom: 24px;
-    
-                        svg {
-                            stroke-width: 2px;
-                            stroke: #546E7A;
-                            width: 48px;
-                            height: 48px;
-                        }
-                    }
-    
-                    .boxHeader {
-                        @extend .text;
-                        font-weight: 700;
-                        margin-bottom: 8px;
-                        color:  #000;
-                        font-family: Roboto;
-                        font-size: 16px;
-                        font-style: normal;
-                        line-height: 24px; 
-                        @media screen and (max-width: 769px) {
-                          color:  #000;
-                          font-family: Roboto;
-                          font-size: 16px;
-                          font-style: normal;
-                          font-weight: 700;
-                          line-height: 24px; 
-                        }
-                    }
-    
-                    .boxContent {
-                        @extend .text;
-                        font-weight: 400;
-                        text-align: center;
-                    }
-                }
-            }
-        }
-    }
-    
-}
-
-
-
-.bodyBox {
+  .bodyBox {
     justify-content: center;
     align-items: center;
-    padding: 5%;
     .title {
-        flex-wrap: wrap;
-        align-self: stretch;
-        color: #F5F6F7;
-        text-align: center;
-        font-family: Poppins;
-        font-size: 26px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 32px;
-        padding-bottom: 5%;
+      flex-wrap: wrap;
+      align-self: stretch;
+      color: #f5f6f7;
+      text-align: center;
+      font-family: Poppins;
+      font-size: 36px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 42px;
     }
-    
+
     .serviceWrapper {
-        .services {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding-bottom: 5%;
-            .box {
-                order: 1;
-                padding: 24px;
-                background-color: #fff;
-                margin: 12px;
-                width: 260px;
-                display: flex;
-                flex-direction: column;
-                flex-wrap: nowrap;
-                align-items: center;
-                padding-bottom: 3%;
-                .svgBox {
-                    margin-bottom: 24px;
-    
-                    svg {
-                        stroke-width: 2px;
-                        stroke: #546E7A;
-                        flex-shrink: 0;
-                        width: 48px;
-                        height: 48px;
-                    }
-                }
-    
-                .boxHeader {
-                    font-family: Roboto;
-                    font-style: normal;
-                    margin-bottom: 8px;
-                    color:  #000;
-                    font-size: 16px;
-                    font-weight: 700;
-                    line-height: 24px; 
-                    @media screen and (max-width: 769px) {
-                      color:  #000;
-                      font-family: Roboto;
-                      font-size: 16px;
-                      font-style: normal;
-                      font-weight: 700;
-                      line-height: 24px; 
-                    }
-                }
-    
-                .boxContent {
-                    font-family: Roboto;
-                    font-size: 16px;
-                    font-style: normal;
-                    line-height: 24px;
-                    font-weight: 400;
-                    text-align: center;
-                }
+      .services {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .box {
+          order: 1;
+          padding: 24px;
+          background-color: #fff;
+          margin: 12px;
+          width: 236px;
+          display: flex;
+          flex-direction: column;
+          flex-wrap: nowrap;
+          align-items: center;
+
+          .svgBox {
+            margin-bottom: 24px;
+
+            svg {
+              stroke-width: 2px;
+              stroke: #546e7a;
+              width: 48px;
+              height: 48px;
             }
+          }
+
+          .boxHeader {
+            @extend .text;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #000;
+            font-family: Roboto;
+            font-size: 16px;
+            font-style: normal;
+            line-height: 24px;
+            @media screen and (max-width: 769px) {
+              color: #000;
+              font-family: Roboto;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: 24px;
+            }
+          }
+
+          .boxContent {
+            @extend .text;
+            font-weight: 400;
+            text-align: center;
+          }
         }
+      }
     }
+  }
 }
 
+.bodyBox {
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+  .title {
+    flex-wrap: wrap;
+    align-self: stretch;
+    color: #f5f6f7;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px;
+    padding-bottom: 5%;
+  }
+
+  .serviceWrapper {
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding-bottom: 5%;
+      .box {
+        order: 1;
+        padding: 24px;
+        background-color: #fff;
+        margin: 12px;
+        width: 260px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+        padding-bottom: 3%;
+        .svgBox {
+          margin-bottom: 24px;
+
+          svg {
+            stroke-width: 2px;
+            stroke: #546e7a;
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+          }
+        }
+
+        .boxHeader {
+          font-family: Roboto;
+          font-style: normal;
+          margin-bottom: 8px;
+          color: #000;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 24px;
+          @media screen and (max-width: 769px) {
+            color: #000;
+            font-family: Roboto;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 24px;
+          }
+        }
+
+        .boxContent {
+          font-family: Roboto;
+          font-size: 16px;
+          font-style: normal;
+          line-height: 24px;
+          font-weight: 400;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 35px 25px;
+  gap: 25px;
+  position: relative;
+  width: 100%;
+  max-width: 738px;
+  height: auto;
+  margin: 0 auto;
+  background: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+
+  @media screen and (max-width: 769px) {
+    width: 90%;
+    max-width: 310px;
+    padding: 25px 20px;
+    gap: 15px;
+    margin: 30px auto 15vh auto;
+    position: static;
+  }
+}
+
+.title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 36px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #000000;
+
+  @media screen and (max-width: 769px) {
+    font-size: 24px;
+  }
+}
+
+.description {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  color: #000000;
+  opacity: 0.9;
+  max-width: 90%;
+  margin: 0 auto;
+
+  @media screen and (max-width: 769px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #cc0c00;
+  border-radius: 28px;
+  padding: 16px 24px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  min-width: 180px;
+
+  @media screen and (max-width: 769px) {
+    padding: 12px 20px;
+    min-width: 160px;
+  }
+}
