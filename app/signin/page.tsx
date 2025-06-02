@@ -45,15 +45,7 @@ const HomePage: React.FC = () => {
           </div>
         </div>
 
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'center',
-            paddingTop: '40px',
-          }}
-        >
+        <div className={s.loginContainerWrapper}>
           <div className={s.loginContainer}>
             <h1 className={s.title}>Welcome to USE ID Card Portal</h1>
             <p className={s.description}>
