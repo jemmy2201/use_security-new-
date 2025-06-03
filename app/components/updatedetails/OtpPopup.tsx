@@ -44,10 +44,8 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
         });
         const result = await response.json();
 
-        console.log('send sms result:', result);
 
         if (result.success) {
-            console.log('SMS sent:', result);
             toast.success('OTP resent', {
                 position: 'top-right',
                 autoClose: 3000,
@@ -71,7 +69,6 @@ const OtpPopup: React.FC<OtpPopupProps> = ({ isOpen, onClose }) => {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log('OTP verified successfully:', data);
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     isOtpVerified: true,

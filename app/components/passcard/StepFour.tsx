@@ -18,7 +18,6 @@ const StepFour: React.FC = () => {
 
     useEffect(() => {
         setLoading(true);
-        console.log('inside step 4:');
         const sessionId = searchParams.get('session_id');
         if (sessionId) {
             setIsPaymentSuccessful(true);
@@ -28,7 +27,6 @@ const StepFour: React.FC = () => {
 
     const handlePaymentSuccess = () => {
         setLoading(true);
-        console.log('inside step 4:handlePaymentSuccess');
         setFormData(prevFormData => ({
             ...prevFormData,
             ['paymentProcessed']: true,

@@ -50,7 +50,6 @@ const FirstTimePage: React.FC = () => {
     };
 
     const handleSelect = (option: number) => {
-        console.log('Selected:', option);
         if (option == 1) {
             handleNewPiPasscardClick();
         } else {
@@ -64,7 +63,6 @@ const FirstTimePage: React.FC = () => {
         try {
             setLoading(true);
             const responseNewPass = await fetch('/api/handle-create-new-pass/so-card');
-            console.log('response from handle-create-new-pass', responseNewPass);
             if (!responseNewPass.ok && responseNewPass.status === 401) {
                 setLoading(false);
                 router.push('/signin');
@@ -76,7 +74,6 @@ const FirstTimePage: React.FC = () => {
                 return;
             }
             const dataNewPass: createNewPassApiResponse = await responseNewPass.json();
-            console.log('data:', dataNewPass);
 
             sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(dataNewPass));
             sessionStorage.setItem('actionTypeValue', 'New');
@@ -96,7 +93,6 @@ const FirstTimePage: React.FC = () => {
         try {
             setLoading(true);
             const responseNewPass = await fetch('/api/handle-create-new-pass/pi-card');
-            console.log('response from handle-create-new-pass', responseNewPass);
             if (!responseNewPass.ok && responseNewPass.status === 401) {
                 setLoading(false);
                 router.push('/signin');
@@ -108,7 +104,6 @@ const FirstTimePage: React.FC = () => {
                 return;
             }
             const dataNewPass: createNewPassApiResponse = await responseNewPass.json();
-            console.log('data:', dataNewPass);
             sessionStorage.setItem('createNewPassApiResponse', JSON.stringify(dataNewPass));
             sessionStorage.setItem('actionTypeValue', 'New');
 

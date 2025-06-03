@@ -30,9 +30,7 @@ const ApplicantDetailsPage: React.FC = () => {
     const { formData, setFormData } = useFormContext();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('id', event.target.id);
-        console.log('value', event.target.value);
-        console.log('name', event.target.name);
+
         const { id, value } = event.target;
         setFormData(prevFormData => ({
             ...prevFormData,
@@ -64,8 +62,7 @@ const ApplicantDetailsPage: React.FC = () => {
             ...prevFormData,
             [name]: checked,
         }));
-        console.log('value', event.target.value);
-        console.log('name', event.target.name);
+
     };
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -76,8 +73,7 @@ const ApplicantDetailsPage: React.FC = () => {
     const [selectedOption, setSelectedOption] = useState<string>('');
 
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('target id', event.target.id)
-        console.log('target value', event.target.value)
+
         setSelectedOption(event.target.value);
         setApplicationType(event.target.value);
         const { id, value } = event.target;
@@ -90,9 +86,7 @@ const ApplicantDetailsPage: React.FC = () => {
 
 
     useEffect(() => {
-        console.log('ApplicantDetailsPage: Action Type', formData.actionType);
 
-        console.log('form data', formData);
         setCheckboxes({
             trRtt: formData?.trRtt ? true : false,
             trCsspb: formData?.trCsspb ? true : false,
@@ -111,7 +105,6 @@ const ApplicantDetailsPage: React.FC = () => {
             try {
                 const parsedBookingData: booking_schedules = JSON.parse(storedBookingData);
                 const fileName = parsedBookingData?.passid + parsedBookingData.nric.slice(-4);
-                console.log('image file name:', fileName);
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     isDataLoaded: true,

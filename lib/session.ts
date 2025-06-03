@@ -23,7 +23,6 @@ export async function decrypt(session: string | undefined = '') {
     const currentTime = Math.floor(Date.now() / 1000);
     const createSessionTimeReadable = convertUnixToDateTime(currentTime);
     const decodedExpTimeReadable = convertUnixToDateTime(decoded.exp as number);
-    console.log('createSession: currentTime, expiry time:', createSessionTimeReadable, decodedExpTimeReadable);
     if (decoded.exp && decoded.exp < currentTime) {
         throw new Error('JWT token has expired');
     }
@@ -65,10 +64,6 @@ export async function createSession(userId: string, userToken: string) {
     const createSessionTimeReadable = convertUnixToDateTime(currentTime);
     const decodedExpTimeReadable = convertUnixToDateTime(decoded.exp as number);
 
-    console.log('createSession, currentTime:', createSessionTimeReadable);
-    console.log('createSession, decoded.exp:', decodedExpTimeReadable);
-
-    console.log('createSession, cookie expiresAt:', expiresAt);
     cookies().set('session', session, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',

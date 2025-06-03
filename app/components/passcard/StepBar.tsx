@@ -20,7 +20,6 @@ interface StepBarProps {
 }
 
 const StepBar: React.FC<StepBarProps> = ({ actionType, steps, activeStep }) => {
-  // console.log('StepBar: Action Type:', actionType);
   const { formData, setFormData } = useFormContext();
 
   return (

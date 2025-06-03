@@ -49,23 +49,19 @@ const PersonalDetailsPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        console.log('PersonalDetailsPage: Action Type ', formData.actionType);
         if (!formData.email && !formData.mobileno) {
             const storedData = sessionStorage.getItem('users');
             if (storedData) {
                 try {
 
                     const actionTypeValue = sessionStorage.getItem('actionTypeValue');
-                    console.log('Action type value:', typeof actionTypeValue);
                     const parsedData: userInfo = JSON.parse(storedData);
                     setUsers(parsedData);
                     if (actionTypeValue && (actionTypeValue === 'Edit'
                         || actionTypeValue === 'Replace' || actionTypeValue === 'Renew')) {
                         const storedBookingSchedule = sessionStorage.getItem('bookingSchedule');
-                        console.log('storedBookingSchedule:', storedBookingSchedule);
                         if (storedBookingSchedule) {
                             const parsedBookingSchedule: booking_schedules = JSON.parse(storedBookingSchedule);
-                            console.log('parsedBookingSchedule:', parsedBookingSchedule);
                             const fileName = parsedBookingSchedule?.passid + parsedBookingSchedule.nric.slice(-4);
                             setFormData({
                                 email: parsedData?.email ?? '',
@@ -108,7 +104,6 @@ const PersonalDetailsPage: React.FC = () => {
                             });
                         }
                     }
-                    console.log('Parsed data:', parsedData);
                 } catch (err) {
                     setError('Failed to parse user data');
                 }
@@ -140,7 +135,7 @@ const PersonalDetailsPage: React.FC = () => {
                     <div className={personalDetailsContentstyles.contentBox}>
                         <div className={personalDetailsContentstyles.item}>
                             <div className={globalStyleCss.regularBold}>
-                                Mobile number:                                 
+                                Mobile number                                 
                                 {formData.errorMobileNumber && <p style={{ color: 'red' }}>{formData.errorMobileNumber}</p>}
                             </div>
                             <div className={globalStyleCss.regular}>
@@ -155,7 +150,7 @@ const PersonalDetailsPage: React.FC = () => {
                         </div>
                         <div className={personalDetailsContentstyles.item}>
                             <div className={globalStyleCss.regularBold}>
-                                Email Address. 
+                                Email Address 
                             {formData.errorEmail && <p style={{ color: 'red' }}>{formData.errorEmail}</p>}
                             </div>
                             <div className={globalStyleCss.regular}>

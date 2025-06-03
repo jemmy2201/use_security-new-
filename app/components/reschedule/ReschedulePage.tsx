@@ -40,7 +40,6 @@ const buttonTexts = [
 ];
 
 const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
-    console.log('ReschedulePage Booking ID:', bookingId);
     const router = useRouter();
     const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
     const [startDate, setStartDate] = useState<Date | null>(null);
@@ -97,7 +96,6 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             let daysToSubtract = (dayOfWeek >= 2) ? dayOfWeek - 2 : dayOfWeek + 5;
             const lastWednesdayDate = new Date(lastDay);
             lastWednesdayDate.setDate(lastDay.getDate() - daysToSubtract);
-            console.log('last tuesday:', format(lastWednesdayDate, 'yyyy-MM-dd'));
             const monthDay = format(date, 'MM-dd');
             if (format(date, 'yyyy-MM-dd') === format(lastWednesdayDate, 'yyyy-MM-dd')
                 || monthDay === '12-31' || monthDay === '12-24'
@@ -114,7 +112,6 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             throw new Error('token expired in stripe session');
         }
         const data = await response.json();
-        console.log('response, /api/day-slots', data);
         setDisabledSlots(data.disabledSlots);
         const combinedSlots = [...disabledSlots, ...disabledSlots2];
         setDisabledSlots3(combinedSlots);
@@ -130,12 +127,10 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
     }, [startDate, disabledSlots, disabledSlots2]);
 
     const handleTimeSlotClick = (text: string) => {
-        console.log('timeslot', text);
         setSelectedTimeSlot(text);
     };
 
     const formatExpiryDate = (dateStringExpiryDate: string) => {
-        console.log('dateStringExpiryDate:', dateStringExpiryDate);
         if (!dateStringExpiryDate) {
             return '';
         }
@@ -170,13 +165,11 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
             setLoading(true);
             const responseUser = await fetch('/api/myinfo');
             if (!responseUser.ok) {
-                console.log('no user detail found hence redirecting to firsttime page');
                 router.push('/firsttime');
             }
             const dataUser: userInfo = await responseUser.json();
 
             sessionStorage.setItem('users', JSON.stringify(dataUser));
-            console.log('data from api', dataUser);
 
             const response = await fetch('/api/dashboard');
             if (!response.ok && response.status === 401) {
@@ -184,13 +177,10 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 throw new Error('Personal Details: Failed to save draft');
             }
             const data: bookingDetail[] = await response.json();
-            console.log('booking card list: ', data.length);
             if (data.length === 0) {
-                console.log('No booking details found.');
                 router.push('/firsttime');
             } else {
                 sessionStorage.setItem('bookingSchedules', JSON.stringify(data));
-                console.log('data from api', data);
                 router.push('/dashboard');
             }
         } catch (err) {
@@ -238,9 +228,7 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 throw new Error('Personal Details: Failed to save draft');
             }
             const result = await response.json();
-            console.log("reschedule: Saved successfully:", result);
 
-            console.log('bookingId', bookingId);
             try {
                 const reschedule = bookingSchedule?.appointment_date ? 'Yes' : '';
                 router.push(`/complete?bookingId=${encodeURIComponent(bookingId)}&reschedule=${encodeURIComponent(reschedule)}`);
@@ -287,7 +275,6 @@ const ReschedulePage: React.FC<ReschedulePageProps> = ({ bookingId }) => {
                 }
                 const data: DisabledDatesResponse = await response.json();
                 const parsedDates = data.map(dateStr => parseISO(dateStr));
-                console.log('parsed date:', parsedDates);
                 setDisabledDates(parsedDates);
 
                 const responseFullBooked = await fetch("/api/get-fully-booked-dates");

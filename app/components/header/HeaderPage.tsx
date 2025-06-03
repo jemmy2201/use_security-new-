@@ -10,6 +10,7 @@ import Image from 'next/image';
 import LogoutPopup from './LogoutPopup'
 import CircularProgress from '@mui/material/CircularProgress';
 import SessionTimeoutPopup from './SessionTimeoutPopup';
+import { useFormContext } from '.././FormContext';
 
 const HeaderPage: React.FC = () => {
 
@@ -18,12 +19,28 @@ const HeaderPage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [showPopup, setShowPopup] = useState(false);
     const [sessionToken, setSessionToken] = useState<string | null>(null);
+    const { formData, setFormData, saveDraftFunction } = useFormContext();
+
     const handleClick = () => {
         router.push('/homepage');
     };
 
-    const handleContinue = () => {
+    const handleContinue = async () => {
         setIsLogoutPopupOpen(false);
+        // Call the save draft function if it exists
+        if (saveDraftFunction) {
+            try {
+                await saveDraftFunction();
+                if (formData.originalMobileno === formData.mobileno
+                    || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
+                    handleCancelCancel();
+                } else {
+                }
+
+            } catch (error) {
+                console.error('Error saving draft from HeaderPage:', error);
+            }
+        }
     };
     const handleCancelCancel = async () => {
         setIsLogoutPopupOpen(false);
@@ -78,10 +95,8 @@ const HeaderPage: React.FC = () => {
                     credentials: 'include', // Include cookies in the request
                 });
                 const data = await response.json();
-                console.log('Session data:', data);
                 if (data.valid) {
                     setSessionToken(data.token);
-                    console.log('setting showpopup true');
                     // 35 min timer
                     const timer = setTimeout(() => {
                         setShowPopup(true);

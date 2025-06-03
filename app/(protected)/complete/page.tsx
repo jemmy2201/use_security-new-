@@ -4,7 +4,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense } from 'react';
 import CompletePage from '@/components/complete/CompletePage';
-
+import { FormProvider } from '@/components/FormContext';
 const SearchParamsWrapper: React.FC = () => {
   const searchParams = useSearchParams()
   const bookingId = searchParams.get('bookingId')
@@ -12,7 +12,12 @@ const SearchParamsWrapper: React.FC = () => {
   const reschedule = searchParams.get('reschedule')
   const rescheduleString = typeof reschedule === 'string' ? reschedule : '';
 
-  return <CompletePage bookingId={bookingIdString} reschedule={rescheduleString} />;
+  return (  
+    <FormProvider>
+      <CompletePage bookingId={bookingIdString} reschedule={rescheduleString} />
+    </FormProvider>
+);
+
 };
 
 const Complete: React.FC = () => {

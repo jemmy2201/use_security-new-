@@ -106,7 +106,6 @@ const DashBoardPage: React.FC = () => {
   };
 
   const handleSelect = (option: number) => {
-    console.log('Selected:', option);
     if (option == 1) {
       handlePINewPasscardClick();
     } else {
@@ -152,7 +151,6 @@ const DashBoardPage: React.FC = () => {
     try {
       setLoading(true);
       const response = await fetch('/api/handle-create-new-pass/so-card');
-      console.log('response from handle-create-new-pass/so-card', response);
       if (!response.ok && response.status === 401) {
         setLoading(false);
         router.push('/signin');
@@ -165,7 +163,6 @@ const DashBoardPage: React.FC = () => {
         return;
       }
       const data: createNewPassApiResponse = await response.json();
-      console.log('data:', data);
       if (data.errorCode) {
         setLoading(false);
         setShowModal(true);
@@ -187,7 +184,6 @@ const DashBoardPage: React.FC = () => {
     try {
       setLoading(true);
       const response = await fetch('/api/handle-create-new-pass/pi-card');
-      console.log('response from handle-create-new-pass/pi-card', response);
       if (!response.ok && response.status === 401) {
         setLoading(false);
         router.push('/signin');
@@ -200,7 +196,6 @@ const DashBoardPage: React.FC = () => {
         return;
       }
       const data: createNewPassApiResponse = await response.json();
-      console.log('data:', data);
       if (data.errorCode) {
         setLoading(false);
         setShowModal(true);
@@ -225,9 +220,7 @@ const DashBoardPage: React.FC = () => {
   const handleBookAppointmentClick = async (id: bigint) => {
     setLoading(true);
     setError(null);
-    console.log('id', id);
     const bookingId = id.toString();
-    console.log('bookingId', bookingId);
     try {
       router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);
     } catch (err) {
@@ -239,17 +232,13 @@ const DashBoardPage: React.FC = () => {
   };
 
   const handleDeletePasscardClick = async (id: bigint) => {
-    console.log('id', id);
     const bookingId = id.toString();
-    console.log('bookingId', bookingId);
   };
 
   const handleResubmitPhotoClick = async (id: bigint) => {
     setLoading(true);
     setError(null);
-    console.log('id', id);
     const bookingId = id.toString(); // Correctly call the toString method
-    console.log('bookingId', bookingId);
     try {
       router.push(`/resubmitphoto?bookingId=${encodeURIComponent(bookingId)}`);
     } catch (err) {
@@ -262,9 +251,7 @@ const DashBoardPage: React.FC = () => {
   const handleViewReceiptClick = async (id: bigint) => {
     setLoading(true);
     setError(null);
-    console.log('id', id);
     const bookingId = id.toString(); // Correctly call the toString method
-    console.log('bookingId', bookingId);
     try {
       router.push(`/receipt?bookingId=${encodeURIComponent(bookingId)}`);
     } catch (err) {
@@ -278,9 +265,7 @@ const DashBoardPage: React.FC = () => {
   const handleUpdateClick = async (id: bigint) => {
     setLoading(true);
     setError(null);
-    console.log('id', id);
     const bookingId = id.toString(); // Correctly call the toString method
-    console.log('bookingId', bookingId);
     try {
       router.push(`/updatedetails?bookingId=${encodeURIComponent(bookingId)}`);
     } catch (err) {
@@ -294,7 +279,6 @@ const DashBoardPage: React.FC = () => {
   const handleDraftContinuePasscardClick = async (id: bigint) => {
     setLoading(true);
     setError(null);
-    console.log('id', id);
     try {
       const response = await fetch('/api/myinfo');
       if (!response.ok) {
@@ -303,7 +287,6 @@ const DashBoardPage: React.FC = () => {
       const data: userInfo = await response.json();
       sessionStorage.setItem('users', JSON.stringify(data));
       // Process the data or store it in state/context
-      console.log('data from api', data);
 
       const bookingId = id.toString(); // Replace with your actual bookingId
       const responseBookingSchedule = await fetch(
@@ -328,7 +311,6 @@ const DashBoardPage: React.FC = () => {
         JSON.stringify(dataBookingSchedule)
       );
       sessionStorage.setItem('actionTypeValue', 'Edit');
-      console.log('booking data from api', dataBookingSchedule);
 
       router.push('/passcard?actionType=Edit');
     } catch (err) {
@@ -342,7 +324,6 @@ const DashBoardPage: React.FC = () => {
   const handleReplaceClick = async (id: bigint) => {
     setLoading(true);
     setError(null);
-    console.log('id', id);
     try {
       const response = await fetch('/api/myinfo');
       if (!response.ok) {
@@ -374,7 +355,6 @@ const DashBoardPage: React.FC = () => {
         JSON.stringify(dataBookingSchedule)
       );
       sessionStorage.setItem('actionTypeValue', 'Replace');
-      console.log('expiryDate from api:', dataBookingSchedule.expired_date);
       if (dataBookingSchedule.expired_date) {
         const [day, month, year] = dataBookingSchedule.expired_date
           .split('/')
@@ -383,8 +363,6 @@ const DashBoardPage: React.FC = () => {
         const currentDate = new Date();
         const threeMonthsFromNow = new Date();
         threeMonthsFromNow.setMonth(currentDate.getMonth() + 3);
-        console.log('expiryDate:', expiryDate);
-        console.log('threeMonthsFromNow:', threeMonthsFromNow);
 
         if (expiryDate <= threeMonthsFromNow) {
           setLoading(false);
@@ -405,7 +383,6 @@ const DashBoardPage: React.FC = () => {
   const handleRenewClick = async (id: bigint) => {
     setLoading(true);
     setError(null);
-    console.log('inside renew,id', id);
     try {
       const response = await fetch('/api/myinfo');
       if (!response.ok) {
@@ -413,7 +390,6 @@ const DashBoardPage: React.FC = () => {
       }
       const data: userInfo = await response.json();
       sessionStorage.setItem('users', JSON.stringify(data));
-      console.log('data from api', data);
 
       const bookingId = id.toString();
       const responseBookingSchedule = await fetch(

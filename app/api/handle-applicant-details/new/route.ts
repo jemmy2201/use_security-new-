@@ -9,15 +9,12 @@ const copyImagePath = process.env.COPY_IMAGE_PATH;
 
 export async function POST(req: NextRequest) {
     try {
-        console.log('handle-applicant-details, new');
         const body = await req.json();
         const { image, bookingId, applicationType, cardId, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, trNota, trSsm, trObse, actionType, } = body;
-        console.log('actionType:applicationType:cardId', actionType, applicationType, cardId);
         const encryptedNric = await getEncryptedNricFromSession(req);
         if (encryptedNric instanceof NextResponse) {
             return encryptedNric; // Return the redirect response if necessary
         }
-        console.log('encrypted nric:', encryptedNric);
 
         if (!encryptedNric || !applicationType || !cardId) {
             return NextResponse.json(

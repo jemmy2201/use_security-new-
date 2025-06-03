@@ -57,7 +57,6 @@ const BookAppointmentPage: React.FC = () => {
 
     // Handler for button click to set the selected timeslot
     const handleTimeSlotClick = (text: string) => {
-        console.log('click on timeslot', text);
         setSelectedTimeSlot(text);
         setFormData(prevFormData => ({
             ...prevFormData,
@@ -113,7 +112,6 @@ const BookAppointmentPage: React.FC = () => {
             let daysToSubtract = (dayOfWeek >= 2) ? dayOfWeek - 2 : dayOfWeek + 5;
             const lastWednesdayDate = new Date(lastDay);
             lastWednesdayDate.setDate(lastDay.getDate() - daysToSubtract);
-            console.log('last tuesday:', format(lastWednesdayDate, 'yyyy-MM-dd'));
 
             const monthDay = format(date, 'MM-dd');
 
@@ -136,7 +134,6 @@ const BookAppointmentPage: React.FC = () => {
             throw new Error('token expired in stripe session');
         }
         const data = await response.json();
-        console.log('response, /api/day-slots', data);
         setDisabledSlots(data.disabledSlots);
         setLoading(false);
     };

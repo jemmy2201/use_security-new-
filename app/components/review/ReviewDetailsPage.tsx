@@ -44,8 +44,6 @@ const ReviewDetailsPage: React.FC = () => {
             ...prevFormData,
             [name]: checked,
         }));
-        console.log('value', event.target.value);
-        console.log('name', event.target.name);
     };
 
     // Toggle the checkbox state
@@ -59,7 +57,6 @@ const ReviewDetailsPage: React.FC = () => {
 
     useEffect(() => {
 
-        console.log('review detail page, iamge file name:', formData.imageUrl);
         setIsChecked(formData?.isTermsAndConditionSigned || false);
 
     }, [formData.imageUrl, formData?.isTermsAndConditionSigned]);
@@ -139,7 +136,7 @@ const ReviewDetailsPage: React.FC = () => {
                                 <div className={reviewDetailsContentstyles.contentBox}>
                                     <div className={reviewDetailsContentstyles.item}>
 
-                                        <div className={globalStyleCss.regularBold}>Mobile number: </div>
+                                        <div className={globalStyleCss.regularBold}>Mobile number </div>
                                         <div className={globalStyleCss.regular}>
                                             <input
                                                 type="text"
@@ -155,7 +152,7 @@ const ReviewDetailsPage: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className={reviewDetailsContentstyles.item}>
-                                        <div className={globalStyleCss.regularBold}>Email Address. </div>
+                                        <div className={globalStyleCss.regularBold}>Email Address </div>
                                         <div className={globalStyleCss.regular}>
                                             <input
                                                 type="text"
@@ -211,14 +208,14 @@ const ReviewDetailsPage: React.FC = () => {
 
                                 <div className={reviewDetailsContentstyles.contentBox}>
                                     <div className={reviewDetailsContentstyles.item}>
-                                        <div className={globalStyleCss.regularBold}>Mobile number: </div>
+                                        <div className={globalStyleCss.regularBold}>Mobile number </div>
                                         <div className={reviewDetailsContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.mobileno}</div></div>
                                         <div className={globalStyleCss.regularBold}>
                                             {formData.errorMobileNumber && <p style={{ color: 'red' }}>{formData.errorMobileNumber}</p>}
                                         </div>
                                     </div>
                                     <div className={reviewDetailsContentstyles.item}>
-                                        <div className={globalStyleCss.regularBold}>Email Address. </div>
+                                        <div className={globalStyleCss.regularBold}>Email Address </div>
                                         <div className={reviewDetailsContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.email}</div></div>
                                         <div className={globalStyleCss.regularBold}>
                                             {formData.errorEmail && <p style={{ color: 'red' }}>{formData.errorEmail}</p>}

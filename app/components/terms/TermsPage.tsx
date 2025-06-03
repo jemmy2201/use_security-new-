@@ -56,14 +56,12 @@ const TermsPage: React.FC = () => {
                 setLoading(true);
                 const responseUser = await fetch('/api/myinfo');
                 if (!responseUser.ok) {
-                    console.log('no user detail found hence redirecting to firsttime page');
                     router.push('/firsttime');
                 }
                 const dataUser: userInfo = await responseUser.json();
 
                 sessionStorage.setItem('users', JSON.stringify(dataUser));
                 // Process the data or store it in state/context
-                console.log('data from api', dataUser);
 
 
                 const response = await fetch('/api/dashboard');
@@ -72,13 +70,10 @@ const TermsPage: React.FC = () => {
                     throw new Error('token expired in stripe session');
                 }
                 const data: bookingDetail[] = await response.json();
-                console.log('booking card list: ', data.length);
                 if (data.length === 0) {
-                    console.log('No booking details found.');
                     router.push('/firsttime');
                 } else {
                     sessionStorage.setItem('bookingSchedules', JSON.stringify(data));
-                    console.log('data from api', data);
                     router.push('/dashboard');
                 }
             } catch (err) {

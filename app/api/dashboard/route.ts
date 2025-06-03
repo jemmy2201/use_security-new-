@@ -87,13 +87,11 @@ export async function GET(request: NextRequest) {
         return value;
       };
       const allSchedule = [...schedules, ...renewSchedules];
-      console.log('allSchedule pass cards: ', allSchedule.length);
       return new Response(JSON.stringify(allSchedule, replacer), {
         status: 200, headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    console.log('total pass cards: ', schedules.length);
     const replacer = (key: string, value: any) => {
       if (typeof value === 'bigint') {
         return value.toString();

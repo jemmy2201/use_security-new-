@@ -37,7 +37,6 @@ const API_KEY = '';
 
 const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
-  console.log('bookingId', bookingId);
   const [image, setImage] = useState<string | null>(null);
   const [detectionResult, setDetectionResult] = useState<faceapi.WithFaceLandmarks<{ detection: faceapi.FaceDetection }> | null>(null);
   const [straightFaceDetected, setStraightFaceDetected] = useState<boolean>(false);
@@ -68,7 +67,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     setLoading(true);
     const fetchBookingSchedule = async () => {
       try {
-        console.log('appointment_date:');
         setLoading(true);
 
         const responseBookingSchedule = await fetch(`/api/get-booking-schedule?bookingId=${encodeURIComponent(bookingId)}`);
@@ -82,9 +80,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
         }
         const dataBookingSchedule: booking_schedules = await responseBookingSchedule.json();
         const appointment_date = dataBookingSchedule?.appointment_date;
-        console.log('appointment_date:', appointment_date);
         if (appointment_date) {
-          console.log('appointment_date:', appointment_date);
           const currentDate = new Date();
           const appointmentDate = new Date(appointment_date);
           const diffInTime = appointmentDate.getTime() - currentDate.getTime();
@@ -95,11 +91,8 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           } else {
             setShowBookingAppointment(true);
           }
-          console.log('setShowBookingAppointment:', showBookingAppointment);
         } else {
-          console.log('setShowBookingAppointment to true:');
           setShowBookingAppointment(true);
-          console.log('setShowBookingAppointment to true:', showBookingAppointment);
         }
         setBookingSchedule(dataBookingSchedule);
       } catch (error) {
@@ -140,7 +133,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
   const onComplete = async () => {
     setLoading(true);
-    console.log('bookingId', bookingId);
 
     if (bgColorMatch && faceDetected) {
       try {
@@ -149,7 +141,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           bookingId,
         });
 
-        console.log('API Response:', response.data);
         router.push('/homepage');
 
       } catch (error) {
@@ -165,7 +156,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
   const onNext = async () => {
     setLoading(true);
-    console.log('bookingId', bookingId);
 
     if (bgColorMatch && faceDetected && straightFaceDetected
       && straightFaceDetected && shouldersVisible) {
@@ -175,7 +165,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           bookingId,
         });
 
-        console.log('API Response:', response.data);
         router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);
 
       } catch (error) {
@@ -217,7 +206,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           },
         }
       );
-      console.log('response:', response);
       return response.data;
     } catch (error) {
       console.error('Error detecting face:', error);
@@ -271,7 +259,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
       imageElement.onload = async () => {
         try {
           const detectionSingleFace = await faceapi.detectSingleFace(imageElement).withFaceLandmarks();
-          console.log('detectionSingleFace', detectionSingleFace);
           let isStraight = true;
           if (detectionSingleFace) {
             setDetectionResult(detectionSingleFace);
@@ -292,7 +279,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
             // Check if the face is centered
             const isCentered = isFaceCentered(faceRectangle, imageElement.width, imageElement.height);
-            console.log('Is the face centered?', isCentered);
             setFaceCentered(isCentered);
           }
 
@@ -348,7 +334,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const detectFace = async (imageElement: HTMLImageElement) => {
     try {
       const detections = await faceapi.detectAllFaces(imageElement).withFaceLandmarks();
-      console.log('Face detections:', detections);
       return detections.length > 0;
     } catch (error) {
       console.error('Error detecting face:', error);
@@ -419,7 +404,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
         bookingId,
       });
 
-      console.log('API Response:', response.data);
     } catch (error) {
       console.error('Error sending data to API:', error);
     }

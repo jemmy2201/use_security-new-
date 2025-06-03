@@ -32,7 +32,6 @@ export interface userInfo {
 }
 
 const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
-    console.log('UpdateDetailsPage Booking ID:', bookingId);
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [pwmEnable, setPwmEnable] = useState<boolean>(true);
@@ -49,7 +48,6 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedValue(event.target.value);
-        console.log("Selected:", event.target.value);
         setFormData(prevFormData => ({
             ...prevFormData,
             pwmGrade: event.target.value,
@@ -87,8 +85,6 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
             ...prevFormData,
             [name]: checked,
         }));
-        console.log('value', event.target.value);
-        console.log('name', event.target.name);
     };
 
 
@@ -138,10 +134,8 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
 
             if (formData.originalMobileno === formData.mobileno
                 || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
-                console.log('same mobile');
                 setIsOtpPopupOpen(false);
             } else {
-                console.log('mobile changed');
                 const response = await fetch('/api/sms/send-sms', {
                     method: 'POST',
                     headers: {
@@ -154,7 +148,6 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                 const result = await response.json();
 
                 if (result.success) {
-                    console.log('SMS sent:', result);
                     setLoading(false);
                     setIsOtpPopupOpen(true);
                 } else {
@@ -169,7 +162,6 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
             }
             setLoading(false);
             setIsModelPopupOpen(true);
-            console.log('bookingId', bookingId);
 
         } catch (err) {
             setErrorMessage('Failed to fetch reschedule');
@@ -183,9 +175,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
     };
 
     useEffect(() => {
-        console.log('isUpdated useEffect:', formData.isUpdated);
         if (formData.isUpdated) {
-            console.log('displaying toastbox');
             toast.success('Details successfully updated', {
                 position: 'top-right',
                 autoClose: 3000,

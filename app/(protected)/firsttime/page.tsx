@@ -2,9 +2,13 @@
 
 import React from 'react';
 import FirstTimePage from '@/components/firsttime/FirstTimePage';
-
+import { FormProvider } from '@/components/FormContext';
 const FirstTime: React.FC = () => {
-  return <FirstTimePage />;
+  return (
+    <FormProvider>
+      <FirstTimePage />
+    </FormProvider>
+  );
 };
 
 export default FirstTime;

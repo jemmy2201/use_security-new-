@@ -61,6 +61,8 @@ interface FormContextProps {
     setFormData: React.Dispatch<React.SetStateAction<FormData>>;
     errors: { [key: string]: string };
     setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+    saveDraftFunction: (() => Promise<void>) | null;
+    setSaveDraftFunction: React.Dispatch<React.SetStateAction<(() => Promise<void>) | null>>;
 }
 
 // Create the context with the correct type
@@ -70,9 +72,10 @@ const FormContext = createContext<FormContextProps | undefined>(undefined);
 const FormProvider = ({ children }: { children: ReactNode }) => {
     const [formData, setFormData] = useState<FormData>({});
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [saveDraftFunction, setSaveDraftFunction] = useState<(() => Promise<void>) | null>(null);
 
     return (
-        <FormContext.Provider value={{ formData, setFormData, errors, setErrors }}>
+        <FormContext.Provider value={{ formData, setFormData, errors, setErrors, saveDraftFunction, setSaveDraftFunction }}>
             {children}
         </FormContext.Provider>
     );

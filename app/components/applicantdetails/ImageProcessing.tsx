@@ -36,8 +36,6 @@ const ImageProcessing = () => {
         await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
         await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
 
-        console.log('Image processing applicationType:', formData.applicationType);
-        console.log('Image processing image url:', formData.imageUrl);
         if (formData.imageUrl) {
           const img = document.createElement('img');
           img.width = 400;
@@ -48,7 +46,6 @@ const ImageProcessing = () => {
           //img.src = formData.imageUrl;
 
           img.onload = () => {
-            console.log("Image loaded successfully");
             setFormData(prevFormData => ({
               ...prevFormData,
               isFaceDetected: true,
@@ -119,7 +116,6 @@ const ImageProcessing = () => {
       imageElement.onload = async () => {
         try {
           const detectionSingleFace = await faceapi.detectSingleFace(imageElement).withFaceLandmarks();
-          console.log('detectionSingleFace', detectionSingleFace);
           let isStraight = true;
           let isShoulderVisible = true;
           if (detectionSingleFace) {
@@ -131,14 +127,11 @@ const ImageProcessing = () => {
             const { x: noseX, y: noseY } = landmarks.getNose()[3]; // Get the nose position
             const eyeLineSlope = (eyeRightY - eyeLeftY) / (eyeRightX - eyeLeftX);
             const angle = Math.atan(eyeLineSlope) * (180 / Math.PI); // Convert radians to degrees
-            console.log('Face angle:', angle);
             isStraight = Math.abs(angle) < 10;
-            console.log('Is the face straight?', isStraight);
             setStraightFaceDetected(isStraight);
 
             // Check if shoulders are visible
             isShoulderVisible = checkIfShouldersVisible(landmarks, imageElement.height);
-            console.log('Are shoulders visible?', isShoulderVisible);
             setShouldersVisible(isShoulderVisible);
 
           }
@@ -162,7 +155,6 @@ const ImageProcessing = () => {
           const resizedImage = resizeImage(imageElement, 400, 514);
           setImage(resizedImage);
           const fileName = formData?.passid + formData.nric?.slice(-4);
-          console.log('image file name:', fileName);
           setFormData(prevFormData => ({
             ...prevFormData,
             ['image']: resizedImage,
@@ -174,10 +166,6 @@ const ImageProcessing = () => {
             ['errorPhoto']: '',
           }));
 
-          console.log('isFaceDetected', isFaceDetected);
-          console.log('isBgColorMatch', isBgColorMatch);
-          console.log('isStraight', isStraight);
-          console.log('isShoulderVisible', isShoulderVisible);
         } catch (error) {
           console.error('Error processing image:', error);
         } finally {
@@ -190,7 +178,6 @@ const ImageProcessing = () => {
   const detectFace = async (imageElement: HTMLImageElement) => {
     try {
       const detections = await faceapi.detectAllFaces(imageElement).withFaceLandmarks();
-      console.log('Face detections:', detections);
       return detections.length > 0;
     } catch (error) {
       console.error('Error detecting face:', error);
@@ -201,11 +188,9 @@ const ImageProcessing = () => {
   const detectSpectacles = async (imageElement: HTMLImageElement) => {
     try {
       const detections = await faceapi.detectAllFaces(imageElement, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks();
-      console.log('Glass detections:', detections);
 
       if (detections.length > 0) {
         const landmarks = detections[0].landmarks;
-        console.log('Landmarks:', landmarks);
 
         const leftEye = landmarks.getLeftEye();
         const rightEye = landmarks.getRightEye();
@@ -215,7 +200,6 @@ const ImageProcessing = () => {
           const eyeDistance = Math.hypot(leftEye[3].x - rightEye[3].x, leftEye[3].y - rightEye[3].y);
           const noseWidth = Math.hypot(nose[2].x - nose[1].x, nose[2].y - nose[1].y);
 
-          console.log('Eye Distance:', eyeDistance, 'Nose Width:', noseWidth);
 
           // Updated heuristic based on your data
           let isGlassesDetected = false;
@@ -227,7 +211,6 @@ const ImageProcessing = () => {
             // Lower likelihood, but nose width can refine the decision
             isGlassesDetected = noseWidth > 6.5 && noseWidth < 8.5; // Allow some leeway here
           }
-          console.log('Glasses detected:', isGlassesDetected);
           return isGlassesDetected;
         }
       }
@@ -274,7 +257,6 @@ const ImageProcessing = () => {
     }
 
     const whitePixelPercentage = (whitePixelCount / totalPixelCount) * 100;
-    console.log('whitePixelPercentage:', whitePixelPercentage);
     return whitePixelPercentage > 40;
   };
 
@@ -325,7 +307,6 @@ const ImageProcessing = () => {
     variance /= pixelCount;
 
     const contrast = Math.sqrt(variance); // Standard deviation as contrast
-    console.log(' averageBrightness, contrast', averageBrightness, contrast);
     return { brightness: averageBrightness, contrast };
   };
 
@@ -348,7 +329,6 @@ const ImageProcessing = () => {
         bookingId,
       });
 
-      console.log('API Response:', response.data);
     } catch (error) {
       console.error('Error sending data to API:', error);
     }

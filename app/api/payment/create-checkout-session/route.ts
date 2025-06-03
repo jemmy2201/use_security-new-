@@ -27,8 +27,6 @@ export async function POST(req: NextRequest) {
   if (encryptedNric instanceof NextResponse) {
     return encryptedNric; // Return the redirect response if necessary
   }
-  console.log('bookingId:', bookingId);
-  console.log('encrypted nric:', encryptedNric);
 
   // Validate required fields
   if (!encryptedNric || !bookingId) {

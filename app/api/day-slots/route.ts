@@ -30,7 +30,6 @@ export async function GET(request: NextRequest) {
   }
   try {
 
-    console.log('selectedDateString:', selectedDateString);
     const encryptedNric = await getEncryptedNricFromSession(request);
     if (encryptedNric instanceof NextResponse) {
       return encryptedNric;
@@ -38,9 +37,6 @@ export async function GET(request: NextRequest) {
     if (!selectedDateString) {
       return new Response(JSON.stringify({ error: 'Selected Date reqquire' }), { status: 400 });
     }
-
-
-    console.log('selectedDateString:', selectedDateString);
 
     const dateSchedules: bookingDate[] = await prisma.$queryRaw`
       select appointment_date as appointmentDate, time_start_appointment as timeStartAppointment, count(*) as totalCount 
@@ -62,8 +58,6 @@ export async function GET(request: NextRequest) {
       .filter((timeSlot) => timeSlot !== null);
 
     const disabledSlots = convertTimeSlots(fullSlotTime);;
-
-    console.log('returning full time slots for day:', selectedDateString, disabledSlots);
 
     return NextResponse.json({ disabledSlots });
 

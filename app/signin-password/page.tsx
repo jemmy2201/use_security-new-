@@ -42,12 +42,9 @@ const HomePage: React.FC = () => {
 
       const result = await response.json();
       if (response.ok) {
-        console.log(result.message);
         router.push('/terms');
       } else {
         setStartDateError(result.message);
-
-        console.error(result.message);
       }
     } catch (error) {
       console.error('Error submitting form:', error);

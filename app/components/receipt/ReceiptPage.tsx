@@ -47,7 +47,6 @@ export interface userInfo {
 }
 
 const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
-  console.log('Booking ID:', bookingId);
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -141,7 +140,6 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
   };
 
   const formatExpiryDate = (dateStringExpiryDate: string) => {
-    console.log('dateStringExpiryDate:', dateStringExpiryDate);
     if (!dateStringExpiryDate) {
       return '';
     }
@@ -180,9 +178,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
     const storedData = sessionStorage.getItem('users');
     if (storedData) {
       const actionTypeValue = sessionStorage.getItem('actionTypeValue');
-      console.log('Action type value:', typeof actionTypeValue);
       const parsedData: userInfo = JSON.parse(storedData);
-      console.log('parsedData userinfo: ', parsedData);
       setUsers(parsedData);
     }
 
@@ -418,12 +414,14 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
           <div className={receiptContentstyles.receiptTextBox1}>
             <div className={receiptContentstyles.boxWidth}>
-              <div className={globalStyleCss.regularBold}> ID card no.</div>
+              <div className={globalStyleCss.regularBold}> Pass ID No.</div>
             </div>
             <div className={receiptContentstyles.boxWidth}>
               <div className={globalStyleCss.regular}>
                 {' '}
-                {bookingSchedule?.passid}
+                {bookingSchedule?.passid
+                    ? bookingSchedule.passid.slice(0, -2)
+                    : ''}
               </div>
             </div>
           </div>
@@ -464,7 +462,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
           <div className={receiptContentstyles.receiptTextBox1}>
             <div className={receiptContentstyles.boxWidth}>
-              <div className={globalStyleCss.regularBold}> NRIC / FIN no.</div>
+              <div className={globalStyleCss.regularBold}> NRIC / FIN No.</div>
             </div>
             <div className={receiptContentstyles.boxWidth}>
               <div className={globalStyleCss.regular}> {users?.textNric}</div>

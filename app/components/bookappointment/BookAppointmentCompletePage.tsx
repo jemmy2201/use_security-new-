@@ -22,7 +22,6 @@ const BookAppointmentCompletePage: React.FC = () => {
     const onReschedule = () => {
         setLoading(true);
         setError(null);
-        console.log('bookingId', formData.bookingId);
         const bookingId = formData.bookingId;
         try {
             router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId || '')}`);
@@ -38,7 +37,6 @@ const BookAppointmentCompletePage: React.FC = () => {
     };
 
     const formatExpiryDate = (dateStringExpiryDate: string) => {
-        console.log('dateStringExpiryDate:', dateStringExpiryDate);
         if (!dateStringExpiryDate) {
             return '';
         }
@@ -145,9 +143,12 @@ const BookAppointmentCompletePage: React.FC = () => {
 
                         <div className={CompleteContentstyles.contentBox}>
                             <div className={CompleteContentstyles.item}>
-                                <div className={globalStyleCss.regularBold}>ID card no. </div>
-                                <div className={CompleteContentstyles.inputText}>{bookingSchedule?.passid}</div>
-
+                                <div className={globalStyleCss.regularBold}>Pass ID No. </div>
+                                    <div className={CompleteContentstyles.inputText}>                  
+                                        {bookingSchedule?.passid
+                                        ? bookingSchedule.passid.slice(0, -2)
+                                        : ''}
+                                    </div>
                             </div>
                             <div className={CompleteContentstyles.item}>
                                 <div className={globalStyleCss.regularBold}>ID card date of expiry </div>

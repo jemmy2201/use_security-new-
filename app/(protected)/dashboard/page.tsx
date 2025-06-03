@@ -2,13 +2,15 @@
 
 import React from 'react';
 import DashBoardPage from '../../components/dashboard/DashBoardPage';
+import { FormProvider } from '@/components/FormContext';
 
 const Dashboard: React.FC = () => {
 
   return (
   
-    <DashBoardPage />
-  
+    <FormProvider>
+      <DashBoardPage />
+    </FormProvider>
 
   );
 };

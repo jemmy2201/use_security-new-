@@ -34,7 +34,6 @@ const ReviewImageProcessing: React.FC = () => {
         await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
         await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
         await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
-        console.log('Review Image processing image url:', formData.imageUrl);
         if (formData.imageUrl) {
           const img = document.createElement('img');
           img.width = 400;
@@ -42,7 +41,6 @@ const ReviewImageProcessing: React.FC = () => {
           img.src = `/api/get-image?imageName=${formData.imageUrl}`;
 
           img.onload = () => {
-            console.log("Image loaded successfully");
             setFormData(prevFormData => ({
               ...prevFormData,
               isFaceDetected: true,
@@ -89,8 +87,6 @@ const ReviewImageProcessing: React.FC = () => {
 
     const horizontalOffset = Math.abs(faceCenterX - imageCenterX) / imageWidth;
     const verticalOffset = Math.abs(faceCenterY - imageHeight) / imageHeight;
-    console.log('horizontalOffset:', horizontalOffset);
-    console.log('horizontalOffset:', horizontalOffset);
 
     return horizontalOffset < 0.1 && verticalOffset < 0.1;
   }
@@ -125,7 +121,6 @@ const ReviewImageProcessing: React.FC = () => {
       imageElement.onload = async () => {
         try {
           const detectionSingleFace = await faceapi.detectSingleFace(imageElement).withFaceLandmarks();
-          console.log('detectionSingleFace', detectionSingleFace);
           let isStraight = true;
           let isShoulderVisible = true;
           if (detectionSingleFace) {
@@ -137,14 +132,11 @@ const ReviewImageProcessing: React.FC = () => {
             const { x: noseX, y: noseY } = landmarks.getNose()[3]; // Get the nose position
             const eyeLineSlope = (eyeRightY - eyeLeftY) / (eyeRightX - eyeLeftX);
             const angle = Math.atan(eyeLineSlope) * (180 / Math.PI); // Convert radians to degrees
-            console.log('Face angle:', angle);
             isStraight = Math.abs(angle) < 10;
-            console.log('Is the face straight?', isStraight);
             setStraightFaceDetected(isStraight);
 
             // Check if shoulders are visible
             isShoulderVisible = checkIfShouldersVisible(landmarks, imageElement.height);
-            console.log('Are shoulders visible?', isShoulderVisible);
             setShouldersVisible(isShoulderVisible);
           }
 
@@ -167,7 +159,6 @@ const ReviewImageProcessing: React.FC = () => {
           const resizedImage = resizeImage(imageElement, 400, 514);
           setImage(resizedImage);
           const fileName = formData?.passid + formData.nric?.slice(-4);
-          console.log('image file name:', fileName);
           setFormData(prevFormData => ({
             ...prevFormData,
             ['image']: resizedImage,
@@ -179,10 +170,6 @@ const ReviewImageProcessing: React.FC = () => {
             ['errorPhoto']: '',
           }));
 
-          console.log('isFaceDetected', isFaceDetected);
-          console.log('isBgColorMatch', isBgColorMatch);
-          console.log('isStraight', isStraight);
-          console.log('isStraight', isShoulderVisible);
         } catch (error) {
           console.error('Error processing image:', error);
         } finally {
@@ -195,7 +182,6 @@ const ReviewImageProcessing: React.FC = () => {
   const detectFace = async (imageElement: HTMLImageElement) => {
     try {
       const detections = await faceapi.detectAllFaces(imageElement).withFaceLandmarks();
-      console.log('Face detections:', detections);
       return detections.length > 0;
     } catch (error) {
       console.error('Error detecting face:', error);
@@ -206,7 +192,6 @@ const ReviewImageProcessing: React.FC = () => {
   const detectSpectacles = async (imageElement: HTMLImageElement) => {
     try {
       const detections = await faceapi.detectAllFaces(imageElement).withFaceLandmarks();
-      console.log('Glass detections:', detections);
 
       if (detections.length > 0) {
         const landmarks = detections[0].landmarks;
@@ -222,7 +207,6 @@ const ReviewImageProcessing: React.FC = () => {
           const isGlassesDetected = eyeDistance < 40 && noseWidth > 20;
 
           // Additional checks can be added here
-          console.log('Glasses detected:', isGlassesDetected);
           return isGlassesDetected;
         }
       }
@@ -299,7 +283,6 @@ const ReviewImageProcessing: React.FC = () => {
         bookingId,
       });
 
-      console.log('API Response:', response.data);
     } catch (error) {
       console.error('Error sending data to API:', error);
     }

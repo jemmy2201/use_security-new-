@@ -19,14 +19,12 @@ const CompletePage: React.FC<CompletePageProps> = ({
   bookingId,
   reschedule,
 }) => {
-  console.log('Booking ID:', bookingId);
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [bookingSchedule, setBookingSchedule] = useState<booking_schedules>();
 
   const formatExpiryDate = (dateStringExpiryDate: string) => {
-    console.log('dateStringExpiryDate:', dateStringExpiryDate);
     if (!dateStringExpiryDate) {
       return '';
     }
@@ -59,7 +57,6 @@ const CompletePage: React.FC<CompletePageProps> = ({
   const onReschedule = () => {
     setLoading(true);
     setError(null);
-    console.log('bookingId', bookingId);
     try {
       router.push(`/reschedule?bookingId=${encodeURIComponent(bookingId)}`);
     } catch (err) {
@@ -200,9 +197,11 @@ const CompletePage: React.FC<CompletePageProps> = ({
             </div>
             <div className={CompleteContentstyles.collectionTextContainer}>
               <div className={CompleteContentstyles.collectionTextSpan}>
-                <div className={globalStyleCss.regularBold}>ID card no.</div>
+                <div className={globalStyleCss.regularBold}>Pass ID No.</div>
                 <div className={globalStyleCss.regular}>
-                  {bookingSchedule?.passid}
+                  {bookingSchedule?.passid
+                    ? bookingSchedule.passid.slice(0, -2)
+                    : ''}
                 </div>
               </div>
 

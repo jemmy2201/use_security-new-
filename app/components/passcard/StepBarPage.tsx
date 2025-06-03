@@ -45,7 +45,7 @@ const steps = [
 const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
 
     const [activeStep, setActiveStep] = useState<number>(0);
-    const { formData, setFormData } = useFormContext();
+    const { formData, setFormData, setSaveDraftFunction } = useFormContext();
     const [isOtpPopupOpen, setIsOtpPopupOpen] = useState<boolean>(false); // State for OTP popup
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -63,13 +63,10 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
     useEffect(() => {
         const sessionId = searchParams.get('session_id');
         if (sessionId) {
-            console.log('payment success setloading true');
             setLoading(true);
-            console.log('inside stepbar page:');
             fetch(`/api/payment/success?session_id=${sessionId}`)
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log('step bar page after payment success from stripe, data:', data);
                     const bookingData: booking_schedules = data;
                     setFormData(prevFormData => ({
                         ...prevFormData,
@@ -85,14 +82,12 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                     }))
                     setIsPaymentSuccessful(true);
                     setActiveStep(3);
-                    console.log('active step set to 3 and loading false');
                     setLoading(false);
                 }
                 )
                 .catch((err) => console.error(err));
         }
     }, [searchParams, setFormData]);
-
 
 
     const handleNext = async () => {
@@ -335,7 +330,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                         ...prevFormData,
                         ['isAppointmentConfirmed']: true,
                     }));
-                    console.log("Appointment: Saved successfully:", result);
                 } catch (error) {
                     console.error("Appointment: Error saving:", error);
                 }
@@ -349,13 +343,11 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             } else {
                 if (formData.originalMobileno === formData.mobileno
                     || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
-                    console.log('same mobile');
                     setIsOtpPopupOpen(false);
                     if (activeStep < steps.length - 1) {
                         setActiveStep(prevStep => prevStep + 1);
                     }
                 } else {
-                    console.log('mobile changed', formData.mobileno);
                     const response = await fetch('/api/sms/send-sms', {
                         method: 'POST',
                         headers: {
@@ -367,10 +359,8 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                     });
                     const result = await response.json();
 
-                    console.log('send sms result:', result);
 
                     if (result.success) {
-                        console.log('SMS sent:', result);
                         setIsOtpPopupOpen(true);
                     } else {
                         alert(result.message);
@@ -389,7 +379,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 email: formData.email,
                 actionType: actionType,
             };
-            console.log('payload', payload)
             const response = await fetch('/api/handle-user', {
                 method: 'POST',
                 headers: {
@@ -404,8 +393,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             }
 
             const result = await response.json();
-            console.log("Personal Details: Draft saved successfully:", result);
-            console.log('showing toast message');
 
         } catch (error) {
             console.error("Personal Details: Error saving draft:", error);
@@ -415,9 +402,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
     const saveApplicantDetails = async () => {
         try {
 
-            console.log('application type: ', formData.applicationType);
-            console.log('saveReviewDetails booking id', formData.bookingId);
-            console.log('saveReviewDetails id', formData.id);
 
             const response = await fetch('/api/handle-applicant-details/new', {
                 method: 'POST',
@@ -449,7 +433,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             }
 
             const result = await response.json();
-            console.log("Applicant Details: Draft saved successfully:", result);
 
         } catch (error) {
             console.error("Applicant Details: Error saving draft:", error);
@@ -458,7 +441,6 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
 
     const saveReviewDetails = async () => {
         try {
-            console.log('saveReviewDetails', formData.bookingId);
             const response = await fetch('/api/handle-review-details/new', {
                 method: 'POST',
                 headers: {
@@ -477,15 +459,12 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             }
 
             const result = await response.json();
-            console.log("Review Details: Draft saved successfully:", result);
         } catch (error) {
             console.error("Review Details: Error saving draft:", error);
         }
     }
 
     const handleSaveDraft = async () => {
-        console.log('activeStep', activeStep);
-
 
         if (activeStep == 0) {
             let validStepZero = true;
@@ -513,6 +492,32 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                     errorMobileNumber: '',
                 }))
             }
+
+            if (formData.originalMobileno === formData.mobileno
+                || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
+                setIsOtpPopupOpen(false);
+            } else {
+                const response = await fetch('/api/sms/send-sms', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        mobile: formData.mobileno,
+                    }),
+                });
+                const result = await response.json();
+
+
+                if (result.success) {
+                    setIsOtpPopupOpen(true);
+                    return;
+                } else {
+                    alert(result.message);
+                }
+
+            }
+
             if (!validStepZero) return;
             saveUserDetails();
             toast.success('Your draft has been saved', {
@@ -608,10 +613,8 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
 
             if (formData.originalMobileno === formData.mobileno
                 || (formData.isOtpVerified && formData.mobileno == formData.verifiedMobileNo)) {
-                console.log('same mobile');
                 setIsOtpPopupOpen(false);
             } else {
-                console.log('mobile changed', formData.mobileno);
                 const response = await fetch('/api/sms/send-sms', {
                     method: 'POST',
                     headers: {
@@ -623,10 +626,8 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                 });
                 const result = await response.json();
 
-                console.log('send sms result:', result);
 
                 if (result.success) {
-                    console.log('SMS sent:', result);
                     setIsOtpPopupOpen(true);
                     return;
                 } else {
@@ -739,6 +740,15 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
     const handleOtpCancel = () => {
         setIsOtpPopupOpen(false); // Close OTP popup if user cancels
     };
+
+    // Register the save draft function in the context
+    useEffect(() => {
+        setSaveDraftFunction(() => handleSaveDraft);
+        // Clean up when unmounting
+        return () => {
+            setSaveDraftFunction(null);
+        };
+    }, [activeStep, formData, setSaveDraftFunction]);
 
     return (
         <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'column', justifyContent: 'space-between', height: '100%', background: '#F5F6F7' }}>

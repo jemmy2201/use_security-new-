@@ -76,20 +76,16 @@ const authOptions: NextAuthOptions = {
   providers: [SingPassProvider],
   callbacks: {
     async redirect({ url, baseUrl }) {
-      console.log('inside redirect call', url, baseUrl);
       return `${baseUrl}/xyz`; 
     },
     async signIn({ user, account, profile }) {
-      console.log('sign in------', user, account, profile);
       return true;
     },
     async session({ session, token, user }) {
-      console.log('inside session --- user: ', user);
       session.user = user;
       return session;
     },
     async jwt({ token, account }) {
-      console.log('inside jwt ---')
       if (account) {
         token.accessToken = account.access_token;
 

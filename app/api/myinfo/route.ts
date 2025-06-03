@@ -57,9 +57,9 @@ export async function GET(request: NextRequest) {
       const textNric = encryptDecrypt(encryptedNric as string, 'decrypt');
 
       const firstChar = textNric?.charAt(0);
-      const lastChar = textNric?.charAt(textNric.length - 1);
-      const middleLength = textNric ? textNric.length - 2 : 0;
-      const maskedString = `${firstChar}${'X'.repeat(middleLength)}${lastChar}`;
+      const lastFourChars = textNric ? textNric.substring(textNric.length - 4) : '';
+      const middleLength = textNric ? textNric.length - 5 : 0; // First char + last 4 chars = 5 chars revealed
+      const maskedString = `${firstChar}${'X'.repeat(middleLength)}${lastFourChars}`;
       responseData.textNric = maskedString;
 
       return new Response(JSON.stringify(responseData, replacer), {
