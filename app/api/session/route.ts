@@ -10,13 +10,11 @@ const validateSession = (cookies: Record<string, string>) => {
 };
 
 export async function GET(request: NextRequest) {
-    console.log('session api called for popup');
 
     const cookies = request.headers.get('cookie') || '';
     const cookieObj = Object.fromEntries(
         cookies.split('; ').map(c => c.split('=').map(decodeURIComponent))
     );
-    console.log('calling validateSession');
     const sessionInfo = validateSession(cookieObj);
     const encryptedNric = await getEncryptedNricFromSession(request);
     if (encryptedNric instanceof NextResponse) {

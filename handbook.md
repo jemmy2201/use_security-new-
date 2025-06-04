@@ -154,7 +154,7 @@ This user dont have any valid license.
 **Test Case4:** Applicant get popup with message (No valid license) When applicant click on Application for new ID Card and select PI
 
 
-### 2. User with one valid license (Security Officier / Aviation Security Officier)
+### 2. User with one valid license (Security Officer / Aviation Security Officer)
 
 ```bash
 -- User (NRIC) = S1111111X, password: 123123
@@ -203,7 +203,7 @@ values
 **Test Case10:** Applicant has to rebook appointment if resubmitted photo and appointment date gap is less then 3 days.
 
 
-### 3. User with 2 valid license (Security Officier / Aviation Security Officier & Personal Investigator)
+### 3. User with 2 valid license (Security Officer / Aviation Security Officer & Personal Investigator)
 
 ```bash
 -- User (NRIC) = P1111111X, password: 123123

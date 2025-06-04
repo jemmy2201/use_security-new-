@@ -103,7 +103,6 @@ export async function GET(request: NextRequest) {
       status: 200, headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.log('error ', error);
     return new Response(JSON.stringify({ error: 'Error fetching schedules' }), { status: 500 });
 
   } finally {

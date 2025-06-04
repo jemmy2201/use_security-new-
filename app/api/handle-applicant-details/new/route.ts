@@ -68,7 +68,6 @@ export async function POST(req: NextRequest) {
                         TR_SSM: trSsm
                     },
                 });
-                console.log('Replace Schedule updated:', updatedSchedule);
 
                 if (image) {
                     const base64Data = image.replace(/^data:image\/\w+;base64,/, '');
@@ -151,7 +150,6 @@ export async function POST(req: NextRequest) {
                         TR_SSM: trSsm
                     },
                 });
-                console.log('Schedule updated:', updatedSchedule);
 
                 if (image) {
                     const base64Data = image.replace(/^data:image\/\w+;base64,/, '');

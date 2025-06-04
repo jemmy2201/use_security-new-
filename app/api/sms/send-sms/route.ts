@@ -15,24 +15,20 @@ export async function POST(request: NextRequest) {
     try {
         const triggerSms = process.env.SEND_SMS_ENABLE === 'true';
         const { mobile } = await request.json();
-        console.log('mobile no:', mobile);
         if (!mobile) {
             return NextResponse.json({ success: false, message: 'Invalid mobile number' }, { status: 400 });
         }
 
         const validatedPhone = validatePhoneNumber(mobile);
-        console.log('sending otp, validated mobile no:', validatedPhone);
         if (validatedPhone.length !== 10) {
             return NextResponse.json({ success: false, message: 'Invalid mobile number' }, { status: 400 });
         }
-        console.log('sending otp, validated mobile no:', validatedPhone);
         const username = process.env.GATEWAY_SMS_USERNAME;
         const password = process.env.GATEWAY_SMS_PASSWOD;
         const senderId = process.env.GATEWAY_SMS_SENDER;
         const apiUrl = process.env.GATEWAY_SMS_URL;
         const otpNumber = Math.floor(1000 + Math.random() * 9000);
         const smsMessage = `Use OTP ${otpNumber} to verify your phone number`;
-        console.log('otp message:', smsMessage);
 
         const apiCredentials = { apiusername: username, apipassword: password, };
 
@@ -85,7 +81,6 @@ function validatePhoneNumber(phoneNumber: string): string {
     }
 
     const digitsOnly = phoneNumber.replace(/\D/g, '');
-    console.log('digitsOnly', digitsOnly);
     return digitsOnly;
 }
 

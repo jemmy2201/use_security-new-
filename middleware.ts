@@ -9,7 +9,6 @@ const publicRoutes = ['/signin', '/']
 
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
-  console.log('Request URL and path:', req.url, path);
 
   if (path == '/api/jwks' || path == '/api/auth/signin/singpass' 
     || path == '/api/usesecurity/callback'

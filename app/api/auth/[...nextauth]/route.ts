@@ -95,7 +95,6 @@ const authOptions: NextAuthOptions = {
           token.myInfo = myInfoData;
 
           const decoded = await verifyToken(token.accessToken as string);
-          console.log('Decoded JWT:', decoded);
         } catch (error) {
           console.error('Failed to fetch MyInfo data:', error);
         }

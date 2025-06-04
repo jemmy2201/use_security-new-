@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
         if (encryptedNric instanceof NextResponse) {
             return encryptedNric; // Return the redirect response if necessary
         }
-        console.log('actionType:bookingId:encrypted nric', actionType, bookingId, encryptedNric);
 
         if (!encryptedNric || !bookingId || !applicationType) {
             return NextResponse.json(
@@ -67,8 +66,8 @@ export async function POST(req: NextRequest) {
                         time_end_appointment: '',
                         trans_date: '',
                         status_payment: '',
-                        stripe_payment_id: '',
-                        stripe_session_id: '',
+                        stripe_payment_id: null,
+                        stripe_session_id: null,
                     },
                 });
             } else {
@@ -99,7 +98,6 @@ export async function POST(req: NextRequest) {
                 updatedSchedule.data_barcode_paynow = '';
                 updatedSchedule.QRstring = '';
             }
-            console.log('Schedule updated:', updatedSchedule);
             const serializeduUpdatedSchedule = serializeBigInt(updatedSchedule);
             return NextResponse.json(serializeduUpdatedSchedule, { status: 200 });
 

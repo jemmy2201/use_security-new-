@@ -11,7 +11,6 @@ export async function POST(req: NextRequest) {
         if (encryptedNric instanceof NextResponse) {
             return encryptedNric; // Return the redirect response if necessary
         }
-        console.log('handle-user, actionType:', actionType);
         if (!encryptedNric || !mobileno || !email) {
             return NextResponse.json(
                 { error: 'nric / fin, mobile, and email are required' },
@@ -23,7 +22,6 @@ export async function POST(req: NextRequest) {
         if (validatedPhone.length !== 10) {
             return NextResponse.json({ success: false, message: 'Invalid mobile number' }, { status: 400 });
         }
-        console.log('savinguser details, validated mobile no:', validatePhoneNumber);
         const userRecord = await prisma.users.findFirst({
             where: {
                 ...(encryptedNric && { nric: encryptedNric }),
@@ -58,7 +56,6 @@ export async function POST(req: NextRequest) {
             // Serialize the updatedUserRecord to handle BigInt
             const serializedUserRecord = serializeBigInt(updatedUserRecord);
 
-            console.log('User Record Updated:', serializedUserRecord);
             return NextResponse.json({ message: 'Personal details updated' });
         } else {
             return NextResponse.json({ error: 'Applicant not found' }, { status: 400 });

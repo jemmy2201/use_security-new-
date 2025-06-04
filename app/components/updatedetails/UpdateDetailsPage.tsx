@@ -345,7 +345,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     onChange={handleRadioChange}
                                     disabled={!pwmEnable} 
                                 />
-                                    Security Officier</div>
+                                    Security Officer</div>
                             </label>
 
                             <label className={updateDetailsContentstyles.checkboxes}>
@@ -356,7 +356,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
                                     onChange={handleRadioChange}
                                     disabled={!pwmEnable2} 
                                 />
-                                    Senior Security Officier</div>
+                                    Senior Security Officer</div>
                             </label>
 
                             <label className={updateDetailsContentstyles.checkboxes}>

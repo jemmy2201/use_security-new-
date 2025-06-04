@@ -102,7 +102,7 @@ export async function GET(request: NextRequest) {
         const gstAmount = parseFloat(gst.amount_gst ?? '0');
 
         const grandTotal: number = transactionAmount + gstAmount;
-        responseData.grandTotal = grandTotal + '0';
+        responseData.grandTotal = grandTotal.toFixed(2);
       }
       responseData.cardId = booking_schedules.card_id ? booking_schedules.card_id : '';
       return new Response(JSON.stringify(responseData), { status: 200 });

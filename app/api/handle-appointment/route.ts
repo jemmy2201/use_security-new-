@@ -12,8 +12,6 @@ export async function POST(req: NextRequest) {
         if (encryptedNric instanceof NextResponse) {
             return encryptedNric; // Return the redirect response if necessary
         }
-        console.log('bookingId:encryptedNric', bookingId, encryptedNric);
-        console.log('timeSlot:appointmentDate', timeSlot, appointmentDate);
         const formattedDate = new Date(appointmentDate).toISOString().split('T')[0];
         const [startTime, endTime] = timeSlot.split(" - ");
         if (!encryptedNric || !appointmentDate) {

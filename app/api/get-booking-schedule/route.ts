@@ -16,11 +16,6 @@ export async function GET(request: NextRequest) {
     if (encryptedNric instanceof NextResponse) {
       return encryptedNric;
     }
-    console.log(
-      'get-booking-schedule, bookingIdString:encryptedNric',
-      bookingIdString,
-      encryptedNric
-    );
 
     const bookingId = BigInt(bookingIdString) as bigint;
     const schedules = await prisma.booking_schedules.findUnique({
@@ -49,7 +44,6 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    console.log('schedules', schedules);
     // Custom replacer function to convert BigInt to string
     const replacer = (key: string, value: any) => {
       if (typeof value === 'bigint') {

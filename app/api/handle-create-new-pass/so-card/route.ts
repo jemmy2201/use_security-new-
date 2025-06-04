@@ -50,7 +50,6 @@ export async function GET(request: NextRequest) {
         },
       },
     });
-    console.log('passList', passList);
     if (!passList) {
       return new Response(JSON.stringify({ error: 'No record found' }), { status: 404 });
     }
@@ -73,7 +72,6 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    console.log('total pass cards: ', schedules.length);
 
     if (schedules.length == 0) {
       const booking_schedules = schedules[0];
@@ -102,7 +100,7 @@ export async function GET(request: NextRequest) {
         const gstAmount = parseFloat(gst.amount_gst ?? '0');
 
         const grandTotal: number = transactionAmount + gstAmount;
-        responseData.grandTotal = grandTotal + '0';
+        responseData.grandTotal = grandTotal.toFixed(2);
       } 
       responseData.cardId = booking_schedules.card_id ? booking_schedules.card_id : '';
       return new Response(JSON.stringify(responseData), { status: 200 });

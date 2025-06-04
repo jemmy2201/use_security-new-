@@ -6,7 +6,6 @@ export async function GET(request: Request) {
 
         const { searchParams } = new URL(request.url);
         const bookingId = searchParams.get('bookingId');
-        console.log('generate-pdf, bookingId:', bookingId);
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
 

@@ -20,7 +20,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       );
     }
 
-    console.log('Username:', username);
     const encryptedUserName = encryptDecrypt(username, 'encrypt');
 
 
@@ -34,7 +33,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       if(user && user.password){
         const nodeCompatibleHash = user.password.replace('$2y$', '$2b$');
         const isPasswordValid = await bcrypt.compare(password, nodeCompatibleHash);
-        console.log('isPasswordValid:', isPasswordValid);
         if(isPasswordValid){
           await createSession(username, 'dataToken');
           return NextResponse.json({ message: 'Login successful' });

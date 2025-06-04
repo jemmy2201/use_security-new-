@@ -29,7 +29,6 @@ export async function POST(req: NextRequest) {
             sameSite: 'lax',
             path: '/',
         });
-        console.log('refresh session done');
         return response;
     } catch (error) {
         console.error('Token renewal failed:', error);

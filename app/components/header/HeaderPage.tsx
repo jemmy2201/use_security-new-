@@ -64,7 +64,8 @@ const HeaderPage: React.FC = () => {
 
     const handleLogout = async () => {
         const actionTypeValue = sessionStorage.getItem('actionTypeValue');
-        if (actionTypeValue) {
+        // If actionTypeValue is set, show the logout popup
+        if (actionTypeValue && formData.paymentSuccess !== true) {
             setIsLogoutPopupOpen(true);
         } else {
             try {

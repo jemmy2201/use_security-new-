@@ -77,7 +77,6 @@ async function privateKeyJwe(code: string) {
         const { plaintext } = await compactDecrypt(code, key);
         const decodedToken = decodeJwt(new TextDecoder().decode(plaintext));
         const subject = decodedToken.sub;
-        console.log('Decrypted subject:', subject);
         return subject;
     } catch (error) {
         console.error('Error during JWE decryption:', error);
@@ -93,7 +92,6 @@ const convertSub = (sub: string) => {
 
 export async function GET(request: NextRequest, res: NextResponse) {
     const redirectUrlToTerms = process.env.NEXT_PUBLIC_URL + '/terms';
-    console.log('redirect url to terms and condition:', redirectUrlToTerms);
     const { searchParams } = new URL(request.url);
     const code = searchParams.get('code');
 
@@ -101,20 +99,12 @@ export async function GET(request: NextRequest, res: NextResponse) {
         return NextResponse.json({ error: 'Authorization code is missing' }, { status: 400 });
     }
     try {
-        console.log('Callback from Singpass login, auth code:', code);
 
         const jwtToken = await privateKeyJwt();
-
         const response = await idToken(jwtToken, code);
         const dataToken = response.id_token;
-
-        console.log('id token received (first 10 char): ', dataToken.substring(0,10));
-
         const jweDecoded = await privateKeyJwe(dataToken) as string;
-        console.log('Id Token decoded:', jweDecoded);
-
         const userId = convertSub(jweDecoded);
-        console.log('nric / userId : ', userId);
         await createSession(userId, dataToken);
         return NextResponse.redirect(new URL(redirectUrlToTerms, request.url));
 
