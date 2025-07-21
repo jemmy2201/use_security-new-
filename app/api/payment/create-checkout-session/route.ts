@@ -67,7 +67,11 @@ export async function POST(req: NextRequest) {
         );
         const gstAmount = parseFloat(gst.amount_gst ?? '0');
 
-        const grandTotal: number = transactionAmount + gstAmount;
+        let grandTotal: number = transactionAmount + gstAmount;
+        // Add 1.40 if payment method is 'card'
+        if (paymentMethod === 'card') {
+          grandTotal += 1.40;
+        }
         const total: number = Math.round(grandTotal * 100);
 
         const userRecord = await prisma.users.findFirst({
