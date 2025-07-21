@@ -137,7 +137,42 @@
             width: 250px;
           }
         }
+
+        .paymentOptionsContainer {
+          display: flex;
+          flex-direction: row;
+          gap: 24px;
+          width: 100%;
+          align-items: center;
+        }
+
+        .paymentOption {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 8px;
+          white-space: nowrap;
+        }
+
+        .paymentOption input[type="radio"] {
+          margin: 0;
+          cursor: pointer;
+          width: 18px;
+          height: 18px;
+        }
+
+        .paymentOption label {
+          cursor: pointer;
+          padding: 4px 0;
+        }
       }
     }
   }
+}
+
+.error {
+  color: #D32F2F;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
 }

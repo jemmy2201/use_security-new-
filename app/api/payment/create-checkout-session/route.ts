@@ -22,20 +22,19 @@ const stripe = new Stripe(getStripeKey(), {
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  const { bookingId } = body;
+  const { bookingId, paymentMethod } = body;
   const encryptedNric = await getEncryptedNricFromSession(req);
   if (encryptedNric instanceof NextResponse) {
     return encryptedNric; // Return the redirect response if necessary
   }
 
   // Validate required fields
-  if (!encryptedNric || !bookingId) {
+  if (!encryptedNric || !bookingId || !paymentMethod) {
     return NextResponse.json(
-      { error: 'nric / fin, bookingId are required' },
+      { error: 'nric / fin, bookingId, paymentMethod are required' },
       { status: 400 }
     );
   }
-
   try {
     const schedule = await prisma.booking_schedules.findFirst({
       where: {
@@ -78,7 +77,7 @@ export async function POST(req: NextRequest) {
         });
 
         const session = await stripe.checkout.sessions.create({
-          payment_method_types: ['card', 'paynow'],
+          payment_method_types: [paymentMethod],
           line_items: [
             {
               price_data: {
@@ -106,10 +105,6 @@ export async function POST(req: NextRequest) {
         console.log(
           'session id generated at stripe checkout session ',
           session.id
-        );
-        console.log(
-          'payment intent generated at stripe checkout session ',
-          session.payment_intent
         );
 
         await prisma.booking_schedules.update({

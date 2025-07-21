@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import makePaymentContentstyles from './MakePaymentContent.module.css';
 import globalStyleCss from '../globalstyle/Global.module.css';
@@ -16,7 +16,20 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
     const { formData, setFormData } = useFormContext();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [paymentMethod, setPaymentMethod] = useState<string>('paynow');
     const router = useRouter();
+    
+    useEffect(() => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            paymentMethod: paymentMethod,
+        }));
+    }, [paymentMethod, setFormData]);
+    
+    const handlePaymentMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setPaymentMethod(value);
+    };
 
     return (
 
@@ -56,6 +69,38 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
                         <div className={makePaymentContentstyles.item}>
                             <div className={globalStyleCss.regularBold}>Type of application </div>
                             <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>{formData.cardId == '1' ? 'Security Officer (SO) / Aviation Security Officer (AVSO)' : 'Private Investigator (PI)'}</div></div>
+                        </div>
+                    </div>
+                    <div className={makePaymentContentstyles.contentBox}>    
+                        <div className={makePaymentContentstyles.item}>
+                            <div className={globalStyleCss.regularBold}>Payment Method</div>
+                            <div className={makePaymentContentstyles.inputText}>
+                                <div className={globalStyleCss.regular}>
+                                    <div className={makePaymentContentstyles.paymentOption}>
+                                        <input
+                                            type="radio"
+                                            id="paynow"
+                                            name="paymentMethod"
+                                            value="paynow"
+                                            checked={paymentMethod === 'paynow'}
+                                            onChange={handlePaymentMethodChange}
+                                        />
+                                        <label htmlFor="paynow" className={globalStyleCss.regular}>PayNow</label>
+                                    </div>
+
+                                    <div className={makePaymentContentstyles.paymentOption}>
+                                        <input
+                                            type="radio"
+                                            id="card"
+                                            name="paymentMethod"
+                                            value="card"
+                                            checked={paymentMethod === 'card'}
+                                            onChange={handlePaymentMethodChange}
+                                        />
+                                        <label htmlFor="card" className={globalStyleCss.regular}>Credit Card</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

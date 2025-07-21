@@ -26,6 +26,7 @@ interface FormData {
     trObse?: string;
     trSsm?: string;
     image?: string;
+    paymentMethod?: string;
     paymentProcessed?: boolean;
     paymentSuccess?: boolean;
     paymentFailure?: boolean;

@@ -465,7 +465,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
     }
 
     const handleSaveDraft = async () => {
-
+        console.log('Saving draft for step:', activeStep);
         if (activeStep == 0) {
             let validStepZero = true;
             if (!formData.email) {
@@ -705,6 +705,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
                     bookingId: formData.id,
                     applicationType: formData.applicationType,
                     nric: formData.nric,
+                    paymentMethod: formData.paymentMethod,
                 }),
             });
 
