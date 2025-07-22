@@ -33,8 +33,8 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
 
     // Calculate display amount based on payment method
     const displayAmount = paymentMethod === 'card'
-        ? (parseFloat(formData.grandTotal) + 1.40).toFixed(2)
-        : formData.grandTotal;
+        ? (parseFloat(formData.grandTotal ?? '0') + 1.40).toFixed(2)
+        : formData.grandTotal ?? '0';
 
     return (
         <form>
