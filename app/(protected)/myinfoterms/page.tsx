@@ -1,14 +1,16 @@
 "use client";
 
 import React from 'react';
+import { FormProvider } from '../../components/FormContext';
 import MyInfoTermsPage from '../../components/myinfoterms/MyInfoTermsPage';
 
 const MyInfoTerms: React.FC = () => {
   return (
-    <div>
-      <MyInfoTermsPage />
-    </div>
-
+    <FormProvider>
+      <div>
+        <MyInfoTermsPage />
+      </div>
+    </FormProvider>
   );
 };
 
