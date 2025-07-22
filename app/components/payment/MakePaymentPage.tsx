@@ -77,7 +77,7 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
                                         </clipPath>
                                     </defs>
                                 </svg>
-                                <div className={globalStyleCss.regular}>&nbsp;There will be additional charge of 1.40 SGD for Credit Card payment.</div>
+                                <div className={globalStyleCss.regular}>&nbsp;There will be additional charge of S$1.40 for Credit Card payment.</div>
                             </div>
                         </div>
                     )}
