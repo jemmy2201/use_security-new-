@@ -31,8 +31,12 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
         setPaymentMethod(value);
     };
 
-    return (
+    // Calculate display amount based on payment method
+    const displayAmount = paymentMethod === 'card'
+        ? (parseFloat(formData.grandTotal) + 1.40).toFixed(2)
+        : formData.grandTotal;
 
+    return (
         <form>
             <div className={makePaymentContentstyles.mainContainer}>
                 <div className={makePaymentContentstyles.stepContentContainer}>
@@ -81,7 +85,7 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
                     <div className={makePaymentContentstyles.contentBox}>
                         <div className={makePaymentContentstyles.item}>
                             <div className={globalStyleCss.regularBold}>Amount payable (inclusive of GST) </div>
-                            <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>S${formData.grandTotal}</div></div>
+                            <div className={makePaymentContentstyles.inputText}><div className={globalStyleCss.regular}>S${displayAmount}</div></div>
 
                         </div>
                         <div className={makePaymentContentstyles.item}>
