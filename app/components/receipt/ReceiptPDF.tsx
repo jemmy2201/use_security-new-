@@ -139,7 +139,9 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
               colSpan={3}
               style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
-              {bookingSchedule?.passid}
+              {bookingSchedule?.passid
+                    ? bookingSchedule.passid.slice(0, -2)
+                    : ''}
             </td>
           </tr>
           <tr>
@@ -351,15 +353,13 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
                 border: '1px solid #ddd',
               }}
             >
-              Transaction Date
+
             </td>
             <td
               className={receiptContentstyles.valueCell}
               style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
-              {formatDate(
-                bookingSchedule?.trans_date ? bookingSchedule.trans_date : ''
-              )}
+
             </td>
             <td
               className={receiptContentstyles.labelCell}
