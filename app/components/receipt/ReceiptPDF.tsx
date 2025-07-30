@@ -411,8 +411,7 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
         the issuance of the PLRD ID card.
         <br />
         <span style={{ display: 'block', marginTop: '1px' }}>
-          Please note that the base transaction fee of $0.36 (inclusive of 9%
-          GST) is absorbed by USE.
+          Please note the base transaction fee of $0.36 paid via PAYNOW (inclusive of 9% GST) is absorbed by USE.
         </span>
       </div>
     </div>

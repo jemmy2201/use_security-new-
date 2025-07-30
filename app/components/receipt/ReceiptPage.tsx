@@ -475,7 +475,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
               <div className={globalStyleCss.header2}>Appointment details</div>
             </div>
           </div>
-          <div className={receiptContentstyles.receiptTextBox1}>
+          {/* <div className={receiptContentstyles.receiptTextBox1}>
             <div className={receiptContentstyles.warningBox}>
               <div
                 className={globalStyleCss.regular}
@@ -508,7 +508,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <hr className={receiptContentstyles.customhr}></hr>
 
