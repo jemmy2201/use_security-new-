@@ -5,8 +5,19 @@ import fetch from 'node-fetch';
 import jwt from 'jsonwebtoken';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
+import crypto from 'crypto';
 
 const privateKey = readFileSync(resolve('PrivateKey.pem'), 'utf8');
+
+function generateCodeChallenge(codeVerifier: string): string {
+    return crypto
+        .createHash('sha256')
+        .update(codeVerifier)
+        .digest('base64url');
+}
+
+const codeVerifier = "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk";
+const codeChallenge = generateCodeChallenge(codeVerifier);
 
 const SingPassProvider: OAuthConfig<any> = {
   id: 'singpass',
@@ -19,11 +30,13 @@ const SingPassProvider: OAuthConfig<any> = {
       response_type: 'code',
       redirect_uri: process.env.SINGPASS_REDIRECT_URI,
       nonce: 'dummySessionState',
-      state: 'dummySessionState'
+      state: 'dummySessionState',
+      code_challenge_method: 'S256',
+      code_challenge: codeChallenge,
     },
   },
   idToken: true,
-  checks: ['pkce', 'state'],
+  checks: ['state'],
   clientId: process.env.SINGPASS_CLIENT_ID,
   clientSecret: process.env.SINGPASS_CLIENT_SECRET,
   client: {
@@ -76,16 +89,20 @@ const authOptions: NextAuthOptions = {
   providers: [SingPassProvider],
   callbacks: {
     async redirect({ url, baseUrl }) {
+      console.log('inside redirect call', url, baseUrl);
       return `${baseUrl}/xyz`; 
     },
     async signIn({ user, account, profile }) {
+      console.log('sign in------', user, account, profile);
       return true;
     },
     async session({ session, token, user }) {
+      console.log('inside session --- user: ', user);
       session.user = user;
       return session;
     },
     async jwt({ token, account }) {
+      console.log('inside jwt ---')
       if (account) {
         token.accessToken = account.access_token;
 
@@ -95,6 +112,7 @@ const authOptions: NextAuthOptions = {
           token.myInfo = myInfoData;
 
           const decoded = await verifyToken(token.accessToken as string);
+          console.log('Decoded JWT:', decoded);
         } catch (error) {
           console.error('Failed to fetch MyInfo data:', error);
         }
