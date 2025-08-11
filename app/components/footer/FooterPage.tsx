@@ -8,7 +8,9 @@ const FooterPage: React.FC = () => {
     return (
         <div className={footerstyles.footerContainer}>
             <div className={footerstyles.boxUnderLine}>
-                <div className={globalStyleCss.regularLinkWhite}>User Guide</div>
+                <div className={globalStyleCss.regularLinkWhite}>
+                    <a href="/content/user_guide.pdf" target="_blank" rel="noopener noreferrer">User Guide</a>
+                </div>
                 <div>|</div>
                 <div className={globalStyleCss.regularLinkWhite}>
                     <a href="/content/terms.pdf" target="_blank" rel="noopener noreferrer">Terms & Conditions</a></div>

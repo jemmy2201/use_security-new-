@@ -22,7 +22,7 @@ const Modal: React.FC<ModalProps> = ({ message, onClose }) => {
                 ID Card is not due for renewal.
               </div>
               <div className={globalStyleCss.regular}>
-              The renewal notice will be sent by to you by Police Licensing and Regulatory Department (PLRD) 3 months prior to your licence expiry date.
+              The renewal notice will be sent by to you by Police Regulatory Department 3 months prior to your licence expiry date.
               </div>
               <div className={styleCss.modelButton}>
                 <button className={globalStyleCss.buttonTextBlack} onClick={onClose}>
