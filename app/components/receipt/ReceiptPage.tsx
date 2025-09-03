@@ -337,9 +337,20 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
             </div>
             <div className={receiptContentstyles.boxWidth}>
               <div className={globalStyleCss.regular}>
-                {bookingSchedule?.receiptNo
-                  ? bookingSchedule?.receiptNo
-                  : bookingSchedule?.receiptNo}
+                {bookingSchedule?.stripe_payment_id || bookingSchedule?.receiptNo}
+              </div>
+            </div>
+          </div>
+          <hr className={receiptContentstyles.customhr}></hr>
+          <div className={receiptContentstyles.receiptTextBox1}>
+            <div className={receiptContentstyles.boxWidth}>
+              <div className={globalStyleCss.regularBold}>
+                Receipt no.
+              </div>
+            </div>
+            <div className={receiptContentstyles.boxWidth}>
+              <div className={globalStyleCss.regular}>
+                {bookingSchedule?.receiptNo}
               </div>
             </div>
           </div>
