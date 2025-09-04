@@ -84,6 +84,79 @@ const ImageProcessing = () => {
     return jawBottomY < jawThreshold;
   };
 
+  // Enhanced face alignment detection with multi-feature approach
+  const detectEnhancedFaceAlignment = (landmarks: faceapi.FaceLandmarks68) => {
+    const leftEye = landmarks.getLeftEye();
+    const rightEye = landmarks.getRightEye();
+    const nose = landmarks.getNose();
+    const mouth = landmarks.getMouth();
+
+    // Calculate eye centers for more accurate alignment
+    const calculateEyeCenter = (eyeLandmarks: faceapi.Point[]) => {
+      const sumX = eyeLandmarks.reduce((sum, point) => sum + point.x, 0);
+      const sumY = eyeLandmarks.reduce((sum, point) => sum + point.y, 0);
+      return {
+        x: sumX / eyeLandmarks.length,
+        y: sumY / eyeLandmarks.length
+      };
+    };
+
+    // Eye alignment using centers
+    const leftEyeCenter = calculateEyeCenter(leftEye);
+    const rightEyeCenter = calculateEyeCenter(rightEye);
+    
+    const eyeLineSlope = (rightEyeCenter.y - leftEyeCenter.y) / (rightEyeCenter.x - leftEyeCenter.x);
+    const eyeAngle = Math.atan(eyeLineSlope) * (180 / Math.PI);
+
+    // Nose alignment check - nose should be relatively vertical
+    const noseBridge = nose[0]; // Nose top
+    const noseTip = nose[3]; // Nose bottom
+    const noseVerticalDeviation = Math.abs(noseTip.x - noseBridge.x);
+    const noseLength = Math.abs(noseTip.y - noseBridge.y);
+    const noseAngleFromVertical = Math.atan(noseVerticalDeviation / noseLength) * (180 / Math.PI);
+
+    // Mouth alignment check - mouth corners should be roughly horizontal
+    const leftMouthCorner = mouth[0]; // Left corner of mouth
+    const rightMouthCorner = mouth[6]; // Right corner of mouth
+    const mouthSlope = (rightMouthCorner.y - leftMouthCorner.y) / (rightMouthCorner.x - leftMouthCorner.x);
+    const mouthAngle = Math.atan(mouthSlope) * (180 / Math.PI);
+
+    // Thresholds for alignment detection
+    const EYE_ALIGNMENT_THRESHOLD = 5; // degrees (stricter than original 10)
+    const NOSE_ALIGNMENT_THRESHOLD = 15; // degrees from vertical
+    const MOUTH_ALIGNMENT_THRESHOLD = 8; // degrees
+
+    const isEyeAligned = Math.abs(eyeAngle) < EYE_ALIGNMENT_THRESHOLD;
+    const isNoseAligned = noseAngleFromVertical < NOSE_ALIGNMENT_THRESHOLD;
+    const isMouthAligned = Math.abs(mouthAngle) < MOUTH_ALIGNMENT_THRESHOLD;
+
+    // Weighted scoring system (eyes are most important, then mouth, then nose)
+    const eyeWeight = 0.5;
+    const mouthWeight = 0.3;
+    const noseWeight = 0.2;
+    
+    const alignmentScore = 
+      (isEyeAligned ? eyeWeight : 0) + 
+      (isMouthAligned ? mouthWeight : 0) + 
+      (isNoseAligned ? noseWeight : 0);
+
+    // Face is considered aligned if it scores at least 70% (0.7) and eyes must be aligned
+    const isAligned = alignmentScore >= 0.7 && isEyeAligned;
+
+    return {
+      isAligned,
+      confidence: alignmentScore,
+      eyeAngle,
+      noseAngle: noseAngleFromVertical,
+      mouthAngle,
+      details: {
+        isEyeAligned,
+        isNoseAligned,
+        isMouthAligned
+      }
+    };
+  };
+
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
 
     const file = event.target.files?.[0];
@@ -118,12 +191,21 @@ const ImageProcessing = () => {
             setDetectionResult(detectionSingleFace);
 
             const landmarks = detectionSingleFace.landmarks;
-            const { x: eyeLeftX, y: eyeLeftY } = landmarks.getLeftEye()[0]; // Get the left eye position
-            const { x: eyeRightX, y: eyeRightY } = landmarks.getRightEye()[0]; // Get the right eye position
-            const { x: noseX, y: noseY } = landmarks.getNose()[3]; // Get the nose position
-            const eyeLineSlope = (eyeRightY - eyeLeftY) / (eyeRightX - eyeLeftX);
-            const angle = Math.atan(eyeLineSlope) * (180 / Math.PI); // Convert radians to degrees
-            isStraight = Math.abs(angle) < 10;
+            
+            // Enhanced face alignment detection with multi-feature approach
+            const alignmentResult = detectEnhancedFaceAlignment(landmarks);
+            isStraight = alignmentResult.isAligned;
+            
+            // Debug logging for alignment detection (optional - can be removed in production)
+            console.log('Face Alignment Detection Results:', {
+              isAligned: alignmentResult.isAligned,
+              confidence: Math.round(alignmentResult.confidence * 100) + '%',
+              eyeAngle: Math.round(alignmentResult.eyeAngle * 10) / 10 + '°',
+              noseAngle: Math.round(alignmentResult.noseAngle * 10) / 10 + '°',
+              mouthAngle: Math.round(alignmentResult.mouthAngle * 10) / 10 + '°',
+              details: alignmentResult.details
+            });
+            
             setStraightFaceDetected(isStraight);
 
             // Check if shoulders are visible
