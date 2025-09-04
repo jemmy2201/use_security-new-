@@ -294,11 +294,23 @@ const ReviewDetailsPage: React.FC = () => {
                                     </div>
                                     {formData.image ? (
                                         <>
-                                            {formData.image && <Image src={formData.image} alt="Photo ID" height={200} width={257} />}
+                                            {formData.image && <Image 
+                                                src={formData.image} 
+                                                alt="Photo ID" 
+                                                height={200} 
+                                                width={257}
+                                                style={{ objectFit: 'cover' }}
+                                            />}
                                         </>
                                     ) : (
                                         <>
-                                            {formData.imageUrl && <Image src={`/api/get-image?imageName=${formData.imageUrl}&t=${new Date().getTime()}`} alt="Photo ID" height={200} width={257} />}
+                                            {formData.imageUrl && <Image 
+                                                src={`/api/get-image?imageName=${formData.imageUrl}&t=${new Date().getTime()}`} 
+                                                alt="Photo ID" 
+                                                height={200} 
+                                                width={257}
+                                                style={{ objectFit: 'cover' }}
+                                            />}
                                         </>
                                     )
 

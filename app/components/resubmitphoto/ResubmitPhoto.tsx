@@ -253,8 +253,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
       setImage(img);
 
       const imageElement = document.createElement('img');
-      imageElement.width = 400;
-      imageElement.height = 514;
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
@@ -274,7 +272,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             setStraightFaceDetected(isStraight);
 
             // Check if shoulders are visible
-            const areShouldersVisible = checkIfShouldersVisible(landmarks, imageElement.height);
+            const areShouldersVisible = checkIfShouldersVisible(landmarks, imageElement.naturalHeight || imageElement.height);
             setShouldersVisible(areShouldersVisible);
 
             // Check if the face is centered
@@ -334,7 +332,69 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const detectFace = async (imageElement: HTMLImageElement) => {
     try {
       const detections = await faceapi.detectAllFaces(imageElement).withFaceLandmarks();
-      return detections.length > 0;
+      
+      if (detections.length === 0) {
+        return false; // No face detected
+      }
+
+      // Check if the face has adequate brightness/visibility
+      const detection = detections[0]; // Use the first detected face
+      const faceBox = detection.detection.box;
+      
+      // Extract face region for brightness analysis
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        console.error('Failed to get canvas context for face brightness check');
+        return detections.length > 0; // Fallback to basic face detection
+      }
+
+      // Set canvas size to face region
+      canvas.width = faceBox.width;
+      canvas.height = faceBox.height;
+      
+      // Draw only the face region
+      ctx.drawImage(
+        imageElement,
+        faceBox.x, faceBox.y, faceBox.width, faceBox.height, // source
+        0, 0, faceBox.width, faceBox.height // destination
+      );
+
+      // Get image data for the face region
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      // Calculate average brightness of the face region
+      let totalBrightness = 0;
+      let pixelCount = 0;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
+
+        if (a > 0) { // Only count non-transparent pixels
+          // Calculate luminance using standard formula
+          const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
+          totalBrightness += brightness;
+          pixelCount++;
+        }
+      }
+
+      if (pixelCount === 0) {
+        return false; // No valid pixels in face region
+      }
+
+      const averageBrightness = totalBrightness / pixelCount;
+      
+      // Face is considered too dark if average brightness is below threshold
+      // Brightness scale: 0-255, threshold set to 70 (adjust as needed)
+      const MIN_FACE_BRIGHTNESS = 70;
+      const isFaceBrightEnough = averageBrightness >= MIN_FACE_BRIGHTNESS;
+      
+      return isFaceBrightEnough;
+      
     } catch (error) {
       console.error('Error detecting face:', error);
       return false;
@@ -391,7 +451,28 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     canvas.height = height;
     const ctx = canvas.getContext('2d');
     if (ctx) {
-      ctx.drawImage(image, 0, 0, width, height);
+      // Use natural dimensions for calculations
+      const imageWidth = image.naturalWidth || image.width;
+      const imageHeight = image.naturalHeight || image.height;
+      
+      // Calculate crop dimensions to maintain aspect ratio
+      const targetAspect = width / height; // 400/514 ≈ 0.778
+      const imageAspect = imageWidth / imageHeight;
+      
+      let sourceX = 0, sourceY = 0, sourceWidth = imageWidth, sourceHeight = imageHeight;
+      
+      if (imageAspect > targetAspect) {
+        // Image is wider than target - crop width (center horizontally)
+        sourceWidth = imageHeight * targetAspect;
+        sourceX = (imageWidth - sourceWidth) / 2;
+      } else if (imageAspect < targetAspect) {
+        // Image is taller than target - crop height (center vertically)
+        sourceHeight = imageWidth / targetAspect;
+        sourceY = (imageHeight - sourceHeight) / 2;
+      }
+      
+      // Draw the cropped portion of the image
+      ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, width, height);
       return canvas.toDataURL('image/jpeg');
     }
     return image.src;
@@ -478,7 +559,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                 {faceDetected ? (
                   <p></p>
                 ) : (
-                  <div> .  The face is not clearly visible</div>
+                  <div className={globalStyleCss.regular}> .  The face is not clearly visible or is too dark. Please ensure your face is well-lit and clearly visible in the photo.</div>
                 )}
                 {bgColorMatch ? (
                   <p></p>
@@ -502,7 +583,13 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             <div className={resubmitPhotoContentstyles.uploadBox}>
 
               <div className={resubmitPhotoContentstyles.uploadPhotoContainerBox}>
-                {<Image src={image ? image : ''} alt='ID Photo' height={360} width={280} />}
+                {<Image 
+                  src={image ? image : ''} 
+                  alt='ID Photo' 
+                  height={360} 
+                  width={280}
+                  style={{ objectFit: 'cover' }}
+                />}
               </div>
 
               <div className={globalStyleCss.regular}>
