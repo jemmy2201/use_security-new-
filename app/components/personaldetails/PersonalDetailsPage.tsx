@@ -36,9 +36,10 @@ const PersonalDetailsPage: React.FC = () => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
+        const processedValue = id === 'email' ? value.trimEnd() : value;
         setFormData(prevFormData => ({
             ...prevFormData,
-            [id]: value,
+            [id]: processedValue,
         }));
     };
 
