@@ -57,7 +57,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
-        const processedValue = id === 'email' ? value.trimEnd() : value;
+        const processedValue = id === 'email' ? value.replace(/\s/g, '') : value;
         setFormData(prevFormData => ({
             ...prevFormData,
             [id]: processedValue,

@@ -66,7 +66,7 @@ const ReviewDetailsPage: React.FC = () => {
     const [isEditingSection3, setIsEditingSection3] = useState(false);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
-        const processedValue = id === 'email' ? value.trimEnd() : value;
+        const processedValue = id === 'email' ? value.replace(/\s/g, '') : value;
         setFormData(prevFormData => ({
             ...prevFormData,
             [id]: processedValue,
