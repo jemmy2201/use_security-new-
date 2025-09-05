@@ -152,94 +152,224 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
       },
     });
 
-    const page = pdfDoc.addPage([600, 800]);
+    // Use A5 landscape dimensions to match user downloadable PDF
+    const page = pdfDoc.addPage([595, 420]); // A5 landscape in points
 
     // Load the logo image
     const logoImagePath = path.resolve('public/images', 'logo_pdf.png');
     const logoImageBytes = fs.readFileSync(logoImagePath);
-    const logoImage = await pdfDoc.embedPng(logoImageBytes);
-    const logoDims = logoImage.scale(0.1);
+    const logoImage = await pdfDoc.embedPng(new Uint8Array(logoImageBytes));
+    const logoDims = logoImage.scale(0.08);
 
-    // Draw the logo on the left side
+    // Header layout matching user downloadable PDF
+    const headerY = page.getHeight() - 50;
+    
+    // Draw logo on left
     page.drawImage(logoImage, {
-      x: 50,
-      y: page.getHeight() - logoDims.height - 30,
+      x: 80,
+      y: headerY - logoDims.height,
       width: logoDims.width,
       height: logoDims.height,
     });
 
     const fontPath = path.resolve('public/font', 'Roboto-Regular.ttf');
     const fontBytes = fs.readFileSync(fontPath);
-    const customFont = await pdfDoc.embedFont(fontBytes);
+    const customFont = await pdfDoc.embedFont(new Uint8Array(fontBytes));
 
-    // const addressText = "Union of Security Employees (USE) \n200 Jalan Sultan \n#03-24 Textile Centre \nSingapore 199018";
-    const addressText = 'Union of Security Employees (USE)';
-    const fontSize = 18;
-    const textWidth = customFont.widthOfTextAtSize(addressText, fontSize);
-
-    page.drawText(addressText, {
-      x: page.getWidth() - textWidth - 50,
-      y: page.getHeight() - 62,
-      size: fontSize,
+    // Company name under logo
+    page.drawText('Union of Security Employees', {
+      x: 80,
+      y: headerY - logoDims.height - 20,
+      size: 12,
       font: customFont,
-      color: rgb(1, 0, 0),
+      color: rgb(0, 0, 0),
     });
 
-    const tableTop = page.getHeight() - logoDims.height - 30 - 40;
+    // Title on right
+    page.drawText('Transaction Receipt', {
+      x: 400,
+      y: headerY - 10,
+      size: 16,
+      font: customFont,
+      color: rgb(0, 0, 0),
+    });
 
-    const tableData = [
-      { column1: 'NRIC / FIN no.', column2: nric },
-      { column1: 'Pass ID Number', column2: schedule.passid },
-      { column1: 'Full name', column2: userRecord?.name },
-      { column1: 'Card Type', column2: appTypeString },
-      { column1: 'PWM Grade', column2: gradeTypeString },
-      { column1: 'Card Expiry Date', column2: schedule.expired_date },
-      { column1: 'Mobile Number', column2: userRecord?.mobileno },
-      {
-        column1: 'Transaction reference no.',
-        column2: schedule.stripe_payment_id,
-      },
-      { column1: 'Receipt no.', column2: schedule.receiptNo },
-      { column1: 'Transaction date', column2: schedule.trans_date },
-      {
-        column1: 'Amount paid (inclusive of GST)',
-        column2: schedule.grand_total,
-      },
+    // Create table structure matching user downloadable PDF
+    const tableStartY = headerY - logoDims.height - 50;
+    const rowHeight = 18;
+    const cellPadding = 3;
+    let currentY = tableStartY;
+
+    // Helper function to draw table cell
+    const drawTableCell = (x: number, y: number, width: number, height: number, text: string, isLabel: boolean = false) => {
+      // Draw border
+      page.drawRectangle({
+        x,
+        y: y - height,
+        width,
+        height,
+        borderWidth: 1,
+        borderColor: rgb(0.8, 0.8, 0.8),
+        color: isLabel ? rgb(0.96, 0.96, 0.96) : rgb(1, 1, 1),
+      });
+      
+      // Handle multi-line text with word wrapping for long strings
+      const maxWidth = width - (cellPadding * 2);
+      const lines = text ? text.split('\n') : [''];
+      const wrappedLines: string[] = [];
+      
+      lines.forEach(line => {
+        if (!line) {
+          wrappedLines.push('');
+          return;
+        }
+        
+        // For very long strings (like Transaction Reference Number), break them into multiple lines
+        const maxCharsPerLine = Math.floor(maxWidth / 4.5); // Approximate character width
+        if (line.length > maxCharsPerLine) {
+          // Break long strings into chunks
+          for (let i = 0; i < line.length; i += maxCharsPerLine) {
+            wrappedLines.push(line.substring(i, i + maxCharsPerLine));
+          }
+        } else {
+          wrappedLines.push(line);
+        }
+      });
+      
+      const lineHeight = 10;
+      const totalTextHeight = wrappedLines.length * lineHeight;
+      
+      // Center the text vertically in the cell
+      const startY = y - (height / 2) + (totalTextHeight / 2) - lineHeight + 3;
+      
+      wrappedLines.forEach((line, index) => {
+        page.drawText(line, {
+          x: x + cellPadding,
+          y: startY - (index * lineHeight),
+          size: 9,
+          font: customFont,
+          color: rgb(0, 0, 0),
+        });
+      });
+    };
+
+    // Helper functions for formatting
+    const maskNric = (nric: string) => {
+      if (!nric) return '';
+      const firstChar = nric.charAt(0);
+      const lastFourChars = nric.substring(nric.length - 4);
+      const middleLength = nric.length - 5; // First char + last 4 chars = 5 chars revealed
+      return `${firstChar}${'X'.repeat(middleLength)}${lastFourChars}`;
+    };
+
+    const formatExpiryDate = (dateString: string) => {
+      if (!dateString) return '';
+      // Parse DD/MM/YYYY format
+      const [day, month, year] = dateString.split('/').map(Number);
+      if (!day || !month || !year) return dateString;
+      
+      const date = new Date(year, month - 1, day);
+      return new Intl.DateTimeFormat('en-GB', {
+        day: 'numeric',
+        month: 'long', 
+        year: 'numeric',
+      }).format(date);
+    };
+
+    // Format appointment date
+    const formatAppointmentDate = (dateString: string) => {
+      if (!dateString) return '';
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
+    };
+
+    // Main table data matching user downloadable PDF layout
+    const tableRows = [
+      { label: 'NRIC/FIN', value: maskNric(nric || ''), span: 4 },
+      { label: 'Pass ID Number', value: schedule.passid ? schedule.passid.slice(0, -2) : '', span: 4 },
+      { label: 'Full Name', value: userRecord?.name || '', span: 4 },
+      { label: 'Card Type', value: cardTypeMap[schedule.card_id || ''] || 'Unknown', span: 4 },
+      { label: 'PWM Grade', value: gradeTypeString, span: 4 },
+      { label: 'Card Expiry Date', value: formatExpiryDate(schedule.expired_date || ''), span: 4 },
+      { label: 'Mobile Number', value: userRecord?.mobileno || '', span: 4 },
     ];
 
-    const rowHeight = 30;
-    const rowGap = 5;
-    const columnWidths = [150, 350];
-    const totalRows = tableData.length;
-
-    const totalTableHeight = totalRows * (rowHeight + rowGap) - rowGap;
-    const tableTopPosition = tableTop;
-
-    page.drawRectangle({
-      x: 50,
-      y: tableTopPosition - totalTableHeight - 10,
-      width: columnWidths[0] + columnWidths[1],
-      height: totalTableHeight + 40,
-      borderWidth: 1,
-      borderColor: rgb(0, 0, 0),
+    // Draw main info table
+    const tableWidth = 450;
+    const cellWidth = tableWidth / 4;
+    
+    tableRows.forEach((row) => {
+      drawTableCell(50, currentY, cellWidth, rowHeight, row.label, true);
+      drawTableCell(50 + cellWidth, currentY, cellWidth * 3, rowHeight, row.value || '');
+      currentY -= rowHeight;
     });
 
-    tableData.forEach((row, index) => {
-      const yPosition = tableTopPosition - index * (rowHeight + rowGap);
+    // Add spacer
+    currentY -= 10;
 
-      page.drawText(row.column1, {
-        x: 60,
-        y: yPosition - 15,
-        size: 11,
-        color: rgb(0, 0, 0),
-      });
+    // Transaction details in 2x2 grid
+    const transactionRowHeight = 25; // Standard height for most rows
+    const collectionAddressRowHeight = 35; // Increased height for collection address (3 lines)
+    
+    const transactionRows = [
+      { 
+        label1: 'Transaction\nReference Number', 
+        value1: schedule.stripe_payment_id || schedule.receiptNo || '',
+        label2: 'Collection Date',
+        value2: formatAppointmentDate(schedule.appointment_date || ''),
+        height: transactionRowHeight
+      },
+      {
+        label1: 'Amount Paid\n(Inclusive of GST)',
+        value1: `S$${parseFloat(schedule.grand_total || '0').toFixed(2)}`,
+        label2: 'Time Slot',
+        value2: schedule.time_start_appointment && schedule.time_end_appointment 
+          ? `${schedule.time_start_appointment} - ${schedule.time_end_appointment}` 
+          : '',
+        height: transactionRowHeight
+      },
+      {
+        label1: '',
+        value1: '',
+        label2: 'Collection Address',
+        value2: '200, Jalan Sultan\n#03-24, Textile Centre\nSingapore 199018',
+        height: collectionAddressRowHeight
+      }
+    ];
 
-      page.drawText(row.column2 ? row.column2 : '', {
-        x: 235,
-        y: yPosition - 15,
-        size: 11,
-        color: rgb(0, 0, 0),
-      });
+    transactionRows.forEach((row) => {
+      const rowHeight = row.height || transactionRowHeight;
+      
+      // Left side
+      drawTableCell(50, currentY, cellWidth, rowHeight, row.label1, true);
+      drawTableCell(50 + cellWidth, currentY, cellWidth, rowHeight, row.value1);
+      
+      // Right side  
+      drawTableCell(50 + cellWidth * 2, currentY, cellWidth, rowHeight, row.label2, true);
+      drawTableCell(50 + cellWidth * 3, currentY, cellWidth, rowHeight, row.value2);
+      
+      currentY -= rowHeight;
+    });
+
+    // Add disclaimer at bottom with proper spacing
+    const disclaimerY = 40;
+    page.drawText('This is an official receipt issued by Union of Security Employees for the issuance of the PLRD ID card.', {
+      x: 50,
+      y: disclaimerY,
+      size: 8,
+      font: customFont,
+      color: rgb(0, 0, 0),
+    });
+    page.drawText('Please note the base transaction fee of $0.36 paid via PAYNOW (inclusive of 9% GST) is absorbed by USE.', {
+      x: 50,
+      y: disclaimerY - 12,
+      size: 8,
+      font: customFont,
+      color: rgb(0, 0, 0),
     });
 
     const pdfBytes = await pdfDoc.save();
