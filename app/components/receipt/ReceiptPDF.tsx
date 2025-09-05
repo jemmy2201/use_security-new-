@@ -111,14 +111,14 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
                 border: '1px solid #ddd',
               }}
             >
-              Transaction reference no.
+              NRIC/FIN
             </td>
             <td
               className={receiptContentstyles.valueCell}
               colSpan={3}
               style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
-              {bookingSchedule?.stripe_payment_id || bookingSchedule?.receiptNo}
+              {users?.textNric}
             </td>
           </tr>
           <tr>
@@ -132,114 +132,7 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
                 border: '1px solid #ddd',
               }}
             >
-              Receipt no.
-            </td>
-            <td
-              className={receiptContentstyles.valueCell}
-              colSpan={3}
-              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
-            >
-              {bookingSchedule?.receiptNo}
-            </td>
-          </tr>
-          <tr>
-            <td
-              className={receiptContentstyles.labelCell}
-              width='30%'
-              style={{
-                padding: '3px 5px',
-                fontWeight: 'bold',
-                backgroundColor: '#f5f5f5',
-                border: '1px solid #ddd',
-              }}
-            >
-              Transaction date
-            </td>
-            <td
-              className={receiptContentstyles.valueCell}
-              colSpan={3}
-              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
-            >
-              {formatDate(
-                bookingSchedule?.trans_date ? bookingSchedule.trans_date : ''
-              )}
-            </td>
-          </tr>
-          <tr>
-            <td
-              className={receiptContentstyles.labelCell}
-              width='30%'
-              style={{
-                padding: '3px 5px',
-                fontWeight: 'bold',
-                backgroundColor: '#f5f5f5',
-                border: '1px solid #ddd',
-              }}
-            >
-              Amount paid (inclusive of GST)
-            </td>
-            <td
-              className={receiptContentstyles.valueCell}
-              colSpan={3}
-              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
-            >
-              S${parseFloat(bookingSchedule?.grand_total || '0').toFixed(2)}
-            </td>
-          </tr>
-          <tr>
-            <td
-              className={receiptContentstyles.labelCell}
-              width='30%'
-              style={{
-                padding: '3px 5px',
-                fontWeight: 'bold',
-                backgroundColor: '#f5f5f5',
-                border: '1px solid #ddd',
-              }}
-            >
-              Type of application
-            </td>
-            <td
-              className={receiptContentstyles.valueCell}
-              colSpan={3}
-              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
-            >
-              {appTypeMap[bookingSchedule?.app_type || ''] || 'Unknown'} - {cardTypeMap[bookingSchedule?.card_id || ''] || 'Unknown'}
-            </td>
-          </tr>
-          <tr>
-            <td
-              className={receiptContentstyles.labelCell}
-              width='30%'
-              style={{
-                padding: '3px 5px',
-                fontWeight: 'bold',
-                backgroundColor: '#f5f5f5',
-                border: '1px solid #ddd',
-              }}
-            >
-              Grade
-            </td>
-            <td
-              className={receiptContentstyles.valueCell}
-              colSpan={3}
-              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
-            >
-              {gradeTypeMap[bookingSchedule?.grade_id || ''] || 'Unknown'}
-            </td>
-          </tr>
-          <tr>
-            <td
-              className={receiptContentstyles.labelCell}
-              width='30%'
-              style={{
-                padding: '3px 5px',
-                fontWeight: 'bold',
-                backgroundColor: '#f5f5f5',
-                border: '1px solid #ddd',
-              }}
-            >
-              Pass ID No.
+              Pass ID Number
             </td>
             <td
               className={receiptContentstyles.valueCell}
@@ -262,7 +155,70 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
                 border: '1px solid #ddd',
               }}
             >
-              ID card date of expiry
+              Full Name
+            </td>
+            <td
+              className={receiptContentstyles.valueCell}
+              colSpan={3}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
+            >
+              {users?.name}
+            </td>
+          </tr>
+          <tr>
+            <td
+              className={receiptContentstyles.labelCell}
+              width='30%'
+              style={{
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
+              }}
+            >
+              Card Type
+            </td>
+            <td
+              className={receiptContentstyles.valueCell}
+              colSpan={3}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
+            >
+              {cardTypeMap[bookingSchedule?.card_id || ''] || 'Unknown'}
+            </td>
+          </tr>
+          <tr>
+            <td
+              className={receiptContentstyles.labelCell}
+              width='30%'
+              style={{
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
+              }}
+            >
+              PWM Grade
+            </td>
+            <td
+              className={receiptContentstyles.valueCell}
+              colSpan={3}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
+            >
+              {gradeTypeMap[bookingSchedule?.grade_id || ''] || 'Unknown'}
+            </td>
+          </tr>
+          <tr>
+            <td
+              className={receiptContentstyles.labelCell}
+              width='30%'
+              style={{
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
+              }}
+            >
+              Card Expiry Date
             </td>
             <td
               className={receiptContentstyles.valueCell}
@@ -287,20 +243,25 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
                 border: '1px solid #ddd',
               }}
             >
-              Full name
+              Mobile Number
             </td>
             <td
               className={receiptContentstyles.valueCell}
               colSpan={3}
               style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
-              {users?.name}
+              {users?.mobileno}
+            </td>
+          </tr>
+          <tr>
+            <td colSpan={4} style={{ height: '3px', border: 'none' }}>
+              &nbsp;
             </td>
           </tr>
           <tr>
             <td
               className={receiptContentstyles.labelCell}
-              width='30%'
+              width='25%'
               style={{
                 padding: '3px 5px',
                 fontWeight: 'bold',
@@ -308,24 +269,20 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
                 border: '1px solid #ddd',
               }}
             >
-              NRIC / FIN No.
+              Transaction
+              <br />
+              Reference Number
             </td>
             <td
               className={receiptContentstyles.valueCell}
-              colSpan={3}
+              width='25%'
               style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
-              {users?.textNric}
+              {bookingSchedule?.stripe_payment_id || bookingSchedule?.receiptNo}
             </td>
-          </tr>
-          <tr>
-            <td colSpan={4} style={{ height: '8px', border: 'none', padding: '0' }}>
-            </td>
-          </tr>
-          <tr>
             <td
               className={receiptContentstyles.labelCell}
-              width='30%'
+              width='25%'
               style={{
                 padding: '3px 5px',
                 fontWeight: 'bold',
@@ -333,11 +290,11 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
                 border: '1px solid #ddd',
               }}
             >
-              Collection date
+              Collection Date
             </td>
             <td
               className={receiptContentstyles.valueCell}
-              colSpan={3}
+              width='25%'
               style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
               {formatAppointmentDate(
@@ -350,7 +307,6 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
           <tr>
             <td
               className={receiptContentstyles.labelCell}
-              width='30%'
               style={{
                 padding: '3px 5px',
                 fontWeight: 'bold',
@@ -358,20 +314,38 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
                 border: '1px solid #ddd',
               }}
             >
-              Collection time slot
+              Amount Paid
+              <br />
+              (Inclusive of GST)
             </td>
             <td
               className={receiptContentstyles.valueCell}
-              colSpan={3}
               style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
-              {bookingSchedule?.time_start_appointment} - {bookingSchedule?.time_end_appointment}
+              S${parseFloat(bookingSchedule?.grand_total || '0').toFixed(2)}
+            </td>
+            <td
+              className={receiptContentstyles.labelCell}
+              style={{
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
+              }}
+            >
+              Time Slot
+            </td>
+            <td
+              className={receiptContentstyles.valueCell}
+              style={{ padding: '3px 5px', border: '1px solid #ddd' }}
+            >
+              {bookingSchedule?.time_start_appointment} -{' '}
+              {bookingSchedule?.time_end_appointment}
             </td>
           </tr>
           <tr>
             <td
               className={receiptContentstyles.labelCell}
-              width='30%'
               style={{
                 padding: '3px 5px',
                 fontWeight: 'bold',
@@ -379,20 +353,45 @@ const ReceiptPDF: React.FC<ReceiptPDFProps> = ({
                 border: '1px solid #ddd',
               }}
             >
-              Collection centre
+
             </td>
             <td
               className={receiptContentstyles.valueCell}
-              colSpan={3}
               style={{ padding: '3px 5px', border: '1px solid #ddd' }}
             >
-              Union of Security Employees (USE)<br />200 Jalan Sultan<br />#03-24 Textile Centre<br />Singapore 199018
+
+            </td>
+            <td
+              className={receiptContentstyles.labelCell}
+              style={{
+                padding: '3px 5px',
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                border: '1px solid #ddd',
+              }}
+            >
+              Collection Address
+            </td>
+            <td
+              className={receiptContentstyles.valueCell}
+              style={{
+                padding: '3px 5px',
+                border: '1px solid #ddd',
+                lineHeight: '1',
+                wordBreak: 'break-word',
+              }}
+            >
+              200, Jalan Sultan
+              <br />
+              #03-24, Textile Centre
+              <br />
+              Singapore 199018
+              <br />
+              <br />
             </td>
           </tr>
         </tbody>
       </table>
-
-      <div style={{ height: '15px' }}></div>
 
       <div
         className={receiptContentstyles.disclaimer}
