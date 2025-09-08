@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
 import { getEncryptedNricFromSession } from "../../../lib/session";
+import { trimEmail } from "../../utils/emailUtils";
 
 const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
@@ -19,6 +20,8 @@ export async function POST(req: NextRequest) {
         }
 
         const validatedPhone = validatePhoneNumber(mobileno);
+        const trimmedEmail = trimEmail(email);
+        
         if (validatedPhone.length !== 10) {
             return NextResponse.json({ success: false, message: 'Invalid mobile number' }, { status: 400 });
         }
@@ -49,7 +52,7 @@ export async function POST(req: NextRequest) {
                 where: { id: userRecord.id }, // Using the unique identifier for update
                 data: {
                     mobileno: validatedPhone,
-                    email: email,
+                    email: trimmedEmail,
                 },
             });
 

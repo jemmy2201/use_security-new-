@@ -8,6 +8,7 @@ import { useFormContext } from '.././FormContext';
 import 'react-toastify/dist/ReactToastify.css';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { Console } from 'console';
+import { trimEmail } from '../../utils/emailUtils';
 
 export interface createNewPassApiResponse {
     errorCode?: string;
@@ -36,7 +37,7 @@ const PersonalDetailsPage: React.FC = () => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
-        const processedValue = id === 'email' ? value.replace(/\s/g, '') : value;
+        const processedValue = id === 'email' ? trimEmail(value) : value;
         setFormData(prevFormData => ({
             ...prevFormData,
             [id]: processedValue,

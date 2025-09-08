@@ -14,6 +14,7 @@ import UpdateModel from './UpdateModel';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CircularProgress from '@mui/material/CircularProgress';
+import { trimEmail } from '../../utils/emailUtils';
 
 interface UpdateDetailsPageProps {
     bookingId: string;
@@ -57,7 +58,7 @@ const UpdateDetailsPage: React.FC<UpdateDetailsPageProps> = ({ bookingId }) => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
-        const processedValue = id === 'email' ? value.replace(/\s/g, '') : value;
+        const processedValue = id === 'email' ? trimEmail(value) : value;
         setFormData(prevFormData => ({
             ...prevFormData,
             [id]: processedValue,

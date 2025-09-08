@@ -7,6 +7,7 @@ import { useFormContext } from '.././FormContext';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import ReviewImageProcessing from './ReviewImageProcessing';
 import Image from 'next/image';
+import { trimEmail } from '../../utils/emailUtils';
 
 type CheckboxState = {
     [key: string]: boolean;
@@ -66,7 +67,7 @@ const ReviewDetailsPage: React.FC = () => {
     const [isEditingSection3, setIsEditingSection3] = useState(false);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
-        const processedValue = id === 'email' ? value.replace(/\s/g, '') : value;
+        const processedValue = id === 'email' ? trimEmail(value) : value;
         setFormData(prevFormData => ({
             ...prevFormData,
             [id]: processedValue,

@@ -2,12 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
 import { getEncryptedNricFromSession } from "../../../lib/session";
 import { schedule } from "node-cron";
+import { trimEmail } from "../../utils/emailUtils";
 
 const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         const { bookingId, mobileno, email, trRtt, trCsspb, trCctc, trHcta, trXray, trAvso, trNota, trObse, trSsm, pwmGrade } = body;
+
+        const trimmedEmail = trimEmail(email);
 
         const encryptedNric = await getEncryptedNricFromSession(req);
         if (encryptedNric instanceof NextResponse) {
@@ -105,7 +108,7 @@ export async function POST(req: NextRequest) {
                 where: { id: userRecord.id },
                 data: {
                     mobileno: mobileno,
-                    email: email,
+                    email: trimmedEmail,
                 },
             });
 

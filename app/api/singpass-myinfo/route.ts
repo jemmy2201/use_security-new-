@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import { decrypt } from '../../../lib/session';
 import { cookies } from 'next/headers'
 import { SessionPayload } from '../../../lib/session';
+import { trimEmail } from "../../utils/emailUtils";
 
 interface MyInfoData {
     mobile: { value: string };
@@ -63,7 +64,7 @@ export async function GET(request: Request) {
 
         return NextResponse.json({
             mobile: myInfoData.mobile.value,
-            email: myInfoData.email.value,
+            email: trimEmail(myInfoData.email.value),
         });
     } catch (error) {
         return NextResponse.json({ error: 'Failed to retrieve MyInfo data' }, { status: 500 });
