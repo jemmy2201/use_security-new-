@@ -105,7 +105,7 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
 
         // Save the PDF with a meaningful filename
         const passId = bookingSchedule?.passid || formData.passId || '';
-        const fileName = `T_${passId}_${formatDateToDDMMYYYY(new Date())}_${bookingSchedule?.id.toString().slice(-5) || bookingId?.slice(-5) || ''}.pdf`;
+        const fileName = `T_${passId}_${formatDateToDDMMYYYY(new Date())}${bookingSchedule?.id.toString().slice(-5) || bookingId?.slice(-5) || ''}.pdf`;
         pdf.save(fileName);
       } catch (error) {
         console.error('PDF generation error:', error);

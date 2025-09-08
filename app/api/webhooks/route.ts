@@ -400,7 +400,6 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
       (schedule.passid ? schedule.passid : '') +
       '_' +
       formatDateToDDMMYYYY(new Date()) +
-      '_' +
       schedule?.id.toString().slice(-5);
     const filePath = path.join(folderPath, fileNameBuilder + '.pdf');
 
