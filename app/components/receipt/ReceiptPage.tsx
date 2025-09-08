@@ -14,6 +14,7 @@ import { SO_APP, AVSO_APP, PI_APP } from '../../constant/constant';
 import { SO, SSO, SS, SSS, CSO } from '../../constant/constant';
 import CircularProgress from '@mui/material/CircularProgress';
 import ReceiptPDF from './ReceiptPDF';
+import { useFormContext } from '../FormContext';
 
 interface CompletePageProps {
   bookingId: string;
@@ -48,6 +49,7 @@ export interface userInfo {
 
 const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
   const router = useRouter();
+  const { formData } = useFormContext();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [bookingSchedule, setBookingSchedule] = useState<booking_schedules>();
@@ -102,7 +104,9 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
         });
 
         // Save the PDF with a meaningful filename
-        pdf.save(`USE_Receipt_${bookingSchedule?.receiptNo || bookingId}.pdf`);
+        const passId = bookingSchedule?.passid || formData.passId || '';
+        const fileName = `T_${passId}_${formatDateToDDMMYYYY(new Date())}_${bookingSchedule?.id.toString().slice(-5) || bookingId?.slice(-5) || ''}.pdf`;
+        pdf.save(fileName);
       } catch (error) {
         console.error('PDF generation error:', error);
       } finally {
@@ -167,6 +171,13 @@ const ReceiptPage: React.FC<CompletePageProps> = ({ bookingId }) => {
       month: 'short',
       year: 'numeric',
     });
+  };
+
+  const formatDateToDDMMYYYY = (date: Date): string => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+    return `${year}${month}${day}`;
   };
 
   const handleClick = () => {

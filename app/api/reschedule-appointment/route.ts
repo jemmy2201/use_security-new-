@@ -113,9 +113,7 @@ export async function POST(req: NextRequest) {
 }
 
 async function backgroundTask(schedule: booking_schedules) {
-  console.log('Background task generate pdf started');
   generatePdfReceipt(schedule);
-  console.log('Background task generate pdf completed');
 }
 
 const generatePdfReceipt = async (schedule: booking_schedules) => {
@@ -366,10 +364,10 @@ const generatePdfReceipt = async (schedule: booking_schedules) => {
 
     const fileNameBuilder =
       'T_' +
-      encryptDecrypt(schedule.nric, 'decrypt') +
-      cardTypeCode[schedule.card_id ? schedule.card_id : ''] +
+      (schedule.passid ? schedule.passid : '') +
       '_' +
       formatDateToDDMMYYYY(new Date()) +
+      '_' +
       schedule?.id.toString().slice(-5);
     const filePath = path.join(folderPath, fileNameBuilder + '.pdf');
 
