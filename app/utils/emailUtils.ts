@@ -1,13 +1,14 @@
 /**
  * Utility function to trim whitespace from email addresses
  * @param email - The email string that may contain whitespace
- * @returns The email string with leading and trailing whitespace removed
+ * @returns The email string with all whitespace removed (leading, trailing, and internal spaces)
  */
 export const trimEmail = (email: string): string => {
     if (!email || typeof email !== 'string') {
         return '';
     }
-    return email.trim();
+    // Remove all whitespace characters (spaces, tabs, newlines, etc.)
+    return email.replace(/\s/g, '');
 };
 
 /**

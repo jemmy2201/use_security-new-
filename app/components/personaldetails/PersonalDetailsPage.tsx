@@ -7,7 +7,6 @@ import personalDetailsContentstyles from './PersonalDetailsContent.module.css';
 import { useFormContext } from '.././FormContext';
 import 'react-toastify/dist/ReactToastify.css';
 import globalStyleCss from '../globalstyle/Global.module.css';
-import { Console } from 'console';
 import { trimEmail } from '../../utils/emailUtils';
 
 export interface createNewPassApiResponse {
@@ -66,7 +65,7 @@ const PersonalDetailsPage: React.FC = () => {
                             const parsedBookingSchedule: booking_schedules = JSON.parse(storedBookingSchedule);
                             const fileName = parsedBookingSchedule?.passid + parsedBookingSchedule.nric.slice(-4);
                             setFormData({
-                                email: parsedData?.email ?? '',
+                                email: trimEmail(parsedData?.email ?? ''),
                                 originalMobileno: parsedData?.mobileno ?? '',
                                 mobileno: parsedData?.mobileno ?? '',
                                 name: parsedData?.name ?? '',
@@ -89,7 +88,7 @@ const PersonalDetailsPage: React.FC = () => {
                             const image4char = parsedData.nric?.slice(-4) || '';
                             const fileName = bookingPassId + image4char;
                             setFormData({
-                                email: parsedData?.email ?? '',
+                                email: trimEmail(parsedData?.email ?? ''),
                                 originalMobileno: parsedData?.mobileno ?? '',
                                 mobileno: parsedData?.mobileno ?? '',
                                 name: parsedData?.name ?? '',
