@@ -138,7 +138,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             }
 
             if (!formData.isFaceDetected || !formData.isBgColorMatch
-                || !formData.isStraightFaceDetected || !formData.isShoulderVisible) {
+                || !formData.isStraightFaceDetected || !formData.isShoulderVisible || !formData.isFileSizeValid) {
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     errorPhoto: 'Please upload correct photo as per guidelines',
@@ -217,7 +217,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             }
 
             if (!formData.isFaceDetected || !formData.isBgColorMatch
-                || !formData.isStraightFaceDetected || !formData.isShoulderVisible) {
+                || !formData.isStraightFaceDetected || !formData.isShoulderVisible || !formData.isFileSizeValid) {
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     errorPhoto: 'Please upload correct photo as per guidelines.',
@@ -545,7 +545,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             }
 
             if (!formData.isFaceDetected || !formData.isBgColorMatch
-                || !formData.isStraightFaceDetected || !formData.isShoulderVisible) {
+                || !formData.isStraightFaceDetected || !formData.isShoulderVisible || !formData.isFileSizeValid) {
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     errorPhoto: 'Please upload correct photo as per guidelines.',
@@ -652,7 +652,7 @@ const StepBarHomePage: React.FC<ActionTypeProps> = ({ actionType }) => {
             }
 
             if (!formData.isFaceDetected || !formData.isBgColorMatch
-                || !formData.isStraightFaceDetected || !formData.isShoulderVisible) {
+                || !formData.isStraightFaceDetected || !formData.isShoulderVisible || !formData.isFileSizeValid) {
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     errorPhoto: 'Please upload correct photo as per guidelines.',

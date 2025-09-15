@@ -164,14 +164,15 @@ const ImageProcessing = () => {
       setLoading(true);
       const fileSizeInBytes = file.size;
 
-      const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
-      const minSizeInBytes = 20 * 1024; // 20kb in bytes
+      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
+      const minSizeInBytes = 25 * 1024; // 25kb in bytes
 
+      let isFileSizeValid = true;
       if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
-        alert('Image size should be less then 5MB and greater then 25kb');
+        // Set validation error but continue processing to show the image
+        isFileSizeValid = false;
         console.error('File size is out of the allowed range.');
-        setLoading(false);
-        return;
+        // Don't return here - continue processing to show the image
       }
 
       const img = URL.createObjectURL(file);
@@ -240,6 +241,7 @@ const ImageProcessing = () => {
             ['isShoulderVisible']: isShoulderVisible,
             ['isStraightFaceDetected']: isStraight,
             ['isBgColorMatch']: isBgColorMatch,
+            ['isFileSizeValid']: isFileSizeValid,
             ['imageUrl']: fileName,
             ['errorPhoto']: '',
           }));
@@ -531,7 +533,7 @@ const ImageProcessing = () => {
       <hr className={applicantDetailsContentstyles.photoHrLine}></hr>
 
       {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch 
-          || !formData.isStraightFaceDetected || !formData.isShoulderVisible) ? (
+          || !formData.isStraightFaceDetected || !formData.isShoulderVisible || !formData.isFileSizeValid) ? (
         <div className={applicantDetailsContentstyles.photoUploadError}>
           <div className={applicantDetailsContentstyles.photoUploadErrorBox}>
             <div className={globalStyleCss.regularBold}>
@@ -559,6 +561,11 @@ const ImageProcessing = () => {
               <p></p>
             ) : (
               <div className={globalStyleCss.regular}> .  The background is not white</div>
+            )}
+            {formData.isFileSizeValid ? (
+              <p></p>
+            ) : (
+              <div className={globalStyleCss.regular}> .  Image size should be less than 5MB and greater than 25KB</div>
             )}
           </div>
         </div>
@@ -598,7 +605,7 @@ const ImageProcessing = () => {
 
           <div className={applicantDetailsContentstyles.uploadContainerBox}>
             <div className={globalStyleCss.regular}>
-              Minimum file size: 20 KB <br></br> Maximum file size: 2 MB <br></br>
+              Minimum file size: 25 KB <br></br> Maximum file size: 5 MB <br></br>
               Supported file types: JPG / PNG
             </div>
             <label htmlFor="file-upload" className={applicantDetailsContentstyles.chooseFileButton} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
