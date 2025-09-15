@@ -48,6 +48,8 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const [showBookingAppointment, setShowBookingAppointment] = useState<boolean>(false);
   const [brightnessContrast, setBrightnessContrast] = useState<{ brightness: number; contrast: number } | null>(null);
   const [spectacleDetected, setSpectacleDetected] = useState<boolean>(false);
+  const [isFileSizeValid, setIsFileSizeValid] = useState<boolean>(true);
+  const [isFileFormatValid, setIsFileFormatValid] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -134,7 +136,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const onComplete = async () => {
     setLoading(true);
 
-    if (bgColorMatch && faceDetected) {
+    if (bgColorMatch && faceDetected && isFileSizeValid && isFileFormatValid) {
       try {
         const response = await axios.post('/api/handle-resubmit-image', {
           image,
@@ -158,7 +160,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     setLoading(true);
 
     if (bgColorMatch && faceDetected && straightFaceDetected
-      && straightFaceDetected && shouldersVisible) {
+      && straightFaceDetected && shouldersVisible && isFileSizeValid && isFileFormatValid) {
       try {
         const response = await axios.post('/api/handle-resubmit-image', {
           image,
@@ -242,12 +244,21 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
       const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
       const minSizeInBytes = 20 * 1024; // 20KB in bytes
 
+      let fileSizeValid = true;
       if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
-        alert('Image size should be less than 2MB and greater than 20KB');
-        console.error('File size is out of the allowed range.');
-        setLoading(false);
-        return;
+        fileSizeValid = false;
+        // Don't return here - continue processing to show the image
       }
+      setIsFileSizeValid(fileSizeValid);
+
+      // Check file format (JPEG or PNG only)
+      let fileFormatValid = true;
+      const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedFormats.includes(file.type.toLowerCase())) {
+        fileFormatValid = false;
+        // Don't return here - continue processing to show the image
+      }
+      setIsFileFormatValid(fileFormatValid);
 
       const img = URL.createObjectURL(file);
       setImage(img);
@@ -267,16 +278,6 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             // Enhanced face alignment detection with multi-feature approach
             const alignmentResult = detectEnhancedFaceAlignment(landmarks);
             isStraight = alignmentResult.isAligned;
-            
-            // Debug logging for alignment detection (optional - can be removed in production)
-            console.log('Face Alignment Detection Results:', {
-              isAligned: alignmentResult.isAligned,
-              confidence: Math.round(alignmentResult.confidence * 100) + '%',
-              eyeAngle: Math.round(alignmentResult.eyeAngle * 10) / 10 + '°',
-              noseAngle: Math.round(alignmentResult.noseAngle * 10) / 10 + '°',
-              mouthAngle: Math.round(alignmentResult.mouthAngle * 10) / 10 + '°',
-              details: alignmentResult.details
-            });
             
             setStraightFaceDetected(isStraight);
 
@@ -619,7 +620,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
           <hr className={resubmitPhotoContentstyles.photoHrLine}></hr>
 
-          {image && (!faceDetected || !bgColorMatch || !straightFaceDetected || !shouldersVisible || spectacleDetected) ? (
+          {image && (!faceDetected || !bgColorMatch || !straightFaceDetected || !shouldersVisible || spectacleDetected || !isFileSizeValid || !isFileFormatValid) ? (
             <div className={resubmitPhotoContentstyles.photoUploadError}>
               <div className={resubmitPhotoContentstyles.photoUploadErrorBox}>
                 <div>
@@ -653,6 +654,16 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                   <p>. Eyewear has been detected</p>
                 ) : (
                   <p></p>
+                )}
+                {isFileSizeValid ? (
+                  <p></p>
+                ) : (
+                  <div className={globalStyleCss.regular}> .  Image size should be less than 2MB and greater than 20KB</div>
+                )}
+                {isFileFormatValid ? (
+                  <p></p>
+                ) : (
+                  <div className={globalStyleCss.regular}> .  Photo uploaded must be in JPEG or PNG format</div>
                 )}
               </div>
             </div>
@@ -688,7 +699,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                 <input
                   id="file-upload"
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/jpg,image/png"
                   onChange={handleImageUpload}
                   style={{ display: 'none' }}
                 />

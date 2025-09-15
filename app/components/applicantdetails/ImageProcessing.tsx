@@ -171,7 +171,14 @@ const ImageProcessing = () => {
       if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
         // Set validation error but continue processing to show the image
         isFileSizeValid = false;
-        console.error('File size is out of the allowed range.');
+        // Don't return here - continue processing to show the image
+      }
+
+      // Check file format (JPEG or PNG only)
+      let isFileFormatValid = true;
+      const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedFormats.includes(file.type.toLowerCase())) {
+        isFileFormatValid = false;
         // Don't return here - continue processing to show the image
       }
 
@@ -196,16 +203,6 @@ const ImageProcessing = () => {
             // Enhanced face alignment detection with multi-feature approach
             const alignmentResult = detectEnhancedFaceAlignment(landmarks);
             isStraight = alignmentResult.isAligned;
-            
-            // Debug logging for alignment detection (optional - can be removed in production)
-            console.log('Face Alignment Detection Results:', {
-              isAligned: alignmentResult.isAligned,
-              confidence: Math.round(alignmentResult.confidence * 100) + '%',
-              eyeAngle: Math.round(alignmentResult.eyeAngle * 10) / 10 + '°',
-              noseAngle: Math.round(alignmentResult.noseAngle * 10) / 10 + '°',
-              mouthAngle: Math.round(alignmentResult.mouthAngle * 10) / 10 + '°',
-              details: alignmentResult.details
-            });
             
             setStraightFaceDetected(isStraight);
 
@@ -242,6 +239,7 @@ const ImageProcessing = () => {
             ['isStraightFaceDetected']: isStraight,
             ['isBgColorMatch']: isBgColorMatch,
             ['isFileSizeValid']: isFileSizeValid,
+            ['isFileFormatValid']: isFileFormatValid,
             ['imageUrl']: fileName,
             ['errorPhoto']: '',
           }));
@@ -533,7 +531,7 @@ const ImageProcessing = () => {
       <hr className={applicantDetailsContentstyles.photoHrLine}></hr>
 
       {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch 
-          || !formData.isStraightFaceDetected || !formData.isShoulderVisible || !formData.isFileSizeValid) ? (
+          || !formData.isStraightFaceDetected || !formData.isShoulderVisible || !formData.isFileSizeValid || !formData.isFileFormatValid) ? (
         <div className={applicantDetailsContentstyles.photoUploadError}>
           <div className={applicantDetailsContentstyles.photoUploadErrorBox}>
             <div className={globalStyleCss.regularBold}>
@@ -566,6 +564,11 @@ const ImageProcessing = () => {
               <p></p>
             ) : (
               <div className={globalStyleCss.regular}> .  Image size should be less than 5MB and greater than 25KB</div>
+            )}
+            {formData.isFileFormatValid ? (
+              <p></p>
+            ) : (
+              <div className={globalStyleCss.regular}> .  Photo uploaded must be in JPEG or PNG format</div>
             )}
           </div>
         </div>
@@ -616,7 +619,7 @@ const ImageProcessing = () => {
             <input
               id="file-upload"
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/jpg,image/png"
               onChange={handleImageUpload}
               style={{ display: 'none' }}
             />
