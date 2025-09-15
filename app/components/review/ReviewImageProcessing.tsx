@@ -673,6 +673,25 @@ const ReviewImageProcessing: React.FC = () => {
                 </div>
               </div>
             </div>
+            
+            {/* Photo Guidelines Text */}
+            <div className={reviewPhotoContentstyles.dosDontDoText}>
+              <ul style={{ listStyleType: 'disc', paddingLeft: '20px', margin: '0', color: '#000', fontFamily: 'Roboto', fontSize: '14px', lineHeight: '20px' }}>
+                <li>Photo must be taken within 3 months</li>
+                <li>Photo must be taken with even brightness</li>
+                <li>Photo must be clear and in sharp focus</li>
+                <li>Photo must be taken without eye wear/ spectacles</li>
+                <li>Photo background must be plain white in colour</li>
+                <li>Head gear used for religious reasons must be in dark colour against white background</li>
+                <li>Must be appropriately attired minimally with polo tee-shirt</li>
+                <li>Shoulders, hair and ears must be fully visible</li>
+              </ul>
+            </div>
+            
+            <div className={reviewPhotoContentstyles.dosDontDoText}>
+              <div className={globalStyleCss.blueLink}><a href="/content/photo_guideline.pdf" target="_blank" rel="noopener noreferrer">View photo guidelines</a></div>
+            </div>
+            
           </div>
         </div>
       </div>
