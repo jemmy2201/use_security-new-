@@ -36,8 +36,6 @@ const ReviewImageProcessing: React.FC = () => {
         await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
         if (formData.imageUrl) {
           const img = document.createElement('img');
-          img.width = 400;
-          img.height = 514;
           img.src = `/api/get-image?imageName=${formData.imageUrl}`;
 
           img.onload = () => {
@@ -98,14 +96,22 @@ const ReviewImageProcessing: React.FC = () => {
       setLoading(true);
       const fileSizeInBytes = file.size;
 
-      const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
-      const minSizeInBytes = 20 * 1024; // 20kb in bytes
+      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
+      const minSizeInBytes = 25 * 1024; // 25kb in bytes
 
+      let isFileSizeValid = true;
       if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
-        alert('Image size should be less then 5MB and greater then 25kb');
-        console.error('File size is out of the allowed range.');
-        setLoading(false);
-        return;
+        // Set validation error but continue processing to show the image
+        isFileSizeValid = false;
+        // Don't return here - continue processing to show the image
+      }
+
+      // Check file format (JPEG or PNG only)
+      let isFileFormatValid = true;
+      const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedFormats.includes(file.type.toLowerCase())) {
+        isFileFormatValid = false;
+        // Don't return here - continue processing to show the image
       }
 
       const img = URL.createObjectURL(file);
@@ -115,8 +121,6 @@ const ReviewImageProcessing: React.FC = () => {
         ['image']: img,
       }));
       const imageElement = document.createElement('img');
-      imageElement.width = 400;
-      imageElement.height = 514;
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
@@ -136,7 +140,7 @@ const ReviewImageProcessing: React.FC = () => {
             setStraightFaceDetected(isStraight);
 
             // Check if shoulders are visible
-            isShoulderVisible = checkIfShouldersVisible(landmarks, imageElement.height);
+            isShoulderVisible = checkIfShouldersVisible(landmarks, imageElement.naturalHeight || imageElement.height);
             setShouldersVisible(isShoulderVisible);
           }
 
@@ -166,6 +170,8 @@ const ReviewImageProcessing: React.FC = () => {
             ['isStraightFaceDetected']: isStraight,
             ['isBgColorMatch']: isBgColorMatch,
             ['isShoulderVisible']: isShoulderVisible,
+            ['isFileSizeValid']: isFileSizeValid,
+            ['isFileFormatValid']: isFileFormatValid,
             ['imageUrl']: fileName,
             ['errorPhoto']: '',
           }));
@@ -182,7 +188,69 @@ const ReviewImageProcessing: React.FC = () => {
   const detectFace = async (imageElement: HTMLImageElement) => {
     try {
       const detections = await faceapi.detectAllFaces(imageElement).withFaceLandmarks();
-      return detections.length > 0;
+      
+      if (detections.length === 0) {
+        return false; // No face detected
+      }
+
+      // Check if the face has adequate brightness/visibility
+      const detection = detections[0]; // Use the first detected face
+      const faceBox = detection.detection.box;
+      
+      // Extract face region for brightness analysis
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        console.error('Failed to get canvas context for face brightness check');
+        return detections.length > 0; // Fallback to basic face detection
+      }
+
+      // Set canvas size to face region
+      canvas.width = faceBox.width;
+      canvas.height = faceBox.height;
+      
+      // Draw only the face region
+      ctx.drawImage(
+        imageElement,
+        faceBox.x, faceBox.y, faceBox.width, faceBox.height, // source
+        0, 0, faceBox.width, faceBox.height // destination
+      );
+
+      // Get image data for the face region
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      // Calculate average brightness of the face region
+      let totalBrightness = 0;
+      let pixelCount = 0;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
+
+        if (a > 0) { // Only count non-transparent pixels
+          // Calculate luminance using standard formula
+          const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
+          totalBrightness += brightness;
+          pixelCount++;
+        }
+      }
+
+      if (pixelCount === 0) {
+        return false; // No valid pixels in face region
+      }
+
+      const averageBrightness = totalBrightness / pixelCount;
+      
+      // Face is considered too dark if average brightness is below threshold
+      // Brightness scale: 0-255, threshold set to 70 (adjust as needed)
+      const MIN_FACE_BRIGHTNESS = 70;
+      const isFaceBrightEnough = averageBrightness >= MIN_FACE_BRIGHTNESS;
+      
+      return isFaceBrightEnough;
+      
     } catch (error) {
       console.error('Error detecting face:', error);
       return false;
@@ -270,7 +338,28 @@ const ReviewImageProcessing: React.FC = () => {
     canvas.height = height;
     const ctx = canvas.getContext('2d');
     if (ctx) {
-      ctx.drawImage(image, 0, 0, width, height);
+      // Use natural dimensions for calculations
+      const imageWidth = image.naturalWidth || image.width;
+      const imageHeight = image.naturalHeight || image.height;
+      
+      // Calculate crop dimensions to maintain aspect ratio
+      const targetAspect = width / height; // 400/514 ≈ 0.778
+      const imageAspect = imageWidth / imageHeight;
+      
+      let sourceX = 0, sourceY = 0, sourceWidth = imageWidth, sourceHeight = imageHeight;
+      
+      if (imageAspect > targetAspect) {
+        // Image is wider than target - crop width (center horizontally)
+        sourceWidth = imageHeight * targetAspect;
+        sourceX = (imageWidth - sourceWidth) / 2;
+      } else if (imageAspect < targetAspect) {
+        // Image is taller than target - crop height (center vertically)
+        sourceHeight = imageWidth / targetAspect;
+        sourceY = (imageHeight - sourceHeight) / 2;
+      }
+      
+      // Draw the cropped portion of the image
+      ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, width, height);
       return canvas.toDataURL('image/jpeg');
     }
     return image.src;
@@ -324,7 +413,7 @@ const ReviewImageProcessing: React.FC = () => {
         <br></br>
         <hr className={reviewPhotoContentstyles.photoHrLine}></hr>
         {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch
-          || !formData.isStraightFaceDetected || !formData.isShoulderVisible) ? (
+          || !formData.isStraightFaceDetected || !formData.isShoulderVisible || !formData.isFileSizeValid || !formData.isFileFormatValid) ? (
           <div className={reviewPhotoContentstyles.photoUploadError}>
             <div className={reviewPhotoContentstyles.photoUploadErrorBox}>
               <div className={globalStyleCss.regularBold}>
@@ -346,12 +435,22 @@ const ReviewImageProcessing: React.FC = () => {
               {formData.isFaceDetected ? (
                 <p></p>
               ) : (
-                <div className={globalStyleCss.regular}> .  The face is not clearly visible</div>
+                <div className={globalStyleCss.regular}> .  The face is not clearly visible or is too dark. Please ensure your face is well-lit and clearly visible in the photo.</div>
               )}
               {formData.isBgColorMatch ? (
                 <p></p>
               ) : (
                 <div className={globalStyleCss.regular}> .  The background is not white</div>
+              )}
+              {formData.isFileSizeValid ? (
+                <p></p>
+              ) : (
+                <div className={globalStyleCss.regular}> .  Image size should be less than 5MB and greater than 25KB</div>
+              )}
+              {formData.isFileFormatValid ? (
+                <p></p>
+              ) : (
+                <div className={globalStyleCss.regular}> .  Photo uploaded must be in JPEG or PNG format</div>
               )}
             </div>
           </div>
@@ -364,11 +463,23 @@ const ReviewImageProcessing: React.FC = () => {
             <div className={reviewPhotoContentstyles.uploadPhotoContainerBox}>
               {formData.image ? (
                 <>
-                  {formData.image && <Image src={formData.image} alt="Photo ID" height={360} width={280} />}
+                  {formData.image && <Image 
+                    src={formData.image} 
+                    alt="Photo ID" 
+                    height={360} 
+                    width={280}
+                    style={{ objectFit: 'cover' }}
+                  />}
                 </>
               ) : (
                 <>
-                  {formData.imageUrl && <Image src={`/api/get-image?imageName=${formData.imageUrl}&t=${new Date().getTime()}`} alt="Photo ID" height={360} width={280} />}
+                  {formData.imageUrl && <Image 
+                    src={`/api/get-image?imageName=${formData.imageUrl}&t=${new Date().getTime()}`} 
+                    alt="Photo ID" 
+                    height={360} 
+                    width={280}
+                    style={{ objectFit: 'cover' }}
+                  />}
                 </>
               )
 
@@ -376,7 +487,7 @@ const ReviewImageProcessing: React.FC = () => {
             </div>
 
             <div className={globalStyleCss.regular}>
-            Minimum file size: 20 KB <br></br>Maximum file size: 2 MB <br></br>
+            Minimum file size: 25 KB <br></br>Maximum file size: 5 MB <br></br>
               Supported file types: JPG / PNG
             </div>
 
@@ -389,7 +500,7 @@ const ReviewImageProcessing: React.FC = () => {
               <input
                 id="file-upload"
                 type="file"
-                accept="image/*"
+                accept="image/jpeg,image/jpg,image/png"
                 onChange={handleImageUpload}
                 style={{ display: 'none' }}
               />
@@ -490,6 +601,25 @@ const ReviewImageProcessing: React.FC = () => {
                 </div>
               </div>
             </div>
+            
+            {/* Photo Guidelines Text */}
+            <div className={reviewPhotoContentstyles.dosDontDoText}>
+              <ul style={{ listStyleType: 'disc', paddingLeft: '20px', margin: '0', color: '#000', fontFamily: 'Roboto', fontSize: '14px', lineHeight: '20px' }}>
+                <li>Photo must be taken within 3 months</li>
+                <li>Photo must be taken with even brightness</li>
+                <li>Photo must be clear and in sharp focus</li>
+                <li>Photo must be taken without eye wear/ spectacles</li>
+                <li>Photo background must be plain white in colour</li>
+                <li>Head gear used for religious reasons must be in dark colour against white background</li>
+                <li>Must be appropriately attired minimally with polo tee-shirt</li>
+                <li>Shoulders, hair and ears must be fully visible</li>
+              </ul>
+            </div>
+            
+            <div className={reviewPhotoContentstyles.dosDontDoText}>
+              <div className={globalStyleCss.blueLink}><a href="/content/photo_guideline.pdf" target="_blank" rel="noopener noreferrer">View photo guidelines</a></div>
+            </div>
+            
           </div>
         </div>
       </div>

@@ -75,7 +75,7 @@
 
     .photoContainer {
       display: flex;
-      align-items: flex-start;
+      align-items: stretch;
       gap: 40px;
       align-self: stretch;
       padding-top: 20px;

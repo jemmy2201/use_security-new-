@@ -48,6 +48,8 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const [showBookingAppointment, setShowBookingAppointment] = useState<boolean>(false);
   const [brightnessContrast, setBrightnessContrast] = useState<{ brightness: number; contrast: number } | null>(null);
   const [spectacleDetected, setSpectacleDetected] = useState<boolean>(false);
+  const [isFileSizeValid, setIsFileSizeValid] = useState<boolean>(true);
+  const [isFileFormatValid, setIsFileFormatValid] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -134,7 +136,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const onComplete = async () => {
     setLoading(true);
 
-    if (bgColorMatch && faceDetected) {
+    if (bgColorMatch && faceDetected && isFileSizeValid && isFileFormatValid) {
       try {
         const response = await axios.post('/api/handle-resubmit-image', {
           image,
@@ -158,7 +160,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     setLoading(true);
 
     if (bgColorMatch && faceDetected && straightFaceDetected
-      && straightFaceDetected && shouldersVisible) {
+      && straightFaceDetected && shouldersVisible && isFileSizeValid && isFileFormatValid) {
       try {
         const response = await axios.post('/api/handle-resubmit-image', {
           image,
@@ -242,19 +244,26 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
       const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
       const minSizeInBytes = 20 * 1024; // 20KB in bytes
 
+      let fileSizeValid = true;
       if (fileSizeInBytes < minSizeInBytes || fileSizeInBytes > maxSizeInBytes) {
-        alert('Image size should be less than 2MB and greater than 20KB');
-        console.error('File size is out of the allowed range.');
-        setLoading(false);
-        return;
+        fileSizeValid = false;
+        // Don't return here - continue processing to show the image
       }
+      setIsFileSizeValid(fileSizeValid);
+
+      // Check file format (JPEG or PNG only)
+      let fileFormatValid = true;
+      const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedFormats.includes(file.type.toLowerCase())) {
+        fileFormatValid = false;
+        // Don't return here - continue processing to show the image
+      }
+      setIsFileFormatValid(fileFormatValid);
 
       const img = URL.createObjectURL(file);
       setImage(img);
 
       const imageElement = document.createElement('img');
-      imageElement.width = 400;
-      imageElement.height = 514;
       imageElement.src = img;
       imageElement.onload = async () => {
         try {
@@ -274,7 +283,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             setStraightFaceDetected(isStraight);
 
             // Check if shoulders are visible
-            const areShouldersVisible = checkIfShouldersVisible(landmarks, imageElement.height);
+            const areShouldersVisible = checkIfShouldersVisible(landmarks, imageElement.naturalHeight || imageElement.height);
             setShouldersVisible(areShouldersVisible);
 
             // Check if the face is centered
@@ -334,7 +343,69 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const detectFace = async (imageElement: HTMLImageElement) => {
     try {
       const detections = await faceapi.detectAllFaces(imageElement).withFaceLandmarks();
-      return detections.length > 0;
+      
+      if (detections.length === 0) {
+        return false; // No face detected
+      }
+
+      // Check if the face has adequate brightness/visibility
+      const detection = detections[0]; // Use the first detected face
+      const faceBox = detection.detection.box;
+      
+      // Extract face region for brightness analysis
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        console.error('Failed to get canvas context for face brightness check');
+        return detections.length > 0; // Fallback to basic face detection
+      }
+
+      // Set canvas size to face region
+      canvas.width = faceBox.width;
+      canvas.height = faceBox.height;
+      
+      // Draw only the face region
+      ctx.drawImage(
+        imageElement,
+        faceBox.x, faceBox.y, faceBox.width, faceBox.height, // source
+        0, 0, faceBox.width, faceBox.height // destination
+      );
+
+      // Get image data for the face region
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      // Calculate average brightness of the face region
+      let totalBrightness = 0;
+      let pixelCount = 0;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
+
+        if (a > 0) { // Only count non-transparent pixels
+          // Calculate luminance using standard formula
+          const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
+          totalBrightness += brightness;
+          pixelCount++;
+        }
+      }
+
+      if (pixelCount === 0) {
+        return false; // No valid pixels in face region
+      }
+
+      const averageBrightness = totalBrightness / pixelCount;
+      
+      // Face is considered too dark if average brightness is below threshold
+      // Brightness scale: 0-255, threshold set to 70 (adjust as needed)
+      const MIN_FACE_BRIGHTNESS = 70;
+      const isFaceBrightEnough = averageBrightness >= MIN_FACE_BRIGHTNESS;
+      
+      return isFaceBrightEnough;
+      
     } catch (error) {
       console.error('Error detecting face:', error);
       return false;
@@ -391,7 +462,28 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
     canvas.height = height;
     const ctx = canvas.getContext('2d');
     if (ctx) {
-      ctx.drawImage(image, 0, 0, width, height);
+      // Use natural dimensions for calculations
+      const imageWidth = image.naturalWidth || image.width;
+      const imageHeight = image.naturalHeight || image.height;
+      
+      // Calculate crop dimensions to maintain aspect ratio
+      const targetAspect = width / height; // 400/514 ≈ 0.778
+      const imageAspect = imageWidth / imageHeight;
+      
+      let sourceX = 0, sourceY = 0, sourceWidth = imageWidth, sourceHeight = imageHeight;
+      
+      if (imageAspect > targetAspect) {
+        // Image is wider than target - crop width (center horizontally)
+        sourceWidth = imageHeight * targetAspect;
+        sourceX = (imageWidth - sourceWidth) / 2;
+      } else if (imageAspect < targetAspect) {
+        // Image is taller than target - crop height (center vertically)
+        sourceHeight = imageWidth / targetAspect;
+        sourceY = (imageHeight - sourceHeight) / 2;
+      }
+      
+      // Draw the cropped portion of the image
+      ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, width, height);
       return canvas.toDataURL('image/jpeg');
     }
     return image.src;
@@ -456,7 +548,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
           <hr className={resubmitPhotoContentstyles.photoHrLine}></hr>
 
-          {image && (!faceDetected || !bgColorMatch || !straightFaceDetected || !shouldersVisible || spectacleDetected) ? (
+          {image && (!faceDetected || !bgColorMatch || !straightFaceDetected || !shouldersVisible || spectacleDetected || !isFileSizeValid || !isFileFormatValid) ? (
             <div className={resubmitPhotoContentstyles.photoUploadError}>
               <div className={resubmitPhotoContentstyles.photoUploadErrorBox}>
                 <div>
@@ -478,7 +570,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                 {faceDetected ? (
                   <p></p>
                 ) : (
-                  <div> .  The face is not clearly visible</div>
+                  <div className={globalStyleCss.regular}> .  The face is not clearly visible or is too dark. Please ensure your face is well-lit and clearly visible in the photo.</div>
                 )}
                 {bgColorMatch ? (
                   <p></p>
@@ -491,6 +583,16 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                 ) : (
                   <p></p>
                 )}
+                {isFileSizeValid ? (
+                  <p></p>
+                ) : (
+                  <div className={globalStyleCss.regular}> .  Image size should be less than 2MB and greater than 20KB</div>
+                )}
+                {isFileFormatValid ? (
+                  <p></p>
+                ) : (
+                  <div className={globalStyleCss.regular}> .  Photo uploaded must be in JPEG or PNG format</div>
+                )}
               </div>
             </div>
           ) : (
@@ -502,7 +604,13 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
             <div className={resubmitPhotoContentstyles.uploadBox}>
 
               <div className={resubmitPhotoContentstyles.uploadPhotoContainerBox}>
-                {<Image src={image ? image : ''} alt='ID Photo' height={360} width={280} />}
+                {<Image 
+                  src={image ? image : ''} 
+                  alt='ID Photo' 
+                  height={360} 
+                  width={280}
+                  style={{ objectFit: 'cover' }}
+                />}
               </div>
 
               <div className={globalStyleCss.regular}>
@@ -519,7 +627,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                 <input
                   id="file-upload"
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/jpg,image/png"
                   onChange={handleImageUpload}
                   style={{ display: 'none' }}
                 />
@@ -621,6 +729,21 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                   </div>
                 </div>
               </div>
+              
+              {/* Photo Guidelines Text */}
+              <div className={resubmitPhotoContentstyles.dosDontDoText}>
+                <ul style={{ listStyleType: 'disc', paddingLeft: '20px', margin: '0', color: '#000', fontFamily: 'Roboto', fontSize: '14px', lineHeight: '20px' }}>
+                  <li>Photo must be taken within 3 months</li>
+                  <li>Photo must be taken with even brightness</li>
+                  <li>Photo must be clear and in sharp focus</li>
+                  <li>Photo must be taken without eye wear/ spectacles</li>
+                  <li>Photo background must be plain white in colour</li>
+                  <li>Head gear used for religious reasons must be in dark colour against white background</li>
+                  <li>Must be appropriately attired minimally with polo tee-shirt</li>
+                  <li>Shoulders, hair and ears must be fully visible</li>
+                </ul>
+              </div>
+              
               <div className={resubmitPhotoContentstyles.dosDontDoText}>
                 <div className={globalStyleCss.blueLink}><a href="/content/photo_guideline.pdf" target="_blank" rel="noopener noreferrer">View photo guidelines</a></div>
               </div>
