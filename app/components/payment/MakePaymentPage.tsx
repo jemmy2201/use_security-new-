@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import makePaymentContentstyles from './MakePaymentContent.module.css';
 import globalStyleCss from '../globalstyle/Global.module.css';
 import { useFormContext } from '.././FormContext';
+import PayNowDisclaimer from './PayNowDisclaimer';
 
 
 type MakePaymentPageProps = {
@@ -62,6 +63,9 @@ const MakePaymentPage: React.FC<MakePaymentPageProps> = ({ onSuccess }) => {
                             <div className={globalStyleCss.regular}> &nbsp;Please note that there will be no cancellation or refunds upon completion of payment</div>
                         </div>
                     </div>
+
+                    {/* PayNow disclaimer - only show for PayNow payment method */}
+                    {paymentMethod === 'paynow' && <PayNowDisclaimer />}
 
                     {/* Show additional charge banner if payment method is card */}
                     {paymentMethod === 'card' && (
