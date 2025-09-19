@@ -38,20 +38,82 @@ const ReviewImageProcessing: React.FC = () => {
           const img = document.createElement('img');
           img.src = `/api/get-image?imageName=${formData.imageUrl}`;
 
-          img.onload = () => {
-            setFormData(prevFormData => ({
-              ...prevFormData,
-              isFaceDetected: true,
-              isStraightFaceDetected: true,
-              isBgColorMatch: true,
-              isShoulderVisible: true,
-            }));
+          img.onload = async () => {
+            try {
+              // Perform actual validation on the loaded image
+              const detectionSingleFace = await faceapi.detectSingleFace(img).withFaceLandmarks();
+              let isStraight = true;
+              let isShoulderVisible = true;
+              let isFaceDetected = false;
+
+              if (detectionSingleFace) {
+                setDetectionResult(detectionSingleFace);
+                isFaceDetected = true;
+
+                const landmarks = detectionSingleFace.landmarks;
+                const { x: eyeLeftX, y: eyeLeftY } = landmarks.getLeftEye()[0];
+                const { x: eyeRightX, y: eyeRightY } = landmarks.getRightEye()[0];
+
+                const eyeSlope = (eyeRightY - eyeLeftY) / (eyeRightX - eyeLeftX);
+                const angleInDegrees = Math.atan(eyeSlope) * (180 / Math.PI);
+                const threshold = 10;
+                isStraight = Math.abs(angleInDegrees) <= threshold;
+                setStraightFaceDetected(isStraight);
+
+                // Check if shoulders are visible
+                isShoulderVisible = checkIfShouldersVisible(landmarks, img.naturalHeight || img.height);
+                setShouldersVisible(isShoulderVisible);
+              }
+
+              // Detect face
+              const isFaceDetectedResult = await detectFace(img);
+              setFaceDetected(isFaceDetectedResult);
+
+              // Detect spectacles
+              const isSpectacleDetected = await detectSpectacles(img);
+              setSpectacleDetected(isSpectacleDetected);
+
+              // Check background color
+              const isBgColorMatch = verifyBackgroundColor(img, '#ffffff');
+              setBgColorMatch(isBgColorMatch);
+
+              // Check brightness and contrast
+              const bc = checkBrightnessContrast(img);
+              setBrightnessContrast(bc);
+
+              setFormData(prevFormData => ({
+                ...prevFormData,
+                isFaceDetected: isFaceDetectedResult,
+                isStraightFaceDetected: isStraight,
+                isBgColorMatch: isBgColorMatch,
+                isShoulderVisible: isShoulderVisible,
+                isFileSizeValid: true, // Assume valid since it was already saved
+                isFileFormatValid: true, // Assume valid since it was already saved
+              }));
+
+            } catch (error) {
+              console.error('Error processing loaded image:', error);
+              // Set default values if validation fails
+              setFormData(prevFormData => ({
+                ...prevFormData,
+                isFaceDetected: false,
+                isStraightFaceDetected: false,
+                isBgColorMatch: false,
+                isShoulderVisible: false,
+                isFileSizeValid: true,
+                isFileFormatValid: true,
+              }));
+            }
           };
 
           img.onerror = () => {
             console.error("Failed to load the image");
             setFormData(prevFormData => ({
               ...prevFormData,
+              isFaceDetected: false,
+              isStraightFaceDetected: false,
+              isBgColorMatch: false,
+              isShoulderVisible: false,
             }));
           };
         }
