@@ -148,8 +148,8 @@ const ImageProcessing = () => {
           setSpectacleDetected(isSpectacleDetected);
 
           // Check background color
-          const isBgColorMatch = verifyBackgroundColor(imageElement, '#ffffff');
-          setBgColorMatch(isBgColorMatch);
+          // const isBgColorMatch = verifyBackgroundColor(imageElement, '#ffffff');
+          // setBgColorMatch(isBgColorMatch);
 
           // Check brightness and contrast
           const bc = checkBrightnessContrast(imageElement);
@@ -165,7 +165,7 @@ const ImageProcessing = () => {
             ['isFaceDetected']: isFaceDetected,
             ['isShoulderVisible']: isShoulderVisible,
             ['isStraightFaceDetected']: isStraight,
-            ['isBgColorMatch']: isBgColorMatch,
+            // ['isBgColorMatch']: isBgColorMatch,
             ['isFileSizeValid']: isFileSizeValid,
             ['isFileFormatValid']: isFileFormatValid,
             ['imageUrl']: fileName,

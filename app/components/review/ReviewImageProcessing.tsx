@@ -152,8 +152,8 @@ const ReviewImageProcessing: React.FC = () => {
           setSpectacleDetected(isSpectacleDetected);
 
           // Check background color
-          const isBgColorMatch = verifyBackgroundColor(imageElement, '#ffffff');
-          setBgColorMatch(isBgColorMatch);
+          // const isBgColorMatch = verifyBackgroundColor(imageElement, '#ffffff');
+          // setBgColorMatch(isBgColorMatch);
 
           // Check brightness and contrast
           const bc = checkBrightnessContrast(imageElement);
@@ -168,7 +168,7 @@ const ReviewImageProcessing: React.FC = () => {
             ['image']: resizedImage,
             ['isFaceDetected']: isFaceDetected,
             ['isStraightFaceDetected']: isStraight,
-            ['isBgColorMatch']: isBgColorMatch,
+            // ['isBgColorMatch']: isBgColorMatch,
             ['isShoulderVisible']: isShoulderVisible,
             ['isFileSizeValid']: isFileSizeValid,
             ['isFileFormatValid']: isFileFormatValid,

@@ -296,8 +296,8 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           setFaceDetected(isFaceDetected);
 
           // Check background color
-          const isBgColorMatch = verifyBackgroundColor(imageElement, '#ffffff');
-          setBgColorMatch(isBgColorMatch);
+          // const isBgColorMatch = verifyBackgroundColor(imageElement, '#ffffff');
+          // setBgColorMatch(isBgColorMatch);
 
           // Check brightness and contrast
           const bc = checkBrightnessContrast(imageElement);
