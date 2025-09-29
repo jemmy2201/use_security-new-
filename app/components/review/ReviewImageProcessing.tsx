@@ -43,7 +43,7 @@ const ReviewImageProcessing: React.FC = () => {
               ...prevFormData,
               isFaceDetected: true,
               isStraightFaceDetected: true,
-              isBgColorMatch: true,
+              // isBgColorMatch: true,
               isShoulderVisible: true,
             }));
           };
@@ -412,8 +412,10 @@ const ReviewImageProcessing: React.FC = () => {
         </div>
         <br></br>
         <hr className={reviewPhotoContentstyles.photoHrLine}></hr>
-        {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch
-          || !formData.isStraightFaceDetected || !formData.isShoulderVisible || !formData.isFileSizeValid || !formData.isFileFormatValid) ? (
+        {formData.image && (!formData.isFaceDetected 
+          || !formData.isStraightFaceDetected || !formData.isShoulderVisible || !formData.isFileSizeValid || !formData.isFileFormatValid
+          // || !formData.isBgColorMatch
+        ) ? (
           <div className={reviewPhotoContentstyles.photoUploadError}>
             <div className={reviewPhotoContentstyles.photoUploadErrorBox}>
               <div className={globalStyleCss.regularBold}>
@@ -437,11 +439,11 @@ const ReviewImageProcessing: React.FC = () => {
               ) : (
                 <div className={globalStyleCss.regular}> .  The face is not clearly visible or is too dark. Please ensure your face is well-lit and clearly visible in the photo.</div>
               )}
-              {formData.isBgColorMatch ? (
+              {/* {formData.isBgColorMatch ? (
                 <p></p>
               ) : (
                 <div className={globalStyleCss.regular}> .  The background is not white</div>
-              )}
+              )} */}
               {formData.isFileSizeValid ? (
                 <p></p>
               ) : (

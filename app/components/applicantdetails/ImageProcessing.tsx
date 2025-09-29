@@ -48,7 +48,7 @@ const ImageProcessing = () => {
               ...prevFormData,
               isFaceDetected: true,
               isStraightFaceDetected: true,
-              isBgColorMatch: true,
+              // isBgColorMatch: true,
               isShoulderVisible: true,
             }));
           };
@@ -458,8 +458,10 @@ const ImageProcessing = () => {
 
       <hr className={applicantDetailsContentstyles.photoHrLine}></hr>
 
-      {formData.image && (!formData.isFaceDetected || !formData.isBgColorMatch 
-          || !formData.isStraightFaceDetected || !formData.isShoulderVisible || !formData.isFileSizeValid || !formData.isFileFormatValid) ? (
+      {formData.image && (!formData.isFaceDetected || !formData.isStraightFaceDetected 
+      || !formData.isShoulderVisible || !formData.isFileSizeValid || !formData.isFileFormatValid
+      //|| !formData.isBgColorMatch 
+    ) ? (
         <div className={applicantDetailsContentstyles.photoUploadError}>
           <div className={applicantDetailsContentstyles.photoUploadErrorBox}>
             <div className={globalStyleCss.regularBold}>
@@ -483,11 +485,11 @@ const ImageProcessing = () => {
             ) : (
               <div className={globalStyleCss.regular}> .  The face is not clearly visible or is too dark. Please ensure your face is well-lit and clearly visible in the photo.</div>
             )}
-            {formData.isBgColorMatch ? (
+            {/* {formData.isBgColorMatch ? (
               <p></p>
             ) : (
               <div className={globalStyleCss.regular}> .  The background is not white</div>
-            )}
+            )} */}
             {formData.isFileSizeValid ? (
               <p></p>
             ) : (
