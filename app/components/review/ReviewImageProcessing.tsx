@@ -17,7 +17,7 @@ const ReviewImageProcessing: React.FC = () => {
   const [shouldersVisible, setShouldersVisible] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
   const [faceDetected, setFaceDetected] = useState<boolean>(false);
-  const [bgColorMatch, setBgColorMatch] = useState<boolean>(false);
+  // const [bgColorMatch, setBgColorMatch] = useState<boolean>(false);
   const [straightFaceDetected, setStraightFaceDetected] = useState<boolean>(false);
   const [brightnessContrast, setBrightnessContrast] = useState<{ brightness: number; contrast: number } | null>(null);
   const [spectacleDetected, setSpectacleDetected] = useState<boolean>(false);

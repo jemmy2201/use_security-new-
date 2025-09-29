@@ -44,7 +44,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const [shouldersVisible, setShouldersVisible] = useState<boolean>(false);
   const [faceCentered, setFaceCentered] = useState<boolean>(false);
 
-  const [bgColorMatch, setBgColorMatch] = useState<boolean>(false);
+  // const [bgColorMatch, setBgColorMatch] = useState<boolean>(true); // Set to true since validation is disabled
   const [showBookingAppointment, setShowBookingAppointment] = useState<boolean>(false);
   const [brightnessContrast, setBrightnessContrast] = useState<{ brightness: number; contrast: number } | null>(null);
   const [spectacleDetected, setSpectacleDetected] = useState<boolean>(false);
@@ -136,7 +136,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const onComplete = async () => {
     setLoading(true);
 
-    if (bgColorMatch && faceDetected && isFileSizeValid && isFileFormatValid) {
+    if (/* bgColorMatch && */ faceDetected && isFileSizeValid && isFileFormatValid) {
       try {
         const response = await axios.post('/api/handle-resubmit-image', {
           image,
@@ -159,7 +159,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
   const onNext = async () => {
     setLoading(true);
 
-    if (bgColorMatch && faceDetected && straightFaceDetected
+    if (/* bgColorMatch && */ faceDetected && straightFaceDetected
       && straightFaceDetected && shouldersVisible && isFileSizeValid && isFileFormatValid) {
       try {
         const response = await axios.post('/api/handle-resubmit-image', {
@@ -295,7 +295,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
           const isFaceDetected = await detectFace(imageElement);
           setFaceDetected(isFaceDetected);
 
-          // Check background color
+          // Check background color - validation disabled, setting to true
           // const isBgColorMatch = verifyBackgroundColor(imageElement, '#ffffff');
           // setBgColorMatch(isBgColorMatch);
 
@@ -548,7 +548,7 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
 
           <hr className={resubmitPhotoContentstyles.photoHrLine}></hr>
 
-          {image && (!faceDetected || !bgColorMatch || !straightFaceDetected || !shouldersVisible || spectacleDetected || !isFileSizeValid || !isFileFormatValid) ? (
+          {image && (!faceDetected || /* !bgColorMatch || */ !straightFaceDetected || !shouldersVisible || spectacleDetected || !isFileSizeValid || !isFileFormatValid) ? (
             <div className={resubmitPhotoContentstyles.photoUploadError}>
               <div className={resubmitPhotoContentstyles.photoUploadErrorBox}>
                 <div>
@@ -572,11 +572,11 @@ const ResubmitPhoto: React.FC<ResubmitPhotoPageProps> = ({ bookingId }) => {
                 ) : (
                   <div className={globalStyleCss.regular}> .  The face is not clearly visible or is too dark. Please ensure your face is well-lit and clearly visible in the photo.</div>
                 )}
-                {bgColorMatch ? (
+                {/* bgColorMatch ? (
                   <p></p>
                 ) : (
                   <div> .  The background is not white</div>
-                )}
+                ) */}
 
                 {spectacleDetected ? (
                   <p>. Eyewear has been detected</p>
