@@ -764,16 +764,16 @@ const DashBoardPage: React.FC = () => {
                                 View Receipt &nbsp;
                               </a>
                               | &nbsp;
-                              <a
-                                href='/edit'
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  handleBookAppointmentClick(booking.id);
-                                }}
-                                className={globalStyleCss.blueLink}
-                              >
-                                Change Appointment
-                              </a>
+                              {/*<a*/}
+                              {/*  href='/edit'*/}
+                              {/*  onClick={(e) => {*/}
+                              {/*    e.preventDefault();*/}
+                              {/*    handleBookAppointmentClick(booking.id);*/}
+                              {/*  }}*/}
+                              {/*  className={globalStyleCss.blueLink}*/}
+                              {/*>*/}
+                              {/*  Change Appointment*/}
+                              {/*</a>*/}
                             </>
                           ) : null}
 
