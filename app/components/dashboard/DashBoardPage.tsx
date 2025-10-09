@@ -763,7 +763,7 @@ const DashBoardPage: React.FC = () => {
                               >
                                 View Receipt &nbsp;
                               </a>
-                              | &nbsp;
+                              {/*| &nbsp;*/}
                               {/*<a*/}
                               {/*  href='/edit'*/}
                               {/*  onClick={(e) => {*/}
